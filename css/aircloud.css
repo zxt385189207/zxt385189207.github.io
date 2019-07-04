@@ -114,9 +114,6 @@ body {
   width: 100px;
   height: 100px;
 }
-.nav .avatar-name .radius img {
-  border-radius: 50%;
-}
 .nav .avatar-name .name {
   margin-top: 10px;
   margin-bottom: 20px;
@@ -674,6 +671,7 @@ body {
   padding: 10px;
 }
 .post-content pre code {
+  color: white;
   line-height: 175%;
 }
 .post-content h1 {
@@ -705,9 +703,6 @@ body {
   color: #333333;
   margin-top: 20px;
   margin-bottom: 20px;
-}
-.post-content figcaption {
-  text-align: center;
 }
 #comment-container {
   text-indent: 0;
@@ -1091,9 +1086,6 @@ pre .javascript .function {
   margin-top: 5px;
   margin-bottom: 0;
   font-weight: 300;
-  margin-right: 20px;
-  word-break: break-all;
-  margin-left: 20px;
 }
 .footer p a {
   font-weight: 300;
@@ -1143,14 +1135,11 @@ pre .javascript .function {
     padding-right: 20px;
   }
   .footer p {
-    word-break: break-all;
     font-family: "Montserrat", "Helvetica Neue", "Hiragino Sans GB", "LiHei Pro", Arial, sans-serif;
     font-size: 11px;
     margin-top: 5px;
     margin-bottom: 0;
     font-weight: 300;
-    margin-right: 20px;
-    margin-left: 20px;
   }
   .footer p span a {
     font-size: 11px;
@@ -1234,4 +1223,3 @@ pre .javascript .function {
 .gitment-comment p {
   text-indent: 0;
 }
-/*# sourceMappingURL=aircloud.css.map */
