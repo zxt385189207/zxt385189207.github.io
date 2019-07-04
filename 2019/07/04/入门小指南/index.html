@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="null">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        入门小指南 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> sometimes code， sometimes design </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#了解ET"><span class="toc-text">了解ET</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#运行Demo前的准备事项"><span class="toc-text">运行Demo前的准备事项</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#准备运行Demo"><span class="toc-text">准备运行Demo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#测试状态同步Demo"><span class="toc-text">测试状态同步Demo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#帧同步Demo"><span class="toc-text">帧同步Demo</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习ET"><span class="toc-text">学习ET</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ET框架设计大纲"><span class="toc-text">ET框架设计大纲</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ET的一些教学视频"><span class="toc-text">ET的一些教学视频</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#群内大佬的Github"><span class="toc-text">群内大佬的Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ET学习笔记-博客-公众号"><span class="toc-text">ET学习笔记/博客/公众号</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#相关技术的教学文章"><span class="toc-text">相关技术的教学文章</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MongoDB"><span class="toc-text">MongoDB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ILRuntime"><span class="toc-text">ILRuntime</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FGUI"><span class="toc-text">FGUI</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> sometimes code， sometimes design </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        入门小指南
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-07-04 18:25:49</span></span>
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h1 id="了解ET"><a href="#了解ET" class="headerlink" title="了解ET"></a>了解ET</h1><p><a href="https://github.com/egametang/ET" target="_blank" rel="external">[Github]</a><br><a href="https://bbs.honorworkroom.com/forum.php" target="_blank" rel="external">[ET论坛]</a></p>
+<p>ET是一个开源的游戏客户端（基于unity3d）服务端双端框架，服务端是使用C# .net core开发的分布式游戏服务端.</p>
+<p><a href="https://github.com/egametang/ET/blob/master/README.md" target="_blank" rel="external">[具体介绍]</a></p>
+<ul>
+<li><a href="https://github.com/egametang/ET/blob/master/Book/1.2%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8.net%20core.md" target="_blank" rel="external">为什么使用C# .net core做服务端？</a><ul>
+<li>ET框架使用C#做服务端，现在C#是完全可以跨平台的，在linux上安装.netcore，即可，不需要修改任何代码，就能跑起来。性能方面，现在.netcore的性能非常强，比lua，python，js什么快的多了。做游戏服务端完全不在话下。</li>
+</ul>
+</li>
+<li><strong>为什么选择Unity作为客户端?</strong><ul>
+<li>当前Unity是最火的游戏引擎，C#服务端搭配Unity完全是天作之合，基本上找不到缺陷。 客户端可以不使用Unity3d,需要自己对接协议.</li>
+</ul>
+</li>
+<li><a href="https://github.com/egametang/ET/blob/master/Book/3.2%E5%BC%BA%E5%A4%A7%E7%9A%84MongoBson%E5%BA%93.md" target="_blank" rel="external">为什么后端选MongoBson序列化库?</a></li>
+<li><a href="https://bbs.honorworkroom.com/forum.php?mod=viewthread&amp;tid=183&amp;extra=page%3D1" target="_blank" rel="external">为什么选MongoDB数据库?</a></li>
+<li><a href="https://github.com/egametang/protobuf3-for-Unity-and-ILRuntime" target="_blank" rel="external">为什么选择ProtoBuf?</a><ul>
+<li>基于google官方3.4.1版本的protobuf c#-runtime以及3.4.0版本的protoc修改而来，还增加了0gc功能。仍然是标准的pb协议</li>
+<li><a href="https://github.com/egametang/protobuf3-for-Unity-and-ILRuntime" target="_blank" rel="external">ET使用精简过的PB库</a></li>
+</ul>
+</li>
+<li><strong>为什么选择ILRuntime热更?</strong><ul>
+<li>因为ios的限制，之前unity热更新一般使用lua，导致unity3d开发人员要写两种代码，麻烦的要死。之后幸好出了ILRuntime库，利用ILRuntime库，unity3d可以利用C#语言加载热更新dll进行热更新。ILRuntime一个缺陷就是开发时候不支持VS debug，这有点不爽。ET框架使用了一个预编译指令ILRuntime，可以无缝切换。平常开发的时候不使用ILRuntime，而是使用Assembly.Load加载热更新动态库，这样可以方便用VS单步调试。在发布的时候，定义预编译指令ILRuntime就可以无缝切换成使用ILRuntime加载热更新动态库。这样开发起来及其方便，再也不用使用狗屎lua了</li>
+</ul>
+</li>
+<li><a href="https://github.com/egametang/ET/blob/master/Book/3.3%E4%B8%80%E5%88%87%E7%9A%86%E7%BB%84%E4%BB%B6.md" target="_blank" rel="external">什么是组件式设计?</a></li>
+</ul>
+<h1 id="运行Demo前的准备事项"><a href="#运行Demo前的准备事项" class="headerlink" title="运行Demo前的准备事项"></a>运行Demo前的准备事项</h1><ol>
+<li><p>IDE选择</p>
+<ul>
+<li><strong>VS</strong><ul>
+<li>ET 5.0(master)<ul>
+<li>建议使用VS2019 ( 用2017就自己去官网下 .net core 2.2)</li>
+</ul>
+</li>
+<li>ET 4.0分支使用vs2017（更新到最新版）,并且要勾选<ul>
+<li>a. .net 桌面开发</li>
+<li>visual studio tools for unity</li>
+<li>.net core 2.1</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Rider</strong><ul>
+<li>安装 .net core 2.2</li>
+</ul>
+</li>
+<li>other…..</li>
+</ul>
+</li>
+<li><p>Unity版本选择</p>
+<ul>
+<li>ET4.0请使用unity2017.4版</li>
+<li>ET5.0(master)需要unity2018.4版</li>
+<li><a href="https://www.bilibili.com/video/av49789692" target="_blank" rel="external">为什么是.4版本</a></li>
+<li>别问怎么破解.问就是个人免费版.</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li>安装MongoDB数据库(Demo中注释了数据库组件,只为了运行demo,就随意)</li>
+</ol>
+<h1 id="准备运行Demo"><a href="#准备运行Demo" class="headerlink" title="准备运行Demo"></a>准备运行Demo</h1><ul>
+<li><p><a href="https://github.com/egametang/ET/blob/master/Book/1.1%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md" target="_blank" rel="external">运行指南</a></p>
+</li>
+<li><p><a href="https://bbs.honorworkroom.com/forum.php?mod=viewthread&amp;tid=203&amp;extra=page%3D1" target="_blank" rel="external">常见的错误解决方法</a></p>
+</li>
+</ul>
+<h2 id="测试状态同步Demo"><a href="#测试状态同步Demo" class="headerlink" title="测试状态同步Demo"></a>测试状态同步Demo</h2><p>打包一个客户端,unity开一个客户端.就会出现2个小人.点击鼠标右键即可移动人物.看到效果.</p>
+<h2 id="帧同步Demo"><a href="#帧同步Demo" class="headerlink" title="帧同步Demo"></a>帧同步Demo</h2><p>在4.0分支.</p>
+<h1 id="学习ET"><a href="#学习ET" class="headerlink" title="学习ET"></a>学习ET</h1><p>你可能需要如下知识储备:</p>
+<ul>
+<li>C# 语言基础 (<a href="https://pan.baidu.com/s/1mqaaVIxOVo02pg8aXaQKXg" target="_blank" rel="external">你渴望力量吗?</a>s1fz )</li>
+<li>设计模式    (<a href="https://pan.baidu.com/s/1P7O7KMNIDGTRTwBh1pz8Gg" target="_blank" rel="external">你渴望知识吗?</a> wkur )</li>
+<li>数据结构    (<a href="https://pan.baidu.com/s/1P7O7KMNIDGTRTwBh1pz8Gg" target="_blank" rel="external">那就看完吧</a> wkur )</li>
+<li>反射</li>
+<li>特性</li>
+<li>异步/协程</li>
+<li>了解ECS</li>
+<li>了解actor模型</li>
+<li>网络层TCP/UDP/KCP/ENET</li>
+<li>MongoDB数据库</li>
+<li>MongoBson</li>
+<li>Protobuf</li>
+<li>服务器分布式相关</li>
+</ul>
+<p>客户端</p>
+<ul>
+<li>Unity基础</li>
+<li>UGUI</li>
+<li>AssetBundle流程</li>
+<li>热更ILRuntime</li>
+</ul>
+<p>其余</p>
+<ul>
+<li>AstarPathfinding</li>
+<li>Behavior Designer</li>
+<li>FGUI</li>
+<li>NLog</li>
+</ul>
+<blockquote>
+<p>猫大语录:<br>应该先去提高下c#基础跟编程基础，再来看ET，碰到问题自己想办法解决，谷歌，打log。你现在好比初中基础却来做大学题目一样，到处碰壁，碰到问题自己不研究指望别人给你找问题，这样编程技术是无法提高的.<br>群里能力有高有低，问问题也没什么。但是我是希望群里提问题前能够经过自己一番摸索，经过自己思考，经过谷歌，经过调试log等等再问。很多问题经过自己摸索查找资料能够增长很多知识。其实程序开发就是在不断找bug，在找bug中提升自己。</p>
+</blockquote>
+<h1 id="ET框架设计大纲"><a href="#ET框架设计大纲" class="headerlink" title="ET框架设计大纲"></a>ET框架设计大纲</h1><ul>
+<li>公共部分<ul>
+<li>ET的特色</li>
+<li>什么是ECS</li>
+</ul>
+</li>
+<li>async await 协程<ul>
+<li>什么是异步? 单线程？多线程？<ul>
+<li><a href="https://github.com/egametang/ET/blob/master/Book/2.1CSharp%E7%9A%84%E5%8D%8F%E7%A8%8B.md" target="_blank" rel="external">ET/Book/2.1CSharp的协程</a></li>
+<li><a href="https://github.com/egametang/ET/blob/master/Book/2.2%E6%9B%B4%E5%A5%BD%E7%9A%84%E5%8D%8F%E7%A8%8B.md" target="_blank" rel="external">ET/Book/2.2更好的协程</a></li>
+</ul>
+</li>
+<li>为什么需要async await，await是多线程吗？<ul>
+<li><a href="https://github.com/egametang/ET/blob/master/Book/2.3%E5%8D%95%E7%BA%BF%E7%A8%8B%E5%BC%82%E6%AD%A5.md" target="_blank" rel="external">ET/Book/2.3单线程异步</a></li>
+</ul>
+</li>
+<li>更好的Task：ETTask<ul>
+<li><a href="https://bbs.honorworkroom.com/forum.php?mod=viewthread&amp;tid=204&amp;extra=page%3D1" target="_blank" rel="external">群内讨论/ETTask</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://github.com/egametang/ET/blob/master/Book/3.3%E4%B8%80%E5%88%87%E7%9A%86%E7%BB%84%E4%BB%B6.md" target="_blank" rel="external">一切皆组件（Entity&amp;Component）</a><ul>
+<li><a href="https://github.com/egametang/ET/blob/master/Book/3.4%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6EventSystem.md" target="_blank" rel="external">事件机制EventSystem</a></li>
+<li><a href="https://github.com/egametang/ET/blob/master/Book/3.2%E5%BC%BA%E5%A4%A7%E7%9A%84MongoBson%E5%BA%93.md" target="_blank" rel="external">强大的mongo bson</a></li>
+<li>设计一个双端网络库</li>
+<li>协议格式的设计</li>
+<li><a href="https://github.com/egametang/protobuf3-for-Unity-and-ILRuntime" target="_blank" rel="external">protobuf</a></li>
+<li>使用Kcp协议<ul>
+<li><a href="https://github.com/egametang/kcp-bulild" target="_blank" rel="external">kcp-bulild</a></li>
+</ul>
+</li>
+<li>应用层循环缓冲区</li>
+<li>消息打包解包</li>
+<li>消息的分发处理</li>
+<li>远程过程调用RPC</li>
+<li>客户端无GC处理</li>
+</ul>
+</li>
+<li>服务端<ul>
+<li>服务端架构简介<ul>
+<li><a href="https://bbs.honorworkroom.com/forum.php?mod=viewthread&amp;tid=161&amp;extra=page%3D1" target="_blank" rel="external">服务器命名以及消息类的X2X代表意思</a></li>
+</ul>
+</li>
+<li>组件式的服务器</li>
+<li><a href="https://github.com/egametang/ET/blob/master/Book/5.4Actor%E6%A8%A1%E5%9E%8B.md" target="_blank" rel="external">Actor模型</a></li>
+<li><a href="https://github.com/egametang/ET/blob/master/Book/5.5Actor%20Location.md" target="_blank" rel="external">ActorLocation</a></li>
+<li>设计一个计时器( TimerCompoent组件 )</li>
+<li>服务端热更<ul>
+<li><a href="https://bbs.honorworkroom.com/forum.php?mod=viewthread&amp;tid=146&amp;extra=page%3D1" target="_blank" rel="external">群内讨论/热更层和Model层/逻辑与数据相关</a></li>
+</ul>
+</li>
+<li>Config</li>
+<li><a href="https://github.com/egametang/ET/blob/master/Book/5.6%E6%95%B0%E5%80%BC%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1.md" target="_blank" rel="external">数值组件</a><ul>
+<li><a href="https://bbs.honorworkroom.com/forum.php?mod=viewthread&amp;tid=139&amp;extra=page%3D1" target="_blank" rel="external">群内讨论/数值组件</a></li>
+</ul>
+</li>
+<li>Repl<ul>
+<li><a href="https://bbs.honorworkroom.com/forum.php?mod=viewthread&amp;tid=151&amp;extra=page%3D1" target="_blank" rel="external">Nlog配置和Repl</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>客户端<ul>
+<li>客户端架构简介</li>
+<li>客户端资源管理</li>
+<li>UI框架</li>
+<li>客户端热更 (ILRuntime)</li>
+<li>抛弃unity的协程，使用await</li>
+<li>组件可视化</li>
+</ul>
+</li>
+<li>Demo<ul>
+<li>demo的架构, 消息路径<ul>
+<li><a href="https://bbs.honorworkroom.com/forum.php?mod=viewthread&amp;tid=145&amp;extra=page%3D2" target="_blank" rel="external">Demo消息流转时序图</a></li>
+</ul>
+</li>
+<li>recast 3d寻路</li>
+</ul>
+</li>
+</ul>
+<h1 id="ET的一些教学视频"><a href="#ET的一些教学视频" class="headerlink" title="ET的一些教学视频"></a>ET的一些教学视频</h1><ul>
+<li><a href="https://www.taikr.com/my/course/972" target="_blank" rel="external">肉饼老师主讲</a> : ET3.0时期教程,可以学习如何分离客户端和服务器端,和一些开发思路</li>
+<li><a href="https://www.bilibili.com/video/av33280463/?redirectFrom=h5" target="_blank" rel="external">初见主讲(B站)</a> - <a href="https://i.youku.com/i/UNTQ3MjU4MDEy?spm=a2h0j.11185381.module_basic_dayu_sub.DL~DT~A" target="_blank" rel="external">优酷</a>:ET4.0教程,工具使用及demo运行,ET入门教程</li>
+<li><a href="http://www.liuocean.com/index.php/2018/07/25/et-kuang-jiamac-duan-gong-ju-zhi-chi/" target="_blank" rel="external">ET在Mac上运行指南-L主讲</a>百度云视频链接失效，参考文章吧</li>
+<li><a href="https://www.bilibili.com/video/av50871743?from=search&amp;seid=9593939068874626189" target="_blank" rel="external">ET框架学习日记 by SwickSu</a></li>
+</ul>
+<h1 id="群内大佬的Github"><a href="#群内大佬的Github" class="headerlink" title="群内大佬的Github"></a>群内大佬的Github</h1><ul>
+<li><a href="https://github.com/qq362946/AOI" target="_blank" rel="external">C# 实现的十字链表的AOI算法</a> by 初见<ul>
+<li><a href="https://bbs.honorworkroom.com/forum.php?mod=viewthread&amp;tid=174&amp;extra=page%3D1" target="_blank" rel="external">群内讨论/十字链表+快慢针方式的AOI算法可用于双端</a></li>
+</ul>
+</li>
+<li><a href="https://github.com/yhr28/3D_AOI" target="_blank" rel="external">在初见的AOI（2D）的基础改成3D AOI</a> by yhr28</li>
+<li><a href="https://github.com/AnotherEnd15/ET-RPG-DEMO" target="_blank" rel="external">ET-RPG-DEMO(基于ET框架的RPG游戏DEMO)</a>   by AE<ul>
+<li><a href="https://blog.csdn.net/qq_32270109/article/details/88551196?tdsourcetag=s_pcqq_aiomsg" target="_blank" rel="external">一种完全组合式的技能系统的设计思路</a></li>
+</ul>
+</li>
+<li><a href="https://github.com/AnotherEnd15/RVO2" target="_blank" rel="external">RVO2</a> by AE</li>
+<li><a href="https://github.com/Zonciu/Box2DSharp" target="_blank" rel="external">Box2DSharp(BOX2D物理引擎C#版)</a>  by 白纸无字Zonciu</li>
+<li><a href="https://gitee.com/fengssy/BulletSharpPInvoke?tdsourcetag=s_pcqq_aiomsg" target="_blank" rel="external">Bullet版本(.netCore封装)</a> by 风恒</li>
+<li><a href="https://github.com/DukeChiang/DCET/tree/dukechiang_master" target="_blank" rel="external">FGUI/双端行为树</a> by DukeChiang<ul>
+<li><a href="https://bbs.honorworkroom.com/forum.php?mod=viewthread&amp;tid=170&amp;extra=page%3D1" target="_blank" rel="external">群内讨论/Behavior Designer全热更行为树插件</a></li>
+</ul>
+</li>
+<li><a href="https://gitee.com/NKG_admin/MKGMobaBasedOnET" target="_blank" rel="external">NKGNMobaBasedOnET(基于ET框架的Moba游戏DEMO)</a> by 烟雨迷离半世殇</li>
+<li><a href="https://github.com/Viagi/LandlordsCore" target="_blank" rel="external">ET斗地主Demo</a><ul>
+<li><a href="https://pan.baidu.com/s/1wyv6ihefBjQmVynIUBumKA" target="_blank" rel="external">斗地主架构图</a> o05k</li>
+</ul>
+</li>
+<li><a href="https://github.com/Acgmart/ET-MultiplyDemos" target="_blank" rel="external">ET-MultiplyDemos小游戏集合</a> by 咲夜詩</li>
+</ul>
+<p>#群内大佬分享的一些工具/组件</p>
+<ul>
+<li><a href="https://pan.baidu.com/s/1bGJxNGu5P9KB8czCK1NRtw" target="_blank" rel="external">[Debug组件]DebuggerComponent.cs</a>  mcyz</li>
+<li><a href="https://pan.baidu.com/s/1q6KEgLY08pdht6IioVekVQ" target="_blank" rel="external">[AspNet组件]AspNetCoreComponent</a> z84o</li>
+<li><a href="https://pan.baidu.com/s/15sf7KuMvN0NU_Dsx0frtiQ" target="_blank" rel="external">[Http请求帮助类]HttpRequestHelper</a> 7mvr</li>
+<li><a href="https://pan.baidu.com/s/1oR8f9fSE91bsfmyPCjCTZg" target="_blank" rel="external">ET心跳组件2.0</a> 8p0b<ul>
+<li><a href="http://www.tinkingli.com/?p=111" target="_blank" rel="external">这篇是初见早期写的心跳文章</a> 不会心跳的可以看下原理</li>
+</ul>
+</li>
+</ul>
+<h1 id="ET学习笔记-博客-公众号"><a href="#ET学习笔记-博客-公众号" class="headerlink" title="ET学习笔记/博客/公众号"></a>ET学习笔记/博客/公众号</h1><ul>
+<li><a href="https://pan.baidu.com/s/1LyDaeA3l3skySb3ECu3VvA" target="_blank" rel="external">ET Mac环境运行和iOS打包指南.pdf</a> 9bzj</li>
+<li><a href="http://www.tinkingli.com/?cat=8" target="_blank" rel="external">Tinkingli博客教程</a></li>
+<li><a href="https://mp.weixin.qq.com/s/tDgqE_Ah8PWfnAGfi_R-aQ" target="_blank" rel="external">ECS概要–ET游戏框架详解</a>  by 122304518</li>
+<li><a href="https://www.lfzxb.top/unity/et/" target="_blank" rel="external">烟雨迷离半世殇的博客</a></li>
+<li><a href="https://acgmart.com/unity/" target="_blank" rel="external">咲夜詩的博客</a></li>
+<li><a href="https://pan.baidu.com/s/1KqtGWVbFBRtQ_RJZTMYFww" target="_blank" rel="external">群内分享的一些ET笔记</a> ho3e</li>
+</ul>
+<h1 id="相关技术的教学文章"><a href="#相关技术的教学文章" class="headerlink" title="相关技术的教学文章"></a>相关技术的教学文章</h1><h2 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h2><ul>
+<li><a href="https://mongodb.github.io/mongo-csharp-driver/2.7/getting_started/" target="_blank" rel="external">官方Driver教程</a></li>
+<li><a href="http://api.mongodb.com/csharp/current/html/R_Project_CSharpDriverDocs.htm" target="_blank" rel="external">官方API文档</a></li>
+<li><a href="https://www.runoob.com/mongodb/mongodb-tutorial.html" target="_blank" rel="external">菜鸟教程</a></li>
+<li><a href="https://www.codementor.io/pmbanugo/working-with-mongodb-in-net-1-basics-g4frivcvz" target="_blank" rel="external">Working with MongoDB in .NET (Part 1): Driver Basics &amp; Inserting Documents</a></li>
+<li><a href="https://www.codementor.io/pmbanugo/working-with-mongodb-in-net-2-retrieving-mrlbeanm5" target="_blank" rel="external">Working with MongoDB in .NET (Part 2): Retrieving Documents with Filter Clause</a></li>
+<li><a href="https://www.codementor.io/pmbanugo/working-with-mongodb-in-net-part-3-skip-sort-limit-and-projections-oqfwncyka" target="_blank" rel="external">Working with MongoDB in .NET (Part 3): Skip, Sort, Limit, &amp; Projections</a></li>
+</ul>
+<h2 id="ILRuntime"><a href="#ILRuntime" class="headerlink" title="ILRuntime"></a>ILRuntime</h2><ul>
+<li><a href="https://ourpalm.github.io/ILRuntime/public/v1/guide/index.html" target="_blank" rel="external">官方主页</a></li>
+<li><a href="https://github.com/Ourpalm/ILRuntimeU3D/" target="_blank" rel="external">Github-Demo</a></li>
+<li>QQ群:512079820</li>
+<li><a href="https://pan.baidu.com/s/1Re-mM-9KEoO3D7VXePdyIg" target="_blank" rel="external">ILRuntime技术相关的总结</a> vz3q</li>
+<li><a href="https://bbs.honorworkroom.com/forum.php?mod=viewthread&amp;tid=195&amp;extra=page%3D1" target="_blank" rel="external">群内讨论/ILRuntime剪裁相关问题</a></li>
+</ul>
+<h2 id="FGUI"><a href="#FGUI" class="headerlink" title="FGUI"></a>FGUI</h2><ul>
+<li><a href="http://www.fairygui.com/guide/index.html" target="_blank" rel="external">官方主页</a></li>
+<li><a href="http://www.sikiedu.com/course/139" target="_blank" rel="external">官方教程</a></li>
+<li>QQ群:614444599</li>
+<li><a href="https://github.com/DukeChiang/DCET/tree/dukechiang_master" target="_blank" rel="external">ET+FGUI+BD</a> by DukeChiang</li>
+<li><a href="https://www.lfzxb.top/unity/et/" target="_blank" rel="external">烟雨迷离半世殇的博客</a></li>
+</ul>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+        <span><a href="#">It helps SEO</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
