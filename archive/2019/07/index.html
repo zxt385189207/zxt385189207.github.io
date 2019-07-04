@@ -11,7 +11,7 @@
 
     <title>
         
-        About - 闭关修仙的小弟
+        闭关修仙的小弟
         
     </title>
 
@@ -65,13 +65,13 @@
                     <span>标签</span>
                 </a>
             </li>
-            <li >
+            <li  class=active >
                 <a href="/archive">
                     <i class="iconfont icon-guidang2"></i>
                     <span>存档</span>
                 </a>
             </li>
-            <li  class=active >
+            <li >
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
                     <span>关于</span>
@@ -111,23 +111,67 @@
     <div class="index-middle">
         <!-- Main Content -->
         
-<div class="post-content no-indent">
-    
-    
-        <div class="donate-container">
-    <div class="donate-button">
-        <button id="donate-button">赞赏</button>
-    </div>
-    <div class="donate-img-container hide" id="donate-img-container">
-        <img id="donate-img" src="" data-src="/img/donate.jpg">
-        <p> 感谢支持 </p>
-    </div>
+
+
+<!-- 归档列表 -->
+
+<div class="archives-container">
+
+<div class="one-tag-list">
+                <span class="fa fa-calendar-times-o listing-seperator" id="2019">
+                    <span class="tag-text">2019</span>
+                </span>
+    <ul>
+        
+        <!-- <li class="listing-item">
+        <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+        <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+        </li> -->
+        <li >
+            <span>07-04</span>
+            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            <a href="/2019/07/04/ET入门小指南/">
+                        <span>
+                            入门小指南
+                        </span>
+            </a>
+            <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+        </li>
+        
+        <!-- <li class="listing-item">
+        <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+        <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+        </li> -->
+        <li >
+            <span>07-04</span>
+            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            <a href="/2019/07/04/test/">
+                        <span>
+                            test
+                        </span>
+            </a>
+            <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+        </li>
+        
+        <!-- <li class="listing-item">
+        <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+        <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+        </li> -->
+        <li >
+            <span>07-04</span>
+            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            <a href="/2019/07/04/hello-world/">
+                        <span>
+                            Hello World
+                        </span>
+            </a>
+            <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+        </li>
+        
+
+    </ul>
 </div>
-    
-    <div id="comment-container">
-    </div>
-    <div id="lv-container">
-    </div>
+
 </div>
 
     </div>
@@ -195,24 +239,5 @@
 
 
 
-
-    <script type="text/javascript">
-       (function() {
-           if (typeof LivereTower === 'function') { return; }
-
-           var j, d = document.getElementById('lv-container');
-
-           d.setAttribute('data-id','city');
-           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
-
-           j = document.createElement('script');
-           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-           j.async = true;
-
-           d.appendChild(j);
-       })();
-    </script>
-    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
-    </div>
 
 </html>
