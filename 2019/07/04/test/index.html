@@ -138,7 +138,46 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        <h1 id="Test"><a href="#Test" class="headerlink" title="Test!!!!!!!!!!"></a>Test!!!!!!!!!!</h1>
+        <h1 id="Test"><a href="#Test" class="headerlink" title="Test!!!!!!!!!!"></a>Test!!!!!!!!!!</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> MongoDB<span class="token punctuation">.</span>Driver<span class="token punctuation">;</span>
+
+<span class="token keyword">namespace</span> ETModel
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span>ObjectSystem<span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DBQueryTaskSystem</span> <span class="token punctuation">:</span> AwakeSystem<span class="token operator">&lt;</span>DBQueryTask<span class="token punctuation">,</span> <span class="token keyword">string</span><span class="token punctuation">,</span> ETTaskCompletionSource<span class="token operator">&lt;</span>ComponentWithId<span class="token operator">></span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">void</span> <span class="token function">Awake</span><span class="token punctuation">(</span>DBQueryTask self<span class="token punctuation">,</span> <span class="token keyword">string</span> collectionName<span class="token punctuation">,</span> ETTaskCompletionSource<span class="token operator">&lt;</span>ComponentWithId<span class="token operator">></span> tcs<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>CollectionName <span class="token operator">=</span> collectionName<span class="token punctuation">;</span>
+            self<span class="token punctuation">.</span>Tcs <span class="token operator">=</span> tcs<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">DBQueryTask</span> <span class="token punctuation">:</span> DBTask
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">string</span> CollectionName <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> ETTaskCompletionSource<span class="token operator">&lt;</span>ComponentWithId<span class="token operator">></span> Tcs <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">async</span> ETTask <span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            DBComponent dbComponent <span class="token operator">=</span> Game<span class="token punctuation">.</span>Scene<span class="token punctuation">.</span><span class="token generic-method function">GetComponent<span class="token punctuation">&lt;</span>DBComponent<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">try</span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 执行查询数据库任务</span>
+                IAsyncCursor<span class="token operator">&lt;</span>ComponentWithId<span class="token operator">></span> cursor <span class="token operator">=</span> <span class="token keyword">await</span> dbComponent<span class="token punctuation">.</span><span class="token function">GetCollection</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>CollectionName<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">FindAsync</span><span class="token punctuation">(</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> s<span class="token punctuation">.</span>Id <span class="token operator">==</span> <span class="token keyword">this</span><span class="token punctuation">.</span>Id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                ComponentWithId component <span class="token operator">=</span> <span class="token keyword">await</span> cursor<span class="token punctuation">.</span><span class="token function">FirstOrDefaultAsync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>Tcs<span class="token punctuation">.</span><span class="token function">SetResult</span><span class="token punctuation">(</span>component<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>Tcs<span class="token punctuation">.</span><span class="token function">SetException</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span>$<span class="token string">"查询数据库异常! {CollectionName} {Id}"</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
         
             <div class="donate-container">
     <div class="donate-button">
