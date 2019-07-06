@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        一CLR基础2 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JIT-just-in-time-运行时编译技术"><span class="toc-text">JIT(just-in-time 运行时编译技术)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#流程讲解"><span class="toc-text">流程讲解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JIT-编译技术特点"><span class="toc-text">JIT 编译技术特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将IL代码编译成本机代码的验证过程"><span class="toc-text">将IL代码编译成本机代码的验证过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NGen-exe生成的本机代码与JIT生成的本机代码对比"><span class="toc-text">NGen.exe生成的本机代码与JIT生成的本机代码对比</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#基类库支持功能"><span class="toc-text">基类库支持功能</span></a>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        一CLR基础2
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-07-06 12:27:47</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <blockquote>
+<p>温故而知新</p>
+</blockquote>
+<p>#CLR功能</p>
+<h2 id="JIT-just-in-time-运行时编译技术"><a href="#JIT-just-in-time-运行时编译技术" class="headerlink" title="JIT(just-in-time 运行时编译技术)"></a>JIT(just-in-time 运行时编译技术)</h2><blockquote>
+<p>通常，程序有两种运行方式：静态编译与动态解释。静态编译的程序在执行前全部被翻译为机器码，而解释执行的则是一句一句边运行边翻译。</p>
+<p><code>即时编译器</code>则混合了这二者，一句一句编译源代码，但是会将翻译过的代码缓存起来以降低性能损耗。相对于静态编译代码，即时编译的代码可以处理延迟绑定并增强安全性。</p>
+<p>即时编译器有两种类型，一是字节码翻译，二是动态编译翻译。</p>
+</blockquote>
+<p>为了执行方法，首先必须将方法的IL转换成本机(native)CPU指令。这是CLR的JIT编译器的职责。</p>
+<h3 id="流程讲解"><a href="#流程讲解" class="headerlink" title="流程讲解"></a>流程讲解</h3><p><img src="/2019/07/06/一CLR基础2/方法的首次调用.png" alt=""></p>
+<ol>
+<li>在Main方法执行之前,CLR会检测出Main的<code>代码引用</code>的所有类型.<ul>
+<li>CLR分配一个<code>内部数据结构</code>来管理对引用类型的访问.</li>
+<li>图中,Main方法引用了Console类型,CLR分配了一个<code>内部结构</code>.</li>
+<li>Console类型定义的每个方法都在<code>内部结构</code>中存在一个<code>记录项 entry</code>.</li>
+<li>根据这个记录项可以找到方法的实现.</li>
+<li>对这个<code>内部结构</code>进行初始化,每个方法都指向包含在CLR内部的一个<code>未编档函数</code>,称之为<code>JITCompiler</code>.</li>
+</ul>
+</li>
+<li>进入Main方法,首次调用<code>WriteLine方法</code>时, <code>JITCompiler函数</code>被调用.</li>
+<li><code>JITCompiler</code>会在定义该类型的程序集的元数据中查找被调用方法的<code>IL代码</code>.</li>
+<li>然后<code>JITCompiler</code>验证<code>IL代码</code>,将<code>WriteLine方法</code>的<code>IL代码</code>编译成<code>本机CPU指令</code>.</li>
+<li><code>本机CPU指令</code>保存到动态分配的内存块中.<code>JITCompiler</code>将在CLR为类型创建的<code>内部数据结构</code>中,修改引用.</li>
+<li>指向到刚才动态分配的内存块地址. 最后<code>JITCompiler</code>跳转到内存块中的代码(<code>WriteLine方法</code>的具体实现).</li>
+<li>返回到Main中的代码.</li>
+</ol>
+<p><img src="/2019/07/06/一CLR基础2/方法的第二次调用.png" alt=""></p>
+<ol>
+<li>第二次调用<code>WriteLine方法</code>,由于已经进行了验证和编译,会直接跳转到已经编译好的<code>本机CPU指令</code>代码块中执行.</li>
+</ol>
+<p>方法仅在首次调用时才会有一些性能损失,之后调用全是以本机代码的形式全速运行.</p>
+<h2 id="JIT-编译技术特点"><a href="#JIT-编译技术特点" class="headerlink" title="JIT 编译技术特点"></a>JIT 编译技术特点</h2><ol>
+<li>JIT编译器将本机CPU指令存储到动态内存中.意味着一旦应用程序终止,编译好的代码也会被丢弃.</li>
+<li><p>JIT编译器会对<code>本机代码</code>进行优化.类似于C++编译器后端所做的事情. 可能花较多的时间生成优化代码.</p>
+<blockquote>
+<p>在Visual Studio中新建C#项目时，”调试“(Debug)配置指定的是/optimize-/debug:full，而”发布“(release)配置指定的是/optimize+/debug:pdbonly。</p>
+</blockquote>
+</li>
+<li><p>JIT能够针对本机CPU为IL代码生成指令，以利用本机指定CPU的任何特殊指令进行编译。相反，非托管应用程序通常是针对具有最小功能集合的CPU编译的。</p>
+</li>
+</ol>
+<p>JIT编译器能够判断一个特定的测试在它运行的机器上是否总是失败，例如，假定有一个方法包含以下代码</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 如果主机只有一个CPU，JIT编译器不会为此代码生成任何CPU指令。</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>numberofCPUs<span class="token operator">></span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token comment" spellcheck="true">//Do something</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="将IL代码编译成本机代码的验证过程"><a href="#将IL代码编译成本机代码的验证过程" class="headerlink" title="将IL代码编译成本机代码的验证过程"></a>将IL代码编译成本机代码的验证过程</h2><p>将IL代码编译成本机代码的过程中,CLR会执行验证过程,根据元数据检查类型,返回值,返回语句,参数是否正确等等.</p>
+<h2 id="NGen-exe生成的本机代码与JIT生成的本机代码对比"><a href="#NGen-exe生成的本机代码与JIT生成的本机代码对比" class="headerlink" title="NGen.exe生成的本机代码与JIT生成的本机代码对比"></a>NGen.exe生成的本机代码与JIT生成的本机代码对比</h2><ol>
+<li>NGen生成的代码<strong>不会</strong>像JIT编译器生成的代码进行高度优化.较差的执行时性能.</li>
+<li>CLR加载程序集时,会检查是否存在一个对应的,由NGen生产的本机文件.</li>
+<li>NGen.exe生成的本机文件没有知识产权保护.</li>
+<li>NGen生成的文件可能失去同步.版本不匹配,系统升级过等,就无法使用.</li>
+</ol>
+<h1 id="基类库支持功能"><a href="#基类库支持功能" class="headerlink" title="基类库支持功能"></a>基类库支持功能</h1><blockquote>
+<p>.Net Framework 包含 Framework类库(Framework Class Library,FCL).</p>
+</blockquote>
+<ol>
+<li>FCL是一组DLL程序集的统称.</li>
+</ol>
+<p><img src="/2019/07/06/一CLR基础2/FLC部分常规命名空间.png" alt=""></p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

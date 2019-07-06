@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是CLR"><span class="toc-text">什么是CLR?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CLR做了什么"><span class="toc-text">CLR做了什么?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CIL是什么-如何生成"><span class="toc-text">CIL是什么?如何生成?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#面向CLR的编译器生成了什么"><span class="toc-text">面向CLR的编译器生成了什么?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#托管模块是什么-由哪些组成"><span class="toc-text">托管模块是什么?由哪些组成?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#可移植执行体PE文件的结构"><span class="toc-text">可移植执行体PE文件的结构</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#程序执行基础概念"><span class="toc-text">程序执行基础概念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR和-Net-Framework的关系"><span class="toc-text">CLR和 .Net Framework的关系</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是CLR"><span class="toc-text">什么是CLR?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CLR做了什么"><span class="toc-text">CLR做了什么?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CLR有哪些功能"><span class="toc-text">CLR有哪些功能?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CIL是什么-如何生成"><span class="toc-text">CIL是什么?如何生成?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IL代码"><span class="toc-text">IL代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#非托管代码"><span class="toc-text">非托管代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#非托管代码和托管代码的互操作性"><span class="toc-text">非托管代码和托管代码的互操作性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#面向CLR的编译器生成了什么"><span class="toc-text">面向CLR的编译器生成了什么?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#C-编译器做的工作"><span class="toc-text">C#编译器做的工作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#托管模块是什么-由哪些组成"><span class="toc-text">托管模块是什么?由哪些组成?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#可移植执行体PE文件的结构"><span class="toc-text">可移植执行体PE文件的结构</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#元数据是什么"><span class="toc-text">元数据是什么?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CTS通用类型系统是什么"><span class="toc-text">CTS通用类型系统是什么?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#类型可见性和访问规则"><span class="toc-text">类型可见性和访问规则</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLS通用语言规范是什么"><span class="toc-text">CLS通用语言规范是什么?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#关于window32位和64位版本"><span class="toc-text">关于window32位和64位版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#不安全的代码"><span class="toc-text">不安全的代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#保护IL代码"><span class="toc-text">保护IL代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#一些微软提供的实用工具"><span class="toc-text">一些微软提供的实用工具</span></a></li></ol>
 </div>
 
     
@@ -142,6 +142,40 @@
         <blockquote>
 <p>对真正的力量一无所知。</p>
 </blockquote>
+<h1 id="程序执行基础概念"><a href="#程序执行基础概念" class="headerlink" title="程序执行基础概念"></a>程序执行基础概念</h1><ul>
+<li>代码</li>
+<li>翻译器<ul>
+<li>编译器</li>
+<li>优化编译器</li>
+</ul>
+</li>
+<li>中间语言</li>
+<li>执行<ul>
+<li>运行时系统<ul>
+<li>运行期</li>
+</ul>
+</li>
+<li>可执行文件</li>
+<li>解释器</li>
+<li>虚拟机</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>代码类型<ul>
+<li>源代码</li>
+<li>目标代码</li>
+<li>字节码</li>
+<li>机器代码</li>
+<li>微程序</li>
+</ul>
+</li>
+</ul>
+<h1 id="CLR和-Net-Framework的关系"><a href="#CLR和-Net-Framework的关系" class="headerlink" title="CLR和 .Net Framework的关系"></a>CLR和 .Net Framework的关系</h1><blockquote>
+<p>.NET框架 （.NET Framework） 是由微软开发，一个致力于敏捷软件开发（Agile software development）、快速应用开发（Rapid application development）、平台无关性和网络透明化的软件开发平台。.NET框架是以一种采用系统虚拟机运行的编程平台，以通用语言运行库（Common Language Runtime）为基础，支持多种语言（C#、VB.NET、C++、Python等）的开发。</p>
+</blockquote>
+<p>由此可见，<code>.Net Framework</code>是一个支持多种开发语言的开发平台，而这种多语言支持的特性又要以CLR为基础。CLR是一个.Net产品的运行环境。<code>公共语言运行时(Common Language Runtime)</code>和 <code>.Net Framework Library(FCL)</code>是<code>.Net Framework</code>的两个主要组成部分。</p>
 <h1 id="什么是CLR"><a href="#什么是CLR" class="headerlink" title="什么是CLR?"></a>什么是CLR?</h1><blockquote>
 <p>通用语言运行平台（Common Language Runtime，简称CLR）是微软为他们的.NET的虚拟机所选用的名称。它是微软对通用语言架构（CLI）的实现版本，它定义了一个代码运行的环境。CLR运行一种称为通用中间语言的字节码，这个是微软的通用中间语言实现版本。</p>
 </blockquote>
@@ -151,20 +185,46 @@
 <li>在.Net开发平台下，所有语言（C#、VB.NET、J#、C++/CLI）都会被编译为<code>MSIL</code></li>
 </ol>
 <h2 id="CLR做了什么"><a href="#CLR做了什么" class="headerlink" title="CLR做了什么?"></a>CLR做了什么?</h2><ol>
-<li>将IL代码在<code>运行时</code>编译成<code>本机代码Native Code</code>.<blockquote>
+<li>将<code>IL</code>代码在<code>运行时</code>编译成<code>本机代码Native Code</code>.(<code>JIT(just-in-time 运行时编译技术)</code>)<blockquote>
 <p>本机代码Native Code,是面向特定CPU架构(x86,x64,ARM)的代码</p>
 </blockquote>
 </li>
 </ol>
 <p><img src="/2019/07/05/一CLR基础/1.png" alt=""></p>
+<h2 id="CLR有哪些功能"><a href="#CLR有哪些功能" class="headerlink" title="CLR有哪些功能?"></a>CLR有哪些功能?</h2><ul>
+<li>基类库支持 Base Class Library Support</li>
+<li>内存管理 Memory Management</li>
+<li>线程管理 Thread Management</li>
+<li>垃圾回收 Garbage Collection</li>
+<li>安全性 Security</li>
+<li>类型检查 Type Checker</li>
+<li>异常管理 Exception Manager</li>
+<li>调试管理 Debug Engine</li>
+<li>中间码(MSIL)到机器代码(Native)编译 (即时编译 (JIT just-in-time))</li>
+<li>类别装载 Class Loader</li>
+</ul>
 <h1 id="CIL是什么-如何生成"><a href="#CIL是什么-如何生成" class="headerlink" title="CIL是什么?如何生成?"></a>CIL是什么?如何生成?</h1><blockquote>
 <p>字节码现在已经官方地成为了CIL (通用中间语言（Common Intermediate Language，简称CIL)</p>
 </blockquote>
 <ol>
 <li>在编译.NET编程语言时，源代码被翻译成<code>CIL</code>,再由<code>CLR</code>负责运行</li>
-<li><code>IL代码</code>有时又称为<code>托管代码(managed code)</code></li>
+<li><code>IL代码</code>有时又称为<code>托管代码(managed code)</code>.</li>
 <li><code>IL代码</code>只是<code>面向CLR的编译器</code>生成的其中一部分.</li>
 </ol>
+<h2 id="IL代码"><a href="#IL代码" class="headerlink" title="IL代码"></a>IL代码</h2><ol>
+<li><code>IL</code>是与CPU无关的面向对象的机器语言.</li>
+</ol>
+<h2 id="非托管代码"><a href="#非托管代码" class="headerlink" title="非托管代码"></a>非托管代码</h2><ol>
+<li>C++编译器默认生成包含<code>非托管代码</code>的EXE/DLL模块.</li>
+<li>并且在运行时操纵非托管数据(<code>native 内存</code>).</li>
+<li>不需要CLR就能运行.</li>
+<li>只有C++编译器允许开发人员同时写<code>托管代码</code>和<code>非托管代码</code>,并生成到同一模块中.</li>
+</ol>
+<h3 id="非托管代码和托管代码的互操作性"><a href="#非托管代码和托管代码的互操作性" class="headerlink" title="非托管代码和托管代码的互操作性"></a>非托管代码和托管代码的互操作性</h3><ul>
+<li>托管代码能调用DLL中的非托管函数：托管代码通过<code>P/invoke机制</code>调用DLL中的函数</li>
+<li>托管代码可以使用现有的COM组件：详情可参考 .NET Framework SDK提供的TlbImp.exe</li>
+<li>非托管代码可以使用托管类型：可用C#创建ActiveX控件或Shell扩展。详情可以参考 .NET Framework SDK提供的TlbExp.exe和RegAsm.exe工具。</li>
+</ul>
 <h1 id="面向CLR的编译器生成了什么"><a href="#面向CLR的编译器生成了什么" class="headerlink" title="面向CLR的编译器生成了什么?"></a>面向CLR的编译器生成了什么?</h1><blockquote>
 <p>微软已经为多种语言开发了基于CLR的编译器，这些语言包括：C++/CLI、C#、Visual Basic、F#、Iron Python、 Iron Ruby和IL。</p>
 </blockquote>
@@ -173,8 +233,17 @@
 <li><code>C#语言编译器</code>编译C#源码文件之后生成<code>托管模块</code>.</li>
 </ol>
 <p><img src="/2019/07/05/一CLR基础/将源代码编译成托管模块.png" alt=""></p>
+<h2 id="C-编译器做的工作"><a href="#C-编译器做的工作" class="headerlink" title="C#编译器做的工作"></a>C#编译器做的工作</h2><ol>
+<li>C#编译器(CSC.exe)默认将生成的<strong>托管模块转换成程序集</strong>,也就是生成的是<strong>含有清单的托管模块</strong>.</li>
+<li>生成的是PE32(+)文件.</li>
+<li>这个PE32(+)文件包含一个名为<code>清单(manifest)</code>的数据块. <code>清单</code>也是<code>元数据表</code>的集合.</li>
+</ol>
+<p><img src="/2019/07/05/一CLR基础/将托管模块合并成程序集.png" alt=""></p>
 <h1 id="托管模块是什么-由哪些组成"><a href="#托管模块是什么-由哪些组成" class="headerlink" title="托管模块是什么?由哪些组成?"></a>托管模块是什么?由哪些组成?</h1><ol>
-<li>无论是什么编译器，最后都是<code>托管模块</code>。<code>托管模块</code>是标准的32位的可移植执行体（PE32）文件，或者是64位的（PE32+），都需要CLR才能运行。</li>
+<li>无论是什么编译器，最后都是生成<code>托管模块</code>。</li>
+<li><code>托管模块</code>是标准的32位的可移植执行体（PE32）文件，或者是64位的（PE32+）</li>
+<li>需要<code>CLR</code>才能运行。</li>
+<li>其中托管模块中还包含完整的<code>元数据</code>.</li>
 </ol>
 <p><img src="/2019/07/05/一CLR基础/托管模块的各个部分.png" alt=""></p>
 <ul>
@@ -183,6 +252,115 @@
 <li><code>元数据</code>：面向CLR的每个编译器要在每个托管模块中生成完整的元数据。元数据是一个数据表的集合。一些数据描述了模块中定义了什么，另一些描述了模块中引用了什么。由于编译器同时生成元数据和代码，把他们绑在一起，并嵌入最终生成的托管模块。所以元数据和他描述的代码不会失去同步。<br>-</li>
 </ul>
 <h2 id="可移植执行体PE文件的结构"><a href="#可移植执行体PE文件的结构" class="headerlink" title="可移植执行体PE文件的结构"></a>可移植执行体PE文件的结构</h2><p><img src="/2019/07/05/一CLR基础/PE文件架构.png" alt=""></p>
+<h1 id="元数据是什么"><a href="#元数据是什么" class="headerlink" title="元数据是什么?"></a>元数据是什么?</h1><ol>
+<li><code>元数据</code>简单的说是一个数据表的集合.</li>
+<li>主要包含两种表:<ul>
+<li>描述源代码中定义的类型和成员</li>
+<li>描述源代码<code>引用的</code>类型和成员</li>
+</ul>
+</li>
+<li>元数据有多种用途<ul>
+<li>避免了编译时对原生C/C++数据头和库文件的需求. 因为IL代码中已经包含了全部信息.编译器直接读取元数据.</li>
+<li><code>智能感知IntelliSense</code>技术解析元数据,提示帮助写代码.</li>
+<li>CLR验证代码使用元数据确保只执行<code>类型安全</code>的操作.</li>
+<li><code>元数据</code>允许将对象的字段序列化到内存块,发到另一台机器反序列化,重建对象状态.</li>
+<li><code>元数据</code>允许垃圾回收器跟踪对象的生存期.</li>
+</ul>
+</li>
+</ol>
+<h1 id="CTS通用类型系统是什么"><a href="#CTS通用类型系统是什么" class="headerlink" title="CTS通用类型系统是什么?"></a>CTS通用类型系统是什么?</h1><blockquote>
+<p>通用类型系统 (Common Type System) 定义了运行期引擎如果使用程序中的数据类型，以及如何配置数据在存储器中的一种标准，依照此种标准所撰写的编程语言，都可以在同一个运行期引擎中使用，因此它是跨语言支持的重要部分，亦即匹配 CTS 规范的编程语言所撰写出的程序，都可以在 CLR 中使用。</p>
+<p>CTS与CLI规格都是由微软所发展，当前已标准化为 ECMA 335 标准：“Common Language Infrastructure (CLI) Partitions I to VI.”，并且由 Microsoft 在 .NET Framework 中完全的实现。</p>
+</blockquote>
+<p><strong>由于类型是CLR的根本，微软专门为如何定义、使用和管理类型定义了一个正式的规范– 通用类型系统(Common Type System)，即CTS。</strong></p>
+<p>事实上, 不根本不需要专门学习CTS规则本身,因为你选择的余元会采用你熟悉的方式公开它自己的<code>语言语法</code>与<code>类型规则</code>,通过编译来生成程序集时,会将语言特有的语法映射到IL—也就是CLR的<code>语言</code>.</p>
+<p>无论使用哪一种语言,类型的行为都完全一致,因为最终是由CLR的CTS来定义类型的行为.</p>
+<h2 id="类型可见性和访问规则"><a href="#类型可见性和访问规则" class="headerlink" title="类型可见性和访问规则"></a>类型可见性和访问规则</h2><ul>
+<li><code>private</code>           : 成员只能由同一个类(class)类型中的其他成员访问.</li>
+<li><code>protected</code>         : 成员可以从派生类型访问,不管是不是在同一个程序集中.</li>
+<li><code>internal</code>          : 成员可以由同一个程序集中的任何代码访问.</li>
+<li><code>protected internal</code>: 可以由任何程序集中的派生类型访问.</li>
+<li><code>public</code>            : 成员可由任何程序集中的任何代码访问.</li>
+</ul>
+<h1 id="CLS通用语言规范是什么"><a href="#CLS通用语言规范是什么" class="headerlink" title="CLS通用语言规范是什么?"></a>CLS通用语言规范是什么?</h1><blockquote>
+<p>定义了一个最小公共集，任何编译器只有支持这个功能集，生成的类型才能兼容其他符合CLS、面向CLR的语言生成的组件</p>
+</blockquote>
+<p><img src="/2019/07/05/一CLR基础/CLS图示.png" alt=""></p>
+<p>在开发类型和方法的时候，如果希望它们对外“可见”，能够从符合 CLS 的任何一种编程语言中访问，就必须遵守由 CLS 定义的规则。注意， 假如代码只是从定义（这些代码的）程序集的内部访问，CLS 规则就不适用了。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System
+
+<span class="token comment" spellcheck="true">//告诉编译器检查CLS相容性</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span><span class="token function">CLSCompliant</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+<span class="token keyword">namespace</span> SomeLibrary
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//因为是public类，所以会显示警告</span>
+    <span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SomeLibrarytype</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//警告：SomeLibrary.SomeLibraryType.Abc()的返回类型不符合CLS</span>
+        <span class="token keyword">public</span> UInt32 <span class="token function">Abc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">//警告：仅大小写不同的标识符SomeLibrary.SomeLibraryType.abc()不符合CLS</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">abc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">//不显示警告：该方法是私有的</span>
+        <span class="token keyword">private</span> UInt32 <span class="token function">ABC</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>第一个警告是因为Abc方法返回了无符号整数，一些语言是不能操作无符号整数值的</li>
+<li>第二个警告是因为该类型公开了两个public方法，这两个方法只是大小写和返回类型有别，VB和其他一些语言无法区分这两个方法。</li>
+</ul>
+<h1 id="关于window32位和64位版本"><a href="#关于window32位和64位版本" class="headerlink" title="关于window32位和64位版本"></a>关于window32位和64位版本</h1><ol>
+<li><p>如果程序集文件只包含<code>类型安全</code>的<code>托管代码</code>在32位和64位上都能运行.</p>
+<blockquote>
+<p>类型安全代码指访问被授权可以访问的内存位置.有的语言（尤其是C和C++）允许做一些非常“不正当”的事情。(直接访问内存的其他位置)</p>
+</blockquote>
+</li>
+<li><p>如果要使用<code>不安全的代码</code>, 需要用到<code>/playform</code>命令行开关.如果指定了,则只能在对应平台上使用.默认<code>anycpu</code>.</p>
+</li>
+<li>可执行文件执行时,Windows会检查文件头,64位系统会通过<code>WoW64(Windows on Windows64)</code>技术运行32位应用程序.</li>
+</ol>
+<p><img src="/2019/07/05/一CLR基础/platform对生成的模块的影响.png" alt=""></p>
+<ol>
+<li>Windows启动托管应用程序的流程.</li>
+</ol>
+<p><img src="/2019/07/05/一CLR基础/Windows运行EXE流程.png" alt=""></p>
+<ol>
+<li>可在代码中查询<ul>
+<li><code>Environment.Is64BitOperatingSystem</code>属性,判断是否在64位系统上运行.</li>
+<li><code>Environment.Is64BitProcess</code>属性,判断是否在64位地址空间中运行</li>
+</ul>
+</li>
+</ol>
+<h1 id="不安全的代码"><a href="#不安全的代码" class="headerlink" title="不安全的代码"></a>不安全的代码</h1><p>C#编译器默认生成的是安全代码.</p>
+<p>C#允许开发人员通过<code>unsafe</code>关键字标记包含不安全代码的方法.</p>
+<h1 id="保护IL代码"><a href="#保护IL代码" class="headerlink" title="保护IL代码"></a>保护IL代码</h1><ol>
+<li>混淆器</li>
+<li>在非托管模块中实现想保密的算法, 利用CLR的互操作功能实现应用程序的托管和非托管部分之间的通讯.</li>
+</ol>
+<h1 id="一些微软提供的实用工具"><a href="#一些微软提供的实用工具" class="headerlink" title="一些微软提供的实用工具"></a>一些微软提供的实用工具</h1><ul>
+<li>CSC.exe C#编译器:将多个托管模块和资源文件合并成程序集的工具.</li>
+<li>AL.exe 程序集链接器:将一组文件合并到程序集中.</li>
+<li>CLRVer.exe 列出机器上安装的所有CLR版本<ul>
+<li><code>-all</code> 或者指定 <code>目标进程ID</code> 列出正在允许的进程使用的CLR版本号.</li>
+</ul>
+</li>
+<li>DumpBin.exe 和 CorFlags.exe:可以用来检查编译器生成的托管模块所嵌入的信息.</li>
+<li>ILAsm.exe IL汇编器</li>
+<li><p>ILDasm.exe IL反汇编器</p>
+<blockquote>
+<p>用IL反编译工具查看生成的IL代码。这里使用的是ILDasm.exe，当然，你也可以使用一些其他的工具，例如.Net Reflector、ILSpy等。</p>
+</blockquote>
+</li>
+<li><p>NGen.exe 本机代码生成器: 将程序集的所有IL代码编译成本机代码.并将本机代码保存到一个磁盘文件中.</p>
+</li>
+<li>PEVerify.exe 检查一个程序集的所有方法,并报告其中含有不安全代码的方法.</li>
+<li>MPGO.exe 分析客户端应用程序启动需要哪些东西,会写入一个profile并嵌入程序集中.NGen能根据这个更好的优化生成本机映像.</li>
+<li>TlbImp.exe 托管代码可以使用现有的COM组件.</li>
+<li>TlbExp.exe和RegAsm.exe 非托管代码可以使用托管类型：可用C#创建ActiveX控件或Shell扩展。</li>
+</ul>
 
         
             <div class="donate-container">
