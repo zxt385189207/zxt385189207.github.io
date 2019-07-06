@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JIT-just-in-time-运行时编译技术"><span class="toc-text">JIT(just-in-time 运行时编译技术)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#流程讲解"><span class="toc-text">流程讲解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JIT-编译技术特点"><span class="toc-text">JIT 编译技术特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将IL代码编译成本机代码的验证过程"><span class="toc-text">将IL代码编译成本机代码的验证过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NGen-exe生成的本机代码与JIT生成的本机代码对比"><span class="toc-text">NGen.exe生成的本机代码与JIT生成的本机代码对比</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#基类库支持功能"><span class="toc-text">基类库支持功能</span></a>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR功能"><span class="toc-text">CLR功能</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#JIT-just-in-time-运行时编译技术"><span class="toc-text">JIT(just-in-time 运行时编译技术)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#流程讲解"><span class="toc-text">流程讲解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JIT-编译技术特点"><span class="toc-text">JIT 编译技术特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将IL代码编译成本机代码的验证过程"><span class="toc-text">将IL代码编译成本机代码的验证过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NGen-exe生成的本机代码与JIT生成的本机代码对比"><span class="toc-text">NGen.exe生成的本机代码与JIT生成的本机代码对比</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#基类库支持功能"><span class="toc-text">基类库支持功能</span></a></li></ol>
 </div>
 
     
@@ -142,8 +142,7 @@
         <blockquote>
 <p>温故而知新</p>
 </blockquote>
-<p>#CLR功能</p>
-<h2 id="JIT-just-in-time-运行时编译技术"><a href="#JIT-just-in-time-运行时编译技术" class="headerlink" title="JIT(just-in-time 运行时编译技术)"></a>JIT(just-in-time 运行时编译技术)</h2><blockquote>
+<h1 id="CLR功能"><a href="#CLR功能" class="headerlink" title="CLR功能"></a>CLR功能</h1><h2 id="JIT-just-in-time-运行时编译技术"><a href="#JIT-just-in-time-运行时编译技术" class="headerlink" title="JIT(just-in-time 运行时编译技术)"></a>JIT(just-in-time 运行时编译技术)</h2><blockquote>
 <p>通常，程序有两种运行方式：静态编译与动态解释。静态编译的程序在执行前全部被翻译为机器码，而解释执行的则是一句一句边运行边翻译。</p>
 <p><code>即时编译器</code>则混合了这二者，一句一句编译源代码，但是会将翻译过的代码缓存起来以降低性能损耗。相对于静态编译代码，即时编译的代码可以处理延迟绑定并增强安全性。</p>
 <p>即时编译器有两种类型，一是字节码翻译，二是动态编译翻译。</p>
