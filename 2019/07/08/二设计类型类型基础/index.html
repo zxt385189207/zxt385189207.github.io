@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        二设计类型类型基础 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#所有类型都从System-Object派生"><span class="toc-text">所有类型都从System.Object派生</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Object的公共方法Equals"><span class="toc-text">System.Object的公共方法Equals</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象的相等性和同一性"><span class="toc-text">对象的相等性和同一性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#同一性"><span class="toc-text">同一性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#相等性"><span class="toc-text">相等性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#值类型的基类ValueType重写了Equals方法"><span class="toc-text">值类型的基类ValueType重写了Equals方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重写Equals方法还需要做的事"><span class="toc-text">重写Equals方法还需要做的事</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Object的公共方法GetHashCode"><span class="toc-text">System.Object的公共方法GetHashCode</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象哈希码"><span class="toc-text">对象哈希码</span></a></li></ol></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        二设计类型类型基础
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-07-08 22:57:50</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="所有类型都从System-Object派生"><a href="#所有类型都从System-Object派生" class="headerlink" title="所有类型都从System.Object派生"></a>所有类型都从<code>System.Object</code>派生</h1><p><strong><code>运行时</code>要求每个类型都从<code>System.Object</code>派生</strong>.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//隐式派生自Object</span>
+<span class="token keyword">class</span> <span class="token class-name">Employee</span>｛
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+｝
+<span class="token comment" spellcheck="true">//显式派生自Object</span>
+<span class="token keyword">class</span> <span class="token class-name">Employee</span><span class="token punctuation">:</span> System<span class="token punctuation">.</span>Object<span class="token punctuation">{</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="System-Object的公共方法Equals"><a href="#System-Object的公共方法Equals" class="headerlink" title="System.Object的公共方法Equals"></a><code>System.Object</code>的公共方法<code>Equals</code></h2><table>
+<thead>
+<tr>
+<th style="text-align:left">公共方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Equals</td>
+<td>如果两个对象具有<code>相同的值</code>就返回true</td>
+</tr>
+</tbody>
+</table>
+<h3 id="对象的相等性和同一性"><a href="#对象的相等性和同一性" class="headerlink" title="对象的相等性和同一性"></a>对象的相等性和同一性</h3><h4 id="同一性"><a href="#同一性" class="headerlink" title="同一性"></a>同一性</h4><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 此虚方法实现的是同一性,而非相等性.</span>
+<span class="token comment" spellcheck="true">// 因为obj引用的对象如果不是引用相同对象,那就无法比较值是否相等.</span>
+<span class="token keyword">public</span> <span class="token keyword">virtual</span> Boolean <span class="token function">Equals</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 如果两个引用指向同一个对象,它们肯定包含相同的值</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token operator">==</span> obj<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 假定对象包含不同的值</span>
+  <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">静态方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">ReferenceEquals</td>
+<td>检查两个引用是否指向同一对象</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>检查同一性务必调用ReferenceEquals,不应该使用C#的== 操作符 (除非都转成Object), 因为某个操作数可能重载了==操作符.</p>
+</blockquote>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 上述方法是不合理的,因此Microsft提供了检查同一性的方法</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">bool</span> <span class="token function">ReferenceEquals</span> <span class="token punctuation">(</span>Object objA<span class="token punctuation">,</span> Object objB<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> objA <span class="token operator">==</span> objB<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="相等性"><a href="#相等性" class="headerlink" title="相等性"></a>相等性</h4><ol>
+<li>Equals 必须自反: x.Equals(x)肯定返回true</li>
+<li>Equals 必须对称:  x.Equals(y)和y.Equals(x)返回相同</li>
+<li>Equals 必须可传递:  x.Equals(y)返回true,  y.Equals(z)返回true,那么 x.Equals(z)肯定是true</li>
+<li>Equals 必须一致:比较的两个值不变,返回值也不能变.</li>
+</ol>
+<h3 id="值类型的基类ValueType重写了Equals方法"><a href="#值类型的基类ValueType重写了Equals方法" class="headerlink" title="值类型的基类ValueType重写了Equals方法"></a>值类型的基类<code>ValueType</code>重写了Equals方法</h3><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">bool</span> <span class="token function">Equals</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 1.判断实参obj是否为null</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>obj <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+  RuntimeType type <span class="token operator">=</span> <span class="token punctuation">(</span>RuntimeType<span class="token punctuation">)</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 2.this和obj实参引用不同类型的对象,返回false</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>RuntimeType<span class="token punctuation">)</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> type<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+  <span class="token keyword">object</span> a <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">object</span><span class="token punctuation">)</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">// 3. 如果对象的成員中存在对于堆上的引用，那么返回false，</span>
+  <span class="token comment" spellcheck="true">// 如果不存在，返回true。例如按照ValPoint的定义，它仅包含一个int类型的字段x，自然不存在对堆上其他对象的引用，所以返回了true</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>ValueType<span class="token punctuation">.</span><span class="token function">CanCompareBits</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">object</span><span class="token punctuation">)</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> ValueType<span class="token punctuation">.</span><span class="token function">FastEqualsCheck</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">// 4.利用反射获取值的所有字段</span>
+  FieldInfo<span class="token punctuation">[</span><span class="token punctuation">]</span> fields <span class="token operator">=</span> type<span class="token punctuation">.</span><span class="token function">GetFields</span><span class="token punctuation">(</span>BindingFlags<span class="token punctuation">.</span>Instance <span class="token operator">|</span> BindingFlags<span class="token punctuation">.</span>Public <span class="token operator">|</span> BindingFlags<span class="token punctuation">.</span>NonPublic<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> index <span class="token operator">&lt;</span> fields<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> <span class="token operator">++</span>index<span class="token punctuation">)</span>
+  <span class="token punctuation">{</span>
+    <span class="token keyword">object</span> obj1 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>RtFieldInfo<span class="token punctuation">)</span> fields<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">UnsafeGetValue</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">object</span> obj2 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>RtFieldInfo<span class="token punctuation">)</span> fields<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">UnsafeGetValue</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 5. 判断是否为null</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>obj1 <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>obj2 <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 6. 通过调用字段的Equals方法进行比较</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>obj1<span class="token punctuation">.</span><span class="token function">Equals</span><span class="token punctuation">(</span>obj2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由于CLR反射机制慢,定义自己的值类型时应重写<code>Equals</code>方法来提供自己的实现.从而提高用自己类型的实例进行值相等性比较的性能. <strong>当然,自己的实现不调用 <code>base.Equals</code></strong>.</p>
+<h3 id="重写Equals方法还需要做的事"><a href="#重写Equals方法还需要做的事" class="headerlink" title="重写Equals方法还需要做的事"></a>重写Equals方法还需要做的事</h3><ol>
+<li>让类型实现<code>System.IEquatable&lt;T&gt;</code>接口的<code>Equals</code>方法<ul>
+<li>泛型接口,定义类型安全的<code>Equals</code>方法<code>bool Equals(T other)</code>;</li>
+</ul>
+</li>
+<li>重载==和!=操作符方法( 这些方法内部调用了类型安全的<code>CompareTo</code>方法. )</li>
+<li>如果需要排序,类型还应该实现<code>System.IComparable</code>的<code>CompareTo</code>方法和泛型接口<code>System.IComparable&lt;T&gt;</code>的类型安全的<code>CompareTo</code>方法.</li>
+<li>重载比较操作符方法&lt;,&lt;=,&gt;,&gt;= ( 这些方法内部调用了类型安全的<code>CompareTo</code>方法.)</li>
+</ol>
+<h2 id="System-Object的公共方法GetHashCode"><a href="#System-Object的公共方法GetHashCode" class="headerlink" title="System.Object的公共方法GetHashCode"></a><code>System.Object</code>的公共方法<code>GetHashCode</code></h2><table>
+<thead>
+<tr>
+<th style="text-align:left">公共方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">GetHashCode</td>
+<td>返回对象值的哈希码.如果某个类型的对象要在哈希表集合(比如<code>Dictionary</code>)中作为键使用,类型应重写该方法.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="对象哈希码"><a href="#对象哈希码" class="headerlink" title="对象哈希码"></a>对象哈希码</h3><p>FCL的设计者认为,如果能将任何对象的任何实例放到<code>哈希集合</code>中,能带来很多好处。</p>
+<p><code>System.Object</code>提供了<code>GetHashCode</code>,它能获取任何对象的Int32哈希码.</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
