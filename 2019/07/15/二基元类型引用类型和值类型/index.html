@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#编程语言的基元类型"><span class="toc-text">编程语言的基元类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是基元类型"><span class="toc-text">什么是基元类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基元类型对应的FCL类型"><span class="toc-text">基元类型对应的FCL类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于关键字和完整的系统类型名称"><span class="toc-text">关于关键字和完整的系统类型名称</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Int32-为什么能转-System-Int64"><span class="toc-text">System.Int32 为什么能转 System.Int64?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#转型"><span class="toc-text">转型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-编译器总是对转型结果进行截断"><span class="toc-text">C#编译器总是对转型结果进行截断</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字面值"><span class="toc-text">字面值</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#编程语言的基元类型"><span class="toc-text">编程语言的基元类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是基元类型"><span class="toc-text">什么是基元类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基元类型对应的FCL类型"><span class="toc-text">基元类型对应的FCL类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于关键字和完整的系统类型名称"><span class="toc-text">关于关键字和完整的系统类型名称</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Int32-为什么能转-System-Int64"><span class="toc-text">System.Int32 为什么能转 System.Int64?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#转型"><span class="toc-text">转型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-编译器总是对转型结果进行截断"><span class="toc-text">C#编译器总是对转型结果进行截断</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字面值"><span class="toc-text">字面值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#checked-和-unchecked-基元类型操作"><span class="toc-text">checked 和 unchecked 基元类型操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#溢出处理"><span class="toc-text">溢出处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应对无效输入的建议"><span class="toc-text">应对无效输入的建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Decimal是非常特殊的类型"><span class="toc-text">System.Decimal是非常特殊的类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Numerics-BigInteger类型"><span class="toc-text">System.Numerics.BigInteger类型</span></a></li></ol></li></ol>
 </div>
 
     
@@ -224,7 +224,100 @@ Int16 v <span class="token operator">=</span> <span class="token punctuation">(<
 <blockquote>
 <p>有些编译器可能会将结果向上取整为7.</p>
 </blockquote>
-<h2 id="字面值"><a href="#字面值" class="headerlink" title="字面值"></a>字面值</h2><p><code>字面值</code>可被看成是类型本身的实例.</p>
+<h3 id="字面值"><a href="#字面值" class="headerlink" title="字面值"></a>字面值</h3><p><code>字面值</code>可被看成是类型本身的实例.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 实例 调用 实例方法</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">456</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 123456</span>
+
+<span class="token comment" spellcheck="true">// 如果表达式由字面值构成, 编译器在编译时就能完成表达式求值.从而增强应用程序性能.</span>
+Boolean found <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 生成的代码将found设为0</span>
+Int32 x <span class="token operator">=</span> <span class="token number">100</span> <span class="token operator">+</span> <span class="token number">20</span> <span class="token operator">+</span> <span class="token number">3</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 生成的代码将x设为123</span>
+String s <span class="token operator">=</span> <span class="token string">"a "</span> <span class="token operator">+</span> <span class="token string">"bc"</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 生成的代码将s设为"a bc"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="checked-和-unchecked-基元类型操作"><a href="#checked-和-unchecked-基元类型操作" class="headerlink" title="checked 和 unchecked 基元类型操作"></a>checked 和 unchecked 基元类型操作</h2><p>对基元类型执行的许多算术运算符都可能造成溢出:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// byte 2^8 = 256</span>
+Byte b <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 100 +200 = 300</span>
+<span class="token comment" spellcheck="true">// 执行此处算术运算符时, 要求所有的操作数扩大到32位(64位,如果有操作数需要超过32位来表示的话)</span>
+<span class="token comment" spellcheck="true">// b 和 200 都不超过32位,则先转换成32位值,然后加到一起,结果是一个32位的十进制300.</span>
+<span class="token comment" spellcheck="true">// 然后该值存回b变量前**必须转型为Byte, C#不隐式执行此操作.**</span>
+b <span class="token operator">=</span> <span class="token punctuation">(</span>Byte<span class="token punctuation">)</span><span class="token punctuation">(</span>b <span class="token operator">+</span> <span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// b 现在为 44</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="溢出处理"><a href="#溢出处理" class="headerlink" title="溢出处理"></a>溢出处理</h2><ol>
+<li>溢出大多数时候是不希望出现的,会导致应用程序行为失常.但是极少数时候计算哈希值和校验和,这种溢出可以接受.</li>
+<li>不同语言处理溢出的方式不同, C/C++不将溢出视为错误,允许值回滚.VB则视为错误,并抛出异常.</li>
+</ol>
+<blockquote>
+<p>回滚:一个值超出允许的最大值时,回滚到一个非常小的,负的或者未定义的值.</p>
+</blockquote>
+<p>CLR提供了一些特殊的IL指令. 允许程序员自己决定如何处理溢出. CLR有一个add指令,作用是将两个值相加,但不执行溢出检查,还有一个add.ovf指令,会在溢出时抛System.OverfolwException异常.</p>
+<ol>
+<li><code>溢出检查</code>默认是关闭的. 编译器生成IL代码时,将自动使用加减乘和转换指令的无溢出检查版本.代码能更快的运行.</li>
+<li><code>/checked+</code>编译器开关在生成代码时使用溢出检查版本.这样CLR会检查这些运算,判断是否发生溢出,并抛出异常.</li>
+<li>除了全局性的打开和关闭溢出检查, 程序员可以在代码的特定区域控制.<ul>
+<li>unchecked 操作符</li>
+<li>checked 操作符</li>
+</ul>
+</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp">UInt32 invalid <span class="token operator">=</span> <span class="token keyword">unchecked</span><span class="token punctuation">(</span> <span class="token punctuation">(</span>UInt32<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// OK</span>
+
+Byte b <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 会抛出OverflowException异常</span>
+<span class="token comment" spellcheck="true">// 这个过程中,b和200会转成32位值,</span>
+<span class="token comment" spellcheck="true">// 300 转成 Byte就会抛出异常</span>
+b <span class="token operator">=</span> <span class="token keyword">checked</span><span class="token punctuation">(</span><span class="token punctuation">(</span>Byte<span class="token punctuation">)</span><span class="token punctuation">(</span>b <span class="token operator">+</span> <span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// b包含44, 不会抛出异常.</span>
+b <span class="token operator">=</span> <span class="token punctuation">(</span>Byte<span class="token punctuation">)</span><span class="token keyword">checked</span><span class="token punctuation">(</span>b <span class="token operator">+</span> <span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>C#还支持checked和unchecked语句. 可以是语句块中的代码都进行或不进行溢出检查.</p>
+<blockquote>
+<p>checked和unchecked语句 唯一作用就是决定生成哪个版本的加减乘和数据转换的IL指令.<br><strong>所以在checked操作符或语句中 调用方法,不会对该方法造成任何影响.</strong></p>
+</blockquote>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">checked</span>
+<span class="token punctuation">{</span>
+  Byte b <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">//简化 b = (Byte)(b + 200)</span>
+  b <span class="token operator">+</span><span class="token operator">=</span> <span class="token number">200</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">checked</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 假定SomeMethod试图把400加载到一个Byte中</span>
+  <span class="token function">SomeMethod</span><span class="token punctuation">(</span><span class="token number">400</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// SomeMethod 可能会,也可能不会抛出OverflowException异常</span>
+  <span class="token comment" spellcheck="true">// 如果SomeMethod使用checked指令编译,就可能会抛出异常.</span>
+  <span class="token comment" spellcheck="true">// 但这和当前的checked语句无关.</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="应对无效输入的建议"><a href="#应对无效输入的建议" class="headerlink" title="应对无效输入的建议"></a>应对无效输入的建议</h2><ol>
+<li><p>尽量使用有<code>符号数值类型</code>比如:Int32和Int64,而不是<code>无符号数值类型</code>UInt32和UInt64.</p>
+<ul>
+<li>这允许编译器检测更多的上溢/下溢的错误.</li>
+<li>类库的多个部分,比如Array和String的Length属性 被硬编码为返回有符号的值.</li>
+<li>减少强制类型转换,无符号数值类型不符合CLS.</li>
+</ul>
+</li>
+<li><p>写代码时,如果代码可能发生你想不到的溢出(可能是无效的输入,使用用户或客户机提供的数据), 就把这些代码放到<code>checked块</code>中. 同时捕捉<code>OverflowException</code>异常.</p>
+</li>
+<li><p>将允许发生溢出的代码显示放到<code>unchecked块</code>中,比如在计算校验和时.</p>
+</li>
+<li><p>对于没有使用<code>unchecked</code>和<code>checked</code>的语句,都假定发生溢出时抛出异常.</p>
+</li>
+</ol>
+<p><img src="/2019/07/15/二基元类型引用类型和值类型/5-1-1.png" alt=""></p>
+<p>勾选 <code>检查运算上溢/下溢</code> 相当于打开了编译器的<code>/checked+开关</code>进行调试性生成.应用程序运行起来会慢一点.可以进行比较完整的溢出检查.</p>
+<h2 id="System-Decimal是非常特殊的类型"><a href="#System-Decimal是非常特殊的类型" class="headerlink" title="System.Decimal是非常特殊的类型"></a>System.Decimal是非常特殊的类型</h2><ol>
+<li>C#和VB视为基元类型. 但是CLR不这样. CLR没有知道如何处理Decimal值的IL指令.</li>
+<li>Decimal类型自己定义一系列方法,包括Add,Subtract,Multiply,Divide. 还为<code>+-*/</code>等提供了操作符重载方法.</li>
+<li>编译使用了Decimal值的代码时,<strong>编译器会生成代码来调用Decimal的成员方法</strong>,并<strong>通过这些成员方法来进行实际的运算</strong>. 这也意味着Decimal值的处理速度慢于CLR基元类型的值.</li>
+<li>由于没有相应的IL指令来处理Decimal值, 所以checked和unchecked操作符,编译器开关都失去作用.</li>
+</ol>
+<h2 id="System-Numerics-BigInteger类型"><a href="#System-Numerics-BigInteger类型" class="headerlink" title="System.Numerics.BigInteger类型"></a>System.Numerics.BigInteger类型</h2><ol>
+<li>类似的,BigInteger类型也在内部使用了<code>UInt32</code>数组来表示任意大的整数,它的值没有上限和下限.</li>
+<li>因此对于BigInteger类型执行运算永远不会造成OverflowException异常</li>
+<li>如果值太大,没有足够的内存来改变数组大小,BigInteger的运算可能会抛出<code>OutOfMemoryException</code>异常.</li>
+</ol>
 
         
             <div class="donate-container">
