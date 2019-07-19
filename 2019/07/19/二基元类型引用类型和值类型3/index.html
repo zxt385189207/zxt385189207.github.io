@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        二基元类型引用类型和值类型3 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#什么时候需要装箱"><span class="toc-text">什么时候需要装箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用接口更改已装箱值类型中的字段-不应该这样做"><span class="toc-text">使用接口更改已装箱值类型中的字段(不应该这样做)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dynamic-动态-基元类型"><span class="toc-text">dynamic(动态)基元类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#dynamic-变量-表达式"><span class="toc-text">dynamic 变量/表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dynamic-字段-方法参数-方法返回值"><span class="toc-text">dynamic 字段/方法参数/方法返回值</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        二基元类型引用类型和值类型3
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-07-19 12:57:04</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="什么时候需要装箱"><a href="#什么时候需要装箱" class="headerlink" title="什么时候需要装箱"></a>什么时候需要装箱</h1><ul>
+<li>第一种情况: 将<code>值类型的实例</code>传给需要<code>获取引用类型</code>的方法.</li>
+</ul>
+<p>要获取<code>值类型</code>的引用,实例就必须<code>装箱</code>.</p>
+<p>未装箱值类型比引用类型更”轻”,归结于</p>
+<ol>
+<li>不在托管堆上分配</li>
+<li>没有堆上的每个对象都有的额外成员:<code>类型对象指针</code>和<code>同步块索引</code></li>
+</ol>
+<p>其中,由于未装箱值类型没有<code>同步块索引</code>,所以不能使用<code>System.Threading.Monitor(提供同步访问对象的机制)</code>类型的方法(或C#lock语句),让多个线程同步对实例的访问.</p>
+<ul>
+<li>第二种情况: 值类型如果<code>重写了虚方法</code>(例如Equals,ToString…)方法,<code>调用基类的实现</code>时,会<code>装箱</code>,通过this指针将<code>引用</code>传给基方法.</li>
+</ul>
+<p>虽然未装箱的值类型没有<code>类型对象指针</code>,但仍可以调用由类型<code>继承或重写的虚方法</code>.(比如Equals,GetHashCode,ToString).</p>
+<p>值类型可以重写Equals, GetHashCode或者ToString的虚方法，CLR可以非虚地调用该方法，因为值类型是隐式密封的（即不存在多态性），没有任何类型能够从它们派生。如果你重写的虚方法要<code>调用方法在基类中的实现</code>，那么在调用基类的实现时，<code>值类型实例就会装箱</code>，以便通过<code>this指针</code>将对一个堆对象的<code>引用</code>传给基方法。</p>
+<ul>
+<li>第三种情况:</li>
+</ul>
+<p>调用非虚的,继承的方法时(比如<code>GetType</code>或者<code>MemberwiseClone</code>),<strong>无论如何都要对值类型进行装箱</strong>, 因为这些方法由<code>System.Object</code>定义,要求this实参是指向<code>堆对象</code>的指针.</p>
+<ul>
+<li>第四种情况:</li>
+</ul>
+<p>将值类型的未装箱实例 <strong>转型为某个接口时</strong> 要对实例进行装箱. 是因为接口变量必须包含对堆对象的引用.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">;</span>
+
+<span class="token keyword">namespace</span> ConsoleApp1
+<span class="token punctuation">{</span>
+    <span class="token keyword">internal</span> <span class="token keyword">struct</span> Point <span class="token punctuation">:</span> IComparable
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> Int32 m_x<span class="token punctuation">,</span> m_y<span class="token punctuation">;</span>
+        <span class="token keyword">public</span> <span class="token function">Point</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">,</span> Int32 y<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            m_x <span class="token operator">=</span> x<span class="token punctuation">;</span>
+            m_y <span class="token operator">=</span> y<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 重写从System.ValueType继承的ToString方法.</span>
+        <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 将Point作为字符串返回. 调用ToString避免装箱</span>
+            <span class="token keyword">return</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span>$<span class="token string">"{m_x.ToString()}, {m_y.ToString()}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 实现类型安全的CompareTo方法</span>
+        <span class="token keyword">public</span> Int32 <span class="token function">CompareTo</span><span class="token punctuation">(</span>Point other<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// Math.sign方法用来判断一个数到底是正数、负数、还是零。</span>
+            <span class="token comment" spellcheck="true">// 利用勾股定理计算哪个Point离(0,0)更远</span>
+            <span class="token keyword">return</span> Math<span class="token punctuation">.</span><span class="token function">Sign</span><span class="token punctuation">(</span>
+                Math<span class="token punctuation">.</span><span class="token function">Sqrt</span><span class="token punctuation">(</span>m_x <span class="token operator">*</span> m_x <span class="token operator">+</span> m_y <span class="token operator">*</span> m_y<span class="token punctuation">)</span> <span class="token operator">-</span> Math<span class="token punctuation">.</span><span class="token function">Sqrt</span><span class="token punctuation">(</span>other<span class="token punctuation">.</span>m_x <span class="token operator">*</span> other<span class="token punctuation">.</span>m_x <span class="token operator">+</span> other<span class="token punctuation">.</span>m_y <span class="token operator">*</span> other<span class="token punctuation">.</span>m_y<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 实现IComparable接口的CompareTo方法</span>
+        <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">CompareTo</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentException</span><span class="token punctuation">(</span><span class="token string">"obj is not a point"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 调用类型安全的CompareTo方法</span>
+            <span class="token keyword">return</span> <span class="token function">CompareTo</span><span class="token punctuation">(</span><span class="token punctuation">(</span>Point<span class="token punctuation">)</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token keyword">class</span> <span class="token class-name">Program</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Point p1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Point</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Point p2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Point</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 调用Point重写的ToString(虚方法)方法,不装箱p1</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 调用GetType(非虚方法)时, 要对p1进行装箱</span>
+            <span class="token comment" spellcheck="true">// 调用非虚的,继承的方法时, 无论如何都要对值类型进行装箱</span>
+            <span class="token comment" spellcheck="true">// 因为这些方法由System.Object定义,要求this实参是指向堆对象的指针.</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 显示ConsoleApp1.Point</span>
+
+            <span class="token comment" spellcheck="true">// p1调用的是CompareTo(Point other),所以p2不需要装箱</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>p2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 显示 -1</span>
+
+            <span class="token comment" spellcheck="true">// 装箱p1, 引用放到c中</span>
+            <span class="token comment" spellcheck="true">// 将值类型的未装箱实例 转型为某个接口时 要对实例进行装箱</span>
+            IComparable c <span class="token operator">=</span> p1<span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 显示ConsoleApp1.Point</span>
+
+            <span class="token comment" spellcheck="true">// 由于向CompareTo传递的不是Point变量,</span>
+            <span class="token comment" spellcheck="true">// 所以调用的是CompareTo(object obj),c不需要装箱,</span>
+            <span class="token comment" spellcheck="true">// 因为已经是引用了已装箱的Point</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 显示0</span>
+
+            <span class="token comment" spellcheck="true">// c是引用类型,不需要装箱</span>
+            <span class="token comment" spellcheck="true">// c调用的是IComparable的CompareTo(object obj)方法</span>
+            <span class="token comment" spellcheck="true">// 所以p2要装箱</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>p2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 显示-1</span>
+
+            <span class="token comment" spellcheck="true">// 对c拆箱, 字段复制到p2中</span>
+            p2 <span class="token operator">=</span> <span class="token punctuation">(</span>Point<span class="token punctuation">)</span> c<span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>p2<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 显示(10,10)  证明已经复制到栈</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码演示了涉及装箱和拆箱的几种情形</p>
+<ol>
+<li>调用ToString<ul>
+<li>p1.ToString()时, p1不必装箱,<strong>因为ToString是从基类System.ValueType继承的虚方法.</strong></li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>通常,为了调用虚方法,CLR需要判断对象的类型来定位类型的方法表,由于p1是未装箱的值类型,,所以不存在 <strong>类型对象指针</strong> 这个成员. 但是JIT编译器发现Point重写了ToString方法,所以会 <strong>直接生产代码来直接(非虚地)调用重写的这个ToString方法</strong> . 这里不存在多态性,没有类型能从它派生以提供虚方法的另一个实现. <strong>但是如果Point.ToString方法内部调用了base.ToString() ,那么调会调用System.ValueType的ToString方法,值类型实例就会装箱.</strong></p>
+</blockquote>
+<ol>
+<li>调用GetType<ul>
+<li>调用非虚方法GetType时,p1必须装箱.  因为Point的<code>GetType</code>方法从<code>System.Object</code>继承的,<strong>CLR必须使用指向类型的指针,这个指针只能通过装箱p1来获得.</strong></li>
+</ul>
+</li>
+<li>调用CompareTo第一次<ul>
+<li>p1.CompareTo(p2)时,p1不用装箱,因为Point实现了CompareTo(Point other)方法,编译器直接调用它,并且传递的是值类型对象,不需要装箱.</li>
+</ul>
+</li>
+<li>转型为IComparable<ul>
+<li>p1转型为接口类型c时必须装箱. <strong>因为接口被定义为引用类型.</strong></li>
+</ul>
+</li>
+<li>调用CompareTo第二次<ul>
+<li>p1.CompareTo(c)时,传递的是接口变量c,所以编译器调用的是重载版本的CompareTo(object obj),要传递引用指针, c是引用了一个已装箱的Point,所以无序额外装箱.</li>
+</ul>
+</li>
+<li>调用CompareTo第三次<ul>
+<li>c.CompareTo(p2)时,c是引用堆上的已装箱Point对象,还是IComparable接口类型,只能调用接口的CompareTo(object obj)方法, 因此p2需要装箱.</li>
+</ul>
+</li>
+<li>转型为Point<ul>
+<li>将c引用的堆上对象拆箱成Point复制到栈上的p2.</li>
+</ul>
+</li>
+</ol>
+<h2 id="使用接口更改已装箱值类型中的字段-不应该这样做"><a href="#使用接口更改已装箱值类型中的字段-不应该这样做" class="headerlink" title="使用接口更改已装箱值类型中的字段(不应该这样做)"></a>使用接口更改已装箱值类型中的字段(不应该这样做)</h2><p>来看看你的理解程度,答出控制台输出什么.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">;</span>
+
+<span class="token keyword">namespace</span> ConsoleApp1
+<span class="token punctuation">{</span>
+    <span class="token keyword">internal</span> <span class="token keyword">struct</span> Point
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> Int32 m_x<span class="token punctuation">,</span> m_y<span class="token punctuation">;</span>
+
+        <span class="token keyword">public</span> <span class="token function">Point</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">,</span> Int32 y<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            m_x <span class="token operator">=</span> x<span class="token punctuation">;</span>
+            m_y <span class="token operator">=</span> y<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Change</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">,</span> Int32 y<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            m_x <span class="token operator">=</span> x<span class="token punctuation">;</span>
+            m_y <span class="token operator">=</span> y<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 将Point作为字符串返回. 调用ToString避免装箱</span>
+            <span class="token keyword">return</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span>$<span class="token string">"{m_x.ToString()}, {m_y.ToString()}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">class</span> <span class="token class-name">Program</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Point p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Point</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            p<span class="token punctuation">.</span><span class="token function">Change</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            Object o <span class="token operator">=</span> p<span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token punctuation">(</span><span class="token punctuation">(</span>Point<span class="token punctuation">)</span> o<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Change</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>答案:<br>1,1<br>2,2<br>2,2<br>2,2</p>
+<p>解析:<br>重点说下<code>((Point) o).Change(3, 3);</code></p>
+<p><code>Object o</code>对象对于<code>Change</code>方法一无所知, 所以需要<code>拆箱转型到Point</code>.</p>
+<ul>
+<li>拆箱转型过程<ul>
+<li>将已装箱的Point中的字段 <strong>复制到线程栈</strong> 上的一个 <strong>临时Point</strong> 中.</li>
+<li>这个栈上的Point的m_x和m_y字段会变成3,3</li>
+<li>但是在堆上已装箱的Point里的值不受这个Change调用的影响.所以最后输出的Object o是堆上的2,2</li>
+</ul>
+</li>
+</ul>
+<p>有的语言(比如C/C++)允许更改已装箱值中的字段,但是C#不允许. 不过,可以用接口欺骗C#,让它允许这个操作.代码如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">;</span>
+
+<span class="token keyword">namespace</span> ConsoleApp1
+<span class="token punctuation">{</span>
+    <span class="token keyword">internal</span> <span class="token keyword">interface</span> <span class="token class-name">IChangeBoxedPoint</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">Change</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">,</span> Int32 y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">internal</span> <span class="token keyword">struct</span> Point <span class="token punctuation">:</span> IChangeBoxedPoint
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> Int32 m_x<span class="token punctuation">,</span> m_y<span class="token punctuation">;</span>
+        <span class="token keyword">public</span> <span class="token function">Point</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">,</span> Int32 y<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            m_x <span class="token operator">=</span> x<span class="token punctuation">;</span>
+            m_y <span class="token operator">=</span> y<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Change</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">,</span> Int32 y<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            m_x <span class="token operator">=</span> x<span class="token punctuation">;</span>
+            m_y <span class="token operator">=</span> y<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>    
+        <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 将Point作为字符串返回. 调用ToString避免装箱</span>
+            <span class="token keyword">return</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span>$<span class="token string">"{m_x.ToString()}, {m_y.ToString()}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">class</span> <span class="token class-name">Program</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Point p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Point</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 1,1</span>
+
+            p<span class="token punctuation">.</span><span class="token function">Change</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 2,2</span>
+
+            Object o <span class="token operator">=</span> p<span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 2,2</span>
+
+            <span class="token punctuation">(</span><span class="token punctuation">(</span>Point<span class="token punctuation">)</span> o<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Change</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 2,2</span>
+
+            <span class="token comment" spellcheck="true">// 将P转型接口,装箱</span>
+            <span class="token comment" spellcheck="true">// 在已装箱的值上调用Change, 堆上已装箱的值就变为4,4</span>
+            <span class="token comment" spellcheck="true">// 并没有引用指向这个已装箱值,即将被垃圾回收掉</span>
+            <span class="token comment" spellcheck="true">// 未装箱的Point p仍然是2,2</span>
+            <span class="token punctuation">(</span><span class="token punctuation">(</span>IChangeBoxedPoint<span class="token punctuation">)</span> p<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Change</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 2,2</span>
+
+            <span class="token comment" spellcheck="true">// 将引用类型o转成IChangeBoxedPoint,才能使用Change方法</span>
+            <span class="token comment" spellcheck="true">// 不需要装箱,因为o本来就是已装箱的Point</span>
+            <span class="token comment" spellcheck="true">// Change(5,5);正确修改了已装箱的值</span>
+            <span class="token punctuation">(</span><span class="token punctuation">(</span>IChangeBoxedPoint<span class="token punctuation">)</span> o<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Change</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//  5,5</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>演示接口方法如何修改已装箱值类型中的字段,在C#中,不用接口方法便无法做到.</strong></p>
+<p><strong>值类型应该是”不可变”(immutable). 也就是说我们不应该定义任何会修改实例字段的成员.建议将值类型字段都标记为readonly.</strong> 否则容易写出一个试图更改字段的方法,就会产生非预期的行为. 标记readonly后,编译时就会报错.前面的例子清楚的揭示了为什么这样做.</p>
+<p><strong>FCL的核心值类型(Byte,Int32,UInt32,Int64,UInt64,Single,Double,Decimal,BigInteger,Complex以及所有枚举)都是<code>不可变</code>的.</strong></p>
+<blockquote>
+<p>不可变(immutable)： 即对象一旦被创建初始化后，它们的值就不能被改变，之后的每次改变都会产生一个新对象。</p>
+</blockquote>
+<p>所以，对于不变对象来说，调用对象自身的任意方法，也<code>不会改变该对象自身的内容</code>。相反，这些方法会创建<code>新的对象</code>并返回，这样，就保证了不可变对象本身永远是不可变的。</p>
+<h1 id="dynamic-动态-基元类型"><a href="#dynamic-动态-基元类型" class="headerlink" title="dynamic(动态)基元类型"></a>dynamic(动态)基元类型</h1><p>C#是类型安全的编程语言. 意味着所有表达式都解析成类型的实例,编译器生成的代码只执行对该类型有效的操作.</p>
+<p>类型安全的优势:</p>
+<ol>
+<li>许多错误能在编译时检测到</li>
+<li>能编译出更小,更快的代码. 是因为能在编译时进行更多预设,并在生成的IL和元数据中落实预设.</li>
+</ol>
+<p>为了方便开发人员使用<code>反射</code>或者与其他组件通信.C#编译器允许将<code>表达式/变量的类型</code>标记为<code>dynamic</code>.</p>
+<blockquote>
+<p>编译器生成特殊IL代码来描述所需操作,这种特殊的代码称为payload有效载荷.</p>
+</blockquote>
+<h2 id="dynamic-变量-表达式"><a href="#dynamic-变量-表达式" class="headerlink" title="dynamic 变量/表达式"></a>dynamic 变量/表达式</h2><p>在运行时,<code>payload有效载荷</code>代码根据dynamic表达式/变量引用的对象的实际类型来决定具体执行的操作.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">dynamic</span> val<span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 demo <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>  demo<span class="token operator">&lt;</span><span class="token number">2</span> <span class="token punctuation">;</span>demo <span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        val <span class="token operator">=</span> <span class="token punctuation">(</span>demo <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token punctuation">(</span><span class="token keyword">dynamic</span><span class="token punctuation">)</span> <span class="token number">5</span> <span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token keyword">dynamic</span><span class="token punctuation">)</span> <span class="token string">"A"</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 两个操作数的类型是dynamic</span>
+        val <span class="token operator">=</span> val <span class="token operator">+</span> val<span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 传入dynamic类型参数, C#编译器会生成payload代码</span>
+        <span class="token comment" spellcheck="true">// 在运行时检查val的实际类型.</span>
+        <span class="token comment" spellcheck="true">// 调用对应的重载版本.</span>
+        <span class="token function">M</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">M</span><span class="token punctuation">(</span>Int32 n<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"M(Int32):{n}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">M</span><span class="token punctuation">(</span>String s<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"M(String):{s}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>输出:<br>M(Int32):10<br>M(String):AA</p>
+<p>由于val是dynamic类型,C#编译器生成payload代码在<code>运行时</code>检查value的实际类型,然后决定<code>+</code>操作符实际要做什么.</p>
+<ol>
+<li>第一个循环中: val = 5(Int32值),结果是10 .</li>
+<li><code>M(val);</code>传入dynamic类型参数, C#编译器会生成<code>payload有效载荷代码</code>,在<code>运行时</code>检查val的实际类型,调用对应的重载版本.</li>
+</ol>
+<h2 id="dynamic-字段-方法参数-方法返回值"><a href="#dynamic-字段-方法参数-方法返回值" class="headerlink" title="dynamic 字段/方法参数/方法返回值"></a>dynamic 字段/方法参数/方法返回值</h2><p>C#编译器会将该类型转换为<code>System.Object</code>,并在元数据中向<code>字段/参数/返回类型</code>应用<code>System.Runtime.CompilerServices.DynamicAttribute</code>的实例.</p>
+<p>如果指定局部变量被指定为dynamic, 则变量类型也会成为Object</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

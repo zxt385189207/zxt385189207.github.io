@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型"><span class="toc-text">引用类型和值类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查看文档区分引用类型和值类型"><span class="toc-text">查看文档区分引用类型和值类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#结构-amp-枚举"><span class="toc-text">结构&枚举</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型的区别"><span class="toc-text">引用类型和值类型的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计类型时-满足什么条件才声明为值类型"><span class="toc-text">设计类型时,满足什么条件才声明为值类型?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的主要优势以及自身的局限"><span class="toc-text">值类型的主要优势以及自身的局限</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR如何控制类型中的字段布局"><span class="toc-text">CLR如何控制类型中的字段布局?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#如何告诉CLR怎么排列"><span class="toc-text">如何告诉CLR怎么排列?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LayoutKind-Explicit说明"><span class="toc-text">LayoutKind.Explicit说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的装箱和拆箱"><span class="toc-text">值类型的装箱和拆箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList中究竟存储了什么-是Point结构还是Point结构的地址"><span class="toc-text">ArrayList中究竟存储了什么? 是Point结构还是Point结构的地址?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#装箱机制发生的事情"><span class="toc-text">装箱机制发生的事情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拆箱机制"><span class="toc-text">拆箱机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#已装箱值类型在拆箱时的过程"><span class="toc-text">已装箱值类型在拆箱时的过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#拆箱和复制例子"><span class="toc-text">拆箱和复制例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从IL代码查看编译器隐式生成的装箱代码"><span class="toc-text">从IL代码查看编译器隐式生成的装箱代码</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型"><span class="toc-text">引用类型和值类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查看文档区分引用类型和值类型"><span class="toc-text">查看文档区分引用类型和值类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#结构-amp-枚举"><span class="toc-text">结构&枚举</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型的区别"><span class="toc-text">引用类型和值类型的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计类型时-满足什么条件才声明为值类型"><span class="toc-text">设计类型时,满足什么条件才声明为值类型?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的主要优势以及自身的局限"><span class="toc-text">值类型的主要优势以及自身的局限</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR如何控制类型中的字段布局"><span class="toc-text">CLR如何控制类型中的字段布局?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#如何告诉CLR怎么排列"><span class="toc-text">如何告诉CLR怎么排列?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LayoutKind-Explicit说明"><span class="toc-text">LayoutKind.Explicit说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的装箱和拆箱"><span class="toc-text">值类型的装箱和拆箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList中究竟存储了什么-是Point结构还是Point结构的地址"><span class="toc-text">ArrayList中究竟存储了什么? 是Point结构还是Point结构的地址?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#装箱机制发生的事情"><span class="toc-text">装箱机制发生的事情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拆箱机制"><span class="toc-text">拆箱机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#已装箱值类型在拆箱时的过程"><span class="toc-text">已装箱值类型在拆箱时的过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#拆箱和复制例子"><span class="toc-text">拆箱和复制例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从IL代码查看编译器隐式生成的装箱代码"><span class="toc-text">从IL代码查看编译器隐式生成的装箱代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例子一"><span class="toc-text">例子一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#例子二"><span class="toc-text">例子二</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FCL重载了很多常用值类型的方法-减少常用值类型的装箱次数"><span class="toc-text">FCL重载了很多常用值类型的方法,减少常用值类型的装箱次数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例子三-如果要反复对一个值类型装箱-请改为手动方式"><span class="toc-text">例子三(如果要反复对一个值类型装箱,请改为手动方式)</span></a></li></ol></li></ol></li></ol></li></ol>
 </div>
 
     
@@ -303,12 +303,12 @@
 <li>为了使代码正确工作,Point值类型必须转换成真正的,在堆中托管的对象,而且必须获取对该对象的引用</li>
 <li>对<code>值类型</code>转成<code>引用类型</code>要使用<code>装箱机制</code>.</li>
 </ol>
-<h2 id="装箱机制发生的事情"><a href="#装箱机制发生的事情" class="headerlink" title="装箱机制发生的事情"></a><code>装箱机制</code>发生的事情</h2><ol>
+<h2 id="装箱机制发生的事情"><a href="#装箱机制发生的事情" class="headerlink" title="装箱机制发生的事情"></a>装箱机制发生的事情</h2><ol>
 <li>在托管<code>堆</code>中分配内存. 分配的内存是值类型各字段所需的内存量(还要加上托管堆所有对象都有的两个额外成员:类型对象指针和同步块索引所需的内存量).</li>
 <li><strong>值类型的字段复制到新分配的堆内存.</strong></li>
 <li>返回对象地址, 现在该地址是对象引用:值类型成了引用类型.</li>
 </ol>
-<p>在托管堆中分配相应的内存.  <strong>← 此过程称为装箱.</strong></p>
+<p>在托管堆中分配相应的内存.  </p>
 <p><strong>C#编译器自动生成对值类型实例进行装箱所需的IL代码.</strong> 但是仍需要理解内部的工作机制才能体会到代码的大小和性能问题.</p>
 <p>在运行时,当前存在于<code>Point值类型实例p</code>中的字段复制到<code>新分配的Point对象</code>中. 已装箱<code>Point对象</code>(现在是引用类型)的地址传给Add方法. <code>Point对象</code>一直存在于堆中,直至被垃圾回收.</p>
 <blockquote>
@@ -319,7 +319,7 @@
 <li>开发人员还获得编译时的类型安全性, 减少强制类型转换次数.</li>
 </ol>
 </blockquote>
-<h2 id="拆箱机制"><a href="#拆箱机制" class="headerlink" title="拆箱机制"></a><code>拆箱机制</code></h2><p>要从上面代码中的<code>ArrayList a</code>取第一个元素.</p>
+<h2 id="拆箱机制"><a href="#拆箱机制" class="headerlink" title="拆箱机制"></a>拆箱机制</h2><p>要从上面代码中的<code>ArrayList a</code>取第一个元素.</p>
 <pre class="line-numbers language-csharp"><code class="language-csharp">Point p <span class="token operator">=</span> <span class="token punctuation">(</span>Point<span class="token punctuation">)</span>a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <ol>
@@ -374,7 +374,7 @@
 <p>此段代码用C++/CLI来写,效率会高很多,因为它允许在不复制字段的前提下,对已装箱的值类型进行拆箱,拆箱返回的是已装箱对象中的未装箱部分的地址(忽略对象的类型对象指针和同步索引块这两个额外成员),接着可以用这个指针来操作未装箱实例的字段(这些字段恰好在堆上的已装箱对象中).<br>C++/CLI直接在已装箱Point实例中修改Point的x字段的值. 就这避免了在堆上分配新对象和复制字段两次.</p>
 </blockquote>
 <h3 id="从IL代码查看编译器隐式生成的装箱代码"><a href="#从IL代码查看编译器隐式生成的装箱代码" class="headerlink" title="从IL代码查看编译器隐式生成的装箱代码"></a>从IL代码查看编译器隐式生成的装箱代码</h3><p>如果关心特定算法的性能,可以用ILDasm.exe这样的工具查看方法的IL代码,观察IL指令box都在哪些地方出现.</p>
-<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 以下代码发生了3次装箱</span>
+<h4 id="例子一"><a href="#例子一" class="headerlink" title="例子一"></a>例子一</h4><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 以下代码发生了3次装箱</span>
 <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">{</span>
   Int32 v <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 值类型变量</span>
@@ -453,7 +453,7 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>对比一下IL代码</p>
 <ol>
-<li>比之前版本小了10个字节. 第一个版本<code>额外的拆箱/装箱</code>显然会产生更多的代码. 额外的装箱操作步骤会从托管堆中分配一个额外的对象, 将来对齐进行垃圾回收.</li>
+<li>比之前版本小了10个字节. 第一个版本<code>额外的拆箱/装箱</code>显然会产生更多的代码. 额外的装箱操作步骤会从托管堆中分配一个额外的对象, 将来对其进行垃圾回收.</li>
 </ol>
 <pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">.</span>method <span class="token keyword">private</span> hidebysig <span class="token keyword">static</span> <span class="token keyword">void</span>  <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> cil managed
 <span class="token punctuation">{</span>
@@ -480,6 +480,47 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
   IL_0024<span class="token punctuation">:</span>  ret
 <span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// end of method Program::Main</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>进一步提升代码的性能:</p>
+<p><strong>v.ToString(),返回是的String,是引用类型,不需要装箱,减少一个装箱操作.</strong></p>
+<p><code>Console.WriteLine(v.ToString() + &quot;,&quot; + (Int32) o );</code></p>
+<p>对应的IL代码则是: <code>IL_000f:  call       instance string [System.Runtime]System.Int32::ToString()</code></p>
+<h4 id="例子二"><a href="#例子二" class="headerlink" title="例子二"></a>例子二</h4><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 以下代码只发生了一次装箱.</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 v <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 装箱</span>
+    Object o <span class="token operator">=</span> v<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 修改栈, 不影响已装箱的o</span>
+    v <span class="token operator">=</span> <span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// public static void WriteLine(int value)</span>
+    <span class="token comment" spellcheck="true">// 方法WriteLine是传值的方式,不需要装箱</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 123</span>
+    <span class="token comment" spellcheck="true">// 拆箱</span>
+    v <span class="token operator">=</span> <span class="token punctuation">(</span>Int32<span class="token punctuation">)</span> o<span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 5</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="FCL重载了很多常用值类型的方法-减少常用值类型的装箱次数"><a href="#FCL重载了很多常用值类型的方法-减少常用值类型的装箱次数" class="headerlink" title="FCL重载了很多常用值类型的方法,减少常用值类型的装箱次数"></a>FCL重载了很多常用值类型的方法,减少常用值类型的装箱次数</h3><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">double</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">float</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>大多数方法进行重载唯一的目的就是减少常用值类型的装箱次数.</strong></p>
+<p>但是FCL不可能接受你自己定义的值类型. 也可能FCL没有提供对应的重载版本,那调用方法传递值类型参数时,就是调用Object参数的重载版本. 将值类型实例作为Object传递会造成装箱.</p>
+<p>定义自己的类时, 可将类中的方法定义为泛型(通过泛型约束将类型参数限制为值类型), 这样方法就可以获取任何值类型而不必装箱.</p>
+<h4 id="例子三-如果要反复对一个值类型装箱-请改为手动方式"><a href="#例子三-如果要反复对一个值类型装箱-请改为手动方式" class="headerlink" title="例子三(如果要反复对一个值类型装箱,请改为手动方式)"></a>例子三(如果要反复对一个值类型装箱,请改为手动方式)</h4><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 v <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// v会被装箱3次,浪费时间和内存</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"{v}+{v}+{v}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 123</span>
+
+    <span class="token comment" spellcheck="true">// 对v手动装箱一次</span>
+    Object o <span class="token operator">=</span> v<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 编译下一行不会发生装箱行为</span>
+    <span class="token comment" spellcheck="true">// 内存利用还是执行速度都比上一段代码更胜一筹</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"{o}+{o}+{o}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 123</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
         
             <div class="donate-container">
