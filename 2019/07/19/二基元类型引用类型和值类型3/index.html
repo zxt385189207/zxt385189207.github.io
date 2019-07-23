@@ -542,78 +542,78 @@ result <span class="token operator">=</span> target1<span class="token punctuati
 </ol>
 <h2 id="dynamic的限制"><a href="#dynamic的限制" class="headerlink" title="dynamic的限制"></a>dynamic的限制</h2><p>dynamic的一个限制是只能访问对象的实例成员,因为dynamic变量必须引用对象.但有时需要动态调用运行时才能确定一个类型的静态成员.</p>
 <h2 id="实现动态调用类型的静态成员方法"><a href="#实现动态调用类型的静态成员方法" class="headerlink" title="实现动态调用类型的静态成员方法"></a>实现动态调用类型的静态成员方法</h2><p>作者实现的<code>StaticMemberDynamicWrapper</code>从<code>DynamicObject</code>派生,实现了接口<code>IDynamicMetaObjectProvider</code>.</p>
-<pre class="line-numbers language-CSharp"><code class="language-CSharp">        /// <summary>
-        /// 构造一个 'dynamic' 的实例派生类，来动态调用类型的静态成员
-        /// </summary>
-        internal sealed class StaticMemberDynamicWrapper : DynamicObject //P(132)
-        {
-            private readonly TypeInfo m_type;
-            public StaticMemberDynamicWrapper(Type type) { m_type = type.GetTypeInfo(); }
+<pre class="line-numbers language-csharp"><code class="language-csharp">        <span class="token comment" spellcheck="true">/// &lt;summary></span>
+        <span class="token comment" spellcheck="true">/// 构造一个 'dynamic' 的实例派生类，来动态调用类型的静态成员</span>
+        <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+        <span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">StaticMemberDynamicWrapper</span> <span class="token punctuation">:</span> DynamicObject <span class="token comment" spellcheck="true">//P(132)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">private</span> <span class="token keyword">readonly</span> TypeInfo m_type<span class="token punctuation">;</span>
+            <span class="token keyword">public</span> <span class="token function">StaticMemberDynamicWrapper</span><span class="token punctuation">(</span>Type type<span class="token punctuation">)</span> <span class="token punctuation">{</span> m_type <span class="token operator">=</span> type<span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
 
-            public override IEnumerable<String> GetDynamicMemberNames()
-            {
-                return m_type.DeclaredMembers.Select(mi => mi.Name);
-            }
+            <span class="token keyword">public</span> <span class="token keyword">override</span> IEnumerable<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">GetDynamicMemberNames</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> m_type<span class="token punctuation">.</span>DeclaredMembers<span class="token punctuation">.</span><span class="token function">Select</span><span class="token punctuation">(</span>mi <span class="token operator">=</span><span class="token operator">></span> mi<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
 
-            public override bool TryGetMember(GetMemberBinder binder, out object result)
-            {
-                result = null;
-                var field = FindField(binder.Name);
-                if (field != null) { result = field.GetValue(null); return true; }
+            <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">bool</span> <span class="token function">TryGetMember</span><span class="token punctuation">(</span>GetMemberBinder binder<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token keyword">object</span> result<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                result <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+                <span class="token keyword">var</span> field <span class="token operator">=</span> <span class="token function">FindField</span><span class="token punctuation">(</span>binder<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>field <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> result <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">GetValue</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
 
-                var prop = FindProperty(binder.Name, true);
-                if (prop != null) { result = prop.GetValue(null, null); return true; }
-                return false;
-            }
+                <span class="token keyword">var</span> prop <span class="token operator">=</span> <span class="token function">FindProperty</span><span class="token punctuation">(</span>binder<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>prop <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> result <span class="token operator">=</span> prop<span class="token punctuation">.</span><span class="token function">GetValue</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+                <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
 
-            public override bool TrySetMember(SetMemberBinder binder, object value)
-            {
-                var field = FindField(binder.Name);
-                if (field != null) { field.SetValue(null, value); return true; }
+            <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">bool</span> <span class="token function">TrySetMember</span><span class="token punctuation">(</span>SetMemberBinder binder<span class="token punctuation">,</span> <span class="token keyword">object</span> <span class="token keyword">value</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">var</span> field <span class="token operator">=</span> <span class="token function">FindField</span><span class="token punctuation">(</span>binder<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>field <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> field<span class="token punctuation">.</span><span class="token function">SetValue</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
 
-                var prop = FindProperty(binder.Name, false);
-                if (prop != null) { prop.SetValue(null, value, null); return true; }
-                return false;
-            }
+                <span class="token keyword">var</span> prop <span class="token operator">=</span> <span class="token function">FindProperty</span><span class="token punctuation">(</span>binder<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>prop <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> prop<span class="token punctuation">.</span><span class="token function">SetValue</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+                <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
 
-            public override Boolean TryInvokeMember(InvokeMemberBinder binder, Object[] args, out Object result)
-            {
-                MethodInfo method = FindMethod(binder.Name, args.Select(a => a.GetType()).ToArray());
-                if (method == null) { result = null; return false; }
-                result = method.Invoke(null, args);
-                return true;
-            }
+            <span class="token keyword">public</span> <span class="token keyword">override</span> Boolean <span class="token function">TryInvokeMember</span><span class="token punctuation">(</span>InvokeMemberBinder binder<span class="token punctuation">,</span> Object<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">,</span> <span class="token keyword">out</span> Object result<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                MethodInfo method <span class="token operator">=</span> <span class="token function">FindMethod</span><span class="token punctuation">(</span>binder<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> args<span class="token punctuation">.</span><span class="token function">Select</span><span class="token punctuation">(</span>a <span class="token operator">=</span><span class="token operator">></span> a<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>method <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> result <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span> <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+                result <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
 
-            private MethodInfo FindMethod(String name, Type[] paramTypes)
-            {
-                return m_type.DeclaredMethods.FirstOrDefault(mi => mi.IsPublic && mi.IsStatic && mi.Name == name && ParametersMatch(mi.GetParameters(), paramTypes));
-            }
+            <span class="token keyword">private</span> MethodInfo <span class="token function">FindMethod</span><span class="token punctuation">(</span>String name<span class="token punctuation">,</span> Type<span class="token punctuation">[</span><span class="token punctuation">]</span> paramTypes<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> m_type<span class="token punctuation">.</span>DeclaredMethods<span class="token punctuation">.</span><span class="token function">FirstOrDefault</span><span class="token punctuation">(</span>mi <span class="token operator">=</span><span class="token operator">></span> mi<span class="token punctuation">.</span>IsPublic <span class="token operator">&amp;&amp;</span> mi<span class="token punctuation">.</span>IsStatic <span class="token operator">&amp;&amp;</span> mi<span class="token punctuation">.</span>Name <span class="token operator">==</span> name <span class="token operator">&amp;&amp;</span> <span class="token function">ParametersMatch</span><span class="token punctuation">(</span>mi<span class="token punctuation">.</span><span class="token function">GetParameters</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> paramTypes<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
 
-            private Boolean ParametersMatch(ParameterInfo[] parameters, Type[] paramTypes)
-            {
-                if (parameters.Length != paramTypes.Length) return false;
-                for (Int32 i = 0; i < parameters.Length; i++)
-                    if (parameters[i].ParameterType != paramTypes[i]) return false;
-                return true;
-            }
+            <span class="token keyword">private</span> Boolean <span class="token function">ParametersMatch</span><span class="token punctuation">(</span>ParameterInfo<span class="token punctuation">[</span><span class="token punctuation">]</span> parameters<span class="token punctuation">,</span> Type<span class="token punctuation">[</span><span class="token punctuation">]</span> paramTypes<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>parameters<span class="token punctuation">.</span>Length <span class="token operator">!=</span> paramTypes<span class="token punctuation">.</span>Length<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+                <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> parameters<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>parameters<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>ParameterType <span class="token operator">!=</span> paramTypes<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
 
-            private FieldInfo FindField(String name)
-            {
-                return m_type.DeclaredFields.FirstOrDefault(fi => fi.IsPublic && fi.IsStatic && fi.Name == name);
-            }
+            <span class="token keyword">private</span> FieldInfo <span class="token function">FindField</span><span class="token punctuation">(</span>String name<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> m_type<span class="token punctuation">.</span>DeclaredFields<span class="token punctuation">.</span><span class="token function">FirstOrDefault</span><span class="token punctuation">(</span>fi <span class="token operator">=</span><span class="token operator">></span> fi<span class="token punctuation">.</span>IsPublic <span class="token operator">&amp;&amp;</span> fi<span class="token punctuation">.</span>IsStatic <span class="token operator">&amp;&amp;</span> fi<span class="token punctuation">.</span>Name <span class="token operator">==</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
 
-            private PropertyInfo FindProperty(String name, Boolean get)
-            {
-                if (get)
-                    return m_type.DeclaredProperties.FirstOrDefault(
-                       pi => pi.Name == name && pi.GetMethod != null &&
-                       pi.GetMethod.IsPublic && pi.GetMethod.IsStatic);
+            <span class="token keyword">private</span> PropertyInfo <span class="token function">FindProperty</span><span class="token punctuation">(</span>String name<span class="token punctuation">,</span> Boolean <span class="token keyword">get</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">get</span><span class="token punctuation">)</span>
+                    <span class="token keyword">return</span> m_type<span class="token punctuation">.</span>DeclaredProperties<span class="token punctuation">.</span><span class="token function">FirstOrDefault</span><span class="token punctuation">(</span>
+                       pi <span class="token operator">=</span><span class="token operator">></span> pi<span class="token punctuation">.</span>Name <span class="token operator">==</span> name <span class="token operator">&amp;&amp;</span> pi<span class="token punctuation">.</span>GetMethod <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span>
+                       pi<span class="token punctuation">.</span>GetMethod<span class="token punctuation">.</span>IsPublic <span class="token operator">&amp;&amp;</span> pi<span class="token punctuation">.</span>GetMethod<span class="token punctuation">.</span>IsStatic<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-                return m_type.DeclaredProperties.FirstOrDefault(
-                   pi => pi.Name == name && pi.SetMethod != null &&
-                      pi.SetMethod.IsPublic && pi.SetMethod.IsStatic);
-            }
-        }
+                <span class="token keyword">return</span> m_type<span class="token punctuation">.</span>DeclaredProperties<span class="token punctuation">.</span><span class="token function">FirstOrDefault</span><span class="token punctuation">(</span>
+                   pi <span class="token operator">=</span><span class="token operator">></span> pi<span class="token punctuation">.</span>Name <span class="token operator">==</span> name <span class="token operator">&amp;&amp;</span> pi<span class="token punctuation">.</span>SetMethod <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span>
+                      pi<span class="token punctuation">.</span>SetMethod<span class="token punctuation">.</span>IsPublic <span class="token operator">&amp;&amp;</span> pi<span class="token punctuation">.</span>SetMethod<span class="token punctuation">.</span>IsStatic<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>为了调用静态成员,传递想要操作的Type来构建上述类的实例, 将引用放到dynamic变量中, 再用实例成员语法调用所需静态成员.</p>
 <pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">dynamic</span> stringType <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StaticMemberDynamicWrapper</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>String<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
