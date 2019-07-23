@@ -512,13 +512,13 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
 <span class="token punctuation">{</span>
     Int32 v <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// v会被装箱3次,浪费时间和内存</span>
-    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"{v}+{v}+{v}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 123</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"{v}+{v}+{v}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token comment" spellcheck="true">// 对v手动装箱一次</span>
     Object o <span class="token operator">=</span> v<span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 编译下一行不会发生装箱行为</span>
     <span class="token comment" spellcheck="true">// 内存利用还是执行速度都比上一段代码更胜一筹</span>
-    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"{o}+{o}+{o}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 123</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"{o}+{o}+{o}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
