@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#类型的各种成员"><span class="toc-text">类型的各种成员</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#类型的可见性"><span class="toc-text">类型的可见性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么情况下要友元程序集"><span class="toc-text">什么情况下要友元程序集?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#示例做法"><span class="toc-text">示例做法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#成员的可访问性"><span class="toc-text">成员的可访问性</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#类型的各种成员"><span class="toc-text">类型的各种成员</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#类型的可见性"><span class="toc-text">类型的可见性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么情况下要友元程序集"><span class="toc-text">什么情况下要友元程序集?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#示例做法"><span class="toc-text">示例做法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#成员的可访问性"><span class="toc-text">成员的可访问性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#静态类"><span class="toc-text">静态类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#C-编译器对静态类做了如下限制"><span class="toc-text">C#编译器对静态类做了如下限制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#分部类-结构和接口"><span class="toc-text">分部类,结构和接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-关键字及其对组件版本控制的影响"><span class="toc-text">C#关键字及其对组件版本控制的影响</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR如何调用虚方法-属性和事件"><span class="toc-text">CLR如何调用虚方法,属性和事件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#方法是什么"><span class="toc-text">方法是什么?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CLR允许定义多个同名方法-根据返回类型不同或者参数不同"><span class="toc-text">CLR允许定义多个同名方法,根据返回类型不同或者参数不同</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#callvirt和call指令调用非虚方法-虚方法-静态方法"><span class="toc-text">callvirt和call指令调用非虚方法,虚方法,静态方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译器有时用call而不是callvirt调用虚方法"><span class="toc-text">编译器有时用call而不是callvirt调用虚方法.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#call和callvirt的区别"><span class="toc-text">call和callvirt的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设计类型时要注意"><span class="toc-text">设计类型时要注意</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#合理使用类型的可见性和成员的可访问性"><span class="toc-text">合理使用类型的可见性和成员的可访问性</span></a></li></ol>
 </div>
 
     
@@ -189,7 +189,7 @@
 </li>
 <li><p><strong>类型</strong></p>
 <ul>
-<li>可以定义其他嵌套<code>类型</code>.</li>
+<li>可以定义其他嵌套<code>类型</code> (<code>内/外部类</code>).</li>
 </ul>
 <blockquote>
 <p>元数据是整个Microsoft .Net Framework开发的关键 .元数据实现了编程语言,类型和对象的无缝集成.</p>
@@ -279,6 +279,205 @@
 </ul>
 <p><img src="/2019/07/23/二类型和成员基础/成员可访问性.png" alt=""></p>
 <p>表中总结了6个应用于成员的可访问性修饰符. 从第一行到最后一行按照限制最大到限制最小的顺序排列.</p>
+<ul>
+<li><code>private</code>:只能由<code>定义类型</code>和<code>任何嵌套类型</code>中的方法访问</li>
+<li><code>protected</code>: 能被<code>定义类型的方法</code>,<code>任何嵌套类型中的方法</code> 和<code>无论在什么程序集中</code>的<code>派生类型中的方法</code>访问.</li>
+<li><code>internal</code>: 只能被<code>当前定义的程序集中</code>的方法访问. (比public限制高,限制了程序集)</li>
+<li><code>protected internal</code>:能被<code>任何内/外部类(嵌套类)</code>, <code>无论在什么程序集中的派生类型</code>,<code>当前程序集中的任何方法</code>访问.</li>
+<li><code>public</code>: 能被<code>任何程序集中的任何方法</code>访问.</li>
+</ul>
+<p>在C#中,如果没有显示声明成员的可访问性,编译器通常默认选择private.</p>
+<blockquote>
+<p>CLR 要求接口类型的所有成员都具有public可访问性. C#编译器因此禁止开发人员显示指定接口成员的可访问性.自动设为public.</p>
+</blockquote>
+<p>C#限制派生类重写基类方法需要具有相同的可访问性.</p>
+<p>CLR允许<code>放宽限制</code>,但不允许<code>收紧限制</code>(基类protected,派生类可以public,但不可以是private). 否则就无法派生类转为基类时,获取不到基类方法的访问权.</p>
+<h1 id="静态类"><a href="#静态类" class="headerlink" title="静态类"></a>静态类</h1><p>例如Console,Math,Environment,ThreadPool类,永远不需要实例化的类,只有static成员.</p>
+<p><code>static</code>关键字定义不可以实例化的类. 只能应用于类,不能应用于结构(值类型). CLR总是允许值类型实例化.</p>
+<h2 id="C-编译器对静态类做了如下限制"><a href="#C-编译器对静态类做了如下限制" class="headerlink" title="C#编译器对静态类做了如下限制"></a>C#编译器对静态类做了如下限制</h2><ol>
+<li>静态类必须直接从基类System.Object派生. 继承只适用于对象,静态类不能创建实例.因此从其他任何积累下派生都没有意义.</li>
+<li>静态类不能实现任何接口. 只有使用类的实例时,才能调用类的接口方法.</li>
+<li>静态类只能定义静态成员(字段,方法,属性和事件).</li>
+<li>静态类不能作为字段,方法参数或局部变量使用. 因为它们都代表引用实例的变量.</li>
+</ol>
+<blockquote>
+<p>IL会将static定义类标记为absrtact和sealed. 并且不生成实例构造器方法.</p>
+</blockquote>
+<h1 id="分部类-结构和接口"><a href="#分部类-结构和接口" class="headerlink" title="分部类,结构和接口"></a>分部类,结构和接口</h1><p><code>partial</code> 关键字告诉C#编译器: 类,结构或接口的定义源代码可能要分散到一个或多个源代码文件中.</p>
+<ol>
+<li>源代码控制<ul>
+<li>多个程序员修改一个类,使用<code>partial</code>为多个文件后,每个文件可以单独签出,多个程序员能同时编辑类型.</li>
+</ul>
+</li>
+<li>在同一个文件中将类或结构分解不同的逻辑单元<ul>
+<li>有时会创建一个类型提供多个功能,为简化实现,会在源代码中重复声明一个分部类型,分部类型的每个部分都实现一个功能.也可以完整的删除一个功能.</li>
+</ul>
+</li>
+<li>代码拆分</li>
+</ol>
+<p><strong>要将<code>partial</code>关键字应用于所有文件中的类型. 编译到一起时, 编译器会合并代码. 分部类功能完全由C#编译器实现. CLR对此一无所知.</strong></p>
+<h1 id="C-关键字及其对组件版本控制的影响"><a href="#C-关键字及其对组件版本控制的影响" class="headerlink" title="C#关键字及其对组件版本控制的影响"></a>C#关键字及其对组件版本控制的影响</h1><p><img src="/2019/07/23/二类型和成员基础/C#关键字及其对组件版本控制的影响.png" alt=""></p>
+<p>这些关键字直接对应CLR用于支持组件版本控制的功能.</p>
+<h1 id="CLR如何调用虚方法-属性和事件"><a href="#CLR如何调用虚方法-属性和事件" class="headerlink" title="CLR如何调用虚方法,属性和事件"></a>CLR如何调用虚方法,属性和事件</h1><blockquote>
+<p>属性和事件实际作为方法实现.</p>
+</blockquote>
+<h2 id="方法是什么"><a href="#方法是什么" class="headerlink" title="方法是什么?"></a>方法是什么?</h2><p>方法代表类型或类型上的实例上执行某些操作的代码. 在类型上操作是静态方法,在实例上操作是非静态方法.</p>
+<h2 id="CLR允许定义多个同名方法-根据返回类型不同或者参数不同"><a href="#CLR允许定义多个同名方法-根据返回类型不同或者参数不同" class="headerlink" title="CLR允许定义多个同名方法,根据返回类型不同或者参数不同"></a>CLR允许定义多个同名方法,根据返回类型不同或者参数不同</h2><p><strong>除了IL语言,包括C#大多数语言在判断方法的唯一性时,除了方法名之外,都只以参数为准,方法返回类型会被忽略.</strong></p>
+<ul>
+<li>非虚实例方法 <code>public Int32 MethodA()</code></li>
+<li>虚方法<code>public virtual String MethodB()</code></li>
+<li><p>静态方法<code>public static Int32 MethodC()</code></p>
+<p>编译这些方法,编译器会在程序集的方法定义表中写入记录项,每个记录项都用一组<code>flag标志</code>指明方法的类型.</p>
+<p>调用这些方法时, 生成调用代码的编译器会检查方法定义的<code>标志flag</code>,来生成对应的IL代码来调用.</p>
+</li>
+</ul>
+<h2 id="callvirt和call指令调用非虚方法-虚方法-静态方法"><a href="#callvirt和call指令调用非虚方法-虚方法-静态方法" class="headerlink" title="callvirt和call指令调用非虚方法,虚方法,静态方法"></a>callvirt和call指令调用非虚方法,虚方法,静态方法</h2><p> CLR提供两个方法调用指令:</p>
+<ol>
+<li>call<ul>
+<li>用call指令调用静态方法,必须指定定义此静态方法的类型.</li>
+<li>用call指令调用实例方法或虚方法,必须指定引用了对象的变量(就是调用方法的变量的定义类型).<ul>
+<li>如果调用方法的变量没有定义此方法,就会检查基类来查找匹配方法.</li>
+</ul>
+</li>
+<li>常用于以非虚方式调用虚方法.</li>
+</ul>
+</li>
+<li>callvirt<ul>
+<li>用callvirt可调用实例方法和虚方法,不能调用静态方法.</li>
+<li>必须指定引用了对象的变量.</li>
+<li>用callvirt调用非虚方法,变量的类型指明了方法的定义类型.</li>
+<li>用callvirt调用虚实例方法,CLR会调查发出的调用对象的实际类型,然后以多态方式调用方法.</li>
+<li>为了确定类型,发出调用的变量不能为null. JIT编译器会生成代码来验证变量的值是不是null.(抛出NUllReferenceException异常)</li>
+<li>用callvirt调用非虚实例方法也会执行这种null检查. 所以用callvirt指令执行速度比call指令稍慢.</li>
+</ul>
+</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 调用静态方法</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+Object o <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 调用虚方法</span>
+o<span class="token punctuation">.</span><span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 调用非虚方法</span>
+o<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">.</span>method <span class="token keyword">private</span> hidebysig <span class="token keyword">static</span> <span class="token keyword">void</span>  <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> cil managed
+<span class="token punctuation">{</span>
+  <span class="token punctuation">.</span>entrypoint
+  <span class="token comment" spellcheck="true">// 代码大小       28 (0x1c)</span>
+  <span class="token punctuation">.</span>maxstack  <span class="token number">1</span>
+  <span class="token punctuation">.</span>locals <span class="token function">init</span> <span class="token punctuation">(</span><span class="token keyword">object</span> V_0<span class="token punctuation">)</span>
+  IL_0000<span class="token punctuation">:</span>  nop
+  <span class="token comment" spellcheck="true">// 静态方法会使用call指令</span>
+  IL_0001<span class="token punctuation">:</span>  call       <span class="token keyword">void</span> <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Console<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Console<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  IL_0006<span class="token punctuation">:</span>  nop
+  IL_0007<span class="token punctuation">:</span>  newobj     instance <span class="token keyword">void</span> <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Object<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token punctuation">.</span><span class="token function">ctor</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  IL_000c<span class="token punctuation">:</span>  stloc<span class="token number">.0</span>
+  IL_000d<span class="token punctuation">:</span>  ldloc<span class="token number">.0</span>
+  <span class="token comment" spellcheck="true">// 这里用callvirt 是因为GetHashCode是虚方法</span>
+  IL_000e<span class="token punctuation">:</span>  callvirt   instance int32 <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Object<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  IL_0013<span class="token punctuation">:</span>  pop
+  IL_0014<span class="token punctuation">:</span>  ldloc<span class="token number">.0</span>
+  <span class="token comment" spellcheck="true">// 这里用callvirt , Type是非虚方法,在JIT编译好的代码中会以非虚方式调用</span>
+  <span class="token comment" spellcheck="true">// 为什么不用直接用call指令呢? 因为C#团队认为JIT编译器应生成代码来验证发出调用的对象不为null</span>
+  IL_0015<span class="token punctuation">:</span>  callvirt   instance <span class="token keyword">class</span> <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Type <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Object<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  IL_001a<span class="token punctuation">:</span>  pop
+  IL_001b<span class="token punctuation">:</span>  ret
+<span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// end of method Program::Main</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果调用非虚方法时, C#编译器生成的是callvirt指令,那么发出调用的对象如果为null就会抛出异常.</p>
+<p>C#用<code>callvirt</code>指令调用所有 <strong>实例方法</strong>. 用<code>call</code>指令调用 <strong>静态方法</strong>.</p>
+<blockquote>
+<p>不建议把非虚方法改为虚方法. 这是因为某些编译器会用call而不是callvirt指令调用非虚方法. 并且引用此方法的代码没有重新编译,就会造成应用程序行为无法预料. 用C#写的引用代码不会出问题,因为C#用callvirt指令调用所有实例方法.</p>
+</blockquote>
+<h2 id="编译器有时用call而不是callvirt调用虚方法"><a href="#编译器有时用call而不是callvirt调用虚方法" class="headerlink" title="编译器有时用call而不是callvirt调用虚方法."></a>编译器有时用call而不是callvirt调用虚方法.</h2><p>特殊的语句:<code>base.ToString();</code></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">override</span> String <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 编译器使用IL指令call</span>
+  <span class="token comment" spellcheck="true">// 以非虚方式调用Object的ToString方法</span>
+
+  <span class="token comment" spellcheck="true">// 如果编译器用callvirt而不是call</span>
+  <span class="token comment" spellcheck="true">// 那么该方法将递归调用自身,直至栈溢出</span>
+  <span class="token keyword">return</span> <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 如果编译器生成的是callvirt,那么是以虚方式(多态方式)调用, base.ToString还是会调用到重写的当前方法中</span>
+<span class="token comment" spellcheck="true">// 再次执行base.ToString导致循环</span>
+<span class="token comment" spellcheck="true">// call则是以非虚的方式调用,不会调用到重写的方法中,而是基类自己的ToString方法.</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>因为callvirt是以虚方式调用, 会导致base.ToString递归执行,直至线程栈溢出.</p>
+<p><strong>编译器调用值类型定义的方法时倾向于使用call指令,因为值类型时密封的,即使有虚方法也不用考虑多态性. 值类型的实例的本质保证它永不为null. 所以永远不抛出NullReferenceException异常.</strong></p>
+<p>如果以虚方式调用值类型的虚方法,CLR要获取对值类型的对象的引用,以便引用方法表.需要装箱.</p>
+<h2 id="call和callvirt的区别"><a href="#call和callvirt的区别" class="headerlink" title="call和callvirt的区别"></a>call和callvirt的区别</h2><p>call的callvirt的区别主要有两点：</p>
+<ul>
+<li><code>call</code>可以调用 <strong>静态方法</strong>，<code>实例方法和虚方法</code></li>
+<li><p><code>call</code>一般是以 <strong>非虚的方式</strong> 来调用函数的.</p>
+</li>
+<li><p><code>callvirt</code>不能调用 <strong>静态方法</strong>,只能调用<code>实例方法和虚方法</code>，</p>
+</li>
+<li><code>callvirt</code>是以 <strong>已多态(虚方式)的方式</strong> 来调用函数的.</li>
+</ul>
+<h2 id="设计类型时要注意"><a href="#设计类型时要注意" class="headerlink" title="设计类型时要注意"></a>设计类型时要注意</h2><ol>
+<li>虚方法的调用速度比调用非虚方法慢.</li>
+<li>JIT编译器不能内嵌虚方法. 进一步影响性能</li>
+<li>使最复杂(参数最多)的方法成为虚方法,使所有重载的简便方法成为非虚方法.</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> Int32 m_lenth <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 重载的简便方法是非虚的</span>
+<span class="token keyword">public</span> Int32 <span class="token function">Find</span><span class="token punctuation">(</span>Object <span class="token keyword">value</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">Find</span><span class="token punctuation">(</span><span class="token keyword">value</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>m_lenth<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 重载的简便方法是非虚的</span>
+<span class="token keyword">public</span> Int32 <span class="token function">Find</span><span class="token punctuation">(</span>Object <span class="token keyword">value</span><span class="token punctuation">,</span> Int32 startIndex<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">Find</span><span class="token punctuation">(</span><span class="token keyword">value</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>m_lenth <span class="token operator">-</span>startIndex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 功能最丰富的方法是虚方法,可以被重写</span>
+<span class="token keyword">public</span> <span class="token keyword">virtual</span> Int32 <span class="token function">Find</span><span class="token punctuation">(</span>Object <span class="token keyword">value</span><span class="token punctuation">,</span> Int32 startIndex<span class="token punctuation">,</span> Int32 endIndex<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 可被重写的实现写这里..</span>
+    <span class="token comment" spellcheck="true">//.....</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="合理使用类型的可见性和成员的可访问性"><a href="#合理使用类型的可见性和成员的可访问性" class="headerlink" title="合理使用类型的可见性和成员的可访问性"></a>合理使用类型的可见性和成员的可访问性</h1><p>默认生成的类是非密封里, 允许使用关键字<code>sealed</code>将类型显示标记为密封.</p>
+<ul>
+<li>性能更好<ul>
+<li><strong>如果调用的是密封类的虚方法(C#编译器在生成callvirt指令), JIT会优化并生成代码用非虚方式调用.</strong></li>
+</ul>
+</li>
+</ul>
+<p>调用虚方法在性能上不及调用非虚方法, 因为CLR必须在运行时查找对象的类型,判断要调用的方法由哪个类型定义.</p>
+<p>如果JIT编译器看到使用的是密封类型的虚方法调用, 密封类不会有派生类,就可以采用非虚的方式调用虚方法(call指令),从而生成更高效的代码.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Point p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Point</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// C#编译器在此生成callvirt调用虚方法</span>
+        <span class="token comment" spellcheck="true">// 但是JIT编译器会优化这个调用,并生成</span>
+        <span class="token comment" spellcheck="true">// 代码来非虚地调用ToString,是因为Point是密封类</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Point</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Int32 m_x<span class="token punctuation">,</span> m_y<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">Point</span><span class="token punctuation">(</span><span class="token keyword">int</span> mX<span class="token punctuation">,</span> <span class="token keyword">int</span> mY<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_x <span class="token operator">=</span> mX<span class="token punctuation">;</span>
+        m_y <span class="token operator">=</span> mY<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> String<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span>$<span class="token string">"{m_x},{m_y}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>开发人员希望从现有类型派生出一个类,在其中添加额外字段或状态信息. 还希望在派生类中定义<code>帮助方法(helper method)</code>或<code>简便方法(convenience method)</code>来操作这些额外的字段. 如果是密封类就不合适,可以利用C#的扩展方法来模拟<code>帮助方法</code>, 还可以利用<code>ConditionalWeakTable类</code>模拟跟踪状态.</p>
 
         
             <div class="donate-container">
