@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        5基元类型引用类型和值类型2 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型"><span class="toc-text">引用类型和值类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查看文档区分引用类型和值类型"><span class="toc-text">查看文档区分引用类型和值类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#结构-amp-枚举"><span class="toc-text">结构&枚举</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型的区别"><span class="toc-text">引用类型和值类型的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计类型时-满足什么条件才声明为值类型"><span class="toc-text">设计类型时,满足什么条件才声明为值类型?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的主要优势以及自身的局限"><span class="toc-text">值类型的主要优势以及自身的局限</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR如何控制类型中的字段布局"><span class="toc-text">CLR如何控制类型中的字段布局?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#如何告诉CLR怎么排列"><span class="toc-text">如何告诉CLR怎么排列?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LayoutKind-Explicit说明"><span class="toc-text">LayoutKind.Explicit说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的装箱和拆箱"><span class="toc-text">值类型的装箱和拆箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList中究竟存储了什么-是Point结构还是Point结构的地址"><span class="toc-text">ArrayList中究竟存储了什么? 是Point结构还是Point结构的地址?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#装箱机制发生的事情"><span class="toc-text">装箱机制发生的事情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拆箱机制"><span class="toc-text">拆箱机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#已装箱值类型在拆箱时的过程"><span class="toc-text">已装箱值类型在拆箱时的过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#拆箱和复制例子"><span class="toc-text">拆箱和复制例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从IL代码查看编译器隐式生成的装箱代码"><span class="toc-text">从IL代码查看编译器隐式生成的装箱代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例子一"><span class="toc-text">例子一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#例子二"><span class="toc-text">例子二</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FCL重载了很多常用值类型的方法-减少常用值类型的装箱次数"><span class="toc-text">FCL重载了很多常用值类型的方法,减少常用值类型的装箱次数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例子三-如果要反复对一个值类型装箱-请改为手动方式"><span class="toc-text">例子三(如果要反复对一个值类型装箱,请改为手动方式)</span></a></li></ol></li></ol></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        5基元类型引用类型和值类型2
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-07-16 18:12:57</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="引用类型和值类型"><a href="#引用类型和值类型" class="headerlink" title="引用类型和值类型"></a>引用类型和值类型</h1><p>CLR支持两种类型: 引用类型和值类型.</p>
+<p>引用类型总是从<code>托管堆</code>分配. C#的<code>new</code>操作符返回对象内存地址—-指向对象数据的内存地址.</p>
+<p><strong>使用引用类型必须留意性能问题.</strong></p>
+<ol>
+<li>内存必须从托管堆分配.</li>
+<li>堆上分配的每个对象都有一些额外成员,这些额外成员必须初始化.</li>
+<li>对象中的其他字节(为字段设置的字节)总是设为0.</li>
+<li>从对管堆分配对象时,可能强制执行一次垃圾回收.</li>
+</ol>
+<p>为了提高性能,CLR提供了名为”值类型”的轻量级类型.</p>
+<p><strong>值类型</strong> 的实例一般在线程栈上分配.</p>
+<ol>
+<li>可以作为字段嵌入引用类型的对象中</li>
+<li>在代表值类型实例的变量中<strong>不包含指向实例的指针</strong>.</li>
+<li>实例中包含了实例本身的字段(值). 所以操作实例中的字段(值)不需要提领指针.</li>
+<li>值类型不受垃圾回收器的控制.</li>
+<li>所有值类型都是隐式密封,防止用作其他应用类型或值类型的基类.</li>
+</ol>
+<p><strong>值类型缓解了使用托管堆的压力,并减少了应用程序生存期内的垃圾回收次数.</strong></p>
+<blockquote>
+<p>在非托管环境(C/C++)中声明类型后, 使用该类型的代码会决定是在线程栈上还是应用程序的堆中分配该类型的实例.<br>托管代码中,要由定义类型的开发人员决定在什么地方分配类型实例,使用此类型的人对此没有控制权.</p>
+</blockquote>
+<h1 id="查看文档区分引用类型和值类型"><a href="#查看文档区分引用类型和值类型" class="headerlink" title="查看文档区分引用类型和值类型"></a>查看文档区分引用类型和值类型</h1><ol>
+<li>在文档中查看类型时, 任何称为<strong>类</strong>的类型都是引用类型. 例如System.Exception类…</li>
+<li>所有值类型都称为<strong>结构</strong>或<strong>枚举</strong>. 例如:System.Int32结构…</li>
+</ol>
+<h2 id="结构-amp-枚举"><a href="#结构-amp-枚举" class="headerlink" title="结构&amp;枚举"></a>结构&amp;枚举</h2><p>所有<code>结构</code>都是抽象类型<code>System.ValueType</code>的直接派生类.<code>System.ValueType</code>本身又直接从<code>System.Object</code>派生.</p>
+<ol>
+<li>根据定义, 所有值类型都必须从<code>System.ValueType</code>派生.</li>
+<li>所有枚举都从<code>System.Enum</code>抽象类型派生,<code>System.Enum</code>从<code>System.ValueType</code>派生.</li>
+</ol>
+<blockquote>
+<p>CLR和所有编程语言都会给予枚举特殊待遇(直接支持各种强大的操作,非托管环境中就不这样了.)</p>
+</blockquote>
+<h1 id="引用类型和值类型的区别"><a href="#引用类型和值类型的区别" class="headerlink" title="引用类型和值类型的区别"></a>引用类型和值类型的区别</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 引用类型,因为class</span>
+<span class="token keyword">class</span> <span class="token class-name">SomeRef</span> <span class="token punctuation">{</span> <span class="token keyword">public</span> Int32 x<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 值类型</span>
+<span class="token keyword">struct</span> SomeVal<span class="token punctuation">{</span> <span class="token keyword">public</span> Int32 x<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">ValueTypeDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 图示左边部分</span>
+    SomeRef r1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SomeRef</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// 在堆上分配</span>
+    <span class="token comment" spellcheck="true">// 使用new看似是要在托管堆上分配实例,实际是C#编译器知道SomeVal是值类型</span>
+    <span class="token comment" spellcheck="true">// 所以会正确的生成IL代码,在线程栈上分配,</span>
+    <span class="token comment" spellcheck="true">// C#还会确保值类型中的所有字段都初始化为零.</span>
+    <span class="token comment" spellcheck="true">// SomeVal v1; 还可以这么写. 但是C#认为此处v1没有初始化.</span>
+    <span class="token comment" spellcheck="true">// 如果直接使用Int32 a = v1.x;将不能通过编译</span>
+    SomeVal v1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SomeVal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// 在栈上分配. 使用new操作符,C#会认为已经初始化.</span>
+    r1<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>                      <span class="token comment" spellcheck="true">// 提领指针</span>
+    v1<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>                      <span class="token comment" spellcheck="true">// 在栈上修改</span>
+
+    <span class="token comment" spellcheck="true">// 图示右边部分</span>
+    SomeRef r2 <span class="token operator">=</span> r1<span class="token punctuation">;</span>               <span class="token comment" spellcheck="true">// 只复制引用(指针)</span>
+    SomeVal v2 <span class="token operator">=</span> v1<span class="token punctuation">;</span>               <span class="token comment" spellcheck="true">// 在栈上分配并复制成员</span>
+    r1<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">;</span>                      <span class="token comment" spellcheck="true">// r1.x和r2.x都会更改</span>
+    v1<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>                      <span class="token comment" spellcheck="true">// v1.x会更改,v2.x不变,为5</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/07/16/5基元类型引用类型和值类型2/5-2.png" alt=""></p>
+<p>在代码中使用类型时, 必须注意是引用类型还是值类型,这会极大的影响在代码中表达自己意图的方式.</p>
+<h1 id="设计类型时-满足什么条件才声明为值类型"><a href="#设计类型时-满足什么条件才声明为值类型" class="headerlink" title="设计类型时,满足什么条件才声明为值类型?"></a>设计类型时,满足什么条件才声明为值类型?</h1><ol>
+<li>类型具有基元类型的行为. 是十分简单的类型,没有成员会修改类型的任何实例字段.<ul>
+<li>如果类型没有提供会更改字段的成员,就说该类型不可变(immutable).</li>
+</ul>
+</li>
+<li>类型不需要从其他任何类继承.</li>
+<li>类型也不派生出其他任何类型</li>
+</ol>
+<p>类型实例大小也应该在考虑范围内,因为<code>实参</code>默认以<code>值方式传递</code>,造成对值类型实例中的字段进行复制,影响性能.</p>
+<ol>
+<li>类型的实例较小(16字节或更小)</li>
+<li>类型的实例较大(大于16字节),但不作为方法实参传递,也不从方法返回</li>
+</ol>
+<h1 id="值类型的主要优势以及自身的局限"><a href="#值类型的主要优势以及自身的局限" class="headerlink" title="值类型的主要优势以及自身的局限"></a>值类型的主要优势以及自身的局限</h1><ol>
+<li><code>值类型</code>主要的优势是<strong>不作为对象在托管堆上分配</strong>.</li>
+<li><code>值类型</code>对象有两种表示形式: <code>未装箱</code>和<code>已装箱</code>.  引用类型总是处于<code>已装箱</code>形式.</li>
+<li><code>值类型</code>从<code>System.ValueType</code>派生. 该类型提供了与<code>System.Object</code>相同的方法,但重写了<code>Equals</code>方法,能在两个对象的字段值完全匹配的前提下返回true.还重写了GetHashCode方法.会将字段中的值都考虑在内.但是这个实现存在性能问题.所以定义自己的值类型时应该重写Equals和GetHashCode方法,并提供显式实现.</li>
+<li>由于不能将<code>值类型</code>作为基类或新的引用类型,所以不应当在值类型中引入任何新的虚方法,所有方法不能是抽象的,并且隐式密封不可重写.</li>
+<li><code>引用类型</code>的变量包含堆中对象的地址.引用类型的变量创建时默认初始化为<code>null</code>(表示当前不指向任何有效对象). 试图使用null引用时会报<code>NullReferenceException</code>异常.<code>值类型</code>的变量总是包含其基础类型的一个值.而<code>值类型</code>的初始化都为0. 值类型变量不是指针,不会报<code>NullReferenceException</code>异常.CLR允许为值类型添加<code>可空</code>标识.</li>
+<li>将<code>值类型</code>变量赋给另一个<code>值类型</code>变量,会执行<code>逐字段复制</code>. <code>引用类型</code>的变量赋给另一个<code>引用类型</code>的变量值<code>只复制内存地址</code>.</li>
+<li>两个或多个<code>引用类型</code>变量能引用堆中的同一对象,所以对一个变量操作可能会影响到另一个变量引用的对象.<code>值类型</code>则不会影响另一个值类型变量.</li>
+<li>由于<code>未装箱的值类型</code>不在堆上分配, 定义了该类型的实例的方法不再活动(变量的生命周期结束),为它们分配的栈存储就会被释放.</li>
+</ol>
+<h1 id="CLR如何控制类型中的字段布局"><a href="#CLR如何控制类型中的字段布局" class="headerlink" title="CLR如何控制类型中的字段布局?"></a>CLR如何控制类型中的字段布局?</h1><p>为了提高性能,CLR能按照它所选择的任何方式排列<code>类型的字段</code>. 例如:CLR可以在内存中重新安排<code>字段的顺序</code>,将对象引用分为一组,同时正确排列和填充数据字段.</p>
+<p>定义类型时,针对类型的各个字段,你可以告诉CLR按照指定的顺序排列,还是按照CLR自己认为合适的方式重新排列.</p>
+<h2 id="如何告诉CLR怎么排列"><a href="#如何告诉CLR怎么排列" class="headerlink" title="如何告诉CLR怎么排列?"></a>如何告诉CLR怎么排列?</h2><ol>
+<li>要为自己定义的类或结构应用<code>System.Runtime.InteropServices.StructLayoutAttribute</code>特性.<ul>
+<li>向该特性的构造器传递<code>LayoutKind.Auto</code>          : 让CLR自动排列字段.  </li>
+<li>顺序布局:传递<code>LayoutKind.Sequential</code>         : 让CLR保持你的字段布局.</li>
+<li>精确布局:传递<code>LayoutKind.Explicit</code>           : 指定每个字段的偏移量,利用偏移量在内存中显示排列字段.</li>
+</ul>
+</li>
+<li>如果不指定<code>StructLayoutAttribute</code>,则CLR按照自己的方式.</li>
+<li><strong>注意:C#编译器有默认设定:</strong><ul>
+<li>默认<code>引用类型</code>选择<code>LayoutKind.Auto</code></li>
+<li>默认<code>值类型</code>选择<code>LayoutKind.Sequential</code></li>
+<li>这是因为C#编译器团队认为和<code>非托管代码</code>互操作时会经常用到<code>结构</code>.为此,字段必须保持程序员定义的顺序.</li>
+<li>假如创建的值类型不与<code>非托管代码</code>互操作,就应该覆盖C#编译器的默认设定.</li>
+</ul>
+</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>InteropServices<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 让CLR自动排列字段以增强这个值类型的性能</span>
+<span class="token comment" spellcheck="true">// 覆盖掉C#编译器默认的`LayoutKind.Sequential`设置</span>
+<span class="token punctuation">[</span><span class="token function">StructLayout</span><span class="token punctuation">(</span>LayoutKind<span class="token punctuation">.</span>Auto<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">internal</span> <span class="token keyword">struct</span> SomeValType
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> Byte m_b<span class="token punctuation">;</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="LayoutKind-Explicit说明"><a href="#LayoutKind-Explicit说明" class="headerlink" title="LayoutKind.Explicit说明"></a>LayoutKind.Explicit说明</h3><p>构造器传递了<code>LayoutKind.Explicit</code>之后, 要向值类型中的每个字段都应用<code>System.Runtime.InteropServices.FieldOffsetAttribute</code>特性的实例.并且向该特性传递Int32值来指出字段第一个字节距离实例起始处的偏移量(以字节为单位).  </p>
+<p>显示布局常用来模拟非托管C/C++中的<code>union</code>,因为多个字段可起始于内存的相同偏移位置.</p>
+<p>注意在类型中:一个引用类型和一个值类型互相重叠是不合法的.多个值类型相互重叠则是合法的.为了是这样的类型能够验证,所有重叠字节都必须能通过公共字段访问.</p>
+<blockquote>
+<p>union是特殊类,union中的数据成员在内存中的存储是相互重叠.每个数据成员都从相同的内存地址开始.<br>分配给union的存储区数量是包含它最大数据成员所需的内存数, 同一时刻只有一个成员可以被赋值.<br>（1）同一个内存段可以用来存放几种不同类型的成员，但在每一个时刻只能存在其中一种，而不能同时存放几种，即每一瞬间只有一个成员起作用，其它的成员不起作用，不能同时都存在和起作用；<br>（2）共用体变量中起作用的成员是最后一个存放的成员，在存入一个新的成员后，原有的成员就会失去作用，即所有的数据成员具有相同的起始地址。<br>（3）union和struct都是由多个不同的数据成员组成，但是union所有成员共享一段内存地址，只存放最后一次赋值的成员值，而struct可以存放所以有成员的值。<br>（4）union的大小是所有成员中所占内存最大的成员的大小，struct是所有成员的大小的“和”。</p>
+</blockquote>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>InteropServices<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 让开发人员显示排列这个值类型的字段</span>
+<span class="token punctuation">[</span><span class="token function">StructLayout</span><span class="token punctuation">(</span>LayoutKind<span class="token punctuation">.</span>Explicit<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">internal</span> <span class="token keyword">struct</span> SomeValType
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token function">FieldOffset</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> Byte m_b<span class="token punctuation">;</span><span class="token comment" spellcheck="true">// m_b和m_x字段在该类型的实例中相互重叠</span>
+
+    <span class="token punctuation">[</span><span class="token function">FieldOffset</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> Int16 m_x<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// m_b和m_x字段在该类型的实例中相互重叠</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="值类型的装箱和拆箱"><a href="#值类型的装箱和拆箱" class="headerlink" title="值类型的装箱和拆箱"></a>值类型的装箱和拆箱</h1><p>值类型不作为对象在托管堆中分配,不被垃圾回收,也不通过指针进行引用.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">;</span>
+
+<span class="token keyword">namespace</span> ConsoleApp1
+<span class="token punctuation">{</span>
+    <span class="token keyword">struct</span> Point<span class="token punctuation">{</span><span class="token keyword">public</span> Int32 x<span class="token punctuation">,</span> y<span class="token punctuation">;</span><span class="token punctuation">}</span>
+    <span class="token keyword">class</span> <span class="token class-name">Program</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            ArrayList a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Point p<span class="token punctuation">;</span>                        <span class="token comment" spellcheck="true">// 分配一个Point,不在堆中分配</span>
+            <span class="token comment" spellcheck="true">// 每次迭代都初始化一个`Point值类型字段`, 并将该Point存储到ArrayList中.</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                p<span class="token punctuation">.</span>x <span class="token operator">=</span> p<span class="token punctuation">.</span>y <span class="token operator">=</span> i<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">// 初始化值类型中的成员</span>
+                a<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token comment" spellcheck="true">// 对值类型进行装箱,将引用添加到ArrayList中</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="ArrayList中究竟存储了什么-是Point结构还是Point结构的地址"><a href="#ArrayList中究竟存储了什么-是Point结构还是Point结构的地址" class="headerlink" title="ArrayList中究竟存储了什么? 是Point结构还是Point结构的地址?"></a>ArrayList中究竟存储了什么? 是Point结构还是Point结构的地址?</h2><p>想要知道答案需要研究ArrayList的Add方法.</p>
+<p>Add方法原型:<code>public virtual Int32 Add(object value);</code></p>
+<ol>
+<li>参数是<code>object</code>,也就是说Add获取对托管堆上的一个对象的引用(指针)来作为参数.</li>
+<li>a.Add(p); 之前的代码传递的是Point,是值类型.</li>
+<li>为了使代码正确工作,Point值类型必须转换成真正的,在堆中托管的对象,而且必须获取对该对象的引用</li>
+<li>对<code>值类型</code>转成<code>引用类型</code>要使用<code>装箱机制</code>.</li>
+</ol>
+<h2 id="装箱机制发生的事情"><a href="#装箱机制发生的事情" class="headerlink" title="装箱机制发生的事情"></a>装箱机制发生的事情</h2><ol>
+<li>在托管<code>堆</code>中分配内存. 分配的内存是值类型各字段所需的内存量(还要加上托管堆所有对象都有的两个额外成员:类型对象指针和同步块索引所需的内存量).</li>
+<li><strong>值类型的字段复制到新分配的堆内存.</strong></li>
+<li>返回对象地址, 现在该地址是对象引用:值类型成了引用类型.</li>
+</ol>
+<p>在托管堆中分配相应的内存.  </p>
+<p><strong>C#编译器自动生成对值类型实例进行装箱所需的IL代码.</strong> 但是仍需要理解内部的工作机制才能体会到代码的大小和性能问题.</p>
+<p>在运行时,当前存在于<code>Point值类型实例p</code>中的字段复制到<code>新分配的Point对象</code>中. 已装箱<code>Point对象</code>(现在是引用类型)的地址传给Add方法. <code>Point对象</code>一直存在于堆中,直至被垃圾回收.</p>
+<blockquote>
+<p>FCL现在包含一组新的泛型集合类, 非泛型集合类已经是过时的东西.<br>例如:应该使用<code>System.Collections.Generic.List&lt;T&gt;</code>类而不是<code>System.Collections.ArrayList</code>类.<br><code>泛型集合类</code>对<code>非泛型集合类</code>进行了大量改进.</p>
+<ol>
+<li>API得到简化和增强,性能也得到显著提升</li>
+<li>允许开发人员在操作<code>值类型的集合</code>时不需要对<code>集合中的项</code>进行<code>装箱/拆箱</code></li>
+<li>开发人员还获得编译时的类型安全性, 减少强制类型转换次数.</li>
+</ol>
+</blockquote>
+<h2 id="拆箱机制"><a href="#拆箱机制" class="headerlink" title="拆箱机制"></a>拆箱机制</h2><p>要从上面代码中的<code>ArrayList a</code>取第一个元素.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Point p <span class="token operator">=</span> <span class="token punctuation">(</span>Point<span class="token punctuation">)</span>a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ol>
+<li>它获取ArrayList的元素0包含的引用(指针), 试图放到<code>Point值类型</code>的实例p中.</li>
+<li>为此,<code>已装箱Point对象</code>中的所有字段都必须复制到<code>值类型变量</code>p中. 后者在<code>线程栈</code>上.</li>
+<li>CLR分两步完成复制<ul>
+<li>第一步: 获取<code>已装箱Point对象</code>的<code>各个Point字段</code>的地址.  <strong>← 此过程称为拆箱.</strong></li>
+<li>第二步: 将字段包含的值从<code>堆</code>复制到<code>栈</code>的值类型实例中.</li>
+</ul>
+</li>
+</ol>
+<p>拆箱不是直接将装箱过程倒过来, <strong>装箱的代价被拆箱高得多.</strong></p>
+<ol>
+<li>拆箱就是获取指针的过程.</li>
+<li><strong>拆箱不要求在内存中复制任何字节. 指针指向的是已装箱实例中的未装箱部分.</strong></li>
+<li>拆箱操作后紧接着一次字段复制.</li>
+</ol>
+<h3 id="已装箱值类型在拆箱时的过程"><a href="#已装箱值类型在拆箱时的过程" class="headerlink" title="已装箱值类型在拆箱时的过程"></a>已装箱值类型在拆箱时的过程</h3><ol>
+<li>如果包含”对已装箱值类型实例的引用”的变量为null,抛出NullReferenceException.<ul>
+<li><code>Point p = (Point)a[0];// a为null时</code></li>
+</ul>
+</li>
+<li>如果引用的对象不是所需值类型的已装箱实例,抛出InvalidCastException.</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  Int32 x <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+  <span class="token keyword">object</span> o <span class="token operator">=</span> x<span class="token punctuation">;</span>              <span class="token comment" spellcheck="true">// 对x装箱,o引用已装箱对象</span>
+  <span class="token comment" spellcheck="true">// 在对对象进行拆箱时,只能转型为最初未装箱的值类型(本例是Int32)</span>
+  <span class="token comment" spellcheck="true">// 所以以下写法会抛出异常</span>
+  Int16 y <span class="token operator">=</span> <span class="token punctuation">(</span>Int16<span class="token punctuation">)</span>o<span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">// 抛出InvalidCastException.</span>
+
+  <span class="token comment" spellcheck="true">// 正确写法</span>
+  Int16 y <span class="token operator">=</span> <span class="token punctuation">(</span>Int16<span class="token punctuation">)</span><span class="token punctuation">(</span>Int32<span class="token punctuation">)</span>o<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 先拆箱为正确类型,再转型</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="拆箱和复制例子"><a href="#拆箱和复制例子" class="headerlink" title="拆箱和复制例子"></a>拆箱和复制例子</h4><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  Point p<span class="token punctuation">;</span>
+  p<span class="token punctuation">.</span>x <span class="token operator">=</span> p<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+  Object o <span class="token operator">=</span> p<span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// 对p装箱;  o引用已装箱实例</span>
+
+  <span class="token comment" spellcheck="true">// 将Point的x字段变成2</span>
+  p <span class="token operator">=</span> <span class="token punctuation">(</span>Point<span class="token punctuation">)</span>o<span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// 对o拆箱, 将字段从已装箱的实例复制到[栈]变量中 (复制所有字段)</span>
+  p<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">// 更新[栈]变量的状态</span>
+  o <span class="token operator">=</span> p<span class="token punctuation">;</span>          <span class="token comment" spellcheck="true">// 对p装箱;o引用新的已装箱实例 (复制所有字段)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>首先进行一次拆箱,再执行一次字段复制(到栈变量中),最后再执行一次装箱(在托管堆上创建全新的已装箱实例).</p>
+<p>这个过程对应用程序性能影响较大.</p>
+<blockquote>
+<p>此段代码用C++/CLI来写,效率会高很多,因为它允许在不复制字段的前提下,对已装箱的值类型进行拆箱,拆箱返回的是已装箱对象中的未装箱部分的地址(忽略对象的类型对象指针和同步索引块这两个额外成员),接着可以用这个指针来操作未装箱实例的字段(这些字段恰好在堆上的已装箱对象中).<br>C++/CLI直接在已装箱Point实例中修改Point的x字段的值. 就这避免了在堆上分配新对象和复制字段两次.</p>
+</blockquote>
+<h3 id="从IL代码查看编译器隐式生成的装箱代码"><a href="#从IL代码查看编译器隐式生成的装箱代码" class="headerlink" title="从IL代码查看编译器隐式生成的装箱代码"></a>从IL代码查看编译器隐式生成的装箱代码</h3><p>如果关心特定算法的性能,可以用ILDasm.exe这样的工具查看方法的IL代码,观察IL指令box都在哪些地方出现.</p>
+<h4 id="例子一"><a href="#例子一" class="headerlink" title="例子一"></a>例子一</h4><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 以下代码发生了3次装箱</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  Int32 v <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 值类型变量</span>
+  <span class="token keyword">object</span> o <span class="token operator">=</span> v<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 一次装箱</span>
+  v <span class="token operator">=</span> <span class="token number">123</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 将未装箱的值修改为123</span>
+
+  Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>v <span class="token operator">+</span> <span class="token string">","</span> <span class="token operator">+</span> <span class="token punctuation">(</span>Int32<span class="token punctuation">)</span> o <span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 显示123,5</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>解析:</p>
+<ol>
+<li>首先在栈上创建一个Int32未装箱值类型实例<code>v</code> , 将其初始化为5.</li>
+<li>创建Object类型的变量<code>o</code>, 让它指向<code>v</code>.<ul>
+<li>因为<code>引用类型的变量</code>始终是指向<code>堆</code>中的对象,所以C#生成正确的IL代码对<code>v</code>进行装箱,(复制所有字段到堆中)</li>
+<li>让<code>v</code>的已装箱拷贝的地址存储到<code>o</code>中.</li>
+</ul>
+</li>
+<li>接着,值123被放到<code>未装箱值类型</code>实例<code>v</code>中, 但这个操作不会影响已装箱的Int32,后者值依然是5.</li>
+<li>接着调用WriteLine方法, 由于方法需要string对象作为参数,编辑器选择Concat的重载版本去实现3个参数的合并</li>
+<li><code>Concat(object,object,object)</code><ul>
+<li>第一个参数传递v(未装箱的值参数),需要进行装箱操作</li>
+<li>第二个参数”,”,作为string对象,引用传递.</li>
+<li>第三个参数,<code>(Int32) o</code>, 先进行拆箱(但不紧接着执行复制),获取到在已装箱Int32中的未装箱Int32的地址.这个未装箱的Int32实例必须再次装箱. 将实例的内存地址传给arg2参数</li>
+</ul>
+</li>
+<li>Concat方法调用每个对象的ToString方法,将每个对象的字符串连接起来.返给给WriteLine方法以最终显示.</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">.</span>method <span class="token keyword">private</span> hidebysig <span class="token keyword">static</span> <span class="token keyword">void</span>  <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> cil managed
+<span class="token punctuation">{</span>
+  <span class="token punctuation">.</span>entrypoint
+  <span class="token comment" spellcheck="true">// 代码大小       47 (0x2f)</span>
+  <span class="token punctuation">.</span>maxstack  <span class="token number">3</span>
+  <span class="token punctuation">.</span>locals <span class="token function">init</span> <span class="token punctuation">(</span>int32 V_0<span class="token punctuation">,</span>
+           <span class="token keyword">object</span> V_1<span class="token punctuation">)</span>
+  IL_0000<span class="token punctuation">:</span>  nop       <span class="token comment" spellcheck="true">// nop:没有什么意义；</span>
+
+  <span class="token comment" spellcheck="true">// Int32 v = 5;</span>
+  IL_0001<span class="token punctuation">:</span>  ldc<span class="token punctuation">.</span>i4<span class="token number">.5</span>  <span class="token comment" spellcheck="true">// Ldc.I4 将所提供的 int32 类型的值作为 int32 推送到计算堆栈上。</span>
+  IL_0002<span class="token punctuation">:</span>  stloc<span class="token number">.0</span>   <span class="token comment" spellcheck="true">//从计算堆栈的顶部弹出当前值并将其存储到索引 0 处的局部变量列表中。</span>
+
+  <span class="token comment" spellcheck="true">// object o = v;</span>
+  <span class="token comment" spellcheck="true">// 局部变量object o,位置设定为索引0</span>
+  IL_0003<span class="token punctuation">:</span>  ldloc<span class="token number">.0</span>   <span class="token comment" spellcheck="true">//将索引 0 处的局部变量加载到计算堆栈上。</span>
+  IL_0004<span class="token punctuation">:</span>  box        <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Int32  <span class="token comment" spellcheck="true">// 将值类转换为对象引用（O 类型）。</span>
+  IL_0009<span class="token punctuation">:</span>  stloc<span class="token number">.1</span>   <span class="token comment" spellcheck="true">//从计算堆栈的顶部弹出当前值并将其存储到索引 1 处的局部变量列表中。</span>
+
+  <span class="token comment" spellcheck="true">// v = 123;</span>
+  IL_000a<span class="token punctuation">:</span>  ldc<span class="token punctuation">.</span>i4<span class="token punctuation">.</span>s   <span class="token number">123</span>  <span class="token comment" spellcheck="true">// 将提供的 int8 值作为 int32 推送到计算堆栈上（短格式）。</span>
+  IL_000c<span class="token punctuation">:</span>  stloc<span class="token number">.0</span>
+
+  <span class="token comment" spellcheck="true">// Console.WriteLine(v + "," + (Int32) o );</span>
+  <span class="token comment" spellcheck="true">// 在WriteLine方法参数(object引用类型)中, 会对值类型的v产生装箱操作</span>
+  IL_000d<span class="token punctuation">:</span>  ldloc<span class="token number">.0</span>
+  IL_000e<span class="token punctuation">:</span>  box        <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Int32
+  IL_0013<span class="token punctuation">:</span>  ldstr      <span class="token string">","</span>    <span class="token comment" spellcheck="true">// 推送对元数据中存储的字符串的新对象引用。</span>
+
+  <span class="token comment" spellcheck="true">// Console.WriteLine(v + "," + (Int32) o );</span>
+  <span class="token comment" spellcheck="true">// (Int32) o 拆箱操作,拆成原始的Int32值类型.</span>
+  IL_0018<span class="token punctuation">:</span>  ldloc<span class="token number">.1</span>
+  IL_0019<span class="token punctuation">:</span>  unbox<span class="token punctuation">.</span>any  <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Int32
+  <span class="token comment" spellcheck="true">// 由于被作为WriteLine方法参数(object引用类型), 再进行装箱操作</span>
+  IL_001e<span class="token punctuation">:</span>  box        <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Int32
+  <span class="token comment" spellcheck="true">// 调用string的Concat方法连接字符串</span>
+  IL_0023<span class="token punctuation">:</span>  call       <span class="token keyword">string</span> <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">]</span>System<span class="token punctuation">.</span>String<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">Concat</span><span class="token punctuation">(</span><span class="token keyword">object</span><span class="token punctuation">,</span><span class="token keyword">object</span><span class="token punctuation">,</span><span class="token keyword">object</span><span class="token punctuation">)</span>
+  <span class="token comment" spellcheck="true">// 将Concat返回的string 传给WriteLine方法</span>
+  IL_0028<span class="token punctuation">:</span>  call       <span class="token keyword">void</span> <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Console<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Console<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">)</span>
+  IL_002d<span class="token punctuation">:</span>  nop
+
+  <span class="token comment" spellcheck="true">// 从Main返回,终止应用程序</span>
+  IL_002e<span class="token punctuation">:</span>  ret
+<span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// end of method Program::Main</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果改进一下,如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 此处如果修改成如下代码,效率更高,避免了2次操作:一次装箱一次拆箱</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>v <span class="token operator">+</span> <span class="token string">","</span> <span class="token operator">+</span> o <span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 显示123,5</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>对比一下IL代码</p>
+<ol>
+<li>比之前版本小了10个字节. 第一个版本<code>额外的拆箱/装箱</code>显然会产生更多的代码. 额外的装箱操作步骤会从托管堆中分配一个额外的对象, 将来对其进行垃圾回收.</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">.</span>method <span class="token keyword">private</span> hidebysig <span class="token keyword">static</span> <span class="token keyword">void</span>  <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> cil managed
+<span class="token punctuation">{</span>
+  <span class="token punctuation">.</span>entrypoint
+  <span class="token comment" spellcheck="true">// 代码大小       37 (0x25)</span>
+  <span class="token punctuation">.</span>maxstack  <span class="token number">3</span>
+  <span class="token punctuation">.</span>locals <span class="token function">init</span> <span class="token punctuation">(</span>int32 V_0<span class="token punctuation">,</span>
+           <span class="token keyword">object</span> V_1<span class="token punctuation">)</span>
+  IL_0000<span class="token punctuation">:</span>  nop
+  IL_0001<span class="token punctuation">:</span>  ldc<span class="token punctuation">.</span>i4<span class="token number">.5</span>
+  IL_0002<span class="token punctuation">:</span>  stloc<span class="token number">.0</span>
+  IL_0003<span class="token punctuation">:</span>  ldloc<span class="token number">.0</span>
+  IL_0004<span class="token punctuation">:</span>  box        <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Int32
+  IL_0009<span class="token punctuation">:</span>  stloc<span class="token number">.1</span>
+  IL_000a<span class="token punctuation">:</span>  ldc<span class="token punctuation">.</span>i4<span class="token punctuation">.</span>s   <span class="token number">123</span>
+  IL_000c<span class="token punctuation">:</span>  stloc<span class="token number">.0</span>
+  IL_000d<span class="token punctuation">:</span>  ldloc<span class="token number">.0</span>
+  IL_000e<span class="token punctuation">:</span>  box        <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Int32
+  IL_0013<span class="token punctuation">:</span>  ldstr      <span class="token string">","</span>
+  IL_0018<span class="token punctuation">:</span>  ldloc<span class="token number">.1</span>
+  IL_0019<span class="token punctuation">:</span>  call       <span class="token keyword">string</span> <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">]</span>System<span class="token punctuation">.</span>String<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">Concat</span><span class="token punctuation">(</span><span class="token keyword">object</span><span class="token punctuation">,</span><span class="token keyword">object</span><span class="token punctuation">,</span><span class="token keyword">object</span><span class="token punctuation">)</span>
+  IL_001e<span class="token punctuation">:</span>  call       <span class="token keyword">void</span> <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Console<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Console<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">)</span>
+  IL_0023<span class="token punctuation">:</span>  nop
+  IL_0024<span class="token punctuation">:</span>  ret
+<span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// end of method Program::Main</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>进一步提升代码的性能:</p>
+<p><strong>v.ToString(),返回是的String,是引用类型,不需要装箱,减少一个装箱操作.</strong></p>
+<p><code>Console.WriteLine(v.ToString() + &quot;,&quot; + (Int32) o );</code></p>
+<p>对应的IL代码则是: <code>IL_000f:  call       instance string [System.Runtime]System.Int32::ToString()</code></p>
+<h4 id="例子二"><a href="#例子二" class="headerlink" title="例子二"></a>例子二</h4><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 以下代码只发生了一次装箱.</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 v <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 装箱</span>
+    Object o <span class="token operator">=</span> v<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 修改栈, 不影响已装箱的o</span>
+    v <span class="token operator">=</span> <span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// public static void WriteLine(int value)</span>
+    <span class="token comment" spellcheck="true">// 方法WriteLine是传值的方式,不需要装箱</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 123</span>
+    <span class="token comment" spellcheck="true">// 拆箱</span>
+    v <span class="token operator">=</span> <span class="token punctuation">(</span>Int32<span class="token punctuation">)</span> o<span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 5</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="FCL重载了很多常用值类型的方法-减少常用值类型的装箱次数"><a href="#FCL重载了很多常用值类型的方法-减少常用值类型的装箱次数" class="headerlink" title="FCL重载了很多常用值类型的方法,减少常用值类型的装箱次数"></a>FCL重载了很多常用值类型的方法,减少常用值类型的装箱次数</h3><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">double</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">float</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>大多数方法进行重载唯一的目的就是减少常用值类型的装箱次数.</strong></p>
+<p>但是FCL不可能接受你自己定义的值类型. 也可能FCL没有提供对应的重载版本,那调用方法传递值类型参数时,就是调用Object参数的重载版本. 将值类型实例作为Object传递会造成装箱.</p>
+<p>定义自己的类时, 可将类中的方法定义为泛型(通过泛型约束将类型参数限制为值类型), 这样方法就可以获取任何值类型而不必装箱.</p>
+<h4 id="例子三-如果要反复对一个值类型装箱-请改为手动方式"><a href="#例子三-如果要反复对一个值类型装箱-请改为手动方式" class="headerlink" title="例子三(如果要反复对一个值类型装箱,请改为手动方式)"></a>例子三(如果要反复对一个值类型装箱,请改为手动方式)</h4><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 v <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// v会被装箱3次,浪费时间和内存</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"{v}+{v}+{v}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 对v手动装箱一次</span>
+    Object o <span class="token operator">=</span> v<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 编译下一行不会发生装箱行为</span>
+    <span class="token comment" spellcheck="true">// 内存利用还是执行速度都比上一段代码更胜一筹</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"{o}+{o}+{o}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
