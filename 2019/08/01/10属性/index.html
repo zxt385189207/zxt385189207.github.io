@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#属性"><span class="toc-text">属性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#无参属性"><span class="toc-text">无参属性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#属性是用来干嘛的-解决了什么问题"><span class="toc-text">属性是用来干嘛的?解决了什么问题?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#属性的用法"><span class="toc-text">属性的用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自动实现的属性-AIP"><span class="toc-text">自动实现的属性(AIP)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#自动实现的属性-AIP-不建议使用的理由"><span class="toc-text">自动实现的属性(AIP)不建议使用的理由:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#属性字段差别列表"><span class="toc-text">属性字段差别列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象和集合初始化器"><span class="toc-text">对象和集合初始化器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#匿名类型"><span class="toc-text">匿名类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#匿名类经常与LINQ-语言集成查询-配合使用"><span class="toc-text">匿名类经常与LINQ(语言集成查询)配合使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tuple类型"><span class="toc-text">Tuple类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#除了匿名类型和Tuple类型-ExpandoObject类和dynamic配合使用"><span class="toc-text">除了匿名类型和Tuple类型,ExpandoObject类和dynamic配合使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#有参属性-索引器"><span class="toc-text">有参属性(索引器)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#如果会有其他语言的代码访问索引器-可能需要更改get-set方法名称"><span class="toc-text">如果会有其他语言的代码访问索引器,可能需要更改get/set方法名称</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引器注意事项"><span class="toc-text">索引器注意事项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#调用访问器方法时的性能"><span class="toc-text">调用访问器方法时的性能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#属性访问器的可访问性"><span class="toc-text">属性访问器的可访问性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型属性访问器方法"><span class="toc-text">泛型属性访问器方法</span></a></li></ol></li></ol>
 </div>
 
     
@@ -139,7 +139,315 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        
+        <h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><p>CLR支持两种属性:</p>
+<ol>
+<li>无参属性</li>
+<li>索引器</li>
+</ol>
+<h1 id="无参属性"><a href="#无参属性" class="headerlink" title="无参属性"></a>无参属性</h1><h2 id="属性是用来干嘛的-解决了什么问题"><a href="#属性是用来干嘛的-解决了什么问题" class="headerlink" title="属性是用来干嘛的?解决了什么问题?"></a>属性是用来干嘛的?解决了什么问题?</h2><ol>
+<li>面向数对象设计重要原则之一,数据封装. 意味着类型的字段永远不应该公开.否则很容易因为不恰当的使用而破坏对象的状态.<ol>
+<li>例如 <code>e.Age = -1; //年龄不可能为负数</code> ;</li>
+</ol>
+</li>
+<li>设置为私有字段private后,要修改字段添加<code>访问器(accessor)方法</code>,这样就要编写额外的方法</li>
+<li>调用方法不能直接引用字段名,需要调用方法名<ol>
+<li>例如 <code>e.SetAge(2);</code></li>
+</ol>
+</li>
+</ol>
+<p>为了解决以上问题,C#提供了<code>属性property</code>机制.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">string</span> name<span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token keyword">int</span> age<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">string</span> Name
+<span class="token punctuation">{</span>
+    <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> name<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">set</span> <span class="token punctuation">{</span> name <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span> Age
+<span class="token punctuation">{</span>
+    <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> age<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">set</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>age <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> age <span class="token operator">></span> <span class="token number">200</span><span class="token punctuation">)</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentOutOfRangeException</span><span class="token punctuation">(</span><span class="token string">"age不在正常范围"</span><span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        age <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">/// 调用时,可以直接引用字段名</span>
+e<span class="token punctuation">.</span>Name <span class="token operator">=</span> <span class="token string">"aaaa"</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="属性的用法"><a href="#属性的用法" class="headerlink" title="属性的用法"></a>属性的用法</h2><ol>
+<li>支持静态,实例,抽象,虚属性.</li>
+<li>可以用任意<code>可访问性</code>来修饰<code>get/set</code>.</li>
+<li>属性不能重载,即不能定义名称相同,类型不同的属性.</li>
+<li><code>只读属性</code>: 只写get标识; <code>只写属性</code>:只写set标识</li>
+<li>set方法中包含隐藏参数叫做<code>value</code>，表示赋给属性的值。</li>
+</ol>
+<blockquote>
+<p>私有字段 通常被称为支持字段.</p>
+</blockquote>
+<h2 id="自动实现的属性-AIP"><a href="#自动实现的属性-AIP" class="headerlink" title="自动实现的属性(AIP)"></a>自动实现的属性(AIP)</h2><p>如果只为一个私有字段而创建属性,C#提供了更简洁的语法.称为<code>AIP(Automatiocally Implemented Property)</code>.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 声明属性不需要提供get/set的实现, C#会自动声明一个私有字段</span>
+<span class="token keyword">public</span> <span class="token keyword">string</span> Name<span class="token punctuation">{</span><span class="token keyword">set</span><span class="token punctuation">;</span><span class="token keyword">get</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="自动实现的属性-AIP-不建议使用的理由"><a href="#自动实现的属性-AIP-不建议使用的理由" class="headerlink" title="自动实现的属性(AIP)不建议使用的理由:"></a>自动实现的属性(AIP)不建议使用的理由:</h3><ol>
+<li>没有简单的语法初始化AIP,要在构造器中显式初始化每个AIP</li>
+<li>AIP的私有字段名称有编译器决定,每次重新编译都可能会更改这个名称.因此,<strong>任何类型只要含有AIP就没办法对该类型进行反序列化</strong>. 所以在想要序列化的类中不要使用AIP功能.</li>
+<li>调用时不能再get/set上设置断点.手动实现属性方法可以设置.</li>
+<li>AIP属性必然是可读可写的.</li>
+<li>get或set方法,如果要显式实现,那么两个方法都要显式实现,不能一个自动一个显式.</li>
+</ol>
+<h2 id="属性字段差别列表"><a href="#属性字段差别列表" class="headerlink" title="属性字段差别列表"></a>属性字段差别列表</h2><ol>
+<li>属性索引器不得作为out或ref参数传递,字段可以.</li>
+<li>属性看起来和字段相似,但是本质上是方法.</li>
+<li>属性方法可能抛出异常;字段访问永远不会.</li>
+<li><strong>线程同步不要使用属性,要使用方法.</strong> 属性方法可能花较长时间执行,字段访问总是立即完成.</li>
+<li>属性可以只读或者只写, 字段访问总是可读或可写(一个例外是readonly字段仅在构造器中可写).</li>
+</ol>
+<p><strong>属性的唯一好处是提供了简化的语法.</strong></p>
+<h2 id="对象和集合初始化器"><a href="#对象和集合初始化器" class="headerlink" title="对象和集合初始化器"></a>对象和集合初始化器</h2><p>构造对象并设置对象的一些公共属性,为了简化这个常见的编程模式,使用下面这个语法:</p>
+<p><code>Employee e = new Employee(){ Name = &quot;Jeff&quot;, Age = 45 };</code></p>
+<p>等同于</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Employee e <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Employee</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+e<span class="token punctuation">.</span>Name <span class="token operator">=</span> <span class="token string">"Jeff"</span><span class="token punctuation">;</span>
+e<span class="token punctuation">.</span>Age <span class="token operator">=</span> <span class="token number">45</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>允许组合多个函数,增强了可读性.(函数的组合使用:扩展方法)</p>
+<p><code>Employee e = new Employee(){ Name = &quot;Jeff&quot;, Age = 45 }.ToString.ToUpper();</code></p>
+<blockquote>
+<p>要用无参构造函数,可以省略大括号前的圆括号,<code>new Employee { Name = &quot;Jeff&quot;, Age = 45 }</code></p>
+</blockquote>
+<p><strong>如果类型的属性实现了IEnumerable或IEnumerable<t>接口, 属性就被认为是集合.</t></strong></p>
+<p>集合的初始化是一种<code>相加(additive)</code>操作,而不是<code>替换(replacement)</code>操作.</p>
+<ul>
+<li>编译器会假定属性类型提供了Add方法,然后生成代码来<code>调用Add方法</code>.</li>
+<li>如果属性类型<code>未提供Add方法</code>,则不允许使用集合初始化语法.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        MyClass mc <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            MStudent <span class="token operator">=</span>
+            <span class="token punctuation">{</span>
+                <span class="token string">"A"</span><span class="token punctuation">,</span>
+                <span class="token string">"B"</span><span class="token punctuation">,</span>
+                <span class="token string">"C"</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> student <span class="token keyword">in</span> mc<span class="token punctuation">.</span>MStudent<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>student<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">MyClass</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 私有字段</span>
+    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>String<span class="token operator">></span> m_Student <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 只读属性</span>
+    <span class="token keyword">public</span> List<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> MStudent
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// C#7 方法体表达式</span>
+        <span class="token comment" spellcheck="true">// constructors, finalizers, get, set</span>
+        <span class="token comment" spellcheck="true">// get只读</span>
+        <span class="token keyword">get</span> <span class="token operator">=</span><span class="token operator">></span> m_Student<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token function">MyClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="匿名类型"><a href="#匿名类型" class="headerlink" title="匿名类型"></a>匿名类型</h1><p>利用C#的匿名类功能,可以用很简洁的语法来自动声明不可变的元组类型.</p>
+<ul>
+<li><code>元组类型</code>:是含有<code>一组属性</code>的类型.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 没有在new后指定类型名称,编译器会自动创建类型名称</span>
+<span class="token comment" spellcheck="true">// 因为不知道类型名称,也就不知道o1声明的是什么类型</span>
+<span class="token comment" spellcheck="true">// 可以像var</span>
+<span class="token keyword">var</span> o1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"aa"</span><span class="token punctuation">,</span> Year <span class="token operator">=</span> <span class="token number">1989</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// Nameaa,Year1989.</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Name{0},Year{1}."</span><span class="token punctuation">,</span>o1<span class="token punctuation">.</span>Name<span class="token punctuation">,</span>o1<span class="token punctuation">.</span>Year<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+String Name <span class="token operator">=</span> <span class="token string">"B"</span><span class="token punctuation">;</span>
+DateTime dt <span class="token operator">=</span> DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 还可以这么写</span>
+<span class="token keyword">var</span> o2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token punctuation">{</span> Name<span class="token punctuation">,</span> dt<span class="token punctuation">.</span>Year <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>编译器会推断每个<code>表达式</code>的类型.</li>
+<li>创建推断类型的<code>私有字段</code>.</li>
+<li>为每个字段创建<code>公共只读属性</code>.</li>
+<li>创建一个<code>构造器</code>来接受所有这些表达式.<ol>
+<li>在构造器代码中, 会用传给它的<code>表达式的求值结果来初始化私有只读字段</code>.</li>
+</ol>
+</li>
+<li>编译器还会重写Object的Equals,GetHashCode和ToString方法.<ol>
+<li>任何字段不匹配就返回false,否则true.</li>
+<li>返回根据每个字段的哈希码生成的一个哈希码.</li>
+<li>返回”属性名=值”对的以逗号分隔的列表.</li>
+</ol>
+</li>
+<li>匿名类的属性是只读的. 防止对象的哈希码发生改变.如果以哈希码为键,更改了哈希码,这就造成再也找不到它.</li>
+</ol>
+<p>编译器在定义匿名类型时, 如果定义了多个匿名类型,而且这些类型具有相同的结构,那么它只会创建一个匿名类型定义.</p>
+<h2 id="匿名类经常与LINQ-语言集成查询-配合使用"><a href="#匿名类经常与LINQ-语言集成查询-配合使用" class="headerlink" title="匿名类经常与LINQ(语言集成查询)配合使用"></a>匿名类经常与LINQ(语言集成查询)配合使用</h2><p>可以用LINQ执行查询,从而生成由一组对象构成的集合. 这些对象都是相同的匿名类型.</p>
+<ul>
+<li>匿名类型不能泄露到方法外部.</li>
+<li>方法也不能返回对匿名类的引用,<ul>
+<li>虽然可以将匿名类视为Object,但是没法将Object类的变量转型回匿名类.因为不知道匿名类在编译时的名称.</li>
+</ul>
+</li>
+</ul>
+<h1 id="Tuple类型"><a href="#Tuple类型" class="headerlink" title="Tuple类型"></a>Tuple类型</h1><p>和匿名类型相似,</p>
+<ul>
+<li><code>Tuple</code>创建好之后就<code>不可变</code>了,</li>
+<li><code>所有属性只读</code>.</li>
+<li>提供了CompareTo,Equals,GetHashCode和ToString方法,以及Size属性,</li>
+<li>可以比较两个Tuple对象,对他们的字段进行比对.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">CLRTuple</span>
+ <span class="token punctuation">{</span>
+     <span class="token keyword">private</span> <span class="token keyword">static</span> Tuple<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span> <span class="token function">MinMax</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Tuple</span><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">Min</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">,</span> Math<span class="token punctuation">.</span><span class="token function">Max</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+     <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">TupleTypes</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+     <span class="token punctuation">{</span>
+         <span class="token keyword">var</span> minmax <span class="token operator">=</span> <span class="token function">MinMax</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token comment" spellcheck="true">// Tuple类型,属性一律被称为Item#,无法进行改变</span>
+         <span class="token comment" spellcheck="true">// 应该在自己的代码中添加详细的注释,说明每个Item#代表着是什么</span>
+         Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Min{0}Max{1}"</span><span class="token punctuation">,</span> minmax<span class="token punctuation">.</span>Item1<span class="token punctuation">,</span> minmax<span class="token punctuation">.</span>Item2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+ <span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 当需要创建多于8个元素的一个Tuple时，可以将Rest参数传递到下一个Tuple如下</span>
+<span class="token keyword">var</span> t<span class="token operator">=</span>Tuple<span class="token punctuation">.</span><span class="token function">Create</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span>Tuple<span class="token punctuation">.</span><span class="token function">Create</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"{0}{1}{2}{3}{4}{5}{6}{7}{8}"</span><span class="token punctuation">,</span>
+    t<span class="token punctuation">.</span>Item1<span class="token punctuation">,</span> t<span class="token punctuation">.</span>Item2<span class="token punctuation">,</span> t<span class="token punctuation">.</span>Item3<span class="token punctuation">,</span> t<span class="token punctuation">.</span>Item4<span class="token punctuation">,</span> t<span class="token punctuation">.</span>Item5<span class="token punctuation">,</span> t<span class="token punctuation">.</span>Item6<span class="token punctuation">,</span> t<span class="token punctuation">.</span>Item7<span class="token punctuation">,</span>
+    t<span class="token punctuation">.</span>Rest<span class="token punctuation">.</span>Item1<span class="token punctuation">.</span>Item1<span class="token punctuation">,</span> t<span class="token punctuation">.</span>Rest<span class="token punctuation">.</span>Item1<span class="token punctuation">.</span>Item2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="除了匿名类型和Tuple类型-ExpandoObject类和dynamic配合使用"><a href="#除了匿名类型和Tuple类型-ExpandoObject类和dynamic配合使用" class="headerlink" title="除了匿名类型和Tuple类型,ExpandoObject类和dynamic配合使用"></a>除了匿名类型和Tuple类型,ExpandoObject类和dynamic配合使用</h2><p>可以用另一种方式将一系列属性(键值对)组合到一起.</p>
+<p><img src="/2019/08/01/10属性/ExpandoObject&amp;dynamic.png" alt=""></p>
+<h1 id="有参属性-索引器"><a href="#有参属性-索引器" class="headerlink" title="有参属性(索引器)"></a>有参属性(索引器)</h1><p>可以看成是对<code>[]</code>操作符的重载.</p>
+<p>属性的get访问器方法 <strong>不接受参数</strong>,所以称为 <strong>无参属性</strong>.</p>
+<p>C#称有参属性为 <strong>索引器</strong>.</p>
+<ul>
+<li><code>get访问器</code>:接受一个或多个参数.</li>
+<li><code>set访问器</code>:接受两个或多个参数.</li>
+</ul>
+<p><strong>索引器使得对象可按照与数组相似的方法进行索引。</strong></p>
+<blockquote>
+<p>CLR是以相同方式对待有参属性和无参属性.</p>
+</blockquote>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    TestIndex<span class="token operator">&lt;</span>String<span class="token operator">></span> str<span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TestIndex</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 定义了索引器之后可以像数组的方式一样访问类</span>
+    str<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"A"</span><span class="token punctuation">;</span>
+    str<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"B"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">TestIndex</span><span class="token operator">&lt;</span>T<span class="token operator">></span>
+<span class="token punctuation">{</span>
+    T<span class="token punctuation">[</span><span class="token punctuation">]</span> arr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 定义[]索引器</span>
+    <span class="token keyword">public</span> T <span class="token keyword">this</span><span class="token punctuation">[</span><span class="token keyword">int</span> i<span class="token punctuation">]</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+        <span class="token keyword">set</span> <span class="token punctuation">{</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/08/01/10属性/索引器.png" alt=""></p>
+<p><strong>提示:查看文档,留意类型是否提供了名为Item的属性,从而判断该类型是否提供了索引器.</strong></p>
+<blockquote>
+<p>例如System.Collections.Generic.List类型提供了名为Item的公共实例属性,它就是List的索引器.</p>
+</blockquote>
+<h2 id="如果会有其他语言的代码访问索引器-可能需要更改get-set方法名称"><a href="#如果会有其他语言的代码访问索引器-可能需要更改get-set方法名称" class="headerlink" title="如果会有其他语言的代码访问索引器,可能需要更改get/set方法名称"></a>如果会有其他语言的代码访问索引器,可能需要更改get/set方法名称</h2><p>C#编程中永远看不到 Item这个名称,所以一般不需要关心这个.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">TestIndex</span><span class="token operator">&lt;</span>T<span class="token operator">></span>
+<span class="token punctuation">{</span>
+    T<span class="token punctuation">[</span><span class="token punctuation">]</span> arr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 定义[]索引器</span>
+    <span class="token punctuation">[</span><span class="token function">IndexerName</span><span class="token punctuation">(</span><span class="token string">"Method"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> T <span class="token keyword">this</span><span class="token punctuation">[</span><span class="token keyword">int</span> i<span class="token punctuation">]</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+        <span class="token keyword">set</span> <span class="token punctuation">{</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/08/01/10属性/索引器2.png" alt=""></p>
+<p>System.String类型是改变了索引器名称的一个例子.String的索引器名称是Chars,而不是Item. 这个只读属性允许从字符串中获得一个单独的字符,对于不用[]操作符语法来访问这个属性的编程语言,Chars是更有意义的名称.</p>
+<h2 id="索引器注意事项"><a href="#索引器注意事项" class="headerlink" title="索引器注意事项"></a>索引器注意事项</h2><ul>
+<li>C#用<code>this[...]</code>作为索引器的语法.<ul>
+<li>索引器语法不允许开发人员指定名称,编译器默认生成get_Item和set_Item方法名.</li>
+<li>Item方法名可以用<code>[IndexerName(&quot;..&quot;)]</code>特性修改</li>
+</ul>
+</li>
+<li>只允许在对象的实例上定义索引器.</li>
+<li>不支持静态索引器属性.</li>
+<li>索引器可以被重载.一个类可以有多个索引器,只要参数集不同即可.</li>
+<li>索引器可以多个参数,可以像二维数组.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">TestIndex</span><span class="token operator">&lt;</span>T<span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        T<span class="token punctuation">[</span><span class="token punctuation">]</span> arr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        T<span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> arr1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 定义索引器</span>
+        <span class="token keyword">public</span> T <span class="token keyword">this</span><span class="token punctuation">[</span><span class="token keyword">int</span> i<span class="token punctuation">]</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+            <span class="token keyword">set</span> <span class="token punctuation">{</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 定义两个形参的索引器</span>
+        <span class="token keyword">public</span> T <span class="token keyword">this</span><span class="token punctuation">[</span><span class="token keyword">int</span> i<span class="token punctuation">,</span><span class="token keyword">int</span> j<span class="token punctuation">]</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> arr1<span class="token punctuation">[</span>i<span class="token punctuation">,</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+            <span class="token keyword">set</span> <span class="token punctuation">{</span> arr1<span class="token punctuation">[</span>i<span class="token punctuation">,</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>对于CLR来说有参和无参属性是无区别的,可以用相同的<code>System.Reflection.PropertyInfo类</code>来发现<code>有参属性</code>和<code>它的访问器方法</code>之间的关联.</li>
+</ul>
+<h2 id="调用访问器方法时的性能"><a href="#调用访问器方法时的性能" class="headerlink" title="调用访问器方法时的性能"></a>调用访问器方法时的性能</h2><p>对于简单的get/set方法 ,JIT编译器会将代码内联(嵌入到调用它的方法中去),这样使用属性就没有性能上的损失,避免了在运行时发出调用所产生的开销,会使编译好的方法变得更大.</p>
+<p>由于属性访问器包含的代码很少,所以内联所生成的本机代码很小,执行的也会更快.</p>
+<ul>
+<li>JIT编译器在 <strong>调试代码时不会内联属性方法</strong>. 内联代码会难以调试.</li>
+<li>发行版本中,访问属性时的性能可能比较快.</li>
+<li>字段访问在调试和发布版中,速度都很快.</li>
+</ul>
+<h2 id="属性访问器的可访问性"><a href="#属性访问器的可访问性" class="headerlink" title="属性访问器的可访问性"></a>属性访问器的可访问性</h2><p>如果2个访问器需要不同的可访问性,</p>
+<ol>
+<li>C#要求必须为属性本身指定限制最小的(比访问器访问性限制小),</li>
+<li>两个访问器只能选择一个访问器来使用限制较大的.(不能两个都用)</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 限制最小的可访问性public</span>
+<span class="token keyword">public</span> String Name
+<span class="token punctuation">{</span>
+  <span class="token keyword">get</span><span class="token punctuation">{</span> <span class="token keyword">return</span> m_name<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// 限制较大的protected(相对于Public)</span>
+  <span class="token keyword">protected</span> <span class="token keyword">set</span> <span class="token punctuation">{</span> m_name <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 例子二</span>
+<span class="token keyword">protected</span> <span class="token keyword">string</span> A
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// private get => a; // 会报错</span>
+    <span class="token keyword">get</span> <span class="token operator">=</span><span class="token operator">></span> a<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">set</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="泛型属性访问器方法"><a href="#泛型属性访问器方法" class="headerlink" title="泛型属性访问器方法"></a>泛型属性访问器方法</h2><p>C#不允许属性引入它自己的泛型类型参数.  属性不应该和行为沾边,公开对象的行为,无论是不是泛型都应该定义方法,而不是用属性.</p>
+
         
             <div class="donate-container">
     <div class="donate-button">
