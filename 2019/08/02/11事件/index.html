@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#事件"><span class="toc-text">事件</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#事件"><span class="toc-text">事件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#举例用到事件的场景"><span class="toc-text">举例用到事件的场景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#第一步-定义类型来容纳所有需要发送给事件通知接收者的附加信息"><span class="toc-text">第一步:定义类型来容纳所有需要发送给事件通知接收者的附加信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#EventArgs类的定义实现"><span class="toc-text">EventArgs类的定义实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第二步-定义事件成员"><span class="toc-text">第二步:定义事件成员</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么要求sender参数是Object类型"><span class="toc-text">为什么要求sender参数是Object类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第三步-定义负责引发事件的方法来通知事件的登记对象"><span class="toc-text">第三步:定义负责引发事件的方法来通知事件的登记对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义如下扩展方法来封装这个线程安全逻辑"><span class="toc-text">定义如下扩展方法来封装这个线程安全逻辑</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第四步-定义方法将输入转化为期望事件"><span class="toc-text">第四步:定义方法将输入转化为期望事件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#事件是什么-是如何工作的"><span class="toc-text">事件是什么? 是如何工作的?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计侦听事件的类型"><span class="toc-text">设计侦听事件的类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#什么情况需要显式实现事件"><span class="toc-text">什么情况需要显式实现事件?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#EventKey和EventSet设计"><span class="toc-text">EventKey和EventSet设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用EventSet类在TypeWithLotsOfEvents类中"><span class="toc-text">使用EventSet类在TypeWithLotsOfEvents类中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用TypeWithLotsOfEvents类型"><span class="toc-text">使用TypeWithLotsOfEvents类型</span></a></li></ol></li></ol>
 </div>
 
     
@@ -139,7 +139,338 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        <h1 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h1>
+        <h1 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h1><p>定义了<code>事件成员</code>的类型允许 <strong>类型或类型实例</strong> 通知其他对象发生了特定事情.</p>
+<p>例如: Button按钮类提供了Click事件.应用程序中的其他对象可以接收关于该事件的通知,以便在Button被点击之后采取特定的操作.</p>
+<p>定义了事件成员的<code>类型</code>能提供一下功能:</p>
+<ul>
+<li>方法能登记它对事件的关注.</li>
+<li>方法能注销它对时间的关注.</li>
+<li>事件发生时,登记了的方法将收到通知.</li>
+</ul>
+<p><code>类型</code>之所以能提供事件通知功能,是因为类型维护了一个<code>已登记方法的列表</code>.事件发生后通知列表中的所有已登记方法.</p>
+<p>CLR事件模型是以<code>委托</code>为基础. 委托是调用<code>回调方法</code>的一种类型安全的方式.对象凭借回调方法接收它们订阅的通知.</p>
+<p><strong>我们可以通过为事件定义事件访问器,来控制事件运算符+=、-=运算符的行为,有两个访问器:add和remove,声明事件的访问器看上去和声明一个属性差不多.</strong></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">event</span> EventHandler Elapsed
+<span class="token punctuation">{</span>
+    <span class="token keyword">add</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//... 执行+=运算符的代码</span>
+    <span class="token punctuation">}</span>
+     <span class="token keyword">remove</span>
+     <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//... 执行-=运算符的代码</span>
+     <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="举例用到事件的场景"><a href="#举例用到事件的场景" class="headerlink" title="举例用到事件的场景"></a>举例用到事件的场景</h1><p>设计电子邮件应用程序:</p>
+<p>功能:电子邮件到达时,将该邮件转发给传真机,将该邮件转给寻呼机.</p>
+<p><img src="/2019/08/02/11事件/设计电子邮件程序.png" alt=""></p>
+<p>0) 先构建一个MailManager的一个实例. MailManager提供了NewMail事件.<br>1) <code>构造</code>Fax和Pager对象时,它们向MailManager的NewMail事件<code>登记</code>它们自己的一个<code>实例方法</code>.<br>2) MailManager收到新邮件时,会引发NewMail事件,使所有已登记的方法都能用自己的方式处理邮件.</p>
+<h2 id="第一步-定义类型来容纳所有需要发送给事件通知接收者的附加信息"><a href="#第一步-定义类型来容纳所有需要发送给事件通知接收者的附加信息" class="headerlink" title="第一步:定义类型来容纳所有需要发送给事件通知接收者的附加信息"></a>第一步:定义类型来容纳所有需要发送给事件通知接收者的附加信息</h2><p>事件引发时,引发事件的对象可能希望向接收事件通知的对象传递一些<code>附加信息</code>,这些附加信息要封装到它自己的类中, 这种类应该从<code>EventArgs</code>派生,并且类名以EventArgs结尾.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span>  <span class="token keyword">class</span> <span class="token class-name">NewMaillEventArgs</span> <span class="token punctuation">:</span> EventArgs
+<span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">// 私有只读字段</span>
+       <span class="token comment" spellcheck="true">// 发件人</span>
+       <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token keyword">string</span> _m_from<span class="token punctuation">;</span>
+       <span class="token comment" spellcheck="true">// 收件人</span>
+       <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token keyword">string</span> _m_to<span class="token punctuation">;</span>
+       <span class="token comment" spellcheck="true">// 主题</span>
+       <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token keyword">string</span> _m_subject<span class="token punctuation">;</span>
+       <span class="token keyword">public</span> <span class="token function">NewMaillEventArgs</span><span class="token punctuation">(</span><span class="token keyword">string</span> <span class="token keyword">from</span><span class="token punctuation">,</span><span class="token keyword">string</span> to<span class="token punctuation">,</span><span class="token keyword">string</span> subject<span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+           _m_from <span class="token operator">=</span> <span class="token keyword">from</span><span class="token punctuation">;</span>
+           _m_to <span class="token operator">=</span> to<span class="token punctuation">;</span>
+           _m_subject <span class="token operator">=</span> subject<span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+       <span class="token comment" spellcheck="true">// 公开的只读属性(只有get访问器)</span>
+       <span class="token keyword">public</span> <span class="token keyword">string</span> From <span class="token punctuation">{</span> <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> _m_from<span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+       <span class="token keyword">public</span> <span class="token keyword">string</span> To <span class="token punctuation">{</span> <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> _m_to<span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+       <span class="token keyword">public</span> <span class="token keyword">string</span> Subject <span class="token punctuation">{</span> <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> _m_subject<span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="EventArgs类的定义实现"><a href="#EventArgs类的定义实现" class="headerlink" title="EventArgs类的定义实现"></a>EventArgs类的定义实现</h3><p>实现非常简单,就是一个让其他类型继承的基类型.</p>
+<p>如果事件不需要传递附加信息,则可以直接使用EventArgs.Empty,不用构造新的EventArgs对象.  例如:Button点击事件,调用回调方法就可以了,不需要传递附加信息.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EventArgs</span>
+<span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> EventArgs Empty <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventArgs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="第二步-定义事件成员"><a href="#第二步-定义事件成员" class="headerlink" title="第二步:定义事件成员"></a>第二步:定义事件成员</h2><p>事件成员使用C#<code>关键字event</code>来定义。</p>
+<p>每个事件成员都要指定以下内容:</p>
+<ul>
+<li>一个可访问性标识符(几乎肯定是Public，这样其他代码才能访问该事件成员)；</li>
+<li>另一个委托类型，它指出要<code>调用的方法的原型</code>，以及一个名称(可以是任意有效的标识符)。</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//定义成员变量 NewMaill是事件名称</span>
+<span class="token keyword">public</span> <span class="token keyword">event</span> EventHandler<span class="token operator">&lt;</span>NewMaillEventArgs<span class="token operator">></span> NewMaill<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>事件成员类型是<code>EventHandler&lt;NewMaillEventArgs&gt;</code>, 意味着所有接收者都必须提供一个原型和<code>EventHandler&lt;NewMaillEventArgs&gt;</code>匹配的<code>回调方法</code>.</p>
+<p>由于<code>泛型System.EventHandler</code>的委托定义如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">delegate</span> <span class="token keyword">void</span> <span class="token generic-method function">EventHandler<span class="token punctuation">&lt;</span>TEventArgs<span class="token punctuation">></span></span><span class="token punctuation">(</span>Object sender<span class="token punctuation">,</span> TEventArgs e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>所以方法的原型必须具有以下形式:</strong></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">void</span> <span class="token function">MethodName</span><span class="token punctuation">(</span>Object sender<span class="token punctuation">,</span> NewMaillEventArgs e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<p>事件模式要求所有事件处理程序(方法)的返回类型都是void;<br>因为引发事件后可能要调用好几个回调方法,但是没办法获得所有方法的返回值,将返回类型void,就不允许回调方法返回值.<br>但是ResloveEventHandle事件没有遵循这个要求,返回了Assembly类型的对象.</p>
+</blockquote>
+<h3 id="为什么要求sender参数是Object类型"><a href="#为什么要求sender参数是Object类型" class="headerlink" title="为什么要求sender参数是Object类型"></a>为什么要求sender参数是Object类型</h3><p>只有<code>MailManager对象</code>才会引发传递<code>NewMaillEventArgs对象</code>的事件,似乎以下回调方法更适合原型:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// Object sender 改为 MailManager sender</span>
+<span class="token keyword">void</span> <span class="token function">MethodName</span><span class="token punctuation">(</span>MailManager sender<span class="token punctuation">,</span> NewMaillEventArgs e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>原因是:</p>
+<ol>
+<li>要求Object主要是因为继承.</li>
+</ol>
+<p>假设: MailManager成为SmtpMailManager的基类<code>SmtpMailManager : MailManager</code> ,<code>SmtpMailManager</code>从基类继承了<code>事件NewMail</code>, 那参数类型需要由<code>MailManager</code>转换为<code>SmtpMailManager</code>,反正都是需要转换的,不如定义成<code>Object</code>.</p>
+<ol>
+<li>另一个原因是灵活性,使委托能由多个类型使用.</li>
+</ol>
+<p>只要<code>类型</code>提供一个会传递<code>NewMaillEventArgs对象</code>的事件,即使<code>PopMailManager</code>类不从<code>MailManager</code>类派生,也能使用这个委托.</p>
+<h2 id="第三步-定义负责引发事件的方法来通知事件的登记对象"><a href="#第三步-定义负责引发事件的方法来通知事件的登记对象" class="headerlink" title="第三步:定义负责引发事件的方法来通知事件的登记对象"></a>第三步:定义负责引发事件的方法来通知事件的登记对象</h2><p>事件主要是在单线程情形中使用,所以线程安全不是问题.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//如果类是密封的，该方法要声明为私有和非虚</span>
+<span class="token keyword">protected</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">OnNewMaill</span><span class="token punctuation">(</span>NewMaillEventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//出于线程安全的考虑，现在将对委托字段的引用复制到一个临时变量时</span>
+    <span class="token comment" spellcheck="true">// EventHandler&lt;NewMaillEventArgs> temp = NewMaill; 也是可以的</span>
+    <span class="token comment" spellcheck="true">// 事件主要是在单线程的情形中使用,所以线程安全不是问题</span>
+    <span class="token comment" spellcheck="true">// (NewMaill != null) 在多线程中会出现竞态问题</span>
+    <span class="token comment" spellcheck="true">// 以下写法是技术正确的版本.</span>
+    EventHandler<span class="token operator">&lt;</span>NewMaillEventArgs<span class="token operator">></span> temp <span class="token operator">=</span> Volatile<span class="token punctuation">.</span><span class="token function">Read</span><span class="token punctuation">(</span><span class="token keyword">ref</span> NewMaill<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//任何方法登记了事件的关注,就通知它们</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>temp <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">temp</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>(NewMaill != null) 在多线程中会出现竞态问题,调用NewMaill之前,在另外一个线程中可能移除一个委托,使NewMaill成了null. 许多开发者就像EventHandler<newmailleventargs> temp = NewMaill;这样写, 将NewMail引用复制到变量中,引用的是赋值时发生的委托链. 委托是不可变的.</newmailleventargs></p>
+</blockquote>
+<p>将MailManager作为基类,派生类可以自由重写OnNewMaill方法,一般情况下,派生类会调用基类的OnNewMaill方法,使登记的方法都能收到通知,但是派生类也可以不允许事件转发.</p>
+<h3 id="定义如下扩展方法来封装这个线程安全逻辑"><a href="#定义如下扩展方法来封装这个线程安全逻辑" class="headerlink" title="定义如下扩展方法来封装这个线程安全逻辑"></a>定义如下扩展方法来封装这个线程安全逻辑</h3><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">EventArgExtensions</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token generic-method function">Raise<span class="token punctuation">&lt;</span>TEventargs<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">this</span> TEventargs e<span class="token punctuation">,</span> Object sender<span class="token punctuation">,</span> <span class="token keyword">ref</span> EventHandler<span class="token operator">&lt;</span>TEventargs<span class="token operator">></span> eventHandler<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        EventHandler<span class="token operator">&lt;</span>TEventargs<span class="token operator">></span> temp <span class="token operator">=</span> Volatile<span class="token punctuation">.</span><span class="token function">Read</span><span class="token punctuation">(</span><span class="token keyword">ref</span> eventHandler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>temp <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">temp</span><span class="token punctuation">(</span>sender<span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>为了方便起见,就可以如下重写OnNewMail方法</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">protected</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">OnNewMaill</span><span class="token punctuation">(</span>NewMaillEventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  e<span class="token punctuation">.</span><span class="token function">Raise</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token keyword">ref</span> m_NewMail<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="第四步-定义方法将输入转化为期望事件"><a href="#第四步-定义方法将输入转化为期望事件" class="headerlink" title="第四步:定义方法将输入转化为期望事件"></a>第四步:定义方法将输入转化为期望事件</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SimulateNewMaill</span><span class="token punctuation">(</span>String <span class="token keyword">from</span><span class="token punctuation">,</span> String to<span class="token punctuation">,</span> String subject<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 构造对象来容纳想附加给接收者的信息</span>
+    NewMaillEventArgs e <span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">NewMaillEventArgs</span><span class="token punctuation">(</span><span class="token keyword">from</span><span class="token punctuation">,</span>to<span class="token punctuation">,</span>subject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 调用虚方法通知事件已经发生</span>
+    <span class="token comment" spellcheck="true">// 如果没有类型重写该方法,我们的对象将通知事件的所有登记对象</span>
+    <span class="token function">OnNewMaill</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="事件是什么-是如何工作的"><a href="#事件是什么-是如何工作的" class="headerlink" title="事件是什么? 是如何工作的?"></a>事件是什么? 是如何工作的?</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 事件成员</span>
+<span class="token keyword">public</span> EventHandler<span class="token operator">&lt;</span>NewMaillEventArgs<span class="token operator">></span> NewMail <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>C#编译器编译时把它转换为3个构造:</p>
+<ol>
+<li>一个被初始化为null的<code>私有委托字段</code>;<ol>
+<li><strong>是对委托列表头部的引用.</strong></li>
+</ol>
+</li>
+<li>一个公共的<code>add_Xxx方法</code>(Xxx是事件名,例如add_NewMail)<ol>
+<li>生成的代码总是调用<code>System.Delgate的静态Combine方法</code>,将<code>委托实例添加到委托列表</code>中,返回<code>新的列表头地址</code>, 将这个地址存回字段.</li>
+</ol>
+</li>
+<li>一个公共的<code>remove_Xxx</code>(Xxx是事件名,例如remove_NewMail)<ol>
+<li>生成的代码总是调用<code>System.Delgate的静态Remove方法</code>,将<code>委托实例从委托列表中删除</code>中,返回<code>新的列表头地址</code>, 将这个地址存回字段.</li>
+</ol>
+</li>
+</ol>
+<p>如果试图删除从未添加过的方法, <code>Delgate</code>内部不做任何事情,也不会抛出异常, 事件的集合保持不变.</p>
+<blockquote>
+<p>add和remove以线程安全的一种模式更新值.</p>
+</blockquote>
+<p>事件的可访问性决定了什么代码能登记和注销对事件的关注.<strong>无论如何只有类本身可以访问委托字段</strong>.</p>
+<h1 id="设计侦听事件的类型"><a href="#设计侦听事件的类型" class="headerlink" title="设计侦听事件的类型"></a>设计侦听事件的类型</h1><ol>
+<li>在Fax类中的构造函数传入MailManager,并将对该对象的引用保存到变量中,</li>
+<li>在构造函数中登记它对MailManager的事件的关注<ol>
+<li><code>mm.NewMail += FaxMsg;</code></li>
+<li>C#编译器对<code>+=</code>操作符翻译成以下代码来添加对象对事件的关注.<code>mm.add_NewMail(new EventHandler&lt;NewMaillEventArgs&gt;(this.Msg));</code></li>
+<li>C#编译器调用了<code>MailManager</code>类的<code>add_NewMail</code>方法,传递新的委托对象(Msg).</li>
+</ol>
+</li>
+<li>MailManager对象引发事件时, Fax对象的FaxMsg方法会被调用.<ol>
+<li>调用时,传递的第一个参数时MailManager对象引用,<code>sender</code>.  可以用来访问MailManager对象的成员.</li>
+<li>NewMaillEventArgs附带了信息.</li>
+</ol>
+</li>
+<li>类型实现了IDisposable的Dispose方法,就应该在其中注销对所有事件的关注. 用<code>-=</code>操作符(会调用remove方法).</li>
+</ol>
+<blockquote>
+<p>C#要求代码使用+=和-=操作符在列表中增删委托.</p>
+</blockquote>
+<h1 id="什么情况需要显式实现事件"><a href="#什么情况需要显式实现事件" class="headerlink" title="什么情况需要显式实现事件?"></a>什么情况需要显式实现事件?</h1><p>在一个类型中定义了很多事件,也就是要很多个委托字段,但是用到的只是少数事件, 这样从这个类派生创建的对象都要浪费大量内存.</p>
+<p>因此需要开发人员显式实现一个事件,使开发人员能够<code>控制add和remove方法</code>处理回调委托.</p>
+<ol>
+<li>高效率存储事件委托, 公开了事件的每个对象都要维护一个集合(通常是字典)<ol>
+<li><code>事件标识符作</code>为key, <code>委托列表</code>作为值value</li>
+<li>新对象构造时, 集合是空白的, 登记事件时会查找集合中的键(事件标识符),如果已经有了,就将新委托和委托列表合并. 不存在就新添加.</li>
+</ol>
+</li>
+<li>所以这个设计,需要定义事件的那个类型开发人员去完成.</li>
+</ol>
+<h2 id="EventKey和EventSet设计"><a href="#EventKey和EventSet设计" class="headerlink" title="EventKey和EventSet设计"></a>EventKey和EventSet设计</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">.</span>Generic<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Threading<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 此类目的:提供多一点的类型安全性和代码的可维护性</span>
+<span class="token comment" spellcheck="true">// 用于 字典的key键存放每个事件标识符类的哈希码,以便查找这个事件的委托链表</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">EventKey</span> <span class="token punctuation">:</span> Object
+<span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 用于显示实现事件的字典集合</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">EventSet</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 定义私有只读字典,用于维护EventKey->Delegate(委托链表)映射</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> Dictionary<span class="token operator">&lt;</span>EventKey<span class="token punctuation">,</span> Delegate<span class="token operator">></span> m_events <span class="token operator">=</span>
+        <span class="token keyword">new</span> <span class="token class-name">Dictionary</span><span class="token operator">&lt;</span>EventKey<span class="token punctuation">,</span> Delegate<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Adds an EventKey -> Delegate mapping if it doesn't exist or</span>
+    <span class="token comment" spellcheck="true">// combines a delegate to an existing EventKey</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Add</span><span class="token punctuation">(</span>EventKey eventKey<span class="token punctuation">,</span> Delegate handler<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 线程安全的方式</span>
+        Monitor<span class="token punctuation">.</span><span class="token function">Enter</span><span class="token punctuation">(</span>m_events<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Delegate d<span class="token punctuation">;</span>
+        m_events<span class="token punctuation">.</span><span class="token function">TryGetValue</span><span class="token punctuation">(</span>eventKey<span class="token punctuation">,</span> <span class="token keyword">out</span> d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 合并新的委托到委托链表中</span>
+        <span class="token comment" spellcheck="true">// Delegate.Combine将`委托实例添加到委托列表`中,返回`新的列表头地址`, 将这个地址存回字段.</span>
+        m_events<span class="token punctuation">[</span>eventKey<span class="token punctuation">]</span> <span class="token operator">=</span> Delegate<span class="token punctuation">.</span><span class="token function">Combine</span><span class="token punctuation">(</span>d<span class="token punctuation">,</span> handler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Monitor<span class="token punctuation">.</span><span class="token function">Exit</span><span class="token punctuation">(</span>m_events<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// Removes a delegate from an EventKey (if it exists) and</span>
+    <span class="token comment" spellcheck="true">// removes the EventKey -> Delegate mapping the last delegate is removed</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Remove</span><span class="token punctuation">(</span>EventKey eventKey<span class="token punctuation">,</span> Delegate handler<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Monitor<span class="token punctuation">.</span><span class="token function">Enter</span><span class="token punctuation">(</span>m_events<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// Call TryGetValue to ensure that an exception is not thrown if</span>
+        <span class="token comment" spellcheck="true">// attempting to remove a delegate from an EventKey not in the set</span>
+        Delegate d<span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 确保从集合中删除不存在的EventKey时不会抛出异常.</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>m_events<span class="token punctuation">.</span><span class="token function">TryGetValue</span><span class="token punctuation">(</span>eventKey<span class="token punctuation">,</span> <span class="token keyword">out</span> d<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            d <span class="token operator">=</span> Delegate<span class="token punctuation">.</span><span class="token function">Remove</span><span class="token punctuation">(</span>d<span class="token punctuation">,</span> handler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 如果委托链表还存在委托,则重新设置头部的地址.</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>d <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> m_events<span class="token punctuation">[</span>eventKey<span class="token punctuation">]</span> <span class="token operator">=</span> d<span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 链表为空,则移除这个键值对.</span>
+            <span class="token keyword">else</span> m_events<span class="token punctuation">.</span><span class="token function">Remove</span><span class="token punctuation">(</span>eventKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        Monitor<span class="token punctuation">.</span><span class="token function">Exit</span><span class="token punctuation">(</span>m_events<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 为指定的EventKey引发事件</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Raise</span><span class="token punctuation">(</span>EventKey eventKey<span class="token punctuation">,</span> Object sender<span class="token punctuation">,</span> EventArgs e<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 如果EventKey不在集合中,不会抛出异常</span>
+        Delegate d<span class="token punctuation">;</span>
+        Monitor<span class="token punctuation">.</span><span class="token function">Enter</span><span class="token punctuation">(</span>m_events<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        m_events<span class="token punctuation">.</span><span class="token function">TryGetValue</span><span class="token punctuation">(</span>eventKey<span class="token punctuation">,</span> <span class="token keyword">out</span> d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Monitor<span class="token punctuation">.</span><span class="token function">Exit</span><span class="token punctuation">(</span>m_events<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>d <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 由于字典可能包含几个不同的类型委托</span>
+            <span class="token comment" spellcheck="true">// 所以无法再编译时构造一个类型安全的委托调用</span>
+            <span class="token comment" spellcheck="true">// 调用Delegate的DynamicInvoke方法,以一个对象数组的形式传递回调方法的参数</span>
+            <span class="token comment" spellcheck="true">// 在内部,DynamicInvoke会向调用的回调方法查证参数的类型安全性.</span>
+            <span class="token comment" spellcheck="true">// 如果类型不匹配,会抛出异常</span>
+            d<span class="token punctuation">.</span><span class="token function">DynamicInvoke</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>sender<span class="token punctuation">,</span> e<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="使用EventSet类在TypeWithLotsOfEvents类中"><a href="#使用EventSet类在TypeWithLotsOfEvents类中" class="headerlink" title="使用EventSet类在TypeWithLotsOfEvents类中"></a>使用EventSet类在TypeWithLotsOfEvents类中</h2><p>TypeWithLotsOfEvents类(使用了大量时间的类):</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 为事件定义从EventArgs派生的附加信息类</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FooEventArgs</span> <span class="token punctuation">:</span> EventArgs
+<span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// Define the EventArgs-derived type for this event.</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BarEventArgs</span> <span class="token punctuation">:</span> EventArgs
+<span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">///////////////////////////////////////////////////////////////////////////////</span>
+
+<span class="token keyword">internal</span> <span class="token keyword">class</span> <span class="token class-name">TypeWithLotsOfEvents</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 定义私有只读字段来引用集合类</span>
+    <span class="token comment" spellcheck="true">// 用于管理维护一组EventKey->Delegate(事件/委托)对.</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> EventSet m_eventSet <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// protected只能派生类型能访问集合</span>
+    <span class="token keyword">protected</span> EventSet EventSet
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> m_eventSet<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 定义Foo事件的键</span>
+    <span class="token comment" spellcheck="true">// 2a. 构造静态只读对象来作为标识符表示这个事件</span>
+    <span class="token comment" spellcheck="true">// 每个对象都有自己的哈希码,可以方便在对象的集合中查找这个事件的委托链表</span>
+    <span class="token keyword">protected</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> EventKey s_fooEventKey <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 2d. 定义事件的访问器, 用于在集合中增删委托</span>
+    <span class="token keyword">public</span> <span class="token keyword">event</span> EventHandler<span class="token operator">&lt;</span>FooEventArgs<span class="token operator">></span> Foo
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 操作EventSet集合来 增加/删除 键值对</span>
+        <span class="token keyword">add</span> <span class="token punctuation">{</span> m_eventSet<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>s_fooEventKey<span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+        <span class="token keyword">remove</span> <span class="token punctuation">{</span> m_eventSet<span class="token punctuation">.</span><span class="token function">Remove</span><span class="token punctuation">(</span>s_fooEventKey<span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 2e. 定义虚方法,用来触发事件</span>
+    <span class="token keyword">protected</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">OnFoo</span><span class="token punctuation">(</span>FooEventArgs e<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_eventSet<span class="token punctuation">.</span><span class="token function">Raise</span><span class="token punctuation">(</span>s_fooEventKey<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 2f. 定义将输入转成这个事件的方法</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SimulateFoo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">OnFoo</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">FooEventArgs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="使用TypeWithLotsOfEvents类型"><a href="#使用TypeWithLotsOfEvents类型" class="headerlink" title="使用TypeWithLotsOfEvents类型"></a>使用TypeWithLotsOfEvents类型</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  TypeWithLotsOfEvents twle <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TypeWithLotsOfEvents</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 添加一个回调</span>
+  twle<span class="token punctuation">.</span>Foo <span class="token operator">+</span><span class="token operator">=</span> HandleFooEvent<span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 证明确实可行</span>
+  twle<span class="token punctuation">.</span><span class="token function">SimulateFoo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">HandleFooEvent</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> FooEventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Handling Foo Event here.."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
         
             <div class="donate-container">
     <div class="donate-button">
