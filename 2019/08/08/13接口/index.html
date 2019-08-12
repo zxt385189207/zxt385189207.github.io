@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#接口"><span class="toc-text">接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#定义接口"><span class="toc-text">定义接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#继承接口"><span class="toc-text">继承接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#关于调用接口方法的更多探讨"><span class="toc-text">关于调用接口方法的更多探讨</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#隐式和显式接口方法实现-幕后发生的事情"><span class="toc-text">隐式和显式接口方法实现(幕后发生的事情)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型接口"><span class="toc-text">泛型接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型和接口约束"><span class="toc-text">泛型和接口约束</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实现多个具有相同方法名和签名的接口"><span class="toc-text">实现多个具有相同方法名和签名的接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用显式接口方法实现EIMI来增强编译时类型安全性"><span class="toc-text">用显式接口方法实现EIMI来增强编译时类型安全性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#谨慎使用显式接口方法实现"><span class="toc-text">谨慎使用显式接口方法实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计-基类还是接口"><span class="toc-text">设计:基类还是接口</span></a></li></ol>
 </div>
 
     
@@ -139,7 +139,529 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        
+        <h1 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h1><p>CLR通过<code>接口</code>提供了’缩水版’的多继承.</p>
+<p><strong><code>接口</code>是引用类型</strong>. 实际是对一组方法签名进行统一命名. 这些方法不提供任何实现.类通过指定接口名称来继承接口. <strong>必须显式实现接口方法.</strong></p>
+<p>凡是能使用<code>具体名称接口类型的实例</code>的地方, 都能使用<code>实现了接口的类型的实例</code>.</p>
+<h1 id="定义接口"><a href="#定义接口" class="headerlink" title="定义接口"></a>定义接口</h1><p>接口对一组方法签名进行了统一命名.</p>
+<p>接口能定义:</p>
+<ul>
+<li>方法</li>
+<li>事件</li>
+<li>无参属性</li>
+<li>有参属性(索引器)</li>
+</ul>
+<p>以上东西本质上都是方法,只是语法上的简化.</p>
+<p>但是接口不能定义:</p>
+<ul>
+<li>任何构造器方法</li>
+<li>任何实例字段</li>
+<li>静态方法</li>
+<li>静态字段</li>
+<li>常量</li>
+<li>静态构造器</li>
+</ul>
+<p>接口定义可以从另一个或多个接口”继承”,但这不是严格意义上的继承, 是将其他接口的协定包括到新接口中.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 接口"继承"接口</span>
+<span class="token comment" spellcheck="true">// 1. 继承接口ICollection&lt;T>的任何类必须实现 ICollection&lt;T> ,IEnumerable&lt;T>,IEnumerable这3个接口所定义的方法</span>
+<span class="token comment" spellcheck="true">// 2. 任何代码在引用对象时,如果实现了ICollection&lt;T>接口,可以认为也实现了IEnumerable&lt;T>,IEnumerable接口</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">ICollection</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">:</span> IEnumerable<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">,</span>IEnumerable
+<span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="继承接口"><a href="#继承接口" class="headerlink" title="继承接口"></a>继承接口</h1><p>C#编译器要求:实现接口的方法标记为<code>public</code></p>
+<p>CLR要求:将接口方法标记<code>virtual</code></p>
+<ul>
+<li>如果显式标记为<code>virtual</code>,编译器就会将该方法标记为<code>virtual</code>(保持它的非密封状态),使派生类能重写它.</li>
+<li>如果不显式标记为<code>virtual</code>,编译器就会标记为<code>virtual</code>和<code>sealed</code>, 这会阻止派生类重写接口方法.</li>
+</ul>
+<p>派生类不能重写<code>sealed</code>的接口方法. 但派生类可以重新继承同一个接口,并为接口方法提供自己的实现.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">InterfaceReimplementation</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">/************************* 第一个例子 *************************/</span>
+        Base b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Base</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 结果显示: "Base's Dispose"</span>
+        b<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 接口类型的变量  IDisposable b; 调用接口方法</span>
+        <span class="token comment" spellcheck="true">// 用b的对象的类型来调用Dispose，结果显示: "Base's Dispose"</span>
+        <span class="token punctuation">(</span><span class="token punctuation">(</span>IDisposable<span class="token punctuation">)</span>b<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">/************************* 第二个例子 ************************/</span>
+        Derived d <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Derived</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 结果显示: "Derived's Dispose"</span>
+        d<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 用d的对象的类型来调用Dispose，结果显示: "Derived's Dispose"</span>
+        <span class="token punctuation">(</span><span class="token punctuation">(</span>IDisposable<span class="token punctuation">)</span>d<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">/************************* 第三个例子 *************************/</span>
+        b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Derived</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 用b的类型来调用Dispose，结果显示: "Base's Dispose"</span>
+        <span class="token comment" spellcheck="true">// 因为子类是自己new覆盖父类的方法,并不会修改父类方法的功能</span>
+        <span class="token comment" spellcheck="true">// 所以用Base类型的对象去调用dispose会输出Base类的方法</span>
+        b<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 用b的对象的类型来调用Dispose，显示: "Derived's Dispose"</span>
+        <span class="token comment" spellcheck="true">// 转成接口类型后, 基类的方法被隐藏,只有子类的方法</span>
+        <span class="token comment" spellcheck="true">// 只要子类实现了接口方法,就会调用实际类型的实现</span>
+        <span class="token punctuation">(</span><span class="token punctuation">(</span>IDisposable<span class="token punctuation">)</span>b<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">/************************* new和override **********************/</span>
+
+        <span class="token comment" spellcheck="true">// Base b;</span>
+        b<span class="token punctuation">.</span><span class="token function">Test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 如果 子类实现Test 用new关键字, 则输出: Base Test!</span>
+        <span class="token comment" spellcheck="true">// 如果 子类重写Test 用override关键字, 则输出: Dervied Test!</span>
+
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 这个类型派生自 Object 并且实现了 IDisposable</span>
+<span class="token keyword">internal</span> <span class="token keyword">class</span> <span class="token class-name">Base</span> <span class="token punctuation">:</span> IDisposable
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 这个方法是隐式密封的，不能被重写</span>
+    <span class="token comment" spellcheck="true">// 没标记virtual实现接口方法,是不能被子类重写的</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Base's Dispose"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 基类的方法</span>
+    <span class="token keyword">public</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">Test</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Base Test!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 这个类继承了Base并且实现了IDisposable接口</span>
+<span class="token comment" spellcheck="true">// 派生类可以重新继承同一个接口,并为接口方法提供自己的实现.  </span>
+<span class="token comment" spellcheck="true">// new 是覆盖,不会改变父类方法的功能</span>
+<span class="token keyword">internal</span> <span class="token keyword">class</span> <span class="token class-name">Derived</span> <span class="token punctuation">:</span> Base<span class="token punctuation">,</span> IDisposable
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 这个方法不能重写 Base's Dispose.</span>
+    <span class="token comment" spellcheck="true">// 'new' 关键字表明重新实现了IDisposable的Dispose</span>
+    <span class="token keyword">new</span> <span class="token class-name">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Derived's Dispose"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 注意: 下一行展示了如何让调用基类的方法</span>
+        <span class="token comment" spellcheck="true">// base.Dispose();</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">new</span> <span class="token class-name">void</span> <span class="token function">Test</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Dervied Test!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>override: 重写:会重写基类的方法,如果子类转基类,用基类对象去调用也会执行子类的实现<br>new: 覆盖(隐藏):不会改变父类方法的功能,并隐藏基类的方法,如果子类转基类,用基类对象去调用会执行基类的实现.(不会判断实际的类型,只会从当前对象类型去调用)</p>
+</blockquote>
+<p><strong>转型<code>接口变量</code>调用接口方法和用<code>类的实例</code>调用接口方法是不同的.</strong></p>
+<ol>
+<li>基类继承接口, 子类如果要实现接口方法需要加<code>new</code>.</li>
+<li>用<code>类的实例</code>去调用(new)接口方法时,会执行<code>当前类型</code>的接口方法,不会去判断<code>实际类型</code>.</li>
+<li>转成<code>接口变量</code>,去调用接口方法,会根据<code>实际类型</code>,如果<code>实际类型(子类)实现了接口方法</code>,就会<code>隐藏基类实现的接口方法</code>.调用<code>实际(子类)类型</code>的实现.</li>
+</ol>
+<h1 id="关于调用接口方法的更多探讨"><a href="#关于调用接口方法的更多探讨" class="headerlink" title="关于调用接口方法的更多探讨"></a>关于调用接口方法的更多探讨</h1><p>CLR允许定义<code>接口类型</code>的<code>字段</code>,<code>参数</code>或<code>局部变量</code>.</p>
+<p>使用接口类型的变量可以调用该接口定义的方法.并且还可以调用Object定义的方法.</p>
+<p>但是 <strong>不能</strong> 用接口变量调用类本身定义的公共方法.</p>
+<blockquote>
+<p>值类型可实现0个或多个接口,但是值类型的实例转换为接口类型时必须装箱.因为接口变量是引用.</p>
+</blockquote>
+<h1 id="隐式和显式接口方法实现-幕后发生的事情"><a href="#隐式和显式接口方法实现-幕后发生的事情" class="headerlink" title="隐式和显式接口方法实现(幕后发生的事情)"></a>隐式和显式接口方法实现(幕后发生的事情)</h1><p>  类型加载到CLR中时，会为该类型创建并初始化一个方法表。在这个方法表中，类型引入的每个新方法都有对应的记录项；另外，还为该类型继承的所有虚方法添加了记录项目。继承的虚方法既有继承层次结构中的各个基类型定义的，也有接口类型定义的。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">interter <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SimpleType</span> <span class="token punctuation">:</span> IDisposable <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Dispose"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><strong>接口方法签名和新增方法签名(相同的参数和返回类型)一致, 如果标记为<code>virtual</code>,C#编译器仍然会认为该方法匹配接口方法.</strong></p>
+<p>C#编译器将新方法和接口方法匹配起来之后,会生成元数据,指明SimpleType类型的方法表中的两个记录项应该引用同一个实现.</p>
+<p>下面的代码演示了如果调用类的<code>公共Dispose方法</code>以及如何调用<code>IDisposable的Dispose方法</code>在类中的实现：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    SimpleType st <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 调用公共的 Dispose 方法实现</span>
+    st<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 调用 IDisposable 的 Dispose 方法实现</span>
+    IDisposable d <span class="token operator">=</span> st<span class="token punctuation">;</span>
+    d<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 输出:</span>
+<span class="token comment" spellcheck="true">// Dispose</span>
+<span class="token comment" spellcheck="true">// Dispose</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>在第一个dispose方法调用中，调用的是SimpleType定义的dispose方法。</li>
+<li>然后定义IDisposable接口类型的变量d，它引用SimpleType对象。</li>
+<li>调用SimpleType时，调用的是IDisposable接口的dispose方法。</li>
+<li>由于<code>公共dispose方法</code>是<code>IDisposable的Dispose方法</code>的实现，所以会执行相同的代码。</li>
+</ul>
+<p>为了看出区别</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SimpleType</span> <span class="token punctuation">:</span> IDisposable
+<span class="token punctuation">{</span>
+     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"public Dispose"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+     <span class="token comment" spellcheck="true">// 显示接口方法实现 EIMI</span>
+     <span class="token comment" spellcheck="true">// 不允许显示指定可访问性,会正在编译时自动设为private,防止其他类型直接调用</span>
+     <span class="token comment" spellcheck="true">// 派生类也不可以调用</span>
+     <span class="token comment" spellcheck="true">// 只能由接口类型变量才能调用</span>
+     <span class="token keyword">void</span> IDisposable<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"IDisposable Dispose"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 这样一下代码就会输出</span>
+st<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+IDisposable d <span class="token operator">=</span> st<span class="token punctuation">;</span>
+d<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// public Dispose</span>
+<span class="token comment" spellcheck="true">// IDisposable Dispose</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>显示接口方法实现EIMI</strong>,</p>
+<ol>
+<li>不能显式指定可访问性, 编译时生成private</li>
+<li>派生类也无法调用</li>
+<li>只有接口类型变量才能调用接口方法</li>
+<li>不能标记virtual,所以不能被重写(这是因为EIMI方法并不是真的是类型的对象模型的一部分),只是将接口和类型连接起来,同时避免公开行为/方法.</li>
+</ol>
+<h1 id="泛型接口"><a href="#泛型接口" class="headerlink" title="泛型接口"></a>泛型接口</h1><p>泛型接口提供了出色的编译时安全性. 非泛型接口是Object参数,值类型会产生装箱,并且缺少类型安全.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">SomeMethod1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 x <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span> y <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+    IComparable c <span class="token operator">=</span> x<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// CompareTo 期望接口一个 Object 类型; 传递 y (一个 Int32 类型) 允许</span>
+    c<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">// y在这里装箱</span>
+
+    <span class="token comment" spellcheck="true">// CompareTo期望接口一个 Object 类型; 传递 "2" (一个 String 类型) 允许</span>
+    <span class="token comment" spellcheck="true">// 但运行是抛出 ArgumentException 异常   </span>
+    c<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span><span class="token string">"2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 修改后</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">SomeMethod2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 x <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span> y <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+    IComparable<span class="token operator">&lt;</span>Int32<span class="token operator">></span> c <span class="token operator">=</span> x<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// CompareTo 期望接口一个 Int32 类型; 传递 y (一个 Int32 类型) 允许</span>
+    c<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">// y在这里不装箱</span>
+
+    <span class="token comment" spellcheck="true">// CompareTo 期望接口一个 Int32 类型; 传递 "2" (一个 String 类型) 编译不通过</span>
+    <span class="token comment" spellcheck="true">// 指出 String 不能被隐式转型为 Int32</span>
+    <span class="token comment" spellcheck="true">// c.CompareTo("2");</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>FCL中有些泛型接口并未实现,而且继承了非泛型接口,如果接口的任何翻翻获取或返回Object,就会失去编译时的类型安全性,而且值类型将发生装箱, 所以利用显示接口方法EIMI实现来增强编译时类型安全性.</p>
+<p>泛型接口的好处还有,类可以实现同一个接口若干次,只要每次使用的类型参数不同.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Number n <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Number</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// n 与 一个 Int32类型 5 作比较</span>
+    IComparable<span class="token operator">&lt;</span>Int32<span class="token operator">></span> cInt32 <span class="token operator">=</span> n<span class="token punctuation">;</span>
+    Int32 result <span class="token operator">=</span> cInt32<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//  n 与一个 String类型 "5" 作比较</span>
+    IComparable<span class="token operator">&lt;</span>String<span class="token operator">></span> cString <span class="token operator">=</span> n<span class="token punctuation">;</span>
+    result <span class="token operator">=</span> cString<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span><span class="token string">"5"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 该类实现了 IComparable&lt;T> 接口两次</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Number</span> <span class="token punctuation">:</span> IComparable<span class="token operator">&lt;</span>Int32<span class="token operator">></span><span class="token punctuation">,</span> IComparable<span class="token operator">&lt;</span>String<span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Int32 m_val <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 该方法实现了 IComparable&lt;Int32>’s CompareTo</span>
+    <span class="token keyword">public</span> Int32 <span class="token function">CompareTo</span><span class="token punctuation">(</span>Int32 n<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> m_val<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 该方法实现了 IComparable&lt;String>’s CompareTo</span>
+    <span class="token keyword">public</span> Int32 <span class="token function">CompareTo</span><span class="token punctuation">(</span>String s<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> m_val<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>Int32<span class="token punctuation">.</span><span class="token function">Parse</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>泛型接口还可以标记为<code>逆变in</code>和<code>协变out</code>,为泛型接口使用提供了更大的灵活性.</p>
+<blockquote>
+<p>逆变in: 允许传入参数使用T的派生类<br>协变out:允许输出类型使用T的基类</p>
+</blockquote>
+<h1 id="泛型和接口约束"><a href="#泛型和接口约束" class="headerlink" title="泛型和接口约束"></a>泛型和接口约束</h1><p>泛型类型参数约束为多个接口,这样传递的参数必须要实现全部接口约束.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SomeType</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Test</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Int32 x <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+        Guid g <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Guid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 对M的调用能通过编译，因为Int32实现了IComparable 和 IConvertible</span>
+        <span class="token comment" spellcheck="true">// 不会发生装箱</span>
+        <span class="token function">M</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 对M的调用能不通过编译，因为Guid实现了IComparable，但没实现了 IConvertible</span>
+        <span class="token comment" spellcheck="true">// M(g);</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// M类型参数T被约束为需要支持同时实现IComparable 和 IConvertible interfaces接口的类型</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Int32 <span class="token generic-method function">M<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span>T t<span class="token punctuation">)</span> <span class="token keyword">where</span> T <span class="token punctuation">:</span> IComparable<span class="token punctuation">,</span> IConvertible
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// ...</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 如果这样声明,x传给M就必须装箱, 接口是引用类型.</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Int32 M<span class="token operator">&lt;</span>IComparable t<span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这很有用,, 如果参数的类型是接口, 那么实参可以是任意类类型,只要该类实现了此接口.</p>
+<p>使用多个接口约束,实际上是表示向方法传递的实参必须实现多个接口.</p>
+<p><strong>接口约束还可以减少传递值类型实例时的装箱</strong>,<code>M(x);</code>上述代码向M方法传递了x（值类型int实例）。x传给M方法时不会发生装箱。M内部的代码调用t.CompareTo(..),这个调用本身也不会引发装箱,但传给CompareTo的实参可能发生装箱.</p>
+<p><strong>C#编译器为接口约束生成特殊的IL指令,导致直接在值类型上调用接口方法而不装箱,不用接口约束就没办法生成特殊指令. 在值类型调用接口时总是装箱,例外是这个值类型实现了一个接口方法.在值类型的实例上调用这个方法不会造成值类型的实例装箱.</strong></p>
+<h1 id="实现多个具有相同方法名和签名的接口"><a href="#实现多个具有相同方法名和签名的接口" class="headerlink" title="实现多个具有相同方法名和签名的接口"></a>实现多个具有相同方法名和签名的接口</h1><p>要定义一个实现了这两个接口的类型，必须使用<code>显示接口方法实现</code>来实现这个类型的成员.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">IWindow</span>
+<span class="token punctuation">{</span>
+     Object <span class="token function">GetMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">IRestaurant</span>
+<span class="token punctuation">{</span>
+     Object <span class="token function">GetMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 这个类型派生自 System.Object and</span>
+<span class="token comment" spellcheck="true">// 并不实现 IWindow 和 IRestaurant 接口.</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MarioPizzeria</span> <span class="token punctuation">:</span> IWindow<span class="token punctuation">,</span> IRestaurant
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 这是IWindow 的 GetMenu 方法.</span>
+    Object IWindow<span class="token punctuation">.</span><span class="token function">GetMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// ...</span>
+        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 这是 IRestaurant 的 GetMenu 方法.</span>
+    Object IRestaurant<span class="token punctuation">.</span><span class="token function">GetMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// ...</span>
+        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 这个GetMenu方法是可选的，与接口无关</span>
+    <span class="token keyword">public</span> Object <span class="token function">GetMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// ...</span>
+        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个类要实现多个接口的GetMenu方法,所以要告诉编译器每个GetMenu对应的是哪个接口的实现.<strong>在使用使用必须将对象转换为具体的接口才能调用所需的方法.</strong></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    MarioPizzeria mp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MarioPizzeria</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 这行调用 MarioPizzeria 的公共 GetMenu 方法</span>
+    mp<span class="token punctuation">.</span><span class="token function">GetMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 这行调用 MarioPizzeria 的 IWindow.GetMenu 方法</span>
+    IWindow window <span class="token operator">=</span> mp<span class="token punctuation">;</span>
+    window<span class="token punctuation">.</span><span class="token function">GetMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 这行调用 MarioPizzeria 的 IRestaurant.GetMenu 方法</span>
+    IRestaurant restaurant <span class="token operator">=</span> mp<span class="token punctuation">;</span>
+    restaurant<span class="token punctuation">.</span><span class="token function">GetMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="用显式接口方法实现EIMI来增强编译时类型安全性"><a href="#用显式接口方法实现EIMI来增强编译时类型安全性" class="headerlink" title="用显式接口方法实现EIMI来增强编译时类型安全性"></a>用显式接口方法实现EIMI来增强编译时类型安全性</h1><p>因为有些接口不存在泛型版本,或者泛型版本是继承非泛型版本,所以仍需实现非泛型接口.</p>
+<p>非泛型接口接收任何System.Object类型的参数或返回System.Object类型的值,这样就会失去编译时的类型安全性,装箱也会发生.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 这个接口定义了一个方法，该方法接受一个System.Object类型的参数。</span>
+<span class="token comment" spellcheck="true">// 可像下面一样实现该接口的一个类型：</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">IComparable</span> <span class="token punctuation">{</span>
+      Int32 <span class="token function">CompareTo</span><span class="token punctuation">(</span>Objetc other<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 值类型实现接口</span>
+<span class="token keyword">internal</span> <span class="token keyword">struct</span> SomeValueType <span class="token punctuation">:</span> IComparable
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Int32 m_x<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">SomeValueType</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">)</span> <span class="token punctuation">{</span> m_x <span class="token operator">=</span> x<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Int32 <span class="token function">CompareTo</span><span class="token punctuation">(</span>Object other<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>m_x <span class="token operator">-</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>SomeValueType<span class="token punctuation">)</span>other<span class="token punctuation">)</span><span class="token punctuation">.</span>m_x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   SomeValueType v <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SomeValueType</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Object o <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Int32 n <span class="token operator">=</span> v<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 出现装箱,因为参数是Object,V是值类型</span>
+   n <span class="token operator">=</span> v<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">// 能通过编译,会InvaidCastException抛出转换异常</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>为了解决上述代码的装箱问题和类型安全性问题(编译期就能报错,而不是运行时)</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">struct</span> SomeValueType <span class="token punctuation">:</span> IComparable
+<span class="token punctuation">{</span>
+     <span class="token keyword">private</span> Int32 m_x<span class="token punctuation">;</span>
+     <span class="token keyword">public</span> <span class="token function">SomeValueType</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">)</span> <span class="token punctuation">{</span> m_x <span class="token operator">=</span> x<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+     <span class="token comment" spellcheck="true">// 改动: 参数类型换成了SomeValueType,这样就不会发生值类型转Object时发生装箱操作</span>
+     <span class="token keyword">public</span> Int32 <span class="token function">CompareTo</span><span class="token punctuation">(</span>SomeValueType other<span class="token punctuation">)</span>
+     <span class="token punctuation">{</span>
+         <span class="token comment" spellcheck="true">// 也不需要强制类型转换的操作</span>
+         <span class="token keyword">return</span> <span class="token punctuation">(</span>m_x <span class="token operator">-</span> other<span class="token punctuation">.</span>m_x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+     <span class="token comment" spellcheck="true">// 因为修改了上面的CompareTo方法, 所以还需要实现接口的公共CompareTo方法来满足接口协定,这就是IComparable.CompareTo方法的作用</span>
+     <span class="token comment" spellcheck="true">// 注意: 这个是显示实现接口EIMI  没有指定public或者private的可访问性</span>
+     Int32 IComparable<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>Object other<span class="token punctuation">)</span>
+     <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">CompareTo</span><span class="token punctuation">(</span><span class="token punctuation">(</span>SomeValueType<span class="token punctuation">)</span>other<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>经过这样修改之后, 就不存在装箱问题,编译时期就能报错,不用在运行时才报,有了类型安全性.</p>
+<p>但如果定义接口类型的变量会再次失去编译时的类型安全性,也会发生装箱.(发生2次)</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    SomeValueType v <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SomeValueType</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 接口类型是引用类型, 值类型赋值会装箱</span>
+    IComparable c <span class="token operator">=</span> v<span class="token punctuation">;</span>              <span class="token comment" spellcheck="true">//第一次装箱</span>
+
+    Object o <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 这里使用的是接口类型变量去调用接口方法IComparable.CompareTo(Object other)</span>
+    <span class="token comment" spellcheck="true">// 接口类型变量只能调用接口定义的方法,</span>
+    Int32  n <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment" spellcheck="true">// 第二次发生装箱操作</span>
+    <span class="token comment" spellcheck="true">// n = c.CompareTo(o);           // 运行时InvalidCastException异常           </span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>实现IConvertible， ICollection，IList和IDictionary等接口时，可利用EIMI为这些接口的方法创建类型安全的版本，并减少值类型的装箱。</strong></p>
+<h1 id="谨慎使用显式接口方法实现"><a href="#谨慎使用显式接口方法实现" class="headerlink" title="谨慎使用显式接口方法实现"></a>谨慎使用显式接口方法实现</h1><p>使用EIMI也可能造成一些严重后果，所以应该尽量避免使用EIMI。幸好，泛型接口可帮助我们在大多数时候避免使用EIMI。但有时，比如实现具有相同名称和签名的两个接口方法时，仍需要它们。</p>
+<p>EIMI最主要的问题如下：</p>
+<ul>
+<li>没有文档解释一个类型具体如何实现一个EIMI方法，也没有vs的智能感知。</li>
+<li>值类型的实例在转型为接口时装箱</li>
+<li>EIMI不能由派生类调用</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 问题1,2</span>
+<span class="token comment" spellcheck="true">// 不能直接从一个Int32上调用一个IConvertible接口方法</span>
+<span class="token comment" spellcheck="true">// 错误说明:int不包含ToSingle的定义,但是实际上是定义了</span>
+<span class="token comment" spellcheck="true">// 必须先转换为IConvertible接口变量,才能调用, 还会装箱,并损害性能</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+     <span class="token keyword">int</span> x<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">;</span>
+     <span class="token comment" spellcheck="true">// 无法编译此句</span>
+     <span class="token comment" spellcheck="true">// Single s=x.ToSingle(null);</span>
+
+     <span class="token comment" spellcheck="true">// 修改成这样才能编译</span>
+     <span class="token comment" spellcheck="true">// 但是这又会发生装箱,浪费内存又损害性能</span>
+     Single s<span class="token operator">=</span><span class="token punctuation">(</span><span class="token punctuation">(</span>IConvertible<span class="token punctuation">)</span> x<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToSingle</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 问题3</span>
+<span class="token comment" spellcheck="true">// 不能由派生类调用</span>
+<span class="token keyword">internal</span> <span class="token keyword">class</span> <span class="token class-name">Base</span> <span class="token punctuation">:</span> IComparable
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// EIMI 显示接口方法实现</span>
+    <span class="token comment" spellcheck="true">// 此方法只能通过IComparable接口类型变量来调用</span>
+    <span class="token keyword">int</span> IComparable<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Base's CompareTo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Derived</span> <span class="token punctuation">:</span> Base<span class="token punctuation">,</span> IComparable
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">CompareTo</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Derived's CompareTo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 情况一</span>
+        <span class="token comment" spellcheck="true">// 试图调用基类的EIMI导致编译错误</span>
+        <span class="token comment" spellcheck="true">// error CS0117: Base不包含CompareTo的定义</span>
+        <span class="token comment" spellcheck="true">// base.CompareTo(obj);</span>
+
+        <span class="token comment" spellcheck="true">// 情况二, 修改情况一</span>
+        <span class="token comment" spellcheck="true">// 试图调用基类的EIMI导致无穷递归</span>
+        <span class="token comment" spellcheck="true">// 通过接口变量调用接口方法, 会根据实际类型,调用到Derived的CompareTo</span>
+        <span class="token comment" spellcheck="true">// 就产生无限递归</span>
+        <span class="token comment" spellcheck="true">// 解决的方法是 internal sealed class Derived : Base { } 去掉IComparable接口定义</span>
+        IComparable c <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+        c<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>为了解决问题3中情况二,这样的解决方式有时不能因为想在派生类中实现接口方法就将接口从类型中删除,正确定义Base类和Derived类的代码如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 用于解决 调用基类的接口方法</span>
+<span class="token comment" spellcheck="true">// 在基类中定义个用于派生类的虚方法,</span>
+<span class="token comment" spellcheck="true">// 这样 如果用接口类型变量就能访问到 基类的CompareTo方法,并且不会产生无限递归</span>
+<span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Base b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Base</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Derived d <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Derived</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        IComparable c <span class="token operator">=</span> d<span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 输出</span>
+        <span class="token comment" spellcheck="true">// Derived's CompareTo</span>
+        <span class="token comment" spellcheck="true">// Base's virtual CompareTo</span>
+        d<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token keyword">internal</span> <span class="token keyword">class</span> <span class="token class-name">Base</span> <span class="token punctuation">:</span> IComparable
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// EIMI 显示接口方法实现</span>
+    Int32 IComparable<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Base's CompareTo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 调用虚方法</span>
+        <span class="token keyword">return</span> <span class="token function">CompareTo</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 用于派生类的虚方法(名字可以任意)</span>
+    <span class="token keyword">public</span> <span class="token keyword">virtual</span> Int32 <span class="token function">CompareTo</span><span class="token punctuation">(</span>Object o<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Base's virtual CompareTo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Derived</span> <span class="token punctuation">:</span> Base<span class="token punctuation">,</span> IComparable
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 公共方法,也是接口的实现</span>
+    <span class="token keyword">public</span> <span class="token keyword">override</span> Int32 <span class="token function">CompareTo</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Derived's CompareTo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 现在可以调用基类的虚接口方法</span>
+        <span class="token keyword">return</span> <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>EIMI在某些情况下确实有用,但是应该 <strong>尽量避免使用</strong>,这样导致类型变得很不好用.</p>
+<h1 id="设计-基类还是接口"><a href="#设计-基类还是接口" class="headerlink" title="设计:基类还是接口"></a>设计:基类还是接口</h1><p>选择基类还是接口的指导性原则:</p>
+<ul>
+<li><strong><code>IS-A</code> vs. <code>CAN-DO</code>关系</strong></li>
+</ul>
+<p>类型 <strong>只能继承一个实现</strong>。如果派生类型和基类型不能建立起<code>is–a</code>关系，就不用基类而用接口。接口意味着<code>Can-do</code>关系。如果多种对象类型都能做某事，就为它们创建接口。</p>
+<p>例如，一个类型能将自己的实例转换为另一个类型（IConvertible），一个类型能序列化自己的实例(ISerializable)。注意，值类型必须从system.valueType派生，所以不能从一个任意的基类派生。这时必须使用<code>can-do</code>关系并定义接口。</p>
+<ul>
+<li><strong>易用性</strong></li>
+</ul>
+<p>对于开发人员，定义从基类派生的新类型通常比实现接口的所有方法容易得多。基类可提供大量功能，所以派生类型可能只需要稍微改动。而提供接口的话，新类型必须实现所有成员。</p>
+<ul>
+<li><strong>一致性的实现</strong></li>
+</ul>
+<p>无论接口协定订立得有多好，都无法保证所有人百分之百正确实现它。事实上，com颇受该问题之累。而如果为基类型提供良好的默认实现，那么一开始得到的就是能正常工作并经过良好测试的类型。以后根据需要修改就可以了。</p>
+<ul>
+<li><strong>版本控制</strong></li>
+</ul>
+<p>向基类型添加一个方法，派生类将继承新方法。一开始使用就是一个能正常工作的类型，用户的源代码甚至不需要编译。向接口添加一个新成员，会强迫接口的实现者更改其源代码。</p>
+<p>最后要指出的是，这两件事情实际上是可以同时做：<strong>定义一个接口，同时提供一个实现了这个接口的基类。</strong></p>
+<p>FCL中涉及数据流处理的类采用的是实现继承方法。system.IO.Stream是抽象基类，提供了包括read和write在内的一组方法。其他类（filestream，memoryStream和NetWorkStream等）都从stream派生。在这三个类中，每一个和stream类都是<code>is–a</code>关系，这使得具体类的实现变得更容易。</p>
+<p>相反，Microsoft采用基于接口的方式设计FCL中的集合。 FCL定义了<code>IComparer&lt;in T&gt;接口</code>,还提供了<code>抽象基类Compare&lt;T&gt;</code>,它实现了该接口,同时为非泛型<code>IComparer</code>的<code>Compare方法</code>提供了默认实现. 接口定义和基类同时存在带来了很大的灵活性.</p>
+
         
             <div class="donate-container">
     <div class="donate-button">
