@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#字符-字符串和文本处理"><span class="toc-text">字符,字符串和文本处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符"><span class="toc-text">字符</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#System-String类型"><span class="toc-text">System.String类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#构造字符串"><span class="toc-text">构造字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逐字字符串声明-操作符"><span class="toc-text">逐字字符串声明(@ 操作符)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串是不可变的"><span class="toc-text">字符串是不可变的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#比较字符串"><span class="toc-text">比较字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#执行语言文化正确的比较"><span class="toc-text">执行语言文化正确的比较</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串留用"><span class="toc-text">字符串留用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串留用提升性能并减少内存消耗"><span class="toc-text">字符串留用提升性能并减少内存消耗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串池"><span class="toc-text">字符串池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#检查字符串中的字符和文本元素"><span class="toc-text">检查字符串中的字符和文本元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他字符串操作"><span class="toc-text">其他字符串操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#高效率构造字符串"><span class="toc-text">高效率构造字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#构造StringBuilder对象"><span class="toc-text">构造StringBuilder对象</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#字符-字符串和文本处理"><span class="toc-text">字符,字符串和文本处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符"><span class="toc-text">字符</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#System-String类型"><span class="toc-text">System.String类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#构造字符串"><span class="toc-text">构造字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逐字字符串声明-操作符"><span class="toc-text">逐字字符串声明(@ 操作符)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串是不可变的"><span class="toc-text">字符串是不可变的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#比较字符串"><span class="toc-text">比较字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#执行语言文化正确的比较"><span class="toc-text">执行语言文化正确的比较</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串留用"><span class="toc-text">字符串留用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串留用提升性能并减少内存消耗"><span class="toc-text">字符串留用提升性能并减少内存消耗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串池"><span class="toc-text">字符串池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#检查字符串中的字符和文本元素"><span class="toc-text">检查字符串中的字符和文本元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他字符串操作"><span class="toc-text">其他字符串操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#高效率构造字符串"><span class="toc-text">高效率构造字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#构造StringBuilder对象"><span class="toc-text">构造StringBuilder对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#StringBuilder成员"><span class="toc-text">StringBuilder成员</span></a></li></ol></li></ol>
 </div>
 
     
@@ -524,16 +524,16 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
 <h2 id="构造StringBuilder对象"><a href="#构造StringBuilder对象" class="headerlink" title="构造StringBuilder对象"></a>构造StringBuilder对象</h2><p>大多数语言都不将StringBuilder视为基元类型. 要像构造其他任何非基元类型那样构造StringBuilder对象.</p>
 <p>StringBuilder提供了许多构造器. 一些关键概念如下:</p>
 <ol>
-<li>最大容量<ol>
+<li><strong>最大容量</strong><ol>
 <li>一个Int32值,指定了能放到字符串中的最大字符数,默认是Int32.MaxValue(约20亿). 一般不用更改这个值. 有时需要指定较小的最大容量以确保不会创建超出特定长度的字符串,<strong>构造好之后就固定下来了,不能再变.</strong></li>
 </ol>
 </li>
-<li>容量<ol>
+<li><strong>容量</strong><ol>
 <li>一个Int32值, 指定了StringBuilder维护的字符数组的长度,默认16, 如果事先知道要放入多少,则应该在构造StringBuilder对象时自己设置容量.</li>
 <li>在向字符数组追加字符时, StringBuilder会检测数组会不会超过设定的容量.如果会,StringBuilder会自动 <strong>倍增容量字段(翻倍).</strong>  旧的数组字符数组复制到新的数组中,随后<code>原始数组可以被垃圾回收</code>. <strong>数组动态扩展会损害性能,可以在构造时就设置一个合适的初始容量.</strong></li>
 </ol>
 </li>
-<li>字符数组<ol>
+<li><strong>字符数组</strong><ol>
 <li>一个由Char结构构成的数组, 负责维护字符串的字符内容.</li>
 <li>可以用<code>StringBuilder的Length属性</code>来获取已经使用的字符数.</li>
 <li>在构造时传递一个String来初始化数组.</li>
@@ -541,6 +541,70 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
 </ol>
 </li>
 </ol>
+<h2 id="StringBuilder成员"><a href="#StringBuilder成员" class="headerlink" title="StringBuilder成员"></a>StringBuilder成员</h2><p>StringBuilder代表可变字符串, 大多数成员都能更改字符数组的内容, 同时不会造成在托管堆上分配新对象.</p>
+<p><strong>分配新对象</strong> 只会在以下两种情况:</p>
+<ol>
+<li>动态构造字符串,其长度超过了设置的容量.</li>
+<li>调用StringBuilder的ToString方法.</li>
+</ol>
+<p><img src="/2019/08/12/14字符字符串和文本处理/StringBuilder成员1.png" alt=""></p>
+<p><img src="/2019/08/12/14字符字符串和文本处理/StringBuilder成员2.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 有参属性,索引器</span>
+<span class="token comment" spellcheck="true">// IL代码 StringBuilder::get_Chars(int32)</span>
+<span class="token punctuation">[</span><span class="token function">IndexerName</span><span class="token punctuation">(</span><span class="token string">"Chars"</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token comment" spellcheck="true">// 不加这个,默认是 get_Item</span>
+<span class="token keyword">public</span> <span class="token keyword">char</span> <span class="token keyword">this</span><span class="token punctuation">[</span><span class="token keyword">int</span> index<span class="token punctuation">]</span>
+
+<span class="token comment" spellcheck="true">// 用法如同使用数组</span>
+StringBuilder sb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token string">"1234567"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>sb<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>Length</code> 属性设为0等同于内容重置为空字符串, 还等同于Clear方法.</li>
+<li><code>Append</code> 在字符数组 <strong>后追加</strong> 一个对象,有必要会进行扩充.</li>
+<li><code>Insert</code> 在字符数组 <strong>中插入</strong> 一个对象,有必要会进行扩充.</li>
+<li><code>AppendFormat</code> 在字符数组末尾追加0个或多个对象.</li>
+<li><code>AppendLine</code> 追加一行中止符或者一个带有中止符的字符串.</li>
+</ul>
+<blockquote>
+<p> ’\0’字符在C#中意味着字符串结束, 后面的字符不显示. <code>string.Replace(&#39;\0&#39;,&#39;*&#39;)</code></p>
+</blockquote>
+<ul>
+<li><code>Equals</code> <strong>两个StringBuilder对象具有相同最大容量,字符数组容量和字符内存才返回true.</strong></li>
+</ul>
+<p>大多数方法返回的都是对同一个StringBuilder对象的引用.</p>
+<p>String类提供的一些方法,StringBuilder类并没有提供对应的方法.</p>
+<ul>
+<li>ToLower</li>
+<li>ToUpper</li>
+<li>EndsWith</li>
+<li>PadLeft</li>
+<li>PadRight</li>
+<li>Trim</li>
+</ul>
+<p>StringBuilder提供了更全面的Replace方法,允许替换一部分字符串而不是整个.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">
+<span class="token comment" spellcheck="true">// 因为StringBuilder提供转换大写的方法,需要用String的方法来中转一下</span>
+StringBuilder sb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+sb<span class="token punctuation">.</span><span class="token function">AppendFormat</span><span class="token punctuation">(</span><span class="token string">"Jeffrey Richter"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">,</span> <span class="token string">"-"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 推荐使用忽视语言文化的转换</span>
+<span class="token comment" spellcheck="true">// 将StringBuilder转成string以便将所有字符串转换成大写</span>
+String s <span class="token operator">=</span> sb<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToUpperInvariant</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 清空StringBuilder,分配新的char数组</span>
+sb<span class="token punctuation">.</span>Length <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 将全部大写的String加载到StringBuilder中执行其他操作</span>
+sb<span class="token punctuation">.</span><span class="token function">Append</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Insert</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token string">"Marc-"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 再转回String ,向用户显式</span>
+s <span class="token operator">=</span> sb<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 输出: JEFFREY-Marc-RICHTER</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>因为StringBuilder提供转换大写的方法,需要用String的方法来中转一下.</p>
 
         
             <div class="donate-container">
