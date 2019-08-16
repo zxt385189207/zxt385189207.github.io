@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#枚举类型和位标志"><span class="toc-text">枚举类型和位标志</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#枚举类型和位标志"><span class="toc-text">枚举类型和位标志</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#枚举类型"><span class="toc-text">枚举类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#返回枚举基础类型的方法"><span class="toc-text">返回枚举基础类型的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#枚举类型格式化输出的方法"><span class="toc-text">枚举类型格式化输出的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#返回枚举名称-值-的Array数组方法"><span class="toc-text">返回枚举名称(值)的Array数组方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#返回枚举符号名称的方法"><span class="toc-text">返回枚举符号名称的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#返回与符号对应的值的方法"><span class="toc-text">返回与符号对应的值的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#判断数值对于某枚举类型是否合法"><span class="toc-text">判断数值对于某枚举类型是否合法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ToObject方法"><span class="toc-text">ToObject方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#位标志"><span class="toc-text">位标志</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于为什么传入结构会进行装箱的问题"><span class="toc-text">关于为什么传入结构会进行装箱的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-枚举类型、System-Enum、System-ValueType、值类型和引用类型之间存在着什么样的关系？"><span class="toc-text">C#枚举类型、System.Enum、System.ValueType、值类型和引用类型之间存在着什么样的关系？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flag特性"><span class="toc-text">Flag特性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#向枚举类型添加方法"><span class="toc-text">向枚举类型添加方法</span></a></li></ol>
 </div>
 
     
@@ -139,7 +139,460 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        <h1 id="枚举类型和位标志"><a href="#枚举类型和位标志" class="headerlink" title="枚举类型和位标志"></a>枚举类型和位标志</h1>
+        <h1 id="枚举类型和位标志"><a href="#枚举类型和位标志" class="headerlink" title="枚举类型和位标志"></a>枚举类型和位标志</h1><p>CLR和FCL结合起来之后, 枚举类型和位标志才真正成为面向对象的类型. 提供了一些强大的功能.大部分开发人员并不熟悉.</p>
+<h1 id="枚举类型"><a href="#枚举类型" class="headerlink" title="枚举类型"></a>枚举类型</h1><p><strong>枚举类型(enumerated type)</strong> 定义了一组 “符号名称/值” 配对. 例如:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 每个符号标识一种颜色, 也可以用0标识白色</span>
+<span class="token keyword">internal</span> <span class="token keyword">enum</span> Color
+<span class="token punctuation">{</span>
+  White<span class="token punctuation">,</span>    <span class="token comment" spellcheck="true">// 赋值0</span>
+  Red<span class="token punctuation">,</span>      <span class="token comment" spellcheck="true">// 赋值1</span>
+  Green<span class="token punctuation">,</span>    <span class="token comment" spellcheck="true">// 赋值2</span>
+  Blue<span class="token punctuation">,</span>     <span class="token comment" spellcheck="true">// 赋值3</span>
+  Orange    <span class="token comment" spellcheck="true">// 赋值4</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>不应该将数字硬编码到代码中,而应该使用枚举类型.</p>
+<ol>
+<li>更容易阅读和理解代表的含义. 调试程序能向开发人员显示有意义的符号名称.</li>
+<li>枚举是强类型的. 比如Color.Orange和Fruit.Orange是不同的,虽然都有一个Orange.</li>
+</ol>
+<p>在.Net Framework中, 枚举类型不只是编译器所关心的符号, 还是类型系统中的一等公民, 能实现很强大的操作.(在其他环境比如非托管C++中,枚举没有这个特点的).</p>
+<p><strong>每个枚举都直接从<code>System.Enum</code>派生</strong> , <code>System.Enum</code>从<code>System.ValueType</code>派生.<code>System.ValueType</code>又从<code>System.Object</code>派生.</p>
+<p>枚举都是 <strong>值类型</strong> . 可以用未装箱和已装箱的形式来表示,但是区别于其他值类型, 枚举类型不能定义任何方法,属性,事件.  可以用<code>扩展方法</code>功能模拟向枚举类型添加方法.(在最后会举例)</p>
+<p>编译枚举类型时,C#编译器把每个符号转换成类型的一个 <strong>常量字段</strong>.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 此代码是伪类型定义,用来了解内部的工作方式</span>
+<span class="token comment" spellcheck="true">// 实际上编译器不会编译以下代码,禁止定义从System.Enum派生的类型.</span>
+<span class="token keyword">internal</span> <span class="token keyword">struct</span> Color <span class="token punctuation">:</span> System<span class="token punctuation">.</span>Enum
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 以下是一些公共常量,它们定义了Color的符号和值</span>
+  <span class="token keyword">public</span> <span class="token keyword">const</span> Color White  <span class="token operator">=</span> <span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">public</span> <span class="token keyword">const</span> Color Red    <span class="token operator">=</span> <span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+  <span class="token comment" spellcheck="true">// 以下是一个公共实例字段.包含Color变量的值</span>
+  <span class="token comment" spellcheck="true">// 不能写代码来直接引用该字段</span>
+  <span class="token keyword">public</span> Int32 value__<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>简单地说,枚举类型只是一个结构,其中定义了:</p>
+<ul>
+<li>一组常量字段<ul>
+<li>会嵌入程序集的元数据中,并可以通过反射来访问(有静态方法和实例方法可以操作,不是必须要用反射)</li>
+</ul>
+</li>
+<li>一个实例字段</li>
+</ul>
+<p>可以在运行时获得与枚举类型关联的所有符号及其值. 可以将字符串符号转换成对应的数值.<code>System.Eunm</code>基类型提供了这些操作, 还提供了几个静态和实例方法, 可利用它们操作枚举类型的实例,从而避免了必须使用反射的麻烦.</p>
+<blockquote>
+<p>枚举类型定义的符号是常量值, 编译器发现代码引用了枚举类型的符号时,会在编译时用数值替换符号,代码不再引用定义了符号的枚举类型.<br>也就是说:运行时可能不需要定义了枚举类型的程序集,编译时才需要.<br>如果代码引用了枚举类型,而不是只引用了枚举类型定义的符号,那么运行时也需要包含定义枚举所在的程序集.<br>版本问题: 因为枚举类型符号是常量, 而不是只读的值. 常量值直接嵌入IL代码. 如果枚举常量所在的程序集改动了, 引用此程序集的应用程序没有重新编译,使用的就是旧值.而不会重新从那个程序集中获取常量的新值.</p>
+</blockquote>
+<h2 id="返回枚举基础类型的方法"><a href="#返回枚举基础类型的方法" class="headerlink" title="返回枚举基础类型的方法"></a>返回枚举基础类型的方法</h2><p>例如，System.Enum类型有一个<code>GetUnderlyingType</code>的静态方法，而<code>System.Type</code>类型有一个 <code>GetEnumUnderlyingType</code>的实例方法。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> Type <span class="token function">GetUnderlyingType</span> <span class="token punctuation">(</span>Type enumType<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//System.Enum中定义</span>
+<span class="token keyword">public</span> Type <span class="token function">GetEnumUnderlyingType</span> <span class="token punctuation">(</span>Type enumType<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//System.Type中定义</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这些方法返回用于容纳一个枚举类型的值的<code>基础类型</code>. <strong>每个枚举类型都有一个基础类型.</strong> int最常用,也是C#默认选择的.</p>
+<p>C#编译器要求只能指定基元类型名称. 使用FCL类型名称会报错. 应输入类型byte,sbyte,short,ushort,int,uint,long,ulong.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">enum</span> Color <span class="token punctuation">:</span> <span class="token keyword">byte</span>
+<span class="token punctuation">{</span>
+  White<span class="token punctuation">,</span>
+  Red<span class="token punctuation">,</span>
+  Green
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 以下代码都会显示 System.Byte</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>Enum<span class="token punctuation">.</span><span class="token function">GetUnderlyingType</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetEnumUnderlyingType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>C#编译器将枚举类型视为基元类型. 所以可用操作符(==,!=,&lt;,&gt;….)来操纵枚举类型的实例.可以显式将<code>枚举类型</code>转型为<code>不同的枚举类型</code>,可以显式将<code>枚举类型实例</code>转换为<code>数值类型</code>.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Color c <span class="token operator">=</span> Color<span class="token punctuation">.</span>Green<span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>                            <span class="token comment" spellcheck="true">// Green</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                 <span class="token comment" spellcheck="true">// Green</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token string">"G"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>              <span class="token comment" spellcheck="true">// Green 常规格式</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token string">"D"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>              <span class="token comment" spellcheck="true">// 2     十进制</span>
+        <span class="token comment" spellcheck="true">// 使用十六进制是, ToStirng总是输出大写字母</span>
+        <span class="token comment" spellcheck="true">// 输出的位数取决于枚举的基础类型</span>
+        <span class="token comment" spellcheck="true">// byte/sbyte: 2位, short/ushort: 4位 int/uint:8位 long/ulong: 16位</span>
+        <span class="token comment" spellcheck="true">// 如果有必要会添加前导零</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token string">"X"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>              <span class="token comment" spellcheck="true">// 02    十六进制</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>Color2<span class="token punctuation">.</span>Green<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token string">"X"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// 00000002 十六进制</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">internal</span> <span class="token keyword">enum</span> Color <span class="token punctuation">:</span> <span class="token keyword">byte</span>
+<span class="token punctuation">{</span>
+    White<span class="token punctuation">,</span>
+    Red<span class="token punctuation">,</span>
+    Green
+<span class="token punctuation">}</span>
+<span class="token keyword">internal</span> <span class="token keyword">enum</span> Color2 <span class="token punctuation">:</span> <span class="token keyword">int</span>
+<span class="token punctuation">{</span>
+    White<span class="token punctuation">,</span>
+    Red<span class="token punctuation">,</span>
+    Green
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="枚举类型格式化输出的方法"><a href="#枚举类型格式化输出的方法" class="headerlink" title="枚举类型格式化输出的方法"></a>枚举类型格式化输出的方法</h2><p>除了ToString方法,System.Enum类型还提供了静态Fotmat方法.</p>
+<ul>
+<li><code>ToSring方法</code>: 代码少,容易调用.</li>
+<li><code>Fotmat方法</code>: 可以传递value值,而不需要获取枚举的实例. 代码多.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 比ToString方法好的一个地方是,允许为value传递参数的值,这样就不需要获取枚举的实例</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">Format</span><span class="token punctuation">(</span>Type enumType<span class="token punctuation">,</span>Object <span class="token keyword">value</span><span class="token punctuation">,</span> String format<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 输出: Blue</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>Enum<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">"G"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="返回枚举名称-值-的Array数组方法"><a href="#返回枚举名称-值-的Array数组方法" class="headerlink" title="返回枚举名称(值)的Array数组方法"></a>返回枚举名称(值)的Array数组方法</h2><p>声明枚举类型时, 所有符号都可以有相同的数值. 使用常规格式将数值转换为符号时,Enum的方法会返回其中的一个符号,如果没有对应的数值定义的符号时,会返回包含该数值的字符串.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 返回的数组中每个元素都对应枚举类型中的一个符号名称,每个元素都包含符号名称的数值</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> Array <span class="token function">GetValues</span><span class="token punctuation">(</span>Type enumType<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//System.Enum中定义</span>
+<span class="token keyword">public</span> Array <span class="token function">GetEnumValues</span><span class="token punctuation">(</span>Type enumType<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//System.Type中定义</span>
+
+<span class="token comment" spellcheck="true">// 返回一个数组</span>
+Color<span class="token punctuation">[</span><span class="token punctuation">]</span> colors <span class="token operator">=</span> <span class="token punctuation">(</span>Color<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> Enum<span class="token punctuation">.</span><span class="token function">GetValues</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"定义枚举的个数: "</span> <span class="token operator">+</span> colors<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Value\tSymbol\n-----\t------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span>Color color <span class="token keyword">in</span> colors<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 以十进制和常规格式显示每个符号</span>
+    <span class="token comment" spellcheck="true">// 0代表第0个参数, {0,5:D} 5个占位符,color的十进制   {0:G} color的常规格式(符号名称)</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"{0,5:D}\t{0:G}"</span><span class="token punctuation">,</span> color<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">//    输出:</span>
+<span class="token comment" spellcheck="true">//    定义枚举的个数: 3</span>
+<span class="token comment" spellcheck="true">//    Value Symbol</span>
+<span class="token comment" spellcheck="true">//    -----   ------</span>
+<span class="token comment" spellcheck="true">//        0   White</span>
+<span class="token comment" spellcheck="true">//        1   Red</span>
+<span class="token comment" spellcheck="true">//        2   Green</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>GetEnumValues和GetValues</code>方法返回Array,必须转型成恰当的数组类型. 所以定义了一个自定义的方法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 使用下面自定义的泛型方法可以获得更好的编译时类型安全性</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> TEnum<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token generic-method function">GetEnumValues<span class="token punctuation">&lt;</span>TEnum<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">where</span> TEnum <span class="token punctuation">:</span><span class="token keyword">struct</span>
+ <span class="token punctuation">{</span>
+     <span class="token keyword">return</span> <span class="token punctuation">(</span>TEnum<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> Enum<span class="token punctuation">.</span><span class="token function">GetValues</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>TEnum<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+
+ <span class="token comment" spellcheck="true">// 使用如下</span>
+ Color<span class="token punctuation">[</span><span class="token punctuation">]</span> colors <span class="token operator">=</span> <span class="token generic-method function">GetEnumValues<span class="token punctuation">&lt;</span>Color<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="返回枚举符号名称的方法"><a href="#返回枚举符号名称的方法" class="headerlink" title="返回枚举符号名称的方法"></a>返回枚举符号名称的方法</h2><p>要显示符号名称时,ToString(常规格式)方法是经常使用的,前提是字符串不需要本地化(枚举类型没有提供本地化支持). 除了GetValues,还提供了以下方法来返回枚举类型的符号.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 返回数值的字符串表示</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">GetName</span><span class="token punctuation">(</span>Type enumType<span class="token punctuation">,</span> Object <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// System.Enum中定义</span>
+<span class="token keyword">public</span> String <span class="token function">GetEnumName</span><span class="token punctuation">(</span>Object <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// System.Type中定义</span>
+
+<span class="token comment" spellcheck="true">// 返回一个String数组,枚举中每个符号都对应一个String</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> String<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">GetName</span><span class="token punctuation">(</span>Type enumType<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// System.Enum中定义</span>
+<span class="token keyword">public</span> String<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">GetEnumName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// System.Type中定义</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="返回与符号对应的值的方法"><a href="#返回与符号对应的值的方法" class="headerlink" title="返回与符号对应的值的方法"></a>返回与符号对应的值的方法</h2><p>来查找与符号对应的值. 可以利用这个操作转换用户在文本框中输入的一个符号.利用Enum提供的<code>静态Parse和TryParse方法</code>.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> Object <span class="token function">Parse</span><span class="token punctuation">(</span>Type enumType<span class="token punctuation">,</span> String <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> Object <span class="token function">Parse</span><span class="token punctuation">(</span>Type enumType<span class="token punctuation">,</span> String <span class="token keyword">value</span><span class="token punctuation">,</span> Boolean ignoreCase<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> Boolean <span class="token generic-method function">TryParse<span class="token punctuation">&lt;</span>TEnum<span class="token punctuation">></span></span><span class="token punctuation">(</span>String <span class="token keyword">value</span><span class="token punctuation">,</span> <span class="token keyword">out</span> TEnum result<span class="token punctuation">)</span> <span class="token keyword">where</span> TEnum <span class="token punctuation">:</span> <span class="token keyword">struct</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> Boolean <span class="token generic-method function">TryParse<span class="token punctuation">&lt;</span>TEnum<span class="token punctuation">></span></span><span class="token punctuation">(</span>String <span class="token keyword">value</span><span class="token punctuation">,</span> Boolean ignoreCase<span class="token punctuation">,</span> <span class="token keyword">out</span> TEnum result<span class="token punctuation">)</span> <span class="token keyword">where</span> TEnum <span class="token punctuation">:</span> <span class="token keyword">struct</span><span class="token punctuation">;</span>
+
+
+<span class="token comment" spellcheck="true">// 使用方法</span>
+<span class="token comment" spellcheck="true">// 因为orange定义为4, 所有c被初始化为4</span>
+Color c <span class="token operator">=</span> <span class="token punctuation">(</span>Color<span class="token punctuation">)</span> Enum<span class="token punctuation">.</span><span class="token function">Parse</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"orange"</span><span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 运行时异常, 没有定义此Brown符号</span>
+<span class="token comment" spellcheck="true">// Color c1 = (Color) Enum.Parse(typeof(Color), "Brown", false);</span>
+
+<span class="token comment" spellcheck="true">// 创建值为1的Color枚举类型的实例.</span>
+Enum<span class="token punctuation">.</span><span class="token generic-method function">TryParse<span class="token punctuation">&lt;</span>Color<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token keyword">out</span> c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token string">"D"</span><span class="token punctuation">)</span>  <span class="token operator">+</span> <span class="token string">":"</span> <span class="token operator">+</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetEnumName</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 创建值23的Color枚举类型的实例.</span>
+Enum<span class="token punctuation">.</span><span class="token generic-method function">TryParse<span class="token punctuation">&lt;</span>Color<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"23"</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token keyword">out</span> c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c <span class="token operator">+</span> <span class="token string">":"</span> <span class="token operator">+</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetEnumName</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="判断数值对于某枚举类型是否合法"><a href="#判断数值对于某枚举类型是否合法" class="headerlink" title="判断数值对于某枚举类型是否合法"></a>判断数值对于某枚举类型是否合法</h2><p>IsDefined方法经常用于参数校验.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> Boolean <span class="token function">IsDefined</span><span class="token punctuation">(</span>Type enumType<span class="token punctuation">,</span> Object <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// System.Enum中定义</span>
+<span class="token keyword">public</span> Boolean <span class="token function">IsEnumDefined</span><span class="token punctuation">(</span>Object <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// System.Type中定义</span>
+
+
+<span class="token comment" spellcheck="true">// 用法</span>
+<span class="token comment" spellcheck="true">// 输出 true , Red定义为1</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>Enum<span class="token punctuation">.</span><span class="token function">IsDefined</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 输出 true , white定义为0</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>Enum<span class="token punctuation">.</span><span class="token function">IsDefined</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">"White"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 输出 false , 会检查区分大小写,并没有定义小写的white</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>Enum<span class="token punctuation">.</span><span class="token function">IsDefined</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">"white"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 输出 false , 没有和值10对应的符号</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>Enum<span class="token punctuation">.</span><span class="token function">IsDefined</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// IsDefined方法经常用于参数校验.</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SetColor</span><span class="token punctuation">(</span>Color c<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>Enum<span class="token punctuation">.</span><span class="token function">IsDefined</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Color<span class="token punctuation">)</span><span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ArgumentOutOfRangeException</span><span class="token punctuation">(</span><span class="token string">"c"</span><span class="token punctuation">,</span>c<span class="token punctuation">,</span><span class="token string">"无效颜色值."</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">//.....</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参数校验是很有用的一个功能,防止别人这样调用<code>SetColor((Color) 100);</code> 并没有对应100的颜色,抛出异常指出参数无效.</p>
+<p><code>IsDefined</code> 需要慎用</p>
+<ol>
+<li>总是执行 <strong>区分大小写</strong> 的查找,没有办法让它执行不区分大小写的查找</li>
+<li><strong>执行速度慢</strong>,因为内部使用了 <strong>反射</strong>.(如果写代码来手动检查每一个可能的值,性能极有可能变得更好)</li>
+<li>只有枚举类型本身在调用IsDefined在同一个 <strong>程序集</strong> 时才可以使用.(枚举类型是常量,内联到IL代码中的,版本控制问题)</li>
+<li><strong>不要对位标志枚举使用IsDefined方法</strong>. 因为如果传递字符串,它不会把字符串拆分为单独的token来进行查找,而是查找整个字符串, 把它看成是一个包含逗号的更大的符号.由 <strong>于不能再枚举中定义包含逗号的符号</strong>,所以永远找不到. 传递数值,它会检查枚举类型是否定义了其数值和传入的数值匹配,位标志不能简单的这样匹配,所以不要用这个方法.</li>
+</ol>
+<h2 id="ToObject方法"><a href="#ToObject方法" class="headerlink" title="ToObject方法"></a>ToObject方法</h2><p>将byte,sbyte,Int16,UInt16,Int32,UInt32,Int64,UInt64等类型的实例转换为 <strong>枚举类型</strong> 的实例.</p>
+<p>枚举一般来说应该定义在和需要它的类型同级.</p>
+<h1 id="位标志"><a href="#位标志" class="headerlink" title="位标志"></a>位标志</h1><p>位标志(bit flag), System.IO.File类型的GetAttributes方法,会返回一个<code>FileAttributes</code>的实例,<br><code>FileAttributes</code>是Int32类型的枚举, 每一个位都反映了文件的一个特性.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Flags<span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true">// Int32 有4个字节 每个自己8个位</span>
+<span class="token keyword">public</span> <span class="token keyword">enum</span> FileAttributes
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//                十进制        二进制</span>
+    ReadOnly          <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span>      <span class="token comment" spellcheck="true">// 0001</span>
+    Hidden            <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">,</span>      <span class="token comment" spellcheck="true">// 0010</span>
+    System            <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">,</span>      <span class="token comment" spellcheck="true">// 0100</span>
+    Directory         <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">,</span>     <span class="token comment" spellcheck="true">// 0001 0000</span>
+    Archive           <span class="token operator">=</span> <span class="token number">32</span><span class="token punctuation">,</span>     <span class="token comment" spellcheck="true">// 0010 0000</span>
+    Device            <span class="token operator">=</span> <span class="token number">64</span><span class="token punctuation">,</span>     <span class="token comment" spellcheck="true">// 0100 0000</span>
+    Normal            <span class="token operator">=</span> <span class="token number">128</span><span class="token punctuation">,</span>    <span class="token comment" spellcheck="true">// 1000 0000</span>
+    Temporary         <span class="token operator">=</span> <span class="token number">256</span><span class="token punctuation">,</span>    <span class="token comment" spellcheck="true">// 0001 0000 0000</span>
+    SparseFile        <span class="token operator">=</span> <span class="token number">512</span><span class="token punctuation">,</span>    <span class="token comment" spellcheck="true">// 0010 0000 0000</span>
+    ReparsePoint      <span class="token operator">=</span> <span class="token number">1024</span><span class="token punctuation">,</span>   <span class="token comment" spellcheck="true">// 0100 0000 0000</span>
+    Compressed        <span class="token operator">=</span> <span class="token number">2048</span><span class="token punctuation">,</span>   <span class="token comment" spellcheck="true">// 1000 0000 0000</span>
+    Offline           <span class="token operator">=</span> <span class="token number">4096</span><span class="token punctuation">,</span>   <span class="token comment" spellcheck="true">// 0001 0000 0000 0000</span>
+    NotContentIndexed <span class="token operator">=</span> <span class="token number">8192</span><span class="token punctuation">,</span>   <span class="token comment" spellcheck="true">// 0010 0000 0000 0000</span>
+    Encrypted         <span class="token operator">=</span> <span class="token number">16384</span><span class="token punctuation">,</span>  <span class="token comment" spellcheck="true">// 0100 0000 0000 0000</span>
+    IntegrityStream   <span class="token operator">=</span> <span class="token number">32768</span><span class="token punctuation">,</span>  <span class="token comment" spellcheck="true">// 1000 0000 0000 0000</span>
+    NoScrubData       <span class="token operator">=</span> <span class="token number">131072</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 0010 0000 0000 0000 0000</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 判断文件是否隐藏可以执行以下代码:</span>
+String file <span class="token operator">=</span> Assembly<span class="token punctuation">.</span><span class="token function">GetEntryAssembly</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Location<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 获取文件的特性的枚举位标志</span>
+FileAttributes attributes <span class="token operator">=</span> File<span class="token punctuation">.</span><span class="token function">GetAttributes</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 用&amp; 与操作进行判断,如果attributes对应的Hidden位标志是1,那么1&amp;1 就是true.</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Is {0} hidden? {1}"</span><span class="token punctuation">,</span> file<span class="token punctuation">,</span> <span class="token punctuation">(</span>attributes <span class="token operator">&amp;</span> FileAttributes<span class="token punctuation">.</span>Hidden<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// HasFlag方法获取Enum参数,Enum参数是引用类型.</span>
+<span class="token comment" spellcheck="true">// Console.WriteLine("Is {0} hidden? {1}", file, attributes.HasFlag(FileAttributes.Hidden) );</span>
+
+<span class="token comment" spellcheck="true">// 设置文件只读和隐藏特性</span>
+<span class="token comment" spellcheck="true">// 用 |</span>
+File<span class="token punctuation">.</span><span class="token function">SetAttributes</span><span class="token punctuation">(</span>file<span class="token punctuation">,</span> FileAttributes<span class="token punctuation">.</span>Hidden <span class="token operator">|</span> FileAttributes<span class="token punctuation">.</span>ReadOnly<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>避免使用Enum提供的HasFlag方法</strong>, 理由是,由于它获取Enum类型的参数,所以传给它的任何值都必须装箱,产生一次内存分配.</p>
+<h2 id="关于为什么传入结构会进行装箱的问题"><a href="#关于为什么传入结构会进行装箱的问题" class="headerlink" title="关于为什么传入结构会进行装箱的问题"></a>关于为什么传入结构会进行装箱的问题</h2><p>在本例中，在进入<code>HasFlags</code>方法之前，需要两个装箱调用。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> f <span class="token operator">=</span> Fruit<span class="token punctuation">.</span>Apple<span class="token punctuation">;</span>
+        <span class="token keyword">var</span> result <span class="token operator">=</span> f<span class="token punctuation">.</span><span class="token function">HasFlag</span><span class="token punctuation">(</span>Fruit<span class="token punctuation">.</span>Apple<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span>Flags<span class="token punctuation">]</span>
+<span class="token keyword">enum</span> Fruit
+<span class="token punctuation">{</span>
+    Apple
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">.</span>method <span class="token keyword">private</span> hidebysig <span class="token keyword">static</span>
+    <span class="token keyword">void</span> <span class="token function">Main</span> <span class="token punctuation">(</span>
+        <span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args
+    <span class="token punctuation">)</span> cil managed
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Method begins at RVA 0x2050</span>
+    <span class="token comment" spellcheck="true">// Code size 28 (0x1c)</span>
+    <span class="token punctuation">.</span>maxstack <span class="token number">2</span>
+    <span class="token punctuation">.</span>entrypoint
+    <span class="token punctuation">.</span>locals <span class="token function">init</span> <span class="token punctuation">(</span>
+        <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> valuetype ConsoleApplication1<span class="token punctuation">.</span>Fruit f<span class="token punctuation">,</span>
+        <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token keyword">bool</span> result
+    <span class="token punctuation">)</span>
+
+    IL_0000<span class="token punctuation">:</span> nop
+    IL_0001<span class="token punctuation">:</span> ldc<span class="token punctuation">.</span>i4<span class="token number">.0</span>
+    IL_0002<span class="token punctuation">:</span> stloc<span class="token number">.0</span>
+    IL_0003<span class="token punctuation">:</span> ldloc<span class="token number">.0</span>
+    IL_0004<span class="token punctuation">:</span> box ConsoleApplication1<span class="token punctuation">.</span>Fruit
+    IL_0009<span class="token punctuation">:</span> ldc<span class="token punctuation">.</span>i4<span class="token number">.0</span>
+    IL_000a<span class="token punctuation">:</span> box ConsoleApplication1<span class="token punctuation">.</span>Fruit
+    IL_000f<span class="token punctuation">:</span> call instance <span class="token keyword">bool</span> <span class="token punctuation">[</span>mscorlib<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Enum<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">HasFlag</span><span class="token punctuation">(</span><span class="token keyword">class</span> <span class="token punctuation">[</span>mscorlib<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Enum<span class="token punctuation">)</span>
+    IL_0014<span class="token punctuation">:</span> stloc<span class="token number">.1</span>
+    IL_0015<span class="token punctuation">:</span> call <span class="token keyword">string</span> <span class="token punctuation">[</span>mscorlib<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Console<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    IL_001a<span class="token punctuation">:</span> pop
+    IL_001b<span class="token punctuation">:</span> ret
+<span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// end of method Program::Main</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>第一次是将值类型上的方法调用解析为<code>基类型</code>方法，<ul>
+<li>调用基类型的方法会导致装箱</li>
+</ul>
+</li>
+<li>第二次是参数时引用类型<code>Enum</code>, 要对枚举值类型进行装箱.</li>
+</ul>
+<p><strong>调用非虚的,继承的方法时(比如GetType或者MemberwiseClone),无论如何都要对值类型进行装箱, 因为这些方法由System.Object定义,要求this实参是指向堆对象的指针.</strong></p>
+<p>“值类型都是<code>System.ValueType</code>的后代”，<strong>但System.ValueType的后代不全是值类型</strong>，<code>System.Enum</code>就是唯一的特例！在System.ValueType的所有后代中，除了System.Enum之外其它都是值类型。事实上，我们可以在.NET的源代码中找到System.Enum的声明.</p>
+<p><code>public abstract class Enum : ValueType, IComparable, IFormattable, IConvertible</code></p>
+<h3 id="C-枚举类型、System-Enum、System-ValueType、值类型和引用类型之间存在着什么样的关系？"><a href="#C-枚举类型、System-Enum、System-ValueType、值类型和引用类型之间存在着什么样的关系？" class="headerlink" title="C#枚举类型、System.Enum、System.ValueType、值类型和引用类型之间存在着什么样的关系？"></a>C#枚举类型、System.Enum、System.ValueType、值类型和引用类型之间存在着什么样的关系？</h3><ol>
+<li>所有<code>枚举类型（enum type）</code>都是值类型。</li>
+<li><code>System.Enum</code>和<code>System.ValueType</code>本身是引用类型。</li>
+<li><code>枚举类型（enum type）</code>都是隐式的直接继承自<code>System.Enum</code>，并且这种继承关系只能由编译器自动展开。但<code>System.Enum</code>本身 <strong>不是枚举类型（enum type）</strong> 。</li>
+<li><code>System.Enum</code>是一个特例，它直接继承自<code>System.ValueType</code>，但本身却是一个引用类型。</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 结果是什么都没输出</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    Type t <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>Enum<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>t<span class="token punctuation">.</span>IsEnum<span class="token punctuation">)</span>  
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"I'm enum type."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>t<span class="token punctuation">.</span>IsValueType<span class="token punctuation">)</span>  
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"I'm value type."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对于第一个判断，<code>我们很清楚System.Enum并不是枚举类型</code>。但第二个判断呢？System.Enum明明继承自System.ValueType，却不承认是System.ValueType的后代！这是.NET上的一个特例，恰恰体现出System.Enum是特殊性。</p>
+<p>Q：既然枚举类型是值类型，自然会涉及到装箱和拆箱（boxing and unboxing）的问题，那么枚举类型会被装箱成什么呢？</p>
+<p>A：枚举类型可以被装箱成<code>System.Enum</code>、<code>System.ValueType</code>、<code>System.Object</code>或者<code>System.IConvertible</code>、<code>System.IFormattable</code>、<code>System.IComparable</code>。</p>
+<p><a href="https://blog.csdn.net/superbirds/article/details/4434133" target="_blank" rel="external">关于枚举的种种 C#, IL, BCL(博客地址)</a></p>
+<h2 id="Flag特性"><a href="#Flag特性" class="headerlink" title="Flag特性"></a>Flag特性</h2><p>位标志可以用来组合. 虽然枚举类型和位标志相似,但它们语义不尽相同.</p>
+<ul>
+<li>枚举类型表示单个数值</li>
+<li>位标志表示位集合<ul>
+<li>一些位处于On状态(代表1),一些处于off状态 (代表0)</li>
+</ul>
+</li>
+<li><strong>强烈建议向枚举类型应用定制特性类型[Flag]</strong></li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 现在数值为0x0005</span>
+    Actions actions <span class="token operator">=</span> Actions<span class="token punctuation">.</span>Read <span class="token operator">|</span> Actions<span class="token punctuation">.</span>Delete<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 输出: Read, Delete</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>actions<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 加上特性类型[Flag],ToString方法会试图转换为对应的符号,</span>
+<span class="token comment" spellcheck="true">// 但是0x0005没有对应的值,不过方法检测到[Flag]标志,不会把他视为单独的值</span>
+<span class="token comment" spellcheck="true">// 会视为一组位标志 0x0005由0x0001和0x0004组合而成,会输出Read, Delete字符串</span>
+<span class="token punctuation">[</span>Flags<span class="token punctuation">]</span>
+<span class="token keyword">internal</span> <span class="token keyword">enum</span> Actions
+<span class="token punctuation">{</span>
+    None      <span class="token operator">=</span> 0b0<span class="token punctuation">,</span>
+    Read      <span class="token operator">=</span> 0b1<span class="token punctuation">,</span>
+    Write     <span class="token operator">=</span> 0b10<span class="token punctuation">,</span>  <span class="token comment" spellcheck="true">// 0x2</span>
+    ReadWrite <span class="token operator">=</span> Actions<span class="token punctuation">.</span>Read <span class="token operator">|</span> Actions<span class="token punctuation">.</span>Write<span class="token punctuation">,</span> <span class="token comment" spellcheck="true">//0x5</span>
+    Delete    <span class="token operator">=</span> 0b100<span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 0x4</span>
+    Query     <span class="token operator">=</span> 0b1000<span class="token punctuation">,</span><span class="token comment" spellcheck="true">// 0x8</span>
+    Sync      <span class="token operator">=</span> 0b10000<span class="token comment" spellcheck="true">//0x10</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>加上特性类型[Flag],ToString方法会试图转换为对应的符号,但是0x0005没有对应的值,不过 <strong>方法检测到[Flag]标志,不会把他视为单独的值,会视为一组位标志</strong> 0x0005由0x0001和0x0004组合而成,会输出Read, Delete字符串,去掉[flag]特性,则输出5.</p>
+<p>枚举的ToString()允许三种方式格式化输出:</p>
+<ol>
+<li>“G” 常规<ol>
+<li>首先会检测类型,是否应用了[Flags]这个特性</li>
+<li>没有应用就查找与该数值匹配的符号,返回 <strong>符号</strong></li>
+</ol>
+</li>
+<li>“D” 十进制</li>
+<li>“X” 十六进制</li>
+<li>“F” 获得正确的字符串</li>
+</ol>
+<p>如果应用了[Flags]这个特性,ToString的工作流程如下:</p>
+<ul>
+<li>获取枚举类型定义的集合,降序排列这些数值</li>
+<li>每个数值都和枚举实例中的值进行<code>按位与</code>计算</li>
+<li>结果等于数值,与该数值关联的字符串就附加到输出字符串上. 对应的位会被关闭(设为0),认为已经考虑过了.</li>
+<li>重复上一步,直到检查完所有的值(或者所有位都为0)</li>
+<li>检查完数值后,如果枚举实例仍有不为0,表示处于On位的位不对应任何已经定义的符号.这种情况下,ToString返回枚举实例中的 <strong>原始数值作为字符串返回.</strong></li>
+<li>如果实例不为0,就返回符号之间以逗号分隔的字符串.例如:<code>Read, Delete</code></li>
+<li>如果实例原始值是0,并且有对应0值的符号. 返回这个符号</li>
+<li>到达这一步就返回”0”.</li>
+</ul>
+<p><strong>永远不要对位<code>标志枚举</code>使用IsDefined方法</strong>.</p>
+<ul>
+<li>向方法传递<code>字符串</code>,它不会把字符串拆分为单独的token来进行查找,而是查找整个字符串, 把它看成是一个包含逗号的更大的符号.由 <strong>于不能再枚举中定义包含逗号的符号</strong>,所以永远找不到.</li>
+<li>向方法传递<code>数值</code>,它会检查枚举类型是否定义了其数值和传入的数值匹配,位标志不能简单的这样匹配,所以不要用这个方法.</li>
+</ul>
+<h1 id="向枚举类型添加方法"><a href="#向枚举类型添加方法" class="headerlink" title="向枚举类型添加方法"></a>向枚举类型添加方法</h1><p>利用C#的扩展方法 <strong>模拟</strong> 向枚举类型添加方法.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        FileAttributes fa <span class="token operator">=</span> FileAttributes<span class="token punctuation">.</span>System<span class="token punctuation">;</span>
+        fa <span class="token operator">=</span> fa<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span>FileAttributes<span class="token punctuation">.</span>ReadOnly<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        fa <span class="token operator">=</span> fa<span class="token punctuation">.</span><span class="token function">Clear</span><span class="token punctuation">(</span>FileAttributes<span class="token punctuation">.</span>System<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 输出: ReadOnly</span>
+        fa<span class="token punctuation">.</span><span class="token function">ForEach</span><span class="token punctuation">(</span>f<span class="token operator">=</span><span class="token operator">></span>Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 先定义一个包含了扩展方法的静态类</span>
+<span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">FileAttributesExtensionMethod</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Boolean <span class="token function">IsSet</span><span class="token punctuation">(</span><span class="token keyword">this</span> FileAttributes flags<span class="token punctuation">,</span> FileAttributes flagToTest<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>flagToTest <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentOutOfRangeException</span><span class="token punctuation">(</span><span class="token string">"flagToTest"</span><span class="token punctuation">,</span><span class="token string">"值不能为0."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>flags <span class="token operator">&amp;</span> flagToTest<span class="token punctuation">)</span> <span class="token operator">==</span> flagToTest<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Boolean <span class="token function">IsClear</span><span class="token punctuation">(</span><span class="token keyword">this</span> FileAttributes flags<span class="token punctuation">,</span> FileAttributes flagToTest<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>flagToTest <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentOutOfRangeException</span><span class="token punctuation">(</span><span class="token string">"flagToTest"</span><span class="token punctuation">,</span><span class="token string">"值不能为0."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span>  <span class="token operator">!</span> <span class="token function">IsSet</span><span class="token punctuation">(</span>flags<span class="token punctuation">,</span>flagToTest<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Boolean <span class="token function">AnyFlagSet</span><span class="token punctuation">(</span><span class="token keyword">this</span> FileAttributes flags<span class="token punctuation">,</span> FileAttributes testFlag<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>flags <span class="token operator">&amp;</span> testFlag<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> FileAttributes <span class="token function">Set</span><span class="token punctuation">(</span><span class="token keyword">this</span> FileAttributes flags<span class="token punctuation">,</span> FileAttributes setFlag<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> flags <span class="token operator">|</span> setFlag<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> FileAttributes <span class="token function">Clear</span><span class="token punctuation">(</span><span class="token keyword">this</span> FileAttributes flags<span class="token punctuation">,</span> FileAttributes clearFlag<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> flags <span class="token operator">&amp;</span> <span class="token operator">~</span>clearFlag<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">ForEach</span><span class="token punctuation">(</span><span class="token keyword">this</span> FileAttributes flags<span class="token punctuation">,</span> Action<span class="token operator">&lt;</span>FileAttributes<span class="token operator">></span> processFlag<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>processFlag <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentNullException</span><span class="token punctuation">(</span><span class="token string">"processFlag"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>UInt32 bit <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> bit <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">;</span> bit <span class="token operator">&lt;</span><span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            UInt32 temp <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>UInt32<span class="token punctuation">)</span> flags<span class="token punctuation">)</span> <span class="token operator">&amp;</span> bit<span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>temp<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token function">processFlag</span><span class="token punctuation">(</span><span class="token punctuation">(</span>FileAttributes<span class="token punctuation">)</span> temp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
         
             <div class="donate-container">
     <div class="donate-button">
