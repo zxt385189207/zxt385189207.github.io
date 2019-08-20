@@ -350,7 +350,7 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
 <p>枚举一般来说应该定义在和需要它的类型同级.</p>
 <h1 id="位标志"><a href="#位标志" class="headerlink" title="位标志"></a>位标志</h1><p>位标志(bit flag), System.IO.File类型的GetAttributes方法,会返回一个<code>FileAttributes</code>的实例,<br><code>FileAttributes</code>是Int32类型的枚举, 每一个位都反映了文件的一个特性.</p>
 <pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Flags<span class="token punctuation">]</span>
-<span class="token comment" spellcheck="true">// Int32 有4个字节 每个自己8个位</span>
+<span class="token comment" spellcheck="true">// Int32 有4个字节 每个字节8个位</span>
 <span class="token keyword">public</span> <span class="token keyword">enum</span> FileAttributes
 <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">//                十进制        二进制</span>
