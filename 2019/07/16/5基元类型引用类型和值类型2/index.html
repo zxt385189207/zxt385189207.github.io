@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型"><span class="toc-text">引用类型和值类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查看文档区分引用类型和值类型"><span class="toc-text">查看文档区分引用类型和值类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#结构-amp-枚举"><span class="toc-text">结构&枚举</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型的区别"><span class="toc-text">引用类型和值类型的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计类型时-满足什么条件才声明为值类型"><span class="toc-text">设计类型时,满足什么条件才声明为值类型?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的主要优势以及自身的局限"><span class="toc-text">值类型的主要优势以及自身的局限</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR如何控制类型中的字段布局"><span class="toc-text">CLR如何控制类型中的字段布局?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#如何告诉CLR怎么排列"><span class="toc-text">如何告诉CLR怎么排列?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LayoutKind-Explicit说明"><span class="toc-text">LayoutKind.Explicit说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的装箱和拆箱"><span class="toc-text">值类型的装箱和拆箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList中究竟存储了什么-是Point结构还是Point结构的地址"><span class="toc-text">ArrayList中究竟存储了什么? 是Point结构还是Point结构的地址?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#装箱机制发生的事情"><span class="toc-text">装箱机制发生的事情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拆箱机制"><span class="toc-text">拆箱机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#已装箱值类型在拆箱时的过程"><span class="toc-text">已装箱值类型在拆箱时的过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#拆箱和复制例子"><span class="toc-text">拆箱和复制例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从IL代码查看编译器隐式生成的装箱代码"><span class="toc-text">从IL代码查看编译器隐式生成的装箱代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例子一"><span class="toc-text">例子一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#例子二"><span class="toc-text">例子二</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FCL重载了很多常用值类型的方法-减少常用值类型的装箱次数"><span class="toc-text">FCL重载了很多常用值类型的方法,减少常用值类型的装箱次数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例子三-如果要反复对一个值类型装箱-请改为手动方式"><span class="toc-text">例子三(如果要反复对一个值类型装箱,请改为手动方式)</span></a></li></ol></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#回顾总结"><span class="toc-text">回顾总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型"><span class="toc-text">引用类型和值类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查看文档区分引用类型和值类型"><span class="toc-text">查看文档区分引用类型和值类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#结构-amp-枚举"><span class="toc-text">结构&枚举</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型的区别"><span class="toc-text">引用类型和值类型的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计类型时-满足什么条件才声明为值类型"><span class="toc-text">设计类型时,满足什么条件才声明为值类型?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的主要优势以及自身的局限"><span class="toc-text">值类型的主要优势以及自身的局限</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR如何控制类型中的字段布局"><span class="toc-text">CLR如何控制类型中的字段布局?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#如何告诉CLR怎么排列"><span class="toc-text">如何告诉CLR怎么排列?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LayoutKind-Explicit说明"><span class="toc-text">LayoutKind.Explicit说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的装箱和拆箱"><span class="toc-text">值类型的装箱和拆箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList中究竟存储了什么-是Point结构还是Point结构的地址"><span class="toc-text">ArrayList中究竟存储了什么? 是Point结构还是Point结构的地址?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#装箱机制发生的事情"><span class="toc-text">装箱机制发生的事情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拆箱机制"><span class="toc-text">拆箱机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#已装箱值类型在拆箱时的过程"><span class="toc-text">已装箱值类型在拆箱时的过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#拆箱和复制例子"><span class="toc-text">拆箱和复制例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从IL代码查看编译器隐式生成的装箱代码"><span class="toc-text">从IL代码查看编译器隐式生成的装箱代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例子一"><span class="toc-text">例子一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#例子二"><span class="toc-text">例子二</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FCL重载了很多常用值类型的方法-减少常用值类型的装箱次数"><span class="toc-text">FCL重载了很多常用值类型的方法,减少常用值类型的装箱次数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例子三-如果要反复对一个值类型装箱-请改为手动方式"><span class="toc-text">例子三(如果要反复对一个值类型装箱,请改为手动方式)</span></a></li></ol></li></ol></li></ol></li></ol>
 </div>
 
     
@@ -139,7 +139,53 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        <h1 id="引用类型和值类型"><a href="#引用类型和值类型" class="headerlink" title="引用类型和值类型"></a>引用类型和值类型</h1><p>CLR支持两种类型: 引用类型和值类型.</p>
+        <h1 id="回顾总结"><a href="#回顾总结" class="headerlink" title="回顾总结"></a>回顾总结</h1><p>2019年8月22日</p>
+<ol>
+<li><p>值类型一般在线程栈上分配</p>
+<ul>
+<li>值类型不受垃圾回收器控制</li>
+<li>随着变量生命周期结束而被栈释放</li>
+<li>所有值类型都是隐式密封的</li>
+<li>值类型称为结构或枚举.</li>
+<li><code>System.ValueType</code>的后代不全是值类型,<code>System.Enum</code>就是唯一的特例.</li>
+<li>它直接继承自System.ValueType，<code>System.Enum</code>和<code>System.ValueType</code>本身是引用类型。</li>
+</ul>
+</li>
+<li><p>new操作符,编译器会判断类型是值类型和引用类型</p>
+<ul>
+<li>会生成正确的IL代码分配在线程栈 或者 堆中.</li>
+</ul>
+</li>
+<li><p>值类型对象有 未装箱和已装箱两种形式. 引用类型总是处于已装箱形式.</p>
+</li>
+<li><p>值类型如果不与非托管代码互操作,就应该覆盖C#编译器的默认设定改为[StructLayout(LayoutKind.Auto)]</p>
+<ul>
+<li>不覆盖默认是LayoutKind.Sequential</li>
+</ul>
+</li>
+<li><p>拆箱就是获取指针的过程</p>
+<ul>
+<li>拆箱不要求在内存中复制任何字节,指针指向的是已装箱实例中的未装箱部分</li>
+<li>然后进行一次字段复制到线程栈过程.</li>
+<li>已装箱对象在拆箱过程时,如果引用对象不是所需的值类型,会抛InvalidCastException</li>
+<li>先拆箱为正确类型,再转型,<code>Int16 y = (Int16)(Int32)o;// o里存放的是Object-&gt;Int32的已装箱对象</code></li>
+</ul>
+</li>
+<li><p>ToString方法 代替 直接使用值类型传递给object参数的方法, 可以减少一个装箱操作.</p>
+<ul>
+<li>例如:Console.WriteLine编辑器选择Concat的重载版本去实现3个参数的合并</li>
+<li><code>Concat(object,object,object)</code></li>
+<li>不建议使用 <code>Console.WriteLine(v + &quot;,&quot; + o );</code> 建议使用<code>Console.WriteLine(v.ToString() + &quot;,&quot; + (Int32) o );</code> 减少装箱操作.</li>
+</ul>
+</li>
+<li><p>大多数方法重载的目的是减少常用的值类型装箱次数.</p>
+<ul>
+<li>可以将方法定义为泛型,通过约束限制为值类型,这样获取任何值类型而不必装箱.</li>
+<li>如果要对一个值类型反复装箱, 建议手动写代码装箱<code>Object o = v;</code> 减少装箱次数</li>
+</ul>
+</li>
+</ol>
+<h1 id="引用类型和值类型"><a href="#引用类型和值类型" class="headerlink" title="引用类型和值类型"></a>引用类型和值类型</h1><p>CLR支持两种类型: 引用类型和值类型.</p>
 <p>引用类型总是从<code>托管堆</code>分配. C#的<code>new</code>操作符返回对象内存地址—-指向对象数据的内存地址.</p>
 <p><strong>使用引用类型必须留意性能问题.</strong></p>
 <ol>
@@ -152,7 +198,7 @@
 <p><strong>值类型</strong> 的实例一般在线程栈上分配.</p>
 <ol>
 <li>可以作为字段嵌入引用类型的对象中</li>
-<li>在代表值类型实例的变量中<strong>不包含指向实例的指针</strong>.</li>
+<li>在代表值类型实例的变量中 <strong>不包含指向实例的指针</strong>.</li>
 <li>实例中包含了实例本身的字段(值). 所以操作实例中的字段(值)不需要提领指针.</li>
 <li>值类型不受垃圾回收器的控制.</li>
 <li>所有值类型都是隐式密封,防止用作其他应用类型或值类型的基类.</li>
@@ -162,8 +208,8 @@
 <p>在非托管环境(C/C++)中声明类型后, 使用该类型的代码会决定是在线程栈上还是应用程序的堆中分配该类型的实例.<br>托管代码中,要由定义类型的开发人员决定在什么地方分配类型实例,使用此类型的人对此没有控制权.</p>
 </blockquote>
 <h1 id="查看文档区分引用类型和值类型"><a href="#查看文档区分引用类型和值类型" class="headerlink" title="查看文档区分引用类型和值类型"></a>查看文档区分引用类型和值类型</h1><ol>
-<li>在文档中查看类型时, 任何称为<strong>类</strong>的类型都是引用类型. 例如System.Exception类…</li>
-<li>所有值类型都称为<strong>结构</strong>或<strong>枚举</strong>. 例如:System.Int32结构…</li>
+<li>在文档中查看类型时, 任何称为 <strong>类</strong> 的类型都是引用类型. 例如System.Exception类…</li>
+<li>所有值类型都称为 <strong>结构</strong> 或 <strong>枚举</strong>. 例如:System.Int32结构…</li>
 </ol>
 <h2 id="结构-amp-枚举"><a href="#结构-amp-枚举" class="headerlink" title="结构&amp;枚举"></a>结构&amp;枚举</h2><p>所有<code>结构</code>都是抽象类型<code>System.ValueType</code>的直接派生类.<code>System.ValueType</code>本身又直接从<code>System.Object</code>派生.</p>
 <ol>

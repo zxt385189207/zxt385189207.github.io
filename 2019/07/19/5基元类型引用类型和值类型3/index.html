@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#什么时候需要装箱"><span class="toc-text">什么时候需要装箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用接口更改已装箱值类型中的字段-不应该这样做"><span class="toc-text">使用接口更改已装箱值类型中的字段(不应该这样做)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dynamic-动态绑定-基元类型"><span class="toc-text">dynamic(动态绑定)基元类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#dynamic-变量-表达式"><span class="toc-text">dynamic 变量/表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dynamic-字段-方法参数-方法返回值"><span class="toc-text">dynamic 字段/方法参数/方法返回值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dynamic-泛型类-引用类型-结构-值类型-接口-委托-方法的泛型类型实参"><span class="toc-text">dynamic 泛型类(引用类型),结构(值类型),接口,委托,方法的泛型类型实参</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dynamic-具体用法"><span class="toc-text">dynamic 具体用法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#利用反射和dynamic的例子"><span class="toc-text">利用反射和dynamic的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#payload代码"><span class="toc-text">payload代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-内建的动态功能所产生的额外开销不容忽视"><span class="toc-text">C#内建的动态功能所产生的额外开销不容忽视</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么时候使用dynamic"><span class="toc-text">什么时候使用dynamic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dynamic的限制"><span class="toc-text">dynamic的限制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现动态调用类型的静态成员方法"><span class="toc-text">实现动态调用类型的静态成员方法</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#回顾总结"><span class="toc-text">回顾总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#什么时候需要装箱"><span class="toc-text">什么时候需要装箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用接口更改已装箱值类型中的字段-不应该这样做"><span class="toc-text">使用接口更改已装箱值类型中的字段(不应该这样做)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dynamic-动态绑定-基元类型"><span class="toc-text">dynamic(动态绑定)基元类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#dynamic-变量-表达式"><span class="toc-text">dynamic 变量/表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dynamic-字段-方法参数-方法返回值"><span class="toc-text">dynamic 字段/方法参数/方法返回值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dynamic-泛型类-引用类型-结构-值类型-接口-委托-方法的泛型类型实参"><span class="toc-text">dynamic 泛型类(引用类型),结构(值类型),接口,委托,方法的泛型类型实参</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dynamic-具体用法"><span class="toc-text">dynamic 具体用法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#利用反射和dynamic的例子"><span class="toc-text">利用反射和dynamic的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#payload代码"><span class="toc-text">payload代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-内建的动态功能所产生的额外开销不容忽视"><span class="toc-text">C#内建的动态功能所产生的额外开销不容忽视</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么时候使用dynamic"><span class="toc-text">什么时候使用dynamic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dynamic的限制"><span class="toc-text">dynamic的限制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现动态调用类型的静态成员方法"><span class="toc-text">实现动态调用类型的静态成员方法</span></a></li></ol></li></ol>
 </div>
 
     
@@ -139,7 +139,59 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        <h1 id="什么时候需要装箱"><a href="#什么时候需要装箱" class="headerlink" title="什么时候需要装箱"></a>什么时候需要装箱</h1><ul>
+        <h1 id="回顾总结"><a href="#回顾总结" class="headerlink" title="回顾总结"></a>回顾总结</h1><p>2019年8月23日</p>
+<ol>
+<li><p>需要装箱的情况</p>
+<ul>
+<li>值类型重写的虚方法如果要调用基类的实现,就需要装箱传this指针引用给基方法</li>
+<li>如果重写基类的虚方法(不需要调用基类实现)就不需要装箱</li>
+<li>要调用非虚的,继承的方法(GetType)无论如何都要对值类型进行装箱</li>
+<li>将值类型转型为接口时,进行装箱. 因为接口变量是引用类型</li>
+</ul>
+</li>
+<li><p>使用接口方法修改已装箱值类型中的字段,在C#中,不用接口方法便无法做到.</p>
+<ul>
+<li><code>((IChangeBoxedPoint) o).Change(5,5); // 修改已装箱对象中的值</code></li>
+<li><code>((Point) o).Change(3, 3); // 值复制到栈上,只在栈上修改</code></li>
+</ul>
+</li>
+<li><p>值类型应该是不可变的,不应该定义任何会修改实例字段的成员,建议标记成<code>readonly</code></p>
+</li>
+<li><p>dynamic(动态绑定)基元类型</p>
+<ul>
+<li>C#编译器允许将表达式/变量的类型标记为<code>dynamic</code></li>
+<li>对于CLR, <code>dynamic</code>与<code>Object</code>完全一致.</li>
+<li>C#编译器会生成<code>payload有效载荷</code>代码,在运行时检查<code>var</code>的实际类型,调用对应的重载版本.</li>
+<li>编译器 <strong>不允许</strong> 写代码将表达式从Object隐式转成其他类型. 必须显示转型.</li>
+<li>编译器 <strong>允许</strong> 使用隐式转型语法将表达式从dynamic转型为其他类型.<ul>
+<li>运行时,dynamic类型不兼容要转型的类型,则会抛出<code>InvalidCastException</code>.</li>
+<li>返回值result具有dynamic类型. 如果运行时调用M方法.返回类型是void,将抛出RuntimeBinderException异常.</li>
+</ul>
+</li>
+<li>变量/表达式用dynamic会生成 payload代码,进行动态调度.</li>
+<li>不能定义对dynamic进行扩展的扩展方法.</li>
+<li>不能将lanmbda表达式和匿名方法作为实参传给dynamic方法调用. 因为编译器推断不了类型.</li>
+<li>在foreach或者using语句中的资源被指定了dynamic表达式, 编译器分别将表达式转型为非泛型System.IEnumerable接口或System.IDispose接口.<ul>
+<li>转型失败会抛出<code>RuntimeBinderException</code>异常.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>var和dynamic</p>
+<ul>
+<li>var只能用在方法内部声明局部变量,必须显式初始化此变量</li>
+<li>表达式不能转型为var,但是能转型dynamic,也无需初始化用dynamic声明的变量.</li>
+</ul>
+</li>
+<li><p>dynamic可以显著简化一些反射的代码</p>
+<ul>
+<li>但是会对性能产生影响</li>
+<li>如果只是一两个地方需要动态行为,反射做法或许更高效</li>
+<li>dynamic的一个限制是只能访问对象的实例成员,因为dynamic变量必须引用对象</li>
+</ul>
+</li>
+</ol>
+<h1 id="什么时候需要装箱"><a href="#什么时候需要装箱" class="headerlink" title="什么时候需要装箱"></a>什么时候需要装箱</h1><ul>
 <li>第一种情况: 将<code>值类型的实例</code>传给需要<code>获取引用类型</code>的方法.</li>
 </ul>
 <p>要获取<code>值类型</code>的引用,实例就必须<code>装箱</code>.</p>
@@ -150,7 +202,7 @@
 </ol>
 <p>其中,由于未装箱值类型没有<code>同步块索引</code>,所以不能使用<code>System.Threading.Monitor(提供同步访问对象的机制)</code>类型的方法(或C#lock语句),让多个线程同步对实例的访问.</p>
 <ul>
-<li>第二种情况: 值类型如果<code>重写了虚方法</code>(例如Equals,ToString…)方法,<code>调用基类的实现</code>时,会<code>装箱</code>,通过this指针将<code>引用</code>传给基方法.</li>
+<li>第二种情况: 值类型如果<code>重写的虚方法</code>(例如Equals,ToString…)方法要<code>调用基类的实现</code>时,会<code>装箱</code>,通过this指针将<code>引用</code>传给基方法.</li>
 </ul>
 <p>虽然未装箱的值类型没有<code>类型对象指针</code>,但仍可以调用由类型<code>继承或重写的虚方法</code>.(比如Equals,GetHashCode,ToString).</p>
 <p>值类型可以重写Equals, GetHashCode或者ToString的虚方法，CLR可以非虚地调用该方法，因为值类型是隐式密封的（即不存在多态性），没有任何类型能够从它们派生。如果你重写的虚方法要<code>调用方法在基类中的实现</code>，那么在调用基类的实现时，<code>值类型实例就会装箱</code>，以便通过<code>this指针</code>将对一个堆对象的<code>引用</code>传给基方法。</p>
@@ -470,7 +522,7 @@ Int32 n3 <span class="token operator">=</span> d1<span class="token punctuation"
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>上述代码之所以能通过编译,是因为编译器不知道调用哪个方法,也不知道返回的类型,所以编译器假定result具有dynamic类型. 如果运行时调用M方法.返回类型是void,将抛出<code>Microsoft.CSharp.RuntimeBinder.RuntimeBinderException</code>异常.</p>
 <blockquote>
-<p>var声明局部变量是一种简化语法,要求编译器根据表达式推断具体数据类型. 只能用在方法内部声明局部变量,必须显示初始化用var声明的变量.</p>
+<p>var声明局部变量是一种简化语法,要求编译器根据表达式推断具体数据类型. 只能用在方法内部声明局部变量,必须显式初始化用var声明的变量.</p>
 </blockquote>
 <p>表达式不能转型为var,但是能转型dynamic,也无需初始化用dynamic声明的变量.</p>
 <h2 id="dynamic-字段-方法参数-方法返回值"><a href="#dynamic-字段-方法参数-方法返回值" class="headerlink" title="dynamic 字段/方法参数/方法返回值"></a>dynamic 字段/方法参数/方法返回值</h2><p><strong>字段/方法参数/方法返回值 是dynamic类型, 编译器会将dynamic转成System.Object.</strong></p>
@@ -519,7 +571,7 @@ Boolean  result    <span class="token operator">=</span> Convert<span class="tok
 <span class="token comment" spellcheck="true">// 利用dynamic简化上述代码写法</span>
 <span class="token keyword">dynamic</span> target1 <span class="token operator">=</span> <span class="token string">"ABC"</span><span class="token punctuation">;</span>
 <span class="token keyword">dynamic</span> arg1    <span class="token operator">=</span> <span class="token string">"ff"</span><span class="token punctuation">;</span>
-result <span class="token operator">=</span> target1<span class="token punctuation">.</span><span class="token function">MethodA</span><span class="token punctuation">(</span>arg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+result <span class="token operator">=</span> target1<span class="token punctuation">.</span><span class="token function">MethodA</span><span class="token punctuation">(</span>arg1<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>可以看到显著简化的语法.</p>
 <h2 id="payload代码"><a href="#payload代码" class="headerlink" title="payload代码"></a>payload代码</h2><p>C#编译器会生成payload代码,在运行时根据对象的实际类型判断要持续什么操作.</p>

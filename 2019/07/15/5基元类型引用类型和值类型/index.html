@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#编程语言的基元类型"><span class="toc-text">编程语言的基元类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是基元类型"><span class="toc-text">什么是基元类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基元类型对应的FCL类型"><span class="toc-text">基元类型对应的FCL类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于关键字和完整的系统类型名称"><span class="toc-text">关于关键字和完整的系统类型名称</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Int32-为什么能转-System-Int64"><span class="toc-text">System.Int32 为什么能转 System.Int64?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#转型"><span class="toc-text">转型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-编译器总是对转型结果进行截断"><span class="toc-text">C#编译器总是对转型结果进行截断</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字面值"><span class="toc-text">字面值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#checked-和-unchecked-基元类型操作"><span class="toc-text">checked 和 unchecked 基元类型操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#溢出处理"><span class="toc-text">溢出处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应对无效输入的建议"><span class="toc-text">应对无效输入的建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Decimal是非常特殊的类型"><span class="toc-text">System.Decimal是非常特殊的类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Numerics-BigInteger类型"><span class="toc-text">System.Numerics.BigInteger类型</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#回顾总结"><span class="toc-text">回顾总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#编程语言的基元类型"><span class="toc-text">编程语言的基元类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是基元类型"><span class="toc-text">什么是基元类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基元类型对应的FCL类型"><span class="toc-text">基元类型对应的FCL类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于关键字和完整的系统类型名称"><span class="toc-text">关于关键字和完整的系统类型名称</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Int32-为什么能转-System-Int64"><span class="toc-text">System.Int32 为什么能转 System.Int64?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#转型"><span class="toc-text">转型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-编译器总是对转型结果进行截断"><span class="toc-text">C#编译器总是对转型结果进行截断</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字面值"><span class="toc-text">字面值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#checked-和-unchecked-基元类型操作"><span class="toc-text">checked 和 unchecked 基元类型操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#溢出处理"><span class="toc-text">溢出处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应对无效输入的建议"><span class="toc-text">应对无效输入的建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Decimal是非常特殊的类型"><span class="toc-text">System.Decimal是非常特殊的类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Numerics-BigInteger类型"><span class="toc-text">System.Numerics.BigInteger类型</span></a></li></ol></li></ol>
 </div>
 
     
@@ -139,7 +139,47 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        <h1 id="编程语言的基元类型"><a href="#编程语言的基元类型" class="headerlink" title="编程语言的基元类型"></a>编程语言的基元类型</h1><h2 id="什么是基元类型"><a href="#什么是基元类型" class="headerlink" title="什么是基元类型"></a>什么是基元类型</h2><p>编译器直接支持的数据类型称为<code>基元类型(primitive type)</code>.</p>
+        <h1 id="回顾总结"><a href="#回顾总结" class="headerlink" title="回顾总结"></a>回顾总结</h1><p>2019年8月22日</p>
+<ol>
+<li><p>允许转换安全的隐式转换.</p>
+<ul>
+<li>转换安全: 不发生数据丢失的情况.比如从<code>Int32</code>转换为<code>Int64</code>.</li>
+<li>隐式转换: 不用写 (类型) 的方式</li>
+<li>显示转型: 用()注明类型</li>
+</ul>
+</li>
+<li><p>丢失精度时, 会向下取整.</p>
+<ul>
+<li>在转型时,<code>float</code> 6.8 放入<code>int</code>中会截断小数点后的数,放入6</li>
+</ul>
+</li>
+<li><p>字面值会在编译期就完成表达式求值.</p>
+<ul>
+<li><code>String s = &quot;a &quot; + &quot;bc&quot;;// 生成的代码将s设为&quot;a bc&quot;</code></li>
+</ul>
+</li>
+<li><p>算术运算符溢出处理</p>
+<ul>
+<li>checked / unchecked</li>
+<li>将有溢出风险的计算语句放入块中, 如果块中调用方法不会有任何作用.</li>
+<li>捕捉<code>OverflowException</code>异常</li>
+</ul>
+</li>
+<li><p>Decimal是特殊的基元类型,CLR不会为此生成特殊的指令</p>
+<ul>
+<li>编译器会生成代码来调用Decimal的成员方法,处理速度慢于其他基元类型</li>
+<li>溢出检查操作符无效</li>
+</ul>
+</li>
+<li><p>BigInteger</p>
+<ul>
+<li><code>UInt32</code>数组来表示任意大的整数</li>
+<li>没有上限和下限</li>
+<li>不会抛<code>OverflowException</code>可能会抛<code>OutOfMemoryException</code></li>
+</ul>
+</li>
+</ol>
+<h1 id="编程语言的基元类型"><a href="#编程语言的基元类型" class="headerlink" title="编程语言的基元类型"></a>编程语言的基元类型</h1><h2 id="什么是基元类型"><a href="#什么是基元类型" class="headerlink" title="什么是基元类型"></a>什么是基元类型</h2><p>编译器直接支持的数据类型称为<code>基元类型(primitive type)</code>.</p>
 <p>基元类型直接映射到Framework类库FCL中存在的类型.例如C#中的<code>int</code>直接映射到的<code>System.Int32</code>类型.</p>
 <blockquote>
 <p>MSDN文档将primitive type翻译成”基元类型”,而不是容易混淆的”基本类型”.</p>
@@ -189,7 +229,7 @@ Single val <span class="token operator">=</span> br<span class="token punctuatio
 <ol>
 <li>平时只用C#的许多程序员逐渐忘了还可以用其他语言写面向CLR的代码.<code>C#主义逐渐入侵类库代码</code>.例如:FCL几乎完全是用C#写的,FCL团队向库中引入了<code>Array</code>的<code>GetLongLength</code>这样的方法,该方法返回的是<code>Int64</code>值.这种值在C#中确实是long,但是在其他语言比如C++/CLI中不是. 另一个例子是:<code>System.Linq.Enumerable</code>的<code>LongCount</code>方法.</li>
 </ol>
-<p><strong> 考虑到以上原因,本书坚持使用FCL类型名称.</strong></p>
+<p><strong>考虑到以上原因,本书坚持使用FCL类型名称.</strong></p>
 <h2 id="System-Int32-为什么能转-System-Int64"><a href="#System-Int32-为什么能转-System-Int64" class="headerlink" title="System.Int32 为什么能转 System.Int64?"></a>System.Int32 为什么能转 System.Int64?</h2><p>在许多编程语言中,一下代码都能正确编译并运行:</p>
 <pre class="line-numbers language-csharp"><code class="language-csharp">Int32 i <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//32位值</span>
 Int64 i <span class="token operator">=</span> i<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//隐形转型为64位值</span>
@@ -197,7 +237,7 @@ Int64 i <span class="token operator">=</span> i<span class="token punctuation">;
 <p>但是根据上一章内容,对类型转换的讨论,你或许认为上述代码无法编译. 毕竟<code>System.Int32</code>和<code>System.Int64</code>是不同的类型.互相不存在派生关系. 但是能正确编译上述代码,运行起来也没有问题.</p>
 <p>原因是: C#编译器非常熟悉基元类型,会在编译代码时应用自己的特殊规则.</p>
 <ol>
-<li>具体的说,C#编译器支持<code>与类型转换</code>,<code>字面值(直接量或文字常量)</code>以及<code>操作符</code>有关的模式.</li>
+<li>具体的说,C#编译器支持与<code>类型转换</code>,<code>字面值(直接量或文字常量)</code>以及<code>操作符</code>有关的模式.</li>
 </ol>
 <h3 id="转型"><a href="#转型" class="headerlink" title="转型"></a>转型</h3><p>编译器能执行<code>基元类型之间</code>的隐式或显示转型.</p>
 <pre class="line-numbers language-csharp"><code class="language-csharp">Int32 i <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//从Int32隐式转型为Int32</span>

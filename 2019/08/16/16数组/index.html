@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#数组"><span class="toc-text">数组</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#初始化数组元素"><span class="toc-text">初始化数组元素</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#C-的隐式类型的局部变量功能-var"><span class="toc-text">C#的隐式类型的局部变量功能 var</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-的隐式类型的数组功能"><span class="toc-text">C#的隐式类型的数组功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#匿名类型-与-隐式类型的数组-与-隐式类型的局部变量组合使用"><span class="toc-text">匿名类型 与 隐式类型的数组 与 隐式类型的局部变量组合使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数组转型"><span class="toc-text">数组转型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数组协变性-数组间转型"><span class="toc-text">数组协变性,数组间转型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于复制数组到另一个数组"><span class="toc-text">关于复制数组到另一个数组</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#所有数组都隐式派生自System-Array"><span class="toc-text">所有数组都隐式派生自System.Array</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#数组"><span class="toc-text">数组</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#初始化数组元素"><span class="toc-text">初始化数组元素</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#C-的隐式类型的局部变量功能-var"><span class="toc-text">C#的隐式类型的局部变量功能 var</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-的隐式类型的数组功能"><span class="toc-text">C#的隐式类型的数组功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#匿名类型-与-隐式类型的数组-与-隐式类型的局部变量组合使用"><span class="toc-text">匿名类型 与 隐式类型的数组 与 隐式类型的局部变量组合使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数组转型"><span class="toc-text">数组转型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数组协变性-数组间转型"><span class="toc-text">数组协变性,数组间转型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于复制数组到另一个数组"><span class="toc-text">关于复制数组到另一个数组</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#所有数组都隐式派生自System-Array"><span class="toc-text">所有数组都隐式派生自System.Array</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#所有数组都隐式实现IEnumerable-ICollection-IList"><span class="toc-text">所有数组都隐式实现IEnumerable, ICollection, IList</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数组的传递和返回"><span class="toc-text">数组的传递和返回</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建下限非零的数组"><span class="toc-text">创建下限非零的数组</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数组内部的工作原理"><span class="toc-text">数组内部的工作原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#访问二维数组的三种方式-安全-交错和不安全"><span class="toc-text">访问二维数组的三种方式(安全,交错和不安全):</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#单维数组"><span class="toc-text">单维数组</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#多维数组"><span class="toc-text">多维数组</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#交错数组"><span class="toc-text">交错数组</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#对数组使用foreach"><span class="toc-text">对数组使用foreach</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#不安全的数组访问和固定大小的数组"><span class="toc-text">不安全的数组访问和固定大小的数组</span></a></li></ol>
 </div>
 
     
@@ -322,7 +322,378 @@ oa<span class="token punctuation">[</span><span class="token number">3</span><sp
 </ul>
 </li>
 </ul>
-<h1 id="所有数组都隐式派生自System-Array"><a href="#所有数组都隐式派生自System-Array" class="headerlink" title="所有数组都隐式派生自System.Array"></a>所有数组都隐式派生自System.Array</h1>
+<h1 id="所有数组都隐式派生自System-Array"><a href="#所有数组都隐式派生自System-Array" class="headerlink" title="所有数组都隐式派生自System.Array"></a>所有数组都隐式派生自System.Array</h1><p><code>FileStream[] fsArray;</code></p>
+<p><code>System.Array</code>类型定义的所有实例方法和属性都将由<code>FileStream[]</code>继承.</p>
+<h1 id="所有数组都隐式实现IEnumerable-ICollection-IList"><a href="#所有数组都隐式实现IEnumerable-ICollection-IList" class="headerlink" title="所有数组都隐式实现IEnumerable, ICollection, IList"></a>所有数组都隐式实现IEnumerable, ICollection, IList</h1><p>许多方法都能操纵各种各样的集合对象,因为它们声明为获取<code>IEnumerable</code>, <code>ICollection</code>, <code>IList</code>等参数. <code>System.Array</code>也实现了这些非泛型接口.</p>
+<p>CLR没有为<code>System.Array</code>实现泛型接口,而是在创建一维0基数数组类型时,CLR自动使数组类型实现<code>IEnumerable&lt;T&gt;</code>, <code>ICollection&lt;T&gt;</code>, <code>IList&lt;T&gt;</code>,同时还为数组类型的所有基类型实现这三个接口,只要它们是引用类型(数组是值类型则不会).</p>
+<p><code>FileStream[] fsArray;</code> 会在CLR下产生如下结构:</p>
+<p><img src="/2019/08/16/16数组/CLR自动为数组实现泛型接口.png" alt=""></p>
+<p>fsArray可以传给以下任何一种原型方法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">void</span> <span class="token function">M1</span><span class="token punctuation">(</span>IList<span class="token operator">&lt;</span>FileStream<span class="token operator">></span> fsList<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+<span class="token keyword">void</span> <span class="token function">M2</span><span class="token punctuation">(</span>ICollection<span class="token operator">&lt;</span>Stream<span class="token operator">></span> sCollection<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+<span class="token keyword">void</span> <span class="token function">M3</span><span class="token punctuation">(</span>IEnumerable<span class="token operator">&lt;</span>Object<span class="token operator">></span> oEnumerable<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>如果数组包含值类型元素,数组类型不会为元素的基类型实现接口.例如:一个值类型数组<code>DateTime[] dtArray;</code> 只会为此数组类型实现3个泛型接口,CLR不会为它的基类包括ValueType,Object实现这些泛型接口. 这是因为值类型的数组在内存中的布局与引用类型的数组不同.</p>
+<h1 id="数组的传递和返回"><a href="#数组的传递和返回" class="headerlink" title="数组的传递和返回"></a>数组的传递和返回</h1><p>数组作为实参传递给方法时, 传递的是<code>数组的引用</code>,如果不想被修改,则需要生成数组的拷贝给方法. <strong>Array.Copy方法执行是对原始数组的浅拷贝</strong>, 如果数组中的元素类型是引用类型,新数组还是引用现有的对象.</p>
+<p>定义返回数组引用的方法,  如果数组中不包含元素, 不要返回null,建议返回对包含零个元素的一个数组的引用. 这这就不需要进行null检测. <code>if (xxx != null) ...</code></p>
+<h1 id="创建下限非零的数组"><a href="#创建下限非零的数组" class="headerlink" title="创建下限非零的数组"></a>创建下限非零的数组</h1><p>可以调用数组的静态方法<code>CreatInstance</code>来动态的创建自己的数组. 允许指定数组的类型,维数,每一维的下限和每一维的元素数目.</p>
+<p>静态方法<code>CreatInstance</code>为数组分配内存,将参数信息保存到数组的内存块的开销(overhead)部分,然后返回对该数组的引用.</p>
+<ul>
+<li>如果维数是二维及以上,可以把返回的引用转型为一个<code>ElementType[]</code>变量(名称替换为类型名称),来简化对数组元素的访问.</li>
+<li>如果是一维,C#要求必须使用该Array的GetValue和SetValue方法访问数组元素.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 创建一个二维数组{2005...2009} {1...4}</span>
+Int32<span class="token punctuation">[</span><span class="token punctuation">]</span> lowerBounds <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">2005</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+Int32<span class="token punctuation">[</span><span class="token punctuation">]</span> lengths     <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 传入元素的类型, 5行4列</span>
+Decimal<span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> quarterlyRevenue <span class="token operator">=</span> <span class="token punctuation">(</span>Decimal<span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    Array<span class="token punctuation">.</span><span class="token function">CreateInstance</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Decimal<span class="token punctuation">)</span><span class="token punctuation">,</span> lengths<span class="token punctuation">,</span> lowerBounds<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// Array的Rank 属性：得到Array的秩（维数）  quarterlyRevenue.Rank等于2;</span>
+<span class="token comment" spellcheck="true">// GetUpperBound(int dimension) 用于获取 Array 的指定维度的上限。</span>
+<span class="token comment" spellcheck="true">// GetLowerBound(int dimension) 用于获取 Array 的指定维度的下限。</span>
+
+<span class="token comment" spellcheck="true">// 取得第一维的下限 , 如果传入1, 则表示取得第二维的下限</span>
+Int32 firstYear <span class="token operator">=</span> quarterlyRevenue<span class="token punctuation">.</span><span class="token function">GetLowerBound</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Int32 lastYear  <span class="token operator">=</span> quarterlyRevenue<span class="token punctuation">.</span><span class="token function">GetUpperBound</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"{0,4}  {1,9}  {2,9}  {3,9}  {4,9}"</span><span class="token punctuation">,</span> <span class="token string">"Year"</span><span class="token punctuation">,</span> <span class="token string">"Q1"</span><span class="token punctuation">,</span> <span class="token string">"Q2"</span><span class="token punctuation">,</span> <span class="token string">"Q3"</span><span class="token punctuation">,</span> <span class="token string">"Q4"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+Random r <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 year <span class="token operator">=</span> firstYear<span class="token punctuation">;</span> year <span class="token operator">&lt;=</span> lastYear<span class="token punctuation">;</span> year<span class="token operator">++</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span>year <span class="token operator">+</span> <span class="token string">"  "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 把二维数组看成表格,从(1,1)开始, 小于第二维的个数,横向遍历</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 quarter <span class="token operator">=</span> quarterlyRevenue<span class="token punctuation">.</span><span class="token function">GetLowerBound</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        quarter <span class="token operator">&lt;=</span> quarterlyRevenue<span class="token punctuation">.</span><span class="token function">GetUpperBound</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        quarter<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        quarterlyRevenue<span class="token punctuation">[</span>year<span class="token punctuation">,</span> quarter<span class="token punctuation">]</span> <span class="token operator">=</span> r<span class="token punctuation">.</span><span class="token function">Next</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// C 表示格式化为货币</span>
+        Console<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token string">"{0,9:C}  "</span><span class="token punctuation">,</span> quarterlyRevenue<span class="token punctuation">[</span>year<span class="token punctuation">,</span> quarter<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// Year         Q1         Q2         Q3         Q4</span>
+<span class="token comment" spellcheck="true">// 2005  ￥2,102.00  ￥7,295.00    ￥105.00  ￥5,846.00</span>
+<span class="token comment" spellcheck="true">// 2006  ￥6,331.00  ￥1,955.00    ￥879.00  ￥8,752.00</span>
+<span class="token comment" spellcheck="true">// 2007    ￥912.00  ￥1,105.00  ￥6,960.00  ￥7,205.00</span>
+<span class="token comment" spellcheck="true">// 2008  ￥6,479.00  ￥6,034.00  ￥6,182.00  ￥3,565.00</span>
+<span class="token comment" spellcheck="true">// 2009    ￥558.00  ￥8,291.00  ￥4,028.00  ￥1,740.00</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="数组内部的工作原理"><a href="#数组内部的工作原理" class="headerlink" title="数组内部的工作原理"></a>数组内部的工作原理</h1><p>CLR支持两种不同的数组:</p>
+<ul>
+<li>下限为0的一维数组或向量</li>
+<li>下限未知的一维或多维数组</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Array a<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 定义一维的0基数组,不包含任何元素</span>
+a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// System.String[]</span>
+
+<span class="token comment" spellcheck="true">// 定义一维的0基数组,不包含任何元素</span>
+a <span class="token operator">=</span> Array<span class="token punctuation">.</span><span class="token function">CreateInstance</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>String<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Int32</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Int32</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// System.String[]</span>
+
+<span class="token comment" spellcheck="true">// 定义一维的1基数组,不包含任何元素</span>
+<span class="token comment" spellcheck="true">// 1基数组显示的类型是System.String[*], *号表示CLR知道该数组不是0基的.</span>
+<span class="token comment" spellcheck="true">// C#不允许声明String[*]类型的变量,因此不能使用C#语法来访问一维非0基数组.</span>
+<span class="token comment" spellcheck="true">// 可以用Array的GetValue和SetValue来访问,但是速度较慢,调用方法有开销.</span>
+a <span class="token operator">=</span> Array<span class="token punctuation">.</span><span class="token function">CreateInstance</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>String<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Int32</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Int32</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// System.String[*]  &lt;-- INTERESTING!</span>
+
+
+<span class="token comment" spellcheck="true">// 定义二维的0基数组,不包含任何元素</span>
+a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// System.String[,]</span>
+
+<span class="token comment" spellcheck="true">// 定义二维的0基数组,不包含任何元素</span>
+a <span class="token operator">=</span> Array<span class="token punctuation">.</span><span class="token function">CreateInstance</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>String<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Int32</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Int32</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// System.String[,]</span>
+
+<span class="token comment" spellcheck="true">// 定义二维的1基数组,不包含任何元素</span>
+<span class="token comment" spellcheck="true">// CLR会将多维数组都视为非0基数组,CLR决定对多维数组不使用*号</span>
+a <span class="token operator">=</span> Array<span class="token punctuation">.</span><span class="token function">CreateInstance</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>String<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Int32</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Int32</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// System.String[,]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>1基数组显示的类型是<code>System.String[*]</code>, <code>*</code>号表示CLR知道该数组不是0基的.</li>
+<li>C#不允许声明<code>String[*]</code>类型的变量,因此不能使用C#语法来访问一维非0基数组.</li>
+<li>可以用Array的GetValue和SetValue来访问,但是速度较慢,调用方法有开销.</li>
+</ul>
+<p>对于多维数组,CLR会将多维数组都视为非0基数组,会让别人觉得类型是这样<code>System.String[*,*]</code>,但是CLR决定对于多维数组,不使用<code>*</code>号,大量星号容易产生混淆.</p>
+<p>访问1维0基数组的元素比访问非0基一维或多维元素稍快.</p>
+<ul>
+<li>有特殊的IL指令用于处理0基数组,可以让JIT编译器生成优化代码<ul>
+<li>JIT编译器生成的代码假定数组是0基的,访问元素时不需要从指定索引中减去一个偏移量</li>
+</ul>
+</li>
+<li>JIT编译器能将索引范围检查代码从循环中拿出,导致它只执行一次</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">var</span> ints <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Int32</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// ints.Length调用属性方法</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> ints<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 对ints[i]操作</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>JIT编译器知道<code>Length</code>是<code>Array类的属性</code>,<strong>所以生成的代码中实际只调用该属性一次,结果保存到临时变量中</strong> , 之后的每次迭代检查的都是这个临时变量,这就加快了JIT编译的代码速度.</p>
+<p>因此,最好保持对数组<code>Length</code>属性的调用,而 <strong>不要自己用什么局部变量来缓存它的值</strong>. 这种自作聪明的尝试几乎肯定会对性能造成负面影响,还会使代码更难阅读.</p>
+<p>JIT编译器知道for循环要访问0到Length-1的数组元素,JIT编译器会生成代码,在运行时测试所有数组元素的访问都在有效范围内.</p>
+<ul>
+<li>也就是来检查是否 <code>(0 &gt;= ints.GetLowerBound(0)) &amp;&amp; ((Length -1)) &lt;= ints.GetUpperBound(0)</code></li>
+<li>这个检查在循环之前发生,如果都在有效范围内,JIT编译器不会在每一次数组访问时再检查验证. 这样一来访问变得非常快.</li>
+</ul>
+<p><strong>对于非0基数组和多维数组,JIT编译器不会将索引检查从循环中拿出来,所以每次访问都要验证指定的索引.导致访问速度比不上一维0基数组.</strong> 还要添加代码从指定索引中减去数组下限,进一步影响了代码执行速度.</p>
+<p><strong>如果很关心性能. 考虑用由数组构成的数组(<code>交错数组</code>)代替矩形数组.</strong></p>
+<p>C#和CLR还允许使用unsafe代码访问数组.这种技术实际能在访问数组时关闭索引上下限检查.</p>
+<ul>
+<li>适用于以下元素类型的数组:<ul>
+<li>SByte,Byte,Int16,UInt16,Int32,UInt32,Int64,UInt64,Char,Single,Double,Decimal,Boolean,枚举类型或任何类型的值类型结构.</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>这个功能很强大,但是使用需要谨慎,它允许直接内存访问,访问越界不会抛出异常.但会损坏内存中的数据.破坏类型的安全性.</p>
+</blockquote>
+<h1 id="访问二维数组的三种方式-安全-交错和不安全"><a href="#访问二维数组的三种方式-安全-交错和不安全" class="headerlink" title="访问二维数组的三种方式(安全,交错和不安全):"></a>访问二维数组的三种方式(安全,交错和不安全):</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">const</span> Int32 c_numElements <span class="token operator">=</span> <span class="token number">10000</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 声明二维数组</span>
+    Int32<span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> a2Dim <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Int32</span><span class="token punctuation">[</span>c_numElements<span class="token punctuation">,</span> c_numElements<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 将二维数组声明为交错数组</span>
+    Int32<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> aJagged <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Int32</span><span class="token punctuation">[</span>c_numElements<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> x <span class="token operator">&lt;</span> c_numElements<span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+        aJagged<span class="token punctuation">[</span>x<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Int32</span><span class="token punctuation">[</span>c_numElements<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+
+    <span class="token comment" spellcheck="true">// 1: 用普通的安全技术访问数组中的所有元素</span>
+    <span class="token comment" spellcheck="true">// 二维数组对象 a[x, y];</span>
+    <span class="token function">Safe2DimArrayAccess</span><span class="token punctuation">(</span>a2Dim<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 2: 用交错数组技术访问数组中的所有元素</span>
+    <span class="token comment" spellcheck="true">// 交错数组对象 a[x][y]</span>
+    <span class="token function">SafeJaggedArrayAccess</span><span class="token punctuation">(</span>aJagged<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 3: 用unsafe技术访问数组中的所有元素</span>
+    <span class="token function">Unsafe2DimArrayAccess</span><span class="token punctuation">(</span>a2Dim<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> Int32 <span class="token function">Safe2DimArrayAccess</span><span class="token punctuation">(</span>Int32<span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> a<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> x <span class="token operator">&lt;</span> c_numElements<span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 y <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> y <span class="token operator">&lt;</span> c_numElements<span class="token punctuation">;</span> y<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            sum <span class="token operator">+</span><span class="token operator">=</span> a<span class="token punctuation">[</span>x<span class="token punctuation">,</span> y<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> Int32 <span class="token function">SafeJaggedArrayAccess</span><span class="token punctuation">(</span>Int32<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> x <span class="token operator">&lt;</span> c_numElements<span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 y <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> y <span class="token operator">&lt;</span> c_numElements<span class="token punctuation">;</span> y<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            sum <span class="token operator">+</span><span class="token operator">=</span> a<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">[</span>y<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// fixed 语句必须要用unsafe方法修饰符</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">unsafe</span> Int32 <span class="token function">Unsafe2DimArrayAccess</span><span class="token punctuation">(</span>Int32<span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> a<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> numElements <span class="token operator">=</span> c_numElements <span class="token operator">*</span> c_numElements<span class="token punctuation">;</span>
+    <span class="token keyword">fixed</span> <span class="token punctuation">(</span>Int32<span class="token operator">*</span> pi <span class="token operator">=</span> a<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> x <span class="token operator">&lt;</span> numElements<span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            sum <span class="token operator">+</span><span class="token operator">=</span> pi<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>不安全数据访问技术的三处不足之处:</p>
+<ul>
+<li>处理数组元素的代码更复杂,不容易读写,因为要使用C#的<code>fixed</code>语句,要执行内存地址计算.</li>
+<li>计算过程出错,会损坏内存数据,破坏类型安全性,并可能造成安全漏洞.</li>
+<li>因为这些潜在问题,CLR禁止在降低了安全级别的环境中运行不安全代码.</li>
+</ul>
+<h1 id="单维数组"><a href="#单维数组" class="headerlink" title="单维数组"></a>单维数组</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 可以在声明时初始化数组,在这种情况下，无需长度说明符，因为它已由初始化列表中的元素数目提供。</span>
+<span class="token comment" spellcheck="true">// 并且可以省略new int[]</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">9</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array2 <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">9</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+
+<span class="token comment" spellcheck="true">// 可以在不初始化的情况下声明数组变量，但必须使用 new 运算符向此变量分配数组。</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array3<span class="token punctuation">;</span>
+array3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">9</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// OK</span>
+<span class="token comment" spellcheck="true">//array3 = {1, 3, 5, 7, 9};   // Error</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h1><p>二维数组,逗号分隔,几行几列.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 以下声明创建一个具有四行两列的二维数组。</span>
+<span class="token comment" spellcheck="true">// 也可以</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> array <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 三维数组</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">,</span> <span class="token punctuation">,</span><span class="token punctuation">]</span> array1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// Two-dimensional array.</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> array2D <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// The same array with dimensions specified.</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> array2Da <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// A similar array with string elements.</span>
+<span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> array2Db <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">string</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token punctuation">{</span> <span class="token string">"one"</span><span class="token punctuation">,</span> <span class="token string">"two"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token string">"three"</span><span class="token punctuation">,</span> <span class="token string">"four"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                                        <span class="token punctuation">{</span> <span class="token string">"five"</span><span class="token punctuation">,</span> <span class="token string">"six"</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 可以简化写法</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> array4 <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 如果选择在不初始化的情况下声明数组变量，则必须使用 new 运算符将数组赋予变量。</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> array5<span class="token punctuation">;</span>
+array5 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// OK</span>
+<span class="token comment" spellcheck="true">//array5 = {{1,2}, {3,4}, {5,6}, {7,8}};   // Error</span>
+
+
+<span class="token comment" spellcheck="true">// 以下代码示例将数组元素初始化为默认值（交错数组除外）</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> array6 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="交错数组"><a href="#交错数组" class="headerlink" title="交错数组"></a>交错数组</h1><p>交错数组是元素为数组的数组。 交错数组元素的维度和大小可以不同。 交错数组有时称为“数组的数组”</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 声明三个元素,每个元素都是一维整数数组</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> jaggedArray <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+
+<span class="token comment" spellcheck="true">// 必须初始化 jaggedArray 的元素后才可使用它。</span>
+jaggedArray<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+jaggedArray<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+jaggedArray<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 也可使用初始化表达式通过值来填充数组元素，这种情况下不需要数组大小</span>
+jaggedArray<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">9</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+jaggedArray<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">6</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+jaggedArray<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token number">11</span><span class="token punctuation">,</span> <span class="token number">22</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 不能从元素初始化中省略 new 运算符，因为不存在元素的默认初始化：</span>
+<span class="token comment" spellcheck="true">// 可以省略 new int[][]</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> jaggedArray3 <span class="token operator">=</span> <span class="token comment" spellcheck="true">// new int[][]</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">9</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">6</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token number">11</span><span class="token punctuation">,</span> <span class="token number">22</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 混合使用多维数组和交错数组</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> jaggedArray4 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token punctuation">{</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token number">99</span><span class="token punctuation">,</span><span class="token number">88</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">}</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 访问个别元素，示例显示第一个数组的元素 [1,0] 的值</span>
+System<span class="token punctuation">.</span>Console<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token string">"{0}"</span><span class="token punctuation">,</span> jaggedArray4<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 5</span>
+<span class="token comment" spellcheck="true">// 方法 Length 返回包含在交错数组中的数组的数目</span>
+System<span class="token punctuation">.</span>Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>jaggedArray4<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 3</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="对数组使用foreach"><a href="#对数组使用foreach" class="headerlink" title="对数组使用foreach"></a>对数组使用foreach</h2><ul>
+<li>对于单维数组，foreach 语句以递增索引顺序处理元素（从索引 0 开始并以索引 Length - 1 结束）</li>
+<li>对于多维数组，遍历元素的方式为：首先增加最右边维度的索引，然后是它左边的一个维度，以此类推，向左遍历元素</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 一维数组的foreach</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> numbers <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token keyword">in</span> numbers<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    System<span class="token punctuation">.</span>Console<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token string">"{0} "</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// Output: 4 5 6 1 2 3 -2 -1 0</span>
+
+
+<span class="token comment" spellcheck="true">// 多维数组的foreach</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span> numbers2D <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token punctuation">{</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">99</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">33</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">55</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//省略 new int[3, 2]写法</span>
+<span class="token comment" spellcheck="true">//int[,] numbers2D = { { 9, 99 }, { 3, 33 }, { 5, 55 } };</span>
+
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token keyword">in</span> numbers2D<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    System<span class="token punctuation">.</span>Console<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token string">"{0} "</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// Output: 9 99 3 33 5 55</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="不安全的数组访问和固定大小的数组"><a href="#不安全的数组访问和固定大小的数组" class="headerlink" title="不安全的数组访问和固定大小的数组"></a>不安全的数组访问和固定大小的数组</h1><p><code>不安全的数组</code>访问能力非常强大,因为它允许访问:</p>
+<ul>
+<li><code>堆上</code>的托管数组对象中的元素</li>
+<li><code>非托管堆上的数组中的元素</code>.(14章的ScureString演示了调用Marshal类的SerureStringToCoTaskMemUnicode方法来返回一个数组,并对这个数组进行不安全的数组访问)</li>
+<li><code>线程栈上</code>的数组中的元素</li>
+</ul>
+<p>如果考虑性能是首要目标,请避免在堆上分配托管的数组对象.在线程栈上分配数组. 这是通过C#的<code>stackalloc</code>语句来完成的. <strong>并且只能创建一维0基,由值类型元素构成的数组.</strong> 值类型中不能包含任何引用类型的字段. 实际上可以看做是分配了一个内存块,这个内存块可以使用不安全的指针来操作. 所以不能将这个内存缓冲区的地址传给大部分FCL方法. 栈上分配的内存会在返回时自动释放.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">StackallocDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">unsafe</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> Int32 width <span class="token operator">=</span> <span class="token number">20</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 在栈上分配数组</span>
+        Char<span class="token operator">*</span>       pc    <span class="token operator">=</span> <span class="token keyword">stackalloc</span> Char<span class="token punctuation">[</span>width<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 15 个字符</span>
+        String s <span class="token operator">=</span> <span class="token string">"Jeffrey Richter"</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> index <span class="token operator">&lt;</span> width<span class="token punctuation">;</span> index<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            pc<span class="token punctuation">[</span>width <span class="token operator">-</span> index <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span>
+                <span class="token punctuation">(</span>index <span class="token operator">&lt;</span> s<span class="token punctuation">.</span>Length<span class="token punctuation">)</span> <span class="token operator">?</span> s<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token punctuation">:</span> <span class="token string">'.'</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 输出 ".....rethciR yerffeJ"</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>pc<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> width<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">InlineArrayDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">unsafe</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 在栈上分配数组</span>
+        CharArray ca<span class="token punctuation">;</span>
+        Int32     widthInBytes <span class="token operator">=</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>CharArray<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Int32     width        <span class="token operator">=</span> widthInBytes <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 15 个字符</span>
+        String s <span class="token operator">=</span> <span class="token string">"Jeffrey Richter"</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> index <span class="token operator">&lt;</span> width<span class="token punctuation">;</span> index<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            ca<span class="token punctuation">.</span>Characters<span class="token punctuation">[</span>width <span class="token operator">-</span> index <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span>
+                <span class="token punctuation">(</span>index <span class="token operator">&lt;</span> s<span class="token punctuation">.</span>Length<span class="token punctuation">)</span> <span class="token operator">?</span> s<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token punctuation">:</span> <span class="token string">'.'</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 输出 ".....rethciR yerffeJ"</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>ca<span class="token punctuation">.</span>Characters<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> width<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">unsafe</span> <span class="token keyword">struct</span> CharArray
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 这个数组内联嵌入到结构中</span>
+    <span class="token keyword">public</span> <span class="token keyword">fixed</span> Char Characters<span class="token punctuation">[</span><span class="token number">20</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由于数组是引用类型,所以结构中定义的数组字段实际只是指向数组的<code>指针或引用</code>. <strong>数组本身在结构的内存的外部.</strong> 不过可以像上述代码<code>public fixed Char Characters[20];</code> 嵌入到结构中,但是需要满足以下条件:</p>
+<ul>
+<li>类型必须是<code>结构(值类型)</code>; 不能再类(引用类型)中嵌入数组.</li>
+<li>字段或其定义结构必须用<code>unsafe</code>关键字标记</li>
+<li>数组字段必须用<code>fixed关键字</code>标记.</li>
+<li>数组必须是一维0基数组.</li>
+<li>数组的元素类型必须是以下类型之一:<ul>
+<li>Char,SByte,Byte,Int16,UInt16,Int32,UInt32,Int64,UInt64,Char,Single,Double,Boolean</li>
+</ul>
+</li>
+</ul>
+<p>要和非托管代码进行互操作,而且非托管数据结构也有一个内联数组,就特别适合使用内联的数组.</p>
+
         
             <div class="donate-container">
     <div class="donate-button">

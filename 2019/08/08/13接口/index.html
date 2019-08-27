@@ -384,7 +384,7 @@ d<span class="token punctuation">.</span><span class="token function">Dispose</s
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>泛型接口还可以标记为<code>逆变in</code>和<code>协变out</code>,为泛型接口使用提供了更大的灵活性.</p>
 <blockquote>
-<p>逆变in: 允许传入参数使用T的派生类<br>协变out:允许输出类型使用T的基类</p>
+<p>逆变in: 允许传入参数使用T的基类<br>协变out:允许输出类型使用T的派生类<br>逆变参数基类,协变返回子类<br><code>Object Method(FileStream fs); // 允许协变和逆变的转换</code><br><code>String Method2(Stream s);</code></p>
 </blockquote>
 <h1 id="泛型和接口约束"><a href="#泛型和接口约束" class="headerlink" title="泛型和接口约束"></a>泛型和接口约束</h1><p>泛型类型参数约束为多个接口,这样传递的参数必须要实现全部接口约束.</p>
 <pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SomeType</span>
