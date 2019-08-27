@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是asset"><span class="toc-text">什么是asset?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是Addressable-Asset"><span class="toc-text">什么是Addressable Asset?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#为什么要使用可寻址资产"><span class="toc-text">为什么要使用可寻址资产?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#概述"><span class="toc-text">概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#入门"><span class="toc-text">入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使Asset成为AddressableAssets"><span class="toc-text">使Asset成为AddressableAssets</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#指定地址"><span class="toc-text">指定地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#构建可寻址内容"><span class="toc-text">构建可寻址内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用可寻址资产"><span class="toc-text">使用可寻址资产</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#按地址加载或实例化"><span class="toc-text">按地址加载或实例化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#子资产和组件"><span class="toc-text">子资产和组件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用AssetReference类"><span class="toc-text">使用AssetReference类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建立考虑因素"><span class="toc-text">建立考虑因素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#StreamingAssets中的本地数据"><span class="toc-text">StreamingAssets中的本地数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#提前下载"><span class="toc-text">提前下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构建多个平台"><span class="toc-text">构建多个平台</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#开发周期"><span class="toc-text">开发周期</span></a></li></ol>
 </div>
 
     
@@ -142,7 +142,123 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        
+        <p><a href="https://docs.unity3d.com/Packages/com.unity.addressables@1.1/manual/index.html" target="_blank" rel="external">Addressable Asset System 官方文档</a></p>
+<h1 id="什么是asset"><a href="#什么是asset" class="headerlink" title="什么是asset?"></a>什么是asset?</h1><p>资产是您用于创建游戏或应用程序的内容。资产的常见示例包括预制件(Prefabs)，纹理(textures)，材料(materials)，音频剪辑(audio clips)和动画(animations)。</p>
+<h1 id="什么是Addressable-Asset"><a href="#什么是Addressable-Asset" class="headerlink" title="什么是Addressable Asset?"></a>什么是Addressable Asset?</h1><p>使资产“可寻址”允许您使用该资产的唯一地址从任何地方调用它。无论该资产是在 <strong>本地应用程序中</strong> 还是在 <strong>内容交付网络(资源服务器)</strong> 上，可寻址资产系统都会找到并返回该资产。您可以通过其地址加载单个可寻址资产，或使用您定义的 <strong>自定义组标签</strong> 加载许多可寻址资产。</p>
+<h1 id="为什么要使用可寻址资产"><a href="#为什么要使用可寻址资产" class="headerlink" title="为什么要使用可寻址资产?"></a>为什么要使用可寻址资产?</h1><p>Addressable 缩短了迭代周期:</p>
+<ul>
+<li><code>迭代时间</code>: 通过其地址引用类型非常有效.对内容的优化不需要更改代码.</li>
+<li><code>依赖关系管理</code>: 系统返回所请求内容的所有依赖关系, 方便在内容返回之前加载所有依赖的网格,着色器,动画等.</li>
+<li><code>内存管理</code>: 系统的卸载资产并加载它们,自动计算引用并提供强大的分析器以帮助您发现潜在的内存问题。</li>
+<li><code>内容打包</code>: 由于系统映射并理解复杂的依赖关系链, 因此即使在移动或重命名资产时，也可以有效地打包捆绑包。您可以轻松地为本地和远程部署准备资产，以支持可下载内容和减少应用程序大小。</li>
+</ul>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>可寻址资产系统包括两个包：</p>
+<ul>
+<li>Addressable Assets package (主要包)</li>
+<li>Scriptable Build Pipeline package (依赖)</li>
+</ul>
+<blockquote>
+<p>安装Addressable Assets包时，Scriptable Build Pipeline包将同时安装。</p>
+</blockquote>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ul>
+<li><code>Address(地址)</code>: 资产的位置标识符，便于运行时检索.</li>
+<li><code>AddressableAssetData directory(可寻址资产元数据目录)</code>: 将您的可寻址资产元数据存储在Project的Assets目录.</li>
+<li><code>Asset group(资产组)</code>: 一组可用于 <strong>构建时处理的</strong> 可寻址资产.</li>
+<li><code>Asset group schema(资产组架构)</code>: 定义一组数据，您可以将这些数据分配给组并在构建期间使用。</li>
+<li><code>AssetReference(资产引用)</code>: 一个对象，其操作类似于直接引用，但具有 <strong>延迟初始化</strong>。该AssetReference对象将GUID存储为可按需加载的Addressable。</li>
+<li><code>Asynchronous loading(异步加载)</code>: 允许在整个开发过程中更改资产及其依赖项的位置，而无需更改游戏代码。异步加载是可寻址资产系统的基础。</li>
+<li><code>Build script(构建脚本)</code>: 运行 <strong>资产组处理器</strong> 以打包资产，并提供资源管理器的地址和资源位置之间的映射。</li>
+<li><code>Label(标签)</code>: 为类似项的运行时加载提供附加的 <strong>可寻址资产标识符</strong> (例如, <code>Addressables.DownloadDependenciesAsync(&quot;spaceHazards&quot;);</code>).</li>
+</ul>
+<h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><p><strong>重要提示：可寻址资产系统需要Unity版本2018.3或更高版本</strong></p>
+<h2 id="使Asset成为AddressableAssets"><a href="#使Asset成为AddressableAssets" class="headerlink" title="使Asset成为AddressableAssets"></a>使Asset成为AddressableAssets</h2><p>两种标记方式:</p>
+<ol>
+<li>在对象的<code>Inspector</code>面板中 -&gt; 单击<code>Address</code>复选框 -&gt; 输入用于标识资产的名称。</li>
+</ol>
+<p><img src="/2019/08/27/Unity可寻址资产系统AddressableAssetSystem/inspectorcheckbox.png" alt=""></p>
+<ol>
+<li>选择 Window &gt; <code>Asset Management</code> &gt; <code>Addressables</code> 去打开 <code>Addressables window</code>. 然后, 将所需的资产从项目窗口拖进<code>Addressables window</code>的资产组。</li>
+</ol>
+<p><img src="/2019/08/27/Unity可寻址资产系统AddressableAssetSystem/addressableswindow.png" alt=""></p>
+<h2 id="指定地址"><a href="#指定地址" class="headerlink" title="指定地址"></a>指定地址</h2><p>资产的 <strong>默认地址</strong> 是项目中资产的路径（例如，<code>Assets/images/myImage.png</code>）。<strong>要从<code>Addressables window</code>更改资产的地址，请右键单击该资源，然后选择<code>Rename</code>。</strong></p>
+<p>当您第一次开始使用可寻址资产时，系统会在<code>Assets/AddressableAssetsData</code>文件中为您的项目保存一些编辑时和运行时数据资产，这些资产应添加到您的版本控制签入中。</p>
+<h2 id="构建可寻址内容"><a href="#构建可寻址内容" class="headerlink" title="构建可寻址内容"></a>构建可寻址内容</h2><p>在构建应用程序之前，<strong>Addressables资产系统需要将您的内容构建为正在运行的游戏可以使用的文件。</strong> 此步骤不是自动的。您可以通过编辑器或API构建此内容：</p>
+<ul>
+<li>要在Editor中构建内容，请打开<code>Addressables window</code>，然后选择<code>Build</code> -&gt; <code>Build Player Content</code>。</li>
+<li>要使用API​​构建内容，请使用<code>AddressableAssetSettings.BuildPlayerContent()。</code></li>
+</ul>
+<h2 id="使用可寻址资产"><a href="#使用可寻址资产" class="headerlink" title="使用可寻址资产"></a>使用可寻址资产</h2><h3 id="按地址加载或实例化"><a href="#按地址加载或实例化" class="headerlink" title="按地址加载或实例化"></a>按地址加载或实例化</h3><p>您可以在运行时加载或实例化可寻址资产。<strong>加载资产会将所有依赖项加载到内存中（包括资产的捆绑数据，如果适用）</strong>，允许您在需要时使用该资产。<strong>这实际上并没有将所需资产放入场景中。要将资源添加到场景中，您必须实例化。</strong> 使用Addressables实例化接口将加载资源，然后立即将其添加到场景中。</p>
+<p>要使用字符串地址从游戏脚本访问资产，请声明UnityEngine.AddressableAssets命名空间，然后调用以下方法：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 这会使用指定的地址加载资产。</span>
+Addressables<span class="token punctuation">.</span><span class="token generic-method function">LoadAssetAsync<span class="token punctuation">&lt;</span>GameObject<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"AssetAddress"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 这会将具有指定地址的资产实例化到场景中。</span>
+Addressables<span class="token punctuation">.</span><span class="token function">InstantiateAsync</span><span class="token punctuation">(</span><span class="token string">"AssetAddress"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>注意：<code>LoadAssetAsync</code>和<code>InstantiateAsync</code>是异步操作。您可以在完成加载时提供回调以使用资产。</p>
+</blockquote>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> UnityEngine<span class="token punctuation">.</span>AddressableAssets<span class="token punctuation">;</span>
+<span class="token keyword">using</span> UnityEngine<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AddressablesExample</span> <span class="token punctuation">:</span> MonoBehaviour
+<span class="token punctuation">{</span>
+
+    GameObject myGameObject<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// ...</span>
+
+        <span class="token comment" spellcheck="true">// 使用指定的地址加载资产,完成时回调OnLoadDone方法</span>
+        Addressables<span class="token punctuation">.</span><span class="token generic-method function">LoadAssetAsync<span class="token punctuation">&lt;</span>GameObject<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"AssetAddress"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Completed <span class="token operator">+</span><span class="token operator">=</span> OnLoadDone<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">void</span>    <span class="token function">OnLoadDone</span><span class="token punctuation">(</span>UnityEngine<span class="token punctuation">.</span>ResourceManagement<span class="token punctuation">.</span>AsyncOperations<span class="token punctuation">.</span>AsyncOperationHandle<span class="token operator">&lt;</span>GameObject<span class="token operator">></span> obj<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 在生产环境中，您应该添加异常处理来捕获诸如null结果之类的场景。</span>
+        myGameObject <span class="token operator">=</span> obj<span class="token punctuation">.</span>Result<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="子资产和组件"><a href="#子资产和组件" class="headerlink" title="子资产和组件"></a>子资产和组件</h3><p><code>子资产</code>和<code>组件</code>是资产加载的特殊情况。</p>
+<ul>
+<li><code>组件</code>：您 <strong>无法</strong> 直接将GameObject的组件作为资源加载。您必须加载或实例化GameObject，然后从中检索组件引用。</li>
+<li><code>子资产</code>：系统支持加载子资产，但需要特殊语法。潜在子资产的示例包括<code>sprite sheet</code>中的<code>sprites</code>或FBX文件中的动画片段。要加载它们，请使用以下示例语法：</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 系统支持加载子资产，但需要特殊语法</span>
+<span class="token comment" spellcheck="true">// 例如`sprite sheet`中的`sprites`</span>
+<span class="token comment" spellcheck="true">// FBX文件中的动画片段</span>
+Addressables<span class="token punctuation">.</span>LoadAssetAsync<span class="token operator">&lt;</span>IList<span class="token operator">&lt;</span>Sprite<span class="token operator">></span><span class="token operator">></span><span class="token punctuation">(</span><span class="token string">"MySpriteSheetAddress"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="使用AssetReference类"><a href="#使用AssetReference类" class="headerlink" title="使用AssetReference类"></a>使用AssetReference类</h2><p>本<code>AssetReference类</code>提供一种方法来访问寻址的资产，而无需知道他们的地址。要使用<code>AssetReference类</code>访问可寻址资产：</p>
+<ol>
+<li>从<code>Scene hierarchy</code>结构或<code>Project window</code>中选择一个GameObject 。</li>
+<li>在Inspector中，单击<code>Add Component</code>按钮，然后选择组件类型。任何可序列化组件都可以支持<code>AssetReference变量</code>（例如，<code>a game script</code>，<code>ScriptableObject</code>或<code>其他可序列化类</code>）。</li>
+<li><code>AssetReference</code>在组件中添加公共变量（例如，<code>public AssetReference explosion;</code>）。</li>
+<li>在Inspector中，选择要链接到对象的可寻址资产，方法是将资源从<code>Project window</code>拖动到公开AssetReference字段中，或者从项目中先前定义的可寻址资产的下拉列表中进行选择（如下所示）。</li>
+</ol>
+<p><img src="/2019/08/27/Unity可寻址资产系统AddressableAssetSystem/Inspectorreferenceselection2.png" alt=""></p>
+<ol>
+<li>要加载或实例化AssetReference资产，请调用其相应的方法。<ol>
+<li><code>AssetRefMember.LoadAssetAsync&lt;GameObject&gt;();</code></li>
+<li>或者 <code>AssetRefMember.InstantiateAsync(pos, rot);</code></li>
+</ol>
+</li>
+</ol>
+<h2 id="建立考虑因素"><a href="#建立考虑因素" class="headerlink" title="建立考虑因素"></a>建立考虑因素</h2><h3 id="StreamingAssets中的本地数据"><a href="#StreamingAssets中的本地数据" class="headerlink" title="StreamingAssets中的本地数据"></a>StreamingAssets中的本地数据</h3><p>可寻址资产系统在运行时需要 <strong>一些文件来知道要加载什么以及如何加载它</strong>。这些文件是在构建Addressables数据时生成的，<strong>并在StreamingAssets文件夹中生成</strong>，该文件夹是Unity中包含构建中所有文件的特殊文件夹。构建Addressables内容时，系统会在库中对这些文件进行分级。然后，在构建应用程序时，<strong>系统会将所需文件复制到StreamingAssets</strong>，构建并从文件夹中 <strong>删除它们</strong>。这样，您可以为多个平台构建数据，同时只在每个构建中包含相关数据。</p>
+<p>除了特定于Addressables的数据之外，构建其本地数据的任何组也将使用特定于库平台的分段位置。</p>
+<p>要验证这是否有效，请将构建路径和加载路径设置为分别以<br><code>[UnityEngine.AddressableAssets.Addressables.BuildPath]</code>和开头的配置文件变量<code>{UnityEngine.AddressableAssets.Addressables.RuntimePath}</code>。您可以在<code>AddressableAssetSettings</code>的<code>Inspector</code>中指定这些设置（默认情况下，此对象位于Project的<code>Assets/AddressableAssetsData</code>目录中）。</p>
+<h3 id="提前下载"><a href="#提前下载" class="headerlink" title="提前下载"></a>提前下载</h3><p>调用该<code>Addressables.DownloadDependenciesAsync()</code>方法会加载您传入的地址或标签的依赖关系。通常，这是资产包。</p>
+<p><code>AsyncOperationHandle</code>此调用返回的结构包含一个<code>PercentComplete</code>可用于监视和显示下载进度的属性。您还可以让应用程序等到内容加载完毕。</p>
+<p>如果您希望在下载之前询问用户是否同意，请使用<code>Addressables.GetDownloadSize()</code>返回从给定地址或标签下载内容所需的空间。请注意，这会考虑任何以前下载的仍在Unity资产包缓存中的捆绑包。</p>
+<p>虽然提前为您的应用程序下载资产可能是有利的，<strong>但有些情况下您可能选择不这样做</strong>。例如：</p>
+<ul>
+<li>如果您的应用拥有大量在线内容，并且您通常希望用户只与其中的一部分进行互动。</li>
+<li>您有一个必须在线连接才能运行的应用程序。如果您的所有应用内容都是小型捆绑包，您可以选择根据需要下载内容。</li>
+</ul>
+<p>您可以使用预加载功能显示下载已开始，然后继续，而不是使用百分比完成值等待内容加载。此实现需要加载或等待屏幕来处理资产在需要时尚未完成加载的实例。</p>
+<h3 id="构建多个平台"><a href="#构建多个平台" class="headerlink" title="构建多个平台"></a>构建多个平台</h3><p>在构建应用程序内容时，可寻址资产系统会生成包含可寻址资产的资产包。<strong>资产包依赖于平台，因此必须为您打算支持的每个独特平台重建。</strong></p>
+<p>默认情况下，在构建Addressables应用程序数据时，给定平台的数据存储在Addressables构建路径的特定于平台的子目录中。运行时路径考虑了这些平台文件夹，并指向适用的应用程序数据。</p>
+<p>注意：如果<code>BuildScriptPackedPlayMode</code>在编辑器播放模式下使用Addressables 脚本，则Addressables将尝试加载<code>当前活动构建目标(your current active build target)</code>的数据。因此，<strong>如果您当前的构建目标数据与当前的编辑器平台不兼容，则可能会出现问题。</strong> 有关更多信息，请参阅有关Play mode scripts.的文档。</p>
+<h1 id="开发周期"><a href="#开发周期" class="headerlink" title="开发周期"></a>开发周期</h1>
         
             <div class="donate-container">
     <div class="donate-button">
