@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Unity可寻址资产系统示例代码详解 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Project-Details"><span class="toc-text">Project Details</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是Addressables"><span class="toc-text">什么是Addressables?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Demo"><span class="toc-text">Demo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#普通实例化做法"><span class="toc-text">普通实例化做法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Addressables实例化做法"><span class="toc-text">Addressables实例化做法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Addressables实例化多个对象"><span class="toc-text">Addressables实例化多个对象</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Addressables窗口"><span class="toc-text">Addressables窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#profile-配置文件"><span class="toc-text">profile 配置文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用Label功能"><span class="toc-text">用Label功能</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#查询机制"><span class="toc-text">查询机制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#本地路径和远端路径"><span class="toc-text">本地路径和远端路径</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#利用AAS附带的虚拟HTTP服务器模拟"><span class="toc-text">利用AAS附带的虚拟HTTP服务器模拟</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#设置对应的包为远程包"><span class="toc-text">设置对应的包为远程包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试"><span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装包和加载包设置-渐进式递增更新"><span class="toc-text">安装包和加载包设置(渐进式递增更新)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#利用Label设计换皮与各种功能包"><span class="toc-text">利用Label设计换皮与各种功能包</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#修改纹理之后-不想要重新打包的做法"><span class="toc-text">修改纹理之后,不想要重新打包的做法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#场景的异步加载"><span class="toc-text">场景的异步加载</span></a></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Unity可寻址资产系统示例代码详解
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-08-30 08:46:53</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Unity资源管理系统" title="Unity资源管理系统">Unity资源管理系统</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="Project-Details"><a href="#Project-Details" class="headerlink" title="Project Details"></a>Project Details</h1><ul>
+<li>Unity 2019.1.14f1</li>
+<li>Addressables 1.1.7</li>
+</ul>
+<p><a href="https://github.com/Unity-Technologies/AddressableAssetsWebinar" target="_blank" rel="external">AddressableAssetsWebinar</a></p>
+<h1 id="什么是Addressables"><a href="#什么是Addressables" class="headerlink" title="什么是Addressables?"></a>什么是Addressables?</h1><ol>
+<li>可以取代Asset Bundle的高阶管理系统</li>
+<li>天涯海角都会追踪到的信标(Address)</li>
+<li>自动化仓储管理</li>
+<li>只加载有关联的资源(系统会处理关联性)<ol>
+<li>可以实例化场景,自动关联相关的Asset</li>
+</ol>
+</li>
+<li>运行阶段优良的内存管理</li>
+<li>除脚本外的资源都可以标记为寻址式资源</li>
+<li>Build Script可以让你自己写打包流程(命名规则,打包处理,默认压缩LZ4)</li>
+</ol>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830085842.png" alt=""></p>
+<p>不需要手动去管理AssetBundle,可以通过Addressables系统自动化.</p>
+<h1 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h1><p>类似皇室战争的demo, 演示Addressable Asset System用法</p>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830091237.png" alt=""></p>
+<p>如图所示,弓箭手卡牌(按钮),点击后会在场地实例化一个弓箭手.</p>
+<ul>
+<li>按钮点击事件绑定了 当前场景中的<code>GameManager对象</code>里的<code>CharacterManager脚本</code>中的<code>SpawnCharacter方法</code></li>
+</ul>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830092202.png" alt=""></p>
+<blockquote>
+<p>SpawnCharacter 大量生产角色</p>
+</blockquote>
+<h2 id="普通实例化做法"><a href="#普通实例化做法" class="headerlink" title="普通实例化做法"></a>普通实例化做法</h2><p>在SpawnCharacter方法中实例化弓箭手, 普通的做法是:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// Inspector面板上放了Archer Red红色弓箭手的prefab</span>
+<span class="token comment" spellcheck="true">// 类型是GameObject</span>
+<span class="token keyword">public</span> GameObject m_archerObject<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 同步实例化</span>
+<span class="token comment" spellcheck="true">// 资源已经在本地端</span>
+<span class="token comment" spellcheck="true">// 大量加载容易造成卡顿</span>
+<span class="token function">Instantiate</span><span class="token punctuation">(</span>m_archerObject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Addressables实例化做法"><a href="#Addressables实例化做法" class="headerlink" title="Addressables实例化做法"></a>Addressables实例化做法</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// AssetReference类型 会指向可寻址资源</span>
+<span class="token keyword">public</span> AssetReference m_ArcherObject<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 异步实例化</span>
+<span class="token comment" spellcheck="true">// 系统不会等待</span>
+<span class="token comment" spellcheck="true">// 大量实例化不会卡住系统</span>
+m_ArcherObject<span class="token punctuation">.</span><span class="token function">InstantiateAsync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同时需要把<code>Archer Red的prefab</code>勾选可寻址信标.</p>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830094549.png" alt=""></p>
+<ul>
+<li>勾选<code>Addressable</code>后,会在Addressables窗口中出现此资源</li>
+<li>也可以直接将prefab拖入Addressables窗口</li>
+</ul>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830094914.png" alt=""></p>
+<p>在Addressables窗口中右键创建一个<code>AssetGroups</code>,这个群组中的所有资源可以视为一个加载包.</p>
+<blockquote>
+<p>在项目面板会生成一个同名的包对象. 可以更改Asset Bundle相关设置</p>
+</blockquote>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830095303.png" alt=""></p>
+<p>再去<code>GameManager对象</code>的Inspector面板上修改<code>public AssetReference m_ArcherObject;</code>的引用, 因为已经将资源加入到Addressable中,所以这里可以下拉框选到对应的可寻址资源.</p>
+<h2 id="Addressables实例化多个对象"><a href="#Addressables实例化多个对象" class="headerlink" title="Addressables实例化多个对象"></a>Addressables实例化多个对象</h2><ol>
+<li>将需要实例化的多个对象加入Addressables中</li>
+</ol>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830104934.png" alt=""></p>
+<ol>
+<li>在脚本的Inspector面板上选取对应的资源<ol>
+<li>放入 弓箭手,法师,战士资源.</li>
+</ol>
+</li>
+</ol>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830104956.png" alt=""></p>
+<p>CharacterManager脚本代码如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CharacterManager</span> <span class="token punctuation">:</span> MonoBehaviour
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 一次加载多个资源时,用List存放这些资源的AssetReference地址</span>
+    <span class="token keyword">public</span> List<span class="token operator">&lt;</span>AssetReference<span class="token operator">></span> m_Characters<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 资源是否已经加载完毕</span>
+    <span class="token keyword">bool</span> m_AssetsReady <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 资源总数</span>
+    <span class="token keyword">int</span> m_ToLoadCount<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> m_CharacterIndex <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Start is called before the first frame update</span>
+    <span class="token keyword">void</span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 计数,需要多少个资源</span>
+        m_ToLoadCount <span class="token operator">=</span> m_Characters<span class="token punctuation">.</span>Count<span class="token punctuation">;</span>
+
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> character <span class="token keyword">in</span> m_Characters<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 因为不知道这个资源是不是在本地, 所以要确定已经加载完成</span>
+            <span class="token comment" spellcheck="true">// 因为是异步加载,注册一个完成后的回调函数</span>
+            character<span class="token punctuation">.</span><span class="token generic-method function">LoadAssetAsync<span class="token punctuation">&lt;</span>GameObject<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Completed <span class="token operator">+</span><span class="token operator">=</span> OnCharacterAssetLoaded<span class="token punctuation">;</span>  
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SpawnCharacter</span><span class="token punctuation">(</span><span class="token keyword">int</span> characterType<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 当Asset全部加载完毕后,才允许实例化</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>m_AssetsReady<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 返回半径为5的球体内的一个随机点。</span>
+            Vector3 position <span class="token operator">=</span> Random<span class="token punctuation">.</span>insideUnitSphere <span class="token operator">*</span> <span class="token number">5</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 设置xz轴, y轴为0</span>
+            position<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span>position<span class="token punctuation">.</span>x<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> position<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 异步实例化</span>
+            m_Characters<span class="token punctuation">[</span>characterType<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">InstantiateAsync</span><span class="token punctuation">(</span>position<span class="token punctuation">,</span> Quaternion<span class="token punctuation">.</span>identity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 回调函数</span>
+    <span class="token keyword">void</span> <span class="token function">OnCharacterAssetLoaded</span><span class="token punctuation">(</span>AsyncOperationHandle<span class="token operator">&lt;</span>GameObject<span class="token operator">></span> obj<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 加载成功一个, 总数减一</span>
+        m_ToLoadCount<span class="token operator">--</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 直到加载全部完成 设置flag 为true</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>m_ToLoadCount <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+            m_AssetsReady <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 卸载资产Addressables.Release();资产可能会立即卸载，也可能不会立即卸载，具体取决于现有的依赖项</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">OnDestroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//TODO: Should we teach instantiate with game objects and then manually release?</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> character <span class="token keyword">in</span> m_Characters<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 释放操作及其相关资源。</span>
+            character<span class="token punctuation">.</span><span class="token function">ReleaseAsset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>需要注意:</p>
+<ul>
+<li>在可寻址资源系统中,因为不知道这个资源是不是在本地, 所以要确定是否已经加载完成,因为是异步加载,注册一个完成后的回调函数</li>
+<li>以前需要思考这个包是否下载,去服务器请求,下载之后解包,然后加载. 用了AAS之后,这些步骤由AAS替你完成.</li>
+</ul>
+<p>举个例子: 请求加载一个<code>法师</code>模型资源, 但是这个资源 <strong>不在本地</strong>,需要从远程地址(服务器)去下载,只有下载完成之后加载好才去做<code>实例化</code>的工作.</p>
+<h1 id="Addressables窗口"><a href="#Addressables窗口" class="headerlink" title="Addressables窗口"></a>Addressables窗口</h1><p>用来放所有被放入Addressables的资产.</p>
+<ol>
+<li>默认以<code>路径</code>作为资产的<code>地址(信标)</code>.这是可以更改的.<ol>
+<li>呼叫此地址的时候,会找到对应的Asset</li>
+</ol>
+</li>
+<li>可以设置<code>Labels</code>. 用来分类,区分一些同名资产.</li>
+</ol>
+<h2 id="profile-配置文件"><a href="#profile-配置文件" class="headerlink" title="profile 配置文件"></a>profile 配置文件</h2><p>默认是Default,可以根据不同的需求增加不同的方案,比如正式发布配置方案,测试配置方案等.</p>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830120239.png" alt=""></p>
+<ul>
+<li><code>Send Profiler Events</code>  勾选后,可以在编辑器下运行时查看所有Asset的加载与卸载情况.<ul>
+<li>默认不勾选,因为正式发布时不需要,影响性能.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830120601.png" alt=""></p>
+<ul>
+<li><code>蓝绿色背景</code> 代表 <strong>已加载的资产</strong>.</li>
+<li><code>绿色条状</code>   代表 <strong>当前引用计数.</strong></li>
+</ul>
+<h1 id="用Label功能"><a href="#用Label功能" class="headerlink" title="用Label功能"></a>用Label功能</h1><p>Label功能可以复数勾选.</p>
+<ol>
+<li>先将需要的资源插入信标(拖入AAS)</li>
+</ol>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ图片20190830123612.png" alt=""></p>
+<ol>
+<li><p>在AddressableAssetSetting中加入Label标签.</p>
+</li>
+<li><p>给对应的可寻址资源下拉框选择对应的标签.</p>
+</li>
+<li><p>在对应脚本上的<code>AssetLabelReference</code>属性下拉框选择标签</p>
+</li>
+</ol>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830123918.png" alt=""></p>
+<p>这样这个脚本就会在Start的时候,把所有有Tower标签的资源加载进来.(demo中塔顺序不是对应的,只为演示).</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TowerManager</span> <span class="token punctuation">:</span> MonoBehaviour
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 塔prefabs</span>
+    <span class="token keyword">public</span> IList<span class="token operator">&lt;</span>GameObject<span class="token operator">></span> m_Towers<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// AssetLabelReference Label标签引用对象</span>
+    <span class="token keyword">public</span> AssetLabelReference m_TowerLabel<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 界面上的塔卡片 按钮</span>
+    <span class="token keyword">public</span> Button<span class="token punctuation">[</span><span class="token punctuation">]</span> m_TowerCards<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Start is called before the first frame update</span>
+    <span class="token keyword">void</span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 将所有包(AssetGroups)中的带有这个标签的Asset全部拿出来</span>
+        <span class="token comment" spellcheck="true">// 每拿取完成一个之后会调用OnResourcesRetrieved</span>
+        Addressables<span class="token punctuation">.</span><span class="token generic-method function">LoadAssetsAsync<span class="token punctuation">&lt;</span>GameObject<span class="token punctuation">></span></span><span class="token punctuation">(</span>m_TowerLabel<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Completed <span class="token operator">+</span><span class="token operator">=</span> OnResourcesRetrieved<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">OnResourcesRetrieved</span><span class="token punctuation">(</span>AsyncOperationHandle<span class="token operator">&lt;</span>IList<span class="token operator">&lt;</span>GameObject<span class="token operator">></span><span class="token operator">></span> obj<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 拿取的结果存储在IList&lt;GameObject>中</span>
+        <span class="token comment" spellcheck="true">// demo中塔顺序不是对应的,只为演示</span>
+        m_Towers <span class="token operator">=</span> obj<span class="token punctuation">.</span>Result<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//Activate the tower cards since their assets are now loaded</span>
+        <span class="token keyword">foreach</span><span class="token punctuation">(</span><span class="token keyword">var</span> towerCard <span class="token keyword">in</span> m_TowerCards<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 将卡牌按钮显示可按</span>
+            towerCard<span class="token punctuation">.</span>interactable <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">InstantiateTower</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>m_Towers <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 随机放在一些位置</span>
+            Vector3 position <span class="token operator">=</span> Random<span class="token punctuation">.</span>insideUnitSphere <span class="token operator">*</span> <span class="token number">5</span><span class="token punctuation">;</span>
+            position<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span>position<span class="token punctuation">.</span>x<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> position<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">Instantiate</span><span class="token punctuation">(</span>m_Towers<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">,</span> position<span class="token punctuation">,</span> Quaternion<span class="token punctuation">.</span>identity<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="查询机制"><a href="#查询机制" class="headerlink" title="查询机制"></a>查询机制</h2><p>如果我需要一把剑, 但是标有剑的Label有100把,那么这个时候就需要查询功能,不需要全部去加载100把剑.</p>
+<blockquote>
+<p>或者可以用更多的Label来区分, 比如青铜系列, 剑, 单手等等.</p>
+</blockquote>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830125010.png" alt=""></p>
+<p>因为异步加载的关系, 用Label标签加载的资源可能不是预期的顺序.</p>
+<p>AAS提供了一个查询机制(<strong>不加载,也不实例化</strong>,只是查询对应的可寻址资源清单表).</p>
+<p><code>LoadResourceLocationsAsync(label)</code></p>
+<p>取出来的清单会放入<code>IResourceLocation</code>中,然后根据清单加载哪把剑. 自己使用<code>LoadAssetAsync</code>加载.</p>
+<h1 id="本地路径和远端路径"><a href="#本地路径和远端路径" class="headerlink" title="本地路径和远端路径"></a>本地路径和远端路径</h1><p>以前的流程是:</p>
+<ul>
+<li>本地打包,拿去服务端测,有问题再回本地修复,再去测.</li>
+</ul>
+<p>为了简化这种流程,AAS提供了一些模式:</p>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830131635.png" alt=""></p>
+<ul>
+<li>快速模式<ul>
+<li>第一阶段(研发阶段)本地端资源.</li>
+<li>快速模式直接通过资产数据库加载资产，以便快速迭代，无需创建分析或资产包(AB包)。</li>
+</ul>
+</li>
+<li>虚拟模式<ul>
+<li>也是本地端资源,会虚拟一个服务器端功能</li>
+<li>分析布局和依赖关系的内容，而无需创建资产包(AB包)。</li>
+</ul>
+</li>
+<li>打包模式<ul>
+<li>不会用本地资源,会需要包资源.</li>
+<li>使用已构建的资产包(AB包)。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830132241.png" alt=""></p>
+<p><strong>每个群组包都可以设置放在本地路径还是远端路径.</strong></p>
+<blockquote>
+<p>用处说明: 游戏打包之后, 嵌在包里的资源(本地),以及服务器端的资源(远端).<br>游戏运行时会请求服务器资源下载.</p>
+</blockquote>
+<p>4个路径的说明:</p>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830132715.png" alt=""></p>
+<p>如果<code>群组包</code>是<code>本地包(跟随游戏包体一起发布的包)</code>,则会放入<code>Local Build Path</code>路径下.</p>
+<p>如果是<code>远端包(游戏开始时去请求服务器下载的包)</code>,会放入<code>Remote Build Path</code>路径下.</p>
+<p>本地测试的话,本地打包路径和本地加载路径是相同的.</p>
+<p>远端打包的话,路径是在一个文件夹下,而加载的路径是 <strong>根据http的一个IP和port去加载</strong>.</p>
+<h1 id="利用AAS附带的虚拟HTTP服务器模拟"><a href="#利用AAS附带的虚拟HTTP服务器模拟" class="headerlink" title="利用AAS附带的虚拟HTTP服务器模拟"></a>利用AAS附带的虚拟HTTP服务器模拟</h1><p>开启虚拟资源服务器</p>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830133914.png" alt=""></p>
+<p>根据地址选取一个,记住名称,在后面配置远程路径时需要用到, 再添加一个Hosting Services服务来开启端口.</p>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830134320.png" alt=""></p>
+<p>点击<code>Enable Services</code>按钮开启服务,会得到一个端口号. 名称也会需要用到.</p>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830134445.png" alt=""></p>
+<p>然后开始配置AddressableAssetSetting里的远程路径设置:</p>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830134633.png" alt=""></p>
+<ul>
+<li>Profiles 配置方案新建一个, 改名为开发时的配置方案名称.</li>
+<li>将<code>[PrivateIpAddress_4]</code>改为<code>[PrivateIpAddress]</code>和之前Hosting Services设置对应.</li>
+</ul>
+<h2 id="设置对应的包为远程包"><a href="#设置对应的包为远程包" class="headerlink" title="设置对应的包为远程包"></a>设置对应的包为远程包</h2><p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830135127.png" alt=""></p>
+<p>首先,更改<code>profile</code>为新建的<code>deve</code>方案,然后选择<code>AessetGroup</code>里的<code>Tower</code>包更改远程构建路径和加载路径. 可以预览的看到.</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>将<code>Play Mode Script</code>改为<code>Packed Paly Mode</code>, 点击<code>Build</code>-&gt;<code>Build Play Contant</code>. 这样就完成了打包.</p>
+<p>点击播放就可以正常运行,包在对应的目录中.<br><code>\HostedData\StandaloneWindows64\towers_assets_all_ee248a6bacba1b7989b2b4d9c590083b.bundle</code></p>
+<p>以上就是远端加载流程. 只要把包放到服务器上,把本地设置改掉就可以真实测试了.</p>
+<h1 id="安装包和加载包设置-渐进式递增更新"><a href="#安装包和加载包设置-渐进式递增更新" class="headerlink" title="安装包和加载包设置(渐进式递增更新)"></a>安装包和加载包设置(渐进式递增更新)</h1><p>不用重新下载整个包. 从App Store下载最小的APP包. 第一次启动加载资料包.</p>
+<h2 id="利用Label设计换皮与各种功能包"><a href="#利用Label设计换皮与各种功能包" class="headerlink" title="利用Label设计换皮与各种功能包"></a>利用Label设计换皮与各种功能包</h2><p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830141340.png" alt=""></p>
+<p>切换到<code>QualityLevelsDemo</code>场景.</p>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830142243.png" alt=""></p>
+<p>将材质放入Addressables, 并且信标(地址)可以相同,设置不同的Label.</p>
+<blockquote>
+<p>名称相同比如: 帽子,可以分类为A角色的帽子,B角色的帽子, 他们的名称可以相同,用不同的Label就可以区分他们.</p>
+</blockquote>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TextureController</span> <span class="token punctuation">:</span> MonoBehaviour
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 渲染材质</span>
+    <span class="token keyword">public</span> Renderer m_ReferencedMaterial<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SwitchToHighDef</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>    
+        <span class="token comment" spellcheck="true">// 加载对应名称和Label的资源</span>
+        <span class="token function">LoadTexture</span><span class="token punctuation">(</span><span class="token string">"ArcherSkin"</span><span class="token punctuation">,</span> <span class="token string">"Skin2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">void</span> <span class="token function">LoadTexture</span><span class="token punctuation">(</span><span class="token keyword">string</span> key<span class="token punctuation">,</span> <span class="token keyword">string</span> label<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Addressables<span class="token punctuation">.</span><span class="token generic-method function">LoadAssetsAsync<span class="token punctuation">&lt;</span>Texture2D<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span><span class="token keyword">object</span><span class="token operator">></span> <span class="token punctuation">{</span> key<span class="token punctuation">,</span> label <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> Addressables<span class="token punctuation">.</span>MergeMode<span class="token punctuation">.</span>Intersection<span class="token punctuation">)</span><span class="token punctuation">.</span>Completed
+            <span class="token operator">+</span><span class="token operator">=</span> TextureLoaded<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">void</span> <span class="token function">TextureLoaded</span><span class="token punctuation">(</span>AsyncOperationHandle<span class="token operator">&lt;</span>IList<span class="token operator">&lt;</span>Texture2D<span class="token operator">></span><span class="token operator">></span> obj<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_ReferencedMaterial<span class="token punctuation">.</span>material<span class="token punctuation">.</span>mainTexture <span class="token operator">=</span> obj<span class="token punctuation">.</span>Result<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>运行之后,点击就会成一个穿红色衣服的角色.</p>
+<h1 id="修改纹理之后-不想要重新打包的做法"><a href="#修改纹理之后-不想要重新打包的做法" class="headerlink" title="修改纹理之后,不想要重新打包的做法"></a>修改纹理之后,不想要重新打包的做法</h1><p>静态的本地包可以增量式打包.</p>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830143024.png" alt=""></p>
+<p>将材质包组设置为静态内容.</p>
+<ul>
+<li>打包一个可执行文件. 用Unity的build生成exe.</li>
+</ul>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830143255.png" alt=""></p>
+<ul>
+<li>在一些情况下,你想修改包体,而不像重新打包(一个包很大,重新打包很麻烦)</li>
+<li>现在可以通过ASS增量式打包(具体规则参考文档)</li>
+</ul>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830143548.png" alt=""></p>
+<ul>
+<li>修改了Skin2的材质</li>
+<li>打包流程就需要改变</li>
+</ul>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830143708.png" alt=""></p>
+<ul>
+<li>点击 <code>Prepare For Content Update</code></li>
+<li><a href="https://zxt385189207.github.io/2019/08/27/Unity%E5%8F%AF%E5%AF%BB%E5%9D%80%E8%B5%84%E4%BA%A7%E7%B3%BB%E7%BB%9FAddressableAssetSystem/#%E8%B5%84%E4%BA%A7%E6%89%98%E7%AE%A1%E6%9C%8D%E5%8A%A1">相关说明文档</a></li>
+<li>选择原本对应的设置,ASS会提示变动的文件,让你选择是否要分离出一个更新包.</li>
+<li>之后分离出一个更新包(非静态的) <code>Content Update组</code></li>
+</ul>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830144037.png" alt=""></p>
+<ul>
+<li>最后再打成<code>远端包</code>,选择<code>Build For Content Update</code>,选择原本对应的设置.</li>
+</ul>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830144141.png" alt=""></p>
+<ul>
+<li>玩家手中的exe执行档就会从远端下载这个<code>Content Update组</code>里的更新包,完成替换.</li>
+</ul>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830144435.png" alt=""></p>
+<blockquote>
+<p>远程包如果有修改,不管多大都需要重新打一个完整的. 比如包A(资源1,2,3),修改3的话,资源12也需要重新打进去.<br>本地包(静态内容,随包发布),如果修改了资源,可以增量式打一个修改的小包,通过远程包的形式替换掉本地包的内容.</p>
+</blockquote>
+<h1 id="场景的异步加载"><a href="#场景的异步加载" class="headerlink" title="场景的异步加载"></a>场景的异步加载</h1><p>将场景放入Addressables可以自动关联所有需要的资源.</p>
+<p>可以根据信标(地址)用<code>Addressables.LoadSceneAsync</code>方式异步加载场景.</p>
+<blockquote>
+<p>区别于资源,场景要用<code>Addressables.LoadSceneAsync</code>方法加载</p>
+</blockquote>
+<p><img src="/2019/08/30/Unity可寻址资产系统示例代码详解/QQ截图20190830145320.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SceneManager</span> <span class="token punctuation">:</span> MonoBehaviour
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> m_SceneAddressToLoad<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">LoadGameplayScene</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 加载传入String场景名称,异步加载场景</span>
+        Addressables<span class="token punctuation">.</span><span class="token function">LoadSceneAsync</span><span class="token punctuation">(</span>m_SceneAddressToLoad<span class="token punctuation">,</span> UnityEngine<span class="token punctuation">.</span>SceneManagement<span class="token punctuation">.</span>LoadSceneMode<span class="token punctuation">.</span>Single<span class="token punctuation">)</span><span class="token punctuation">.</span>Completed <span class="token operator">+</span><span class="token operator">=</span> OnSceneLoaded<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">void</span> <span class="token function">OnSceneLoaded</span><span class="token punctuation">(</span>AsyncOperationHandle<span class="token operator">&lt;</span>SceneInstance<span class="token operator">></span> obj<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//Addressables.UnloadSceneAsync(new SceneInstance());</span>
+        <span class="token comment" spellcheck="true">// LOGIC THAT KICKSTARTS THE GAMEPLAY</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
