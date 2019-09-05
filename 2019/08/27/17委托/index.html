@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#认识委托"><span class="toc-text">认识委托</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#委托揭秘"><span class="toc-text">委托揭秘</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用委托回调多个方法-委托链"><span class="toc-text">用委托回调多个方法(委托链)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Delegate-Combine的过程"><span class="toc-text">Delegate.Combine的过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Delegate-Remove的过程"><span class="toc-text">Delegate.Remove的过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有返回值的委托"><span class="toc-text">有返回值的委托</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-对委托链的支持-提供了-和-操作符"><span class="toc-text">C#对委托链的支持(提供了+=和-=操作符)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取对委托链调用的更多控制"><span class="toc-text">获取对委托链调用的更多控制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#委托定义不要太多-委托泛型"><span class="toc-text">委托定义不要太多(委托泛型)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#需要自定义委托的情况"><span class="toc-text">需要自定义委托的情况</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-为委托提供的简化语法"><span class="toc-text">C#为委托提供的简化语法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#简化语法1-不需要构造委托对象"><span class="toc-text">简化语法1: 不需要构造委托对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简化语法2-不需要定义回调方法-lambda表达式"><span class="toc-text">简化语法2: 不需要定义回调方法(lambda表达式)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#lambda表达式的一些规则"><span class="toc-text">lambda表达式的一些规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#简化语法3-局部变量不需要手动包装到类中即可传给回调方法"><span class="toc-text">简化语法3: 局部变量不需要手动包装到类中即可传给回调方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#委托和反射"><span class="toc-text">委托和反射</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#认识委托"><span class="toc-text">认识委托</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#委托揭秘"><span class="toc-text">委托揭秘</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用委托回调多个方法-委托链"><span class="toc-text">用委托回调多个方法(委托链)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Delegate-Combine的过程"><span class="toc-text">Delegate.Combine的过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Delegate-Remove的过程"><span class="toc-text">Delegate.Remove的过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有返回值的委托"><span class="toc-text">有返回值的委托</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-对委托链的支持-提供了-和-操作符"><span class="toc-text">C#对委托链的支持(提供了+=和-=操作符)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取对委托链调用的更多控制"><span class="toc-text">获取对委托链调用的更多控制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#委托定义不要太多-委托泛型"><span class="toc-text">委托定义不要太多(委托泛型)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#需要自定义委托的情况"><span class="toc-text">需要自定义委托的情况</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-为委托提供的简化语法"><span class="toc-text">C#为委托提供的简化语法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#简化语法1-不需要构造委托对象"><span class="toc-text">简化语法1: 不需要构造委托对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简化语法2-不需要定义回调方法-lambda表达式"><span class="toc-text">简化语法2: 不需要定义回调方法(lambda表达式)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#lambda表达式的一些规则"><span class="toc-text">lambda表达式的一些规则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简化语法3-局部变量不需要手动包装到类中即可传给回调方法"><span class="toc-text">简化语法3: 局部变量不需要手动包装到类中即可传给回调方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#委托和反射"><span class="toc-text">委托和反射</span></a></li></ol>
 </div>
 
     
@@ -654,7 +654,7 @@ Func<span class="token operator">&lt;</span>Int32<span class="token punctuation"
 <li>lambda表达式更简洁,代码更容易写,读和维护.</li>
 </ul>
 </blockquote>
-<h3 id="简化语法3-局部变量不需要手动包装到类中即可传给回调方法"><a href="#简化语法3-局部变量不需要手动包装到类中即可传给回调方法" class="headerlink" title="简化语法3: 局部变量不需要手动包装到类中即可传给回调方法"></a>简化语法3: 局部变量不需要手动包装到类中即可传给回调方法</h3><p>前面展示了回调代码如何引用类中定义的其他成员. 但是有时还希望回调代码引用存在于定义方法中的局部参数或变量.</p>
+<h2 id="简化语法3-局部变量不需要手动包装到类中即可传给回调方法"><a href="#简化语法3-局部变量不需要手动包装到类中即可传给回调方法" class="headerlink" title="简化语法3: 局部变量不需要手动包装到类中即可传给回调方法"></a>简化语法3: 局部变量不需要手动包装到类中即可传给回调方法</h2><p>前面展示了回调代码如何引用类中定义的其他成员. 但是有时还希望回调代码引用存在于定义方法中的局部参数或变量.</p>
 <pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">AClass2</span>
 <span class="token punctuation">{</span>
     <span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">UsingLocalVariablesInTheCallbackCode</span><span class="token punctuation">(</span>Int32 numToDo<span class="token punctuation">)</span>
@@ -731,7 +731,177 @@ Array<span class="token punctuation">.</span><span class="token function">ForEac
 <span class="token comment" spellcheck="true">// 写法2</span>
 Array<span class="token punctuation">.</span><span class="token function">ForEach</span><span class="token punctuation">(</span>names<span class="token punctuation">,</span> Console<span class="token punctuation">.</span>WriteLine<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="委托和反射"><a href="#委托和反射" class="headerlink" title="委托和反射"></a>委托和反射</h1>
+<h1 id="委托和反射"><a href="#委托和反射" class="headerlink" title="委托和反射"></a>委托和反射</h1><p>目前使用委托要求开发人员事先知道回调方法的原型(要知道回调方法有多少个参数,以及具体类型). 因此<code>System.Delegate.MethodInfo</code>提供了<code>CreateDelegate</code>方法, 允许在 <strong>编译时不知道委托的所有必要信息</strong> 的前提下创建委托.</p>
+<p><code>MethodInfo</code>为<code>CreateDelegate</code>方法定义的重载:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">MethodInfo</span> <span class="token punctuation">:</span> MethodBase
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 构造包装了一个静态方法的委托</span>
+   <span class="token keyword">public</span> <span class="token keyword">virtual</span> Delegate <span class="token function">CreateDelegate</span><span class="token punctuation">(</span>Type delegateType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token comment" spellcheck="true">// 构造包装了一个实例方法的委托: target引用this实参</span>
+   <span class="token keyword">public</span> <span class="token keyword">virtual</span> Delegate <span class="token function">CreateDelegate</span><span class="token punctuation">(</span>Type delegateType<span class="token punctuation">,</span> Object target<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token comment" spellcheck="true">// 创建好委托后,用Delegate的DynamicInvoke方法调用它</span>
+<span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">Delegate</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 调用委托并传递参数</span>
+    <span class="token keyword">public</span> Object <span class="token function">DynamicInvoke</span><span class="token punctuation">(</span>param Object<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用反射API,首先</p>
+<ul>
+<li>必须获取引用了回调方法的一个<code>MethodInfo</code>对象,</li>
+<li>然后调用<code>CreateDelegate</code>方法来构造一个由<code>Delegate</code>派生类型的对象<ul>
+<li>如果委托包含的是实例方法, 还要传递一个target参数, 指定作为this参数传给实例方法的对象.</li>
+</ul>
+</li>
+</ul>
+<p><code>System.Delegate</code>的<code>DynamicInvoke</code>方法允许调用委托对象的回调方法, 传递一组在 <strong>运行时确定的参数</strong>.调用<code>DynamicInvoke</code>时,<strong>它会在内部保证传递的参数与回调方法期望的参数兼容</strong>.</p>
+<ul>
+<li>如果兼容就调用回调方法.</li>
+<li>否则抛出异常<code>ArgumentException</code></li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 第一个参数是委托类型  委托类型的String是 "Class+DelegateName" 例如 DelegateReflection+TwoInt32s</span>
+        <span class="token comment" spellcheck="true">// 第二个参数是需要回调的方法   此名称方法要和对应委托匹配参数类型和个数</span>
+        <span class="token comment" spellcheck="true">// 之后的参数时传递给回调方法的参数</span>
+        DelegateReflection<span class="token punctuation">.</span><span class="token function">Go</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>DelegateReflection<span class="token punctuation">.</span>TwoInt32s<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">"Add"</span><span class="token punctuation">,</span><span class="token string">"123"</span><span class="token punctuation">,</span><span class="token string">"321"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+
+<span class="token punctuation">}</span>
+<span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">DelegateReflection</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 定义2个委托</span>
+    <span class="token keyword">internal</span> <span class="token keyword">delegate</span> Object <span class="token function">TwoInt32s</span><span class="token punctuation">(</span>Int32 n1<span class="token punctuation">,</span> Int32 n2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">internal</span> <span class="token keyword">delegate</span> Object <span class="token function">OneString</span><span class="token punctuation">(</span>String s1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token keyword">params</span> String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>args<span class="token punctuation">.</span>Length <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+          <span class="token comment" spellcheck="true">//    Usage:</span>
+          <span class="token comment" spellcheck="true">//    delType                             methodName [Arg1] [Arg2]</span>
+          <span class="token comment" spellcheck="true">//    where delType must                  be TwoInt32s or OneString</span>
+          <span class="token comment" spellcheck="true">//    if delType is TwoInt32s, methodName must be      Add or      Subtract</span>
+          <span class="token comment" spellcheck="true">//    if delType is OneString, methodName must be      NumChars or Reverse</span>
+          <span class="token comment" spellcheck="true">//</span>
+          <span class="token comment" spellcheck="true">//    Examples:</span>
+          <span class="token comment" spellcheck="true">//    TwoInt32s Add 123 321</span>
+          <span class="token comment" spellcheck="true">//    TwoInt32s Subtract 123 321</span>
+          <span class="token comment" spellcheck="true">//    OneString NumChars "Hello there"</span>
+          <span class="token comment" spellcheck="true">//    OneString Reverse  "Hello there"</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 将实参转化为委托类型 (委托是一个类)</span>
+        Type delType <span class="token operator">=</span> Type<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>delType <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Invalid delType argument: "</span> <span class="token operator">+</span> args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        Delegate d<span class="token punctuation">;</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 将args[1]转换为方法</span>
+            MethodInfo mi <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>DelegateReflection<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetDeclaredMethod</span><span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 创建包装了静态方法的委托对象</span>
+            d <span class="token operator">=</span> mi<span class="token punctuation">.</span><span class="token function">CreateDelegate</span><span class="token punctuation">(</span>delType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ArgumentException</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Invalid methodName argument: "</span> <span class="token operator">+</span> args<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 创建一个数组,其中包含要通过委托对象传给方法的参数</span>
+        Object<span class="token punctuation">[</span><span class="token punctuation">]</span> callbackArgs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">[</span>args<span class="token punctuation">.</span>Length <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>d<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>TwoInt32s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">try</span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 将String类型参数转换为Int32类型的参数</span>
+                <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 a <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span> a <span class="token operator">&lt;</span> args<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> a<span class="token operator">++</span><span class="token punctuation">)</span>
+                    callbackArgs<span class="token punctuation">[</span>a <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> Int32<span class="token punctuation">.</span><span class="token function">Parse</span><span class="token punctuation">(</span>args<span class="token punctuation">[</span>a<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">FormatException</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Parameters must be integers."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>d<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>OneString<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 只复制字符串</span>
+            Array<span class="token punctuation">.</span><span class="token function">Copy</span><span class="token punctuation">(</span>args<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> callbackArgs<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> callbackArgs<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 调用委托并显示结果</span>
+            Object result <span class="token operator">=</span> d<span class="token punctuation">.</span><span class="token function">DynamicInvoke</span><span class="token punctuation">(</span>callbackArgs<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Result = "</span> <span class="token operator">+</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">TargetParameterCountException</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Incorrect number of parameters specified."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 需要2个Int32参数的静态函数</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Object <span class="token function">Add</span><span class="token punctuation">(</span>Int32 n1<span class="token punctuation">,</span> Int32 n2<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> n1 <span class="token operator">+</span> n2<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 需要2个Int32参数的静态函数</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Object <span class="token function">Subtract</span><span class="token punctuation">(</span>Int32 n1<span class="token punctuation">,</span> Int32 n2<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> n1 <span class="token operator">-</span> n2<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 需要1个String参数的静态函数</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Object <span class="token function">NumChars</span><span class="token punctuation">(</span>String s1<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> s1<span class="token punctuation">.</span>Length<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 需要1个String参数的静态函数</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Object <span class="token function">Reverse</span><span class="token punctuation">(</span>String s1<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>s1<span class="token punctuation">.</span><span class="token function">Reverse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以上示例有几个注意的地方:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 1.将实参转化为委托类型 (委托是一个类)</span>
+Type delType <span class="token operator">=</span> Type<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 2.先获取当前回调方法所在的类,反射获得TypeInfo,再根据参数名称获取对应的方法.</span>
+MethodInfo mi <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>DelegateReflection<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetDeclaredMethod</span><span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 3.创建包含回调静态方法的委托对象</span>
+d <span class="token operator">=</span> mi<span class="token punctuation">.</span><span class="token function">CreateDelegate</span><span class="token punctuation">(</span>delType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 4.用if-else判断委托类型是哪个,根据对应的委托,解析对应的参数</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>d<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>OneString<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+callbackArgs<span class="token punctuation">[</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span> <span class="token operator">=</span> Int32<span class="token punctuation">.</span><span class="token function">Parse</span><span class="token punctuation">(</span>args<span class="token punctuation">[</span>a<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+Array<span class="token punctuation">.</span><span class="token function">Copy</span><span class="token punctuation">(</span>args<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> callbackArgs<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> callbackArgs<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token comment" spellcheck="true">// 5. 调用委托传入参数</span>
+Object result <span class="token operator">=</span> d<span class="token punctuation">.</span><span class="token function">DynamicInvoke</span><span class="token punctuation">(</span>callbackArgs<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
         
             <div class="donate-container">
     <div class="donate-button">
