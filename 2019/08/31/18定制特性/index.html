@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#定制特性"><span class="toc-text">定制特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用定制特性"><span class="toc-text">使用定制特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#定义自己的特性类"><span class="toc-text">定义自己的特性类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#特性构造器和字段-属性数据类型"><span class="toc-text">特性构造器和字段/属性数据类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#检测定制特性"><span class="toc-text">检测定制特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#两个特性实例的相互匹配"><span class="toc-text">两个特性实例的相互匹配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#检测定制特性时不创建从Attribute派生的对象"><span class="toc-text">检测定制特性时不创建从Attribute派生的对象</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#定制特性"><span class="toc-text">定制特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用定制特性"><span class="toc-text">使用定制特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#定义自己的特性类"><span class="toc-text">定义自己的特性类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#特性构造器和字段-属性数据类型"><span class="toc-text">特性构造器和字段/属性数据类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#检测定制特性"><span class="toc-text">检测定制特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#两个特性实例的相互匹配"><span class="toc-text">两个特性实例的相互匹配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#检测定制特性时不创建从Attribute派生的对象"><span class="toc-text">检测定制特性时不创建从Attribute派生的对象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#条件特性类"><span class="toc-text">条件特性类</span></a></li></ol>
 </div>
 
     
@@ -675,7 +675,159 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="检测定制特性时不创建从Attribute派生的对象"><a href="#检测定制特性时不创建从Attribute派生的对象" class="headerlink" title="检测定制特性时不创建从Attribute派生的对象"></a>检测定制特性时不创建从Attribute派生的对象</h1>
+<h1 id="检测定制特性时不创建从Attribute派生的对象"><a href="#检测定制特性时不创建从Attribute派生的对象" class="headerlink" title="检测定制特性时不创建从Attribute派生的对象"></a>检测定制特性时不创建从Attribute派生的对象</h1><p>另一种方法检测应用于元数据记录项的特性. 在某些安全性要求严格的场合,这个技术能保证不执行从Attribute派生类中的代码. 毕竟,<strong>调用<code>Attribute</code>的<code>GetCustomAttribute</code>和<code>GetCustomAttributes</code>方法时,</strong> 会在内部调用特性类的构造器,而且可能会调用属性的<code>set</code>访问器方法, 首次访问类型会造成CLR调用类型的类型构造器(如果有的话). 这些方法中可能有一些执行方法,存在安全隐患.</p>
+<p><strong>使用<code>System.Reflection.CustomAttributeData</code>类，可以在查找<code>attribute</code>时同时禁止执行<code>attribute类</code>中的代码</strong>。这个类定义了一个静态方法<code>GetCustomAttributes</code>来获取与一个目标关联的<code>attribute</code>。该方法有4个重载版本：一个接受一个<code>Assembly</code>，一个接受一个<code>Module</code>，一个接受一个<code>ParameterInfo</code>，还有一个接受一个<code>Memberinfo</code>。这个类是在System.Reflection命名空间定义的。通常，是先用Assembly的静态方法<code>ReflectionOnlyLoad</code>加载一个程序集，在用<code>CustomAttributeData</code>类分析这个程序集的元数据中的<code>attribute</code>。简单的说，<strong><code>ReflectionOnlyLoad</code>以一种特方式加载程序集，期间会禁止CLR执行程序集中的任何代码，包括类型构造器。</strong></p>
+<p><code>CustomAttributeData</code>的<code>GetCustomAttributes</code>方法相当于一个工厂方法。也就是说，调用它会返回<code>IList&lt;CustomAttributeData&gt;</code>类型的对象，其中包括了一个有<code>CustomAttributeData</code>构成的一个集合。在集合中，应用于指定目标的每个定制attribute都有一个对象的元素。针对每个<code>CustomAttribute对象</code>都可以查询一些只读属性，判断attribute对象是如何构造和初始化的。具体的说，<code>Customctor属性</code>指出构造器方法”要”如何调用。<code>ComstructorArguments</code>属性以一个<code>IList&lt;CustomAttributeTypedArgument&gt;</code>实例的形式返回”将”传给这个构造器的实参。<code>NamedArguments</code>属性以一个<code>IList&lt;CustomAttributeNamedArgument&gt;</code>实例的形式，返回”要”设置的字段或属性。注意，这里之所以说”将”，是因为不会实际地调用构造器和set访问器方法。通过禁止执行attribute类的任何方法，我们获得了增强的安全性。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token function">DefaultMemberAttribute</span><span class="token punctuation">(</span><span class="token string">"Main"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token function">DebuggerDisplayAttribute</span><span class="token punctuation">(</span><span class="token string">"Richter"</span><span class="token punctuation">,</span> Name <span class="token operator">=</span> <span class="token string">"Jeff"</span><span class="token punctuation">,</span> Target <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>DetectingAttributes<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">DetectingAttributes</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token function">Conditional</span><span class="token punctuation">(</span><span class="token string">"Debug"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token punctuation">[</span><span class="token function">Conditional</span><span class="token punctuation">(</span><span class="token string">"Release"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">DoSomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">DetectingAttributes</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span><span class="token function">MethodImpl</span><span class="token punctuation">(</span>MethodImplOptions<span class="token punctuation">.</span>NoInlining<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token punctuation">[</span>STAThread<span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">Go</span><span class="token punctuation">(</span>ShowAttributes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">Go</span><span class="token punctuation">(</span>ShowAttributesReflectionOnly<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span>Action<span class="token operator">&lt;</span>MemberInfo<span class="token operator">></span> showAttributes<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// Show the set of attributes applied to this type</span>
+        <span class="token function">showAttributes</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>DetectingAttributes<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// Get the set of methods associated with the type</span>
+        <span class="token keyword">var</span> members <span class="token operator">=</span>
+            <span class="token keyword">from</span> m <span class="token keyword">in</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>DetectingAttributes<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>DeclaredMembers<span class="token punctuation">.</span><span class="token generic-method function">OfType<span class="token punctuation">&lt;</span>MethodBase<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">where</span> m<span class="token punctuation">.</span>IsPublic
+            <span class="token keyword">select</span> m<span class="token punctuation">;</span>
+
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span>MemberInfo member <span class="token keyword">in</span> members<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// Show the set of attributes applied to this member</span>
+            <span class="token function">showAttributes</span><span class="token punctuation">(</span>member<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">ShowAttributes</span><span class="token punctuation">(</span>MemberInfo attributeTarget<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> attributes <span class="token operator">=</span> attributeTarget<span class="token punctuation">.</span><span class="token generic-method function">GetCustomAttributes<span class="token punctuation">&lt;</span>Attribute<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Attributes applied to {0}: {1}"</span><span class="token punctuation">,</span>
+            attributeTarget<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> <span class="token punctuation">(</span>attributes<span class="token punctuation">.</span><span class="token function">Count</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">?</span> <span class="token string">"None"</span> <span class="token punctuation">:</span> String<span class="token punctuation">.</span>Empty<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Attribute attribute <span class="token keyword">in</span> attributes<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// Display the type of each applied attribute</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"  {0}"</span><span class="token punctuation">,</span> attribute<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>attribute <span class="token keyword">is</span> DefaultMemberAttribute<span class="token punctuation">)</span>
+                Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"    MemberName={0}"</span><span class="token punctuation">,</span>
+                    <span class="token punctuation">(</span><span class="token punctuation">(</span>DefaultMemberAttribute<span class="token punctuation">)</span> attribute<span class="token punctuation">)</span><span class="token punctuation">.</span>MemberName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>attribute <span class="token keyword">is</span> ConditionalAttribute<span class="token punctuation">)</span>
+                Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"    ConditionString={0}"</span><span class="token punctuation">,</span>
+                    <span class="token punctuation">(</span><span class="token punctuation">(</span>ConditionalAttribute<span class="token punctuation">)</span> attribute<span class="token punctuation">)</span><span class="token punctuation">.</span>ConditionString<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>attribute <span class="token keyword">is</span> CLSCompliantAttribute<span class="token punctuation">)</span>
+                Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"    IsCompliant={0}"</span><span class="token punctuation">,</span>
+                    <span class="token punctuation">(</span><span class="token punctuation">(</span>CLSCompliantAttribute<span class="token punctuation">)</span> attribute<span class="token punctuation">)</span><span class="token punctuation">.</span>IsCompliant<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            DebuggerDisplayAttribute dda <span class="token operator">=</span> attribute <span class="token keyword">as</span> DebuggerDisplayAttribute<span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>dda <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"    Value={0}, Name={1}, Target={2}"</span><span class="token punctuation">,</span>
+                    dda<span class="token punctuation">.</span>Value<span class="token punctuation">,</span> dda<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> dda<span class="token punctuation">.</span>Target<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">ShowAttributesReflectionOnly</span><span class="token punctuation">(</span>MemberInfo attributeTarget<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        IList<span class="token operator">&lt;</span>CustomAttributeData<span class="token operator">></span> attributes <span class="token operator">=</span>
+            CustomAttributeData<span class="token punctuation">.</span><span class="token function">GetCustomAttributes</span><span class="token punctuation">(</span>attributeTarget<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Attributes applied to {0}: {1}"</span><span class="token punctuation">,</span>
+            attributeTarget<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> <span class="token punctuation">(</span>attributes<span class="token punctuation">.</span>Count <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">?</span> <span class="token string">"None"</span> <span class="token punctuation">:</span> String<span class="token punctuation">.</span>Empty<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span>CustomAttributeData attribute <span class="token keyword">in</span> attributes<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// Display the type of each applied attribute</span>
+            Type t <span class="token operator">=</span> attribute<span class="token punctuation">.</span>Constructor<span class="token punctuation">.</span>DeclaringType<span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"  {0}"</span><span class="token punctuation">,</span> t<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"    Constructor called={0}"</span><span class="token punctuation">,</span> attribute<span class="token punctuation">.</span>Constructor<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            IList<span class="token operator">&lt;</span>CustomAttributeTypedArgument<span class="token operator">></span> posArgs <span class="token operator">=</span> attribute<span class="token punctuation">.</span>ConstructorArguments<span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"    Positional arguments passed to constructor:"</span> <span class="token operator">+</span>
+                              <span class="token punctuation">(</span><span class="token punctuation">(</span>posArgs<span class="token punctuation">.</span>Count <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token string">" None"</span> <span class="token punctuation">:</span> String<span class="token punctuation">.</span>Empty<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">foreach</span> <span class="token punctuation">(</span>CustomAttributeTypedArgument pa <span class="token keyword">in</span> posArgs<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"      Type={0}, Value={1}"</span><span class="token punctuation">,</span> pa<span class="token punctuation">.</span>ArgumentType<span class="token punctuation">,</span> pa<span class="token punctuation">.</span>Value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+
+            IList<span class="token operator">&lt;</span>CustomAttributeNamedArgument<span class="token operator">></span> namedArgs <span class="token operator">=</span> attribute<span class="token punctuation">.</span>NamedArguments<span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"    Named arguments set after construction:"</span> <span class="token operator">+</span>
+                              <span class="token punctuation">(</span><span class="token punctuation">(</span>namedArgs<span class="token punctuation">.</span>Count <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token string">" None"</span> <span class="token punctuation">:</span> String<span class="token punctuation">.</span>Empty<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">foreach</span> <span class="token punctuation">(</span>CustomAttributeNamedArgument na <span class="token keyword">in</span> namedArgs<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"     Name={0}, Type={1}, Value={2}"</span><span class="token punctuation">,</span>
+                    na<span class="token punctuation">.</span>MemberInfo<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> na<span class="token punctuation">.</span>TypedValue<span class="token punctuation">.</span>ArgumentType<span class="token punctuation">,</span> na<span class="token punctuation">.</span>TypedValue<span class="token punctuation">.</span>Value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="条件特性类"><a href="#条件特性类" class="headerlink" title="条件特性类"></a>条件特性类</h1><p>定义、应用和反射特性能带来许多便利，所以开发人员越来越频繁地使用这些技术。特性简化了对代码的注释，还能实现丰富的功能。近来，开发人员越来越喜欢在设计和调试期间利用特性来辅助开发。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//#define TEST</span>
+<span class="token comment" spellcheck="true">//#define VERIFY</span>
+
+<span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Diagnostics<span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span>Cond<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ConditionalAttributeDemo</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 只有在定义了VERIFY或TEST的前提下,编译器才会在元数据中生成特性信息</span>
+    <span class="token comment" spellcheck="true">// 但是特性类的定义元数据和实现仍然存在于程序集中</span>
+    <span class="token punctuation">[</span><span class="token function">Conditional</span><span class="token punctuation">(</span><span class="token string">"TEST"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token punctuation">[</span><span class="token function">Conditional</span><span class="token punctuation">(</span><span class="token string">"VERIFY"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">CondAttribute</span> <span class="token punctuation">:</span> Attribute
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 判断当前类ConditionalAttributeDemo, 是否应用了CondAttribute特性</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"CondAttribute {0} 应用于程序类型."</span><span class="token punctuation">,</span>
+            Attribute<span class="token punctuation">.</span><span class="token function">IsDefined</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>ConditionalAttributeDemo<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>CondAttribute<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">?</span>
+                <span class="token string">""</span> <span class="token punctuation">:</span> <span class="token string">"没有"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// CondAttribute 没有 应用于程序类型.</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>只有在定义了<code>VERIFY或TEST</code>的前提下,编译器发现目标元素应用了<code>CondAttribute</code>的实例,并且满足这个<code>CondAttribute</code><strong>条件</strong> 才会在元数据中生成特性信息,但是特性类的定义元数据和实现仍然存在于程序集中</p>
+<blockquote>
+<p>条件特性类: [Conditional(“TEST”)]</p>
+</blockquote>
+
         
             <div class="donate-container">
     <div class="donate-button">

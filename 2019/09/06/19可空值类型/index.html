@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        19可空值类型 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#可空值类型"><span class="toc-text">可空值类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-对可空值类型的支持"><span class="toc-text">C#对可空值类型的支持</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-的空接合操作符"><span class="toc-text">C#的空接合操作符</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR对可空值类型的特殊支持"><span class="toc-text">CLR对可空值类型的特殊支持</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#可空值类型的装箱"><span class="toc-text">可空值类型的装箱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可空值类型的拆箱"><span class="toc-text">可空值类型的拆箱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过可空值类型调用GetType"><span class="toc-text">通过可空值类型调用GetType</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过可空值类型调用接口方法"><span class="toc-text">通过可空值类型调用接口方法</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        19可空值类型
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-06 12:08:53</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="可空值类型"><a href="#可空值类型" class="headerlink" title="可空值类型"></a>可空值类型</h1><p>我们知道值类型的变量永远不会为<code>null</code>;它总是包含值类型的值本身.  这正是值类型一词的由来.</p>
+<p>有些情况下会成为问题: 例如在设计数据库时,可以将一列数据类型定义为32位整数,并映射到FCL中的Int32数据类型, 但是数据库中的一列可能允许值为空,这样在CLR中就没办法将Int32值表示为null.</p>
+<p><img src="/2019/09/06/19可空值类型/QQ截图20190906130043.png" alt=""></p>
+<p>另一个例子:Java的java.util.Date类是引用类型,所以该类型的变量能设为null. 但是CLR的System.DateTime是值类型,无法设为null.</p>
+<p>为了解决这个问题.CLR中引入了 <strong>可空值类型</strong> 的概念. <code>System.Nullable&lt;T&gt;</code></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 约束T为结构, 因为引用类型本身可以为null</span>
+<span class="token keyword">public</span> <span class="token keyword">struct</span> Nullable<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token keyword">where</span> T <span class="token punctuation">:</span> <span class="token keyword">struct</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 这两个字段表示状态</span>
+    <span class="token keyword">private</span> <span class="token keyword">bool</span> hasValue <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 假定null</span>
+    <span class="token keyword">internal</span> T <span class="token keyword">value</span> <span class="token operator">=</span> <span class="token keyword">default</span><span class="token punctuation">(</span>T<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 假定所有位都为0</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 要在代码中使用一个可空的Int32类型,可以这么写</span>
+Nullable<span class="token operator">&lt;</span>Int32<span class="token operator">></span> x <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+Nullable<span class="token operator">&lt;</span>Int32<span class="token operator">></span> y <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"x: HasValue={x.HasValue}, Value={x.Value}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"y: HasValue={y.HasValue}, Value={y.GetValueOrDefault()}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 以下代码会报异常: Nullable object must have a value.</span>
+<span class="token comment" spellcheck="true">// Console.WriteLine($"{y.Value}");</span>
+
+
+<span class="token comment" spellcheck="true">// x: HasValue=True, Value=5</span>
+<span class="token comment" spellcheck="true">// y: HasValue=False, Value=0</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="C-对可空值类型的支持"><a href="#C-对可空值类型的支持" class="headerlink" title="C#对可空值类型的支持"></a>C#对可空值类型的支持</h1><p>C# 允许使用相当简单的语法初始化上述两个<code>Nullable&lt;Int32&gt;</code>变量x和y.</p>
+<p><code>Int32? x = 5;</code></p>
+<p><code>Int32? y = null;</code></p>
+<p>在C#中<code>Int32?</code>等价于<code>Nullable&lt;Int32&gt;</code>,C#在此基础上更进一步,允许开发人员在可空实例上执行<strong>转换</strong>和<strong>转型</strong>.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">ConversionsAndCasting</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 从非可空的 Int32 转换为 Nullable&lt;Int32></span>
+    Int32<span class="token operator">?</span> a <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 从'null'隐式转换为 Nullable&lt;Int32></span>
+    Int32<span class="token operator">?</span> b <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 从 Nullable&lt;Int32> 显示转换为 Int32</span>
+    Int32 c <span class="token operator">=</span> <span class="token punctuation">(</span>Int32<span class="token punctuation">)</span>a<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 在可空基类型之间的转型</span>
+    Double<span class="token operator">?</span> d <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Int32 转型到 Double? (d是double类型 值为5)</span>
+    Double<span class="token operator">?</span> e <span class="token operator">=</span> b<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Int32? 转型到 Double? (e为 null)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>还允许向可空实例应用操作符:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Operators</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32<span class="token operator">?</span> a <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    Int32<span class="token operator">?</span> b <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 一元操作符 (+ ++ - -- ! ~)</span>
+    a<span class="token operator">++</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// a = 6</span>
+    b <span class="token operator">=</span> <span class="token operator">-</span>b<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// b = null</span>
+
+    <span class="token comment" spellcheck="true">// 二元操作符 (+ - * / % &amp; | ^ &lt;&lt; >>)</span>
+    a <span class="token operator">=</span> a <span class="token operator">+</span> <span class="token number">3</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// a = 9</span>
+    b <span class="token operator">=</span> b <span class="token operator">*</span> <span class="token number">3</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// b = null;</span>
+
+    <span class="token comment" spellcheck="true">// 相等性操作符 (== !=)</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">/* no */</span>  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">/* yes */</span> <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>b <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">/* yes */</span> <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">/* no */</span>  <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">!=</span> b<span class="token punctuation">)</span>    <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">/* yes */</span> <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">/* no */</span>  <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 比较操作符 (&lt;, >, &lt;=, >=)</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">&lt;</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">/* no */</span> <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">/* yes */</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>一元操作符 (+,++,-,–,!,~)<ul>
+<li>操作符是null,结果也是null</li>
+</ul>
+</li>
+<li>二元操作符 (+,-,* , /, %,&amp;,|,^,&lt;&lt;,&gt;&gt;)<ul>
+<li><strong>两个操作数任何一个是null, 结果就是null</strong></li>
+<li><strong>但是有一个例外: 发生在 将<code>&amp;</code>和<code>|</code>操作符应用于<code>Boolean?</code>操作数的时候</strong></li>
+<li>对于这两个操作符，如果两个操作符都不是null，那么操作符和平常一样工作。如果两个操作符都是null，结果就是null。</li>
+<li>特殊情况就是其中之一为null时发生。下面列出了针对操作符的各种true，false和null组合：</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2019/09/06/19可空值类型/QQ截图20190906134219.png" alt=""></p>
+<ul>
+<li>相等性操作(== , !=)<ul>
+<li>两个操作符都是null，两者相等。一个操作符为null，则两个不相等。两个操作数都不是null，就比较值来判断是否相等。</li>
+</ul>
+</li>
+<li>关系操作符(&lt;,&gt;,&lt;=,&gt;=)<ul>
+<li><strong>两个操作符任何一个是null，结果就是false</strong>。两个操作数都不是null，就比较值。</li>
+</ul>
+</li>
+</ul>
+<p>  应该注意的是，操作符实例时会生成大量代码。例如以下方法：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> Int32<span class="token operator">?</span> <span class="token function">NullableCodeSize</span><span class="token punctuation">(</span>Int32<span class="token operator">?</span> a<span class="token punctuation">,</span> Int32<span class="token operator">?</span> b<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+　　<span class="token keyword">return</span> <span class="token punctuation">(</span>a <span class="token operator">+</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在编译上述方法时，<strong>会生成相当多的IL代码</strong>，而且会使<code>对可空类型</code>的操作符<strong>慢于</strong><code>非可空类型</code>执行的同样的操作。编译器生成的代码等价于以下C#代码：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">  <span class="token keyword">private</span> <span class="token keyword">static</span> Nullable<span class="token operator">&lt;</span>Int32<span class="token operator">></span> <span class="token function">NullableCodeSize</span><span class="token punctuation">(</span>
+      Nullable<span class="token operator">&lt;</span>Int32<span class="token operator">></span> a<span class="token punctuation">,</span> Nullable<span class="token operator">&lt;</span>Int32<span class="token operator">></span> b<span class="token punctuation">)</span>
+  <span class="token punctuation">{</span>
+      Nullable<span class="token operator">&lt;</span>Int32<span class="token operator">></span> nullable1 <span class="token operator">=</span> a<span class="token punctuation">;</span>
+      Nullable<span class="token operator">&lt;</span>Int32<span class="token operator">></span> nullable2 <span class="token operator">=</span> b<span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>nullable1<span class="token punctuation">.</span>HasValue <span class="token operator">&amp;</span> nullable2<span class="token punctuation">.</span>HasValue<span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+         <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Nullable</span><span class="token operator">&lt;</span>Int32<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Nullable</span><span class="token operator">&lt;</span>Int32<span class="token operator">></span><span class="token punctuation">(</span>nullable1<span class="token punctuation">.</span><span class="token function">GetValueOrDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> nullable2<span class="token punctuation">.</span><span class="token function">GetValueOrDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>重载操作符例子:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Point<span class="token operator">?</span> p1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Point</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Point<span class="token operator">?</span> p2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Point</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"是否相等?  {(p1 == p2).ToString()}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"是否不相等?{(p1 != p2).ToString()}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//是否相等?  False</span>
+    <span class="token comment" spellcheck="true">//是否不相等? True</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">internal</span> <span class="token keyword">struct</span> Point
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Int32 m_x<span class="token punctuation">,</span> m_y<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">Point</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">,</span> Int32 y<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_x <span class="token operator">=</span> x<span class="token punctuation">;</span>
+        m_y <span class="token operator">=</span> y<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Boolean <span class="token keyword">operator</span><span class="token operator">==</span><span class="token punctuation">(</span>Point p1<span class="token punctuation">,</span> Point p2<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>p1<span class="token punctuation">.</span>m_x <span class="token operator">==</span> p2<span class="token punctuation">.</span>m_x<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>p1<span class="token punctuation">.</span>m_y <span class="token operator">==</span> p2<span class="token punctuation">.</span>m_y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">bool</span> <span class="token keyword">operator</span> <span class="token operator">!=</span><span class="token punctuation">(</span>Point p1<span class="token punctuation">,</span> Point p2<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token operator">!</span><span class="token punctuation">(</span>p1 <span class="token operator">==</span> p2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="C-的空接合操作符"><a href="#C-的空接合操作符" class="headerlink" title="C#的空接合操作符"></a>C#的空接合操作符</h1><p>C#提供了一个 <code>空接合操作符</code>(null-coalescing operator) 即 <code>??</code>操作符, 它要获取两个操作数, <strong>假如左边的操作数不为null,就返回左边这个操作数的值</strong>. 左边操作数为null,就返回右边的操作数的值.</p>
+<p>利用<code>空接合操作符</code>,可以方便地设置变量的<strong>默认值</strong>.</p>
+<p>此操作符的一个好处在于,它既能用于<code>引用类型</code>,也能用于<code>可空值类型</code>.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">NullCoalescingOperator</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32<span class="token operator">?</span> b <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 下面这行等价于:</span>
+    <span class="token comment" spellcheck="true">// x = (b.HasValue) ? b.Value : 123</span>
+    Int32 x <span class="token operator">=</span> b <span class="token operator">?</span><span class="token operator">?</span> <span class="token number">123</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// "123"</span>
+
+    <span class="token comment" spellcheck="true">// 下面这行等价于：</span>
+    <span class="token comment" spellcheck="true">// String temp = GetFilename();</span>
+    <span class="token comment" spellcheck="true">// filename = (temp != null) ? temp : "Untitled";</span>
+    String filename <span class="token operator">=</span> <span class="token function">GetFilename</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?</span><span class="token operator">?</span> <span class="token string">"Untitled"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>关于<code>??</code>与<code>?:</code>的说明: 虽然功能相似, 但是<code>??</code>提供了重大的语法上的改进.</p>
+<ol>
+<li><code>??</code>能更好的支持表达式</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 更容易阅读和理解</span>
+Func<span class="token operator">&lt;</span>String<span class="token operator">></span> f <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> SomeMethod <span class="token operator">?</span><span class="token operator">?</span> <span class="token string">"Untitled"</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 要求进行变量的赋值,无法用一个语句完成</span>
+Func<span class="token operator">&lt;</span>String<span class="token operator">></span> f <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+  <span class="token keyword">var</span> temp <span class="token operator">=</span> <span class="token function">SomeMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> temp <span class="token operator">!=</span><span class="token keyword">null</span> <span class="token operator">?</span> temp <span class="token punctuation">:</span> <span class="token string">"Untitled"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li><code>??</code>能在复合情形下更好用</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 如果SomeMethod()为null,且SomeMethod2为null的前提下,s = "Untitled";</span>
+<span class="token comment" spellcheck="true">// 从左到右顺序, 最右边是默认值</span>
+String s <span class="token operator">=</span> <span class="token function">SomeMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?</span><span class="token operator">?</span> <span class="token function">SomeMethod2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?</span><span class="token operator">?</span> <span class="token string">"Untitled"</span><span class="token punctuation">;</span>
+
+
+String s<span class="token punctuation">;</span>
+<span class="token keyword">var</span>    sm1 <span class="token operator">=</span> <span class="token function">SomeMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 先判断SomeMethod()是否为null,不为null,则s等于这个值.</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>sm1 <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    s <span class="token operator">=</span> sm1<span class="token punctuation">;</span>
+<span class="token keyword">else</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">var</span> sm2 <span class="token operator">=</span> <span class="token function">SomeMethod2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>sm2 <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        s <span class="token operator">=</span> sm2<span class="token punctuation">;</span>
+    <span class="token keyword">else</span>
+        s <span class="token operator">=</span> <span class="token string">"Untitled"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="CLR对可空值类型的特殊支持"><a href="#CLR对可空值类型的特殊支持" class="headerlink" title="CLR对可空值类型的特殊支持"></a>CLR对可空值类型的特殊支持</h1><p>CLR内建对可空值类型的支持. 这个特殊的支持是针对</p>
+<ul>
+<li>装箱</li>
+<li>拆箱</li>
+<li>调用GetType</li>
+<li>调用方法</li>
+</ul>
+<p>使可空值类型能无缝地集成到CLR中.</p>
+<h2 id="可空值类型的装箱"><a href="#可空值类型的装箱" class="headerlink" title="可空值类型的装箱"></a>可空值类型的装箱</h2><p>先假定有一个为<code>null</code>的<code>Nullable&lt;Int32&gt;变量</code>。如果将该变量传给一个期待获取一个<code>Object</code>的方法，那么该变量必须<strong>装箱</strong>，并将对<code>已装箱的Nullable&lt;Int32&gt;</code>的<code>引用</code>传给方法。但对表面上为<code>null</code>的值进行<strong>装箱</strong>不符合直觉,<strong>即使Nullable<int32>变量本身非null，它只是在逻辑上包含了null</int32></strong>。为了解决这个问题，<strong>clr会在装箱可空变量时执行一些特殊代码</strong>，从表面上维持可空类型一等公民地位。</p>
+<p>具体地说, 当CLR对<code>Nullable&lt;T&gt;</code>实例进行装箱时,会检查它是否为null.</p>
+<ul>
+<li>如果是: CLR不装箱任何东西,直接返回null</li>
+<li>如果不为null: <strong>CLR从可空实例中取出值并进行装箱.</strong><ul>
+<li><strong>也就是说, 一个值为5的<code>Nullable&lt;T&gt;</code>会装箱成值为5的已装箱<code>Int32</code></strong></li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 对Nullable&lt;T>进行装箱，要么返回null，要么返回一个已装箱的T</span>
+Int32<span class="token operator">?</span> n <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+Object o <span class="token operator">=</span> n<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// o 为 null</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"o is null={0}"</span><span class="token punctuation">,</span> o <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// "True"</span>
+
+n <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+o <span class="token operator">=</span> n<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// o 引用一个已装箱的Int32</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"o's type={0}"</span><span class="token punctuation">,</span> o<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//     "System.Int32"</span>
+
+<span class="token comment" spellcheck="true">// 其实在第一节中的Nullable&lt;T>源码中已有显示，如：</span>
+<span class="token keyword">static</span> <span class="token keyword">object</span> <span class="token function">Box</span><span class="token punctuation">(</span>T<span class="token operator">?</span> o<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>o<span class="token punctuation">.</span>has_value<span class="token punctuation">)</span>
+      <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> o<span class="token punctuation">.</span><span class="token keyword">value</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="可空值类型的拆箱"><a href="#可空值类型的拆箱" class="headerlink" title="可空值类型的拆箱"></a>可空值类型的拆箱</h2><p>CLR运行将已装箱的<code>值类型T</code>拆箱为一个<code>T</code>或者<code>Nullable&lt;T&gt;</code></p>
+<ul>
+<li>如果对<code>已装箱值类型</code>的引用是<code>null</code>, 并且要拆箱为一个<code>Nullable&lt;T&gt;</code></li>
+<li>那么CLR会将<code>Nullable&lt;T&gt;</code>设为null.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 创建一个已装箱的Int32</span>
+Object o <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 把它拆箱为一个 Nullable&lt;Int32> 和一个 Int32</span>
+Int32<span class="token operator">?</span> a <span class="token operator">=</span> <span class="token punctuation">(</span>Int32<span class="token operator">?</span><span class="token punctuation">)</span>o<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// a = 5</span>
+Int32 b <span class="token operator">=</span> <span class="token punctuation">(</span>Int32<span class="token punctuation">)</span>o<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// b = 5</span>
+
+<span class="token comment" spellcheck="true">// 创建初始化为null的一个引用</span>
+o <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 把它"拆箱"为一个Nullable&lt;Int32> 和一个 Int32</span>
+a <span class="token operator">=</span> <span class="token punctuation">(</span>Int32<span class="token operator">?</span><span class="token punctuation">)</span>o<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// a = null</span>
+b <span class="token operator">=</span> <span class="token punctuation">(</span>Int32<span class="token punctuation">)</span> o<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// NullReferenceException</span>
+
+<span class="token comment" spellcheck="true">// 同样的，在第一节中的Nullable&lt;T>源码中已有显示，如：</span>
+<span class="token keyword">static</span> T<span class="token operator">?</span> <span class="token function">Unbox</span><span class="token punctuation">(</span><span class="token keyword">object</span> o<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>o <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>T<span class="token punctuation">)</span>o<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="通过可空值类型调用GetType"><a href="#通过可空值类型调用GetType" class="headerlink" title="通过可空值类型调用GetType"></a>通过可空值类型调用GetType</h2><p>在一个<code>Nullable&lt;T&gt;</code>对象上调用<code>GetType</code>时，CLR实际上会”撒谎”说类型是<code>T</code>，而不是<code>Nullable&lt;T&gt;</code>。以下代码演示了这一行为:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Int32<span class="token operator">?</span> x <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 下面会显示"System.Int32"而不是"System.Nullable&lt;Int32>"</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+Int32<span class="token operator">?</span> x <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 空指针异常 NullReferenceException</span>
+<span class="token comment" spellcheck="true">// Console.WriteLine(x.GetType());</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="通过可空值类型调用接口方法"><a href="#通过可空值类型调用接口方法" class="headerlink" title="通过可空值类型调用接口方法"></a>通过可空值类型调用接口方法</h2><p>在下面代码中，将一个<code>Nullable&lt;Int32&gt;</code>类型的<code>变量n</code>转型为一个接口类型<code>IComparable&lt;Int32&gt;</code>。然而，<code>Nullable&lt;T&gt;</code>不像<code>Int32</code>那样实现了<code>IComparable&lt;Int32&gt;</code>接口。C#编译器允许这样的代码通过编译，而且CLR的校验器也会认为这样的代码是可验证的，从而允许我们使用一种更简洁的语法：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Int32<span class="token operator">?</span> n <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+Int32 result <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>IComparable<span class="token operator">&lt;</span>Int32<span class="token operator">></span><span class="token punctuation">)</span> n<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 能顺利通过编译和允许</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 0</span>
+
+<span class="token comment" spellcheck="true">// 假如CLR没有提供这一特殊支持，那么为了在一个可空值类型上调用接口方法，就要写非常繁琐的代码。</span>
+<span class="token comment" spellcheck="true">// 首先必须转型对已拆箱的值类型，</span>
+<span class="token comment" spellcheck="true">// 然后才能转型为接口以发出调用：</span>
+result <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>IComparable<span class="token punctuation">)</span><span class="token punctuation">(</span>Int32<span class="token punctuation">)</span> n<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 这太繁琐了</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 0</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
