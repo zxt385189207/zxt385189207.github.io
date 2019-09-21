@@ -190,7 +190,7 @@
 </blockquote>
 </li>
 </ol>
-<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/1CLR基础/1.png" alt=""></p>
+<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/1.png" alt=""></p>
 <h2 id="CLR有哪些功能"><a href="#CLR有哪些功能" class="headerlink" title="CLR有哪些功能?"></a>CLR有哪些功能?</h2><ul>
 <li>基类库支持 Base Class Library Support</li>
 <li>内存管理 Memory Management</li>
@@ -232,26 +232,26 @@
 <li>不同语言的<code>编译器(Compiler)</code>就相当于一个这种语言的代码审查者(Checker),所做的工作就是检查源码语法是否正确，然后将源码编译成<code>CLR</code>所需要的<code>中间语言(IL)</code>.</li>
 <li><code>C#语言编译器</code>编译C#源码文件之后生成<code>托管模块</code>.</li>
 </ol>
-<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/1CLR基础/将源代码编译成托管模块.png" alt=""></p>
+<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/将源代码编译成托管模块.png" alt=""></p>
 <h2 id="C-编译器做的工作"><a href="#C-编译器做的工作" class="headerlink" title="C#编译器做的工作"></a>C#编译器做的工作</h2><ol>
 <li>C#编译器(CSC.exe)默认将生成的<strong>托管模块转换成程序集</strong>,也就是生成的是<strong>含有清单的托管模块</strong>.</li>
 <li>生成的是PE32(+)文件.</li>
 <li>这个PE32(+)文件包含一个名为<code>清单(manifest)</code>的数据块. <code>清单</code>也是<code>元数据表</code>的集合.</li>
 </ol>
-<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/1CLR基础/将托管模块合并成程序集.png" alt=""></p>
+<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/将托管模块合并成程序集.png" alt=""></p>
 <h1 id="托管模块是什么-由哪些组成"><a href="#托管模块是什么-由哪些组成" class="headerlink" title="托管模块是什么?由哪些组成?"></a>托管模块是什么?由哪些组成?</h1><ol>
 <li>无论是什么编译器，最后都是生成<code>托管模块</code>。</li>
 <li><code>托管模块</code>是标准的32位的可移植执行体（PE32）文件，或者是64位的（PE32+）</li>
 <li>需要<code>CLR</code>才能运行。</li>
 <li>其中托管模块中还包含完整的<code>元数据</code>.</li>
 </ol>
-<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/1CLR基础/托管模块的各个部分.png" alt=""></p>
+<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/托管模块的各个部分.png" alt=""></p>
 <ul>
 <li><code>CLR头</code>：包含使这个模块成为托管模块的信息。</li>
 <li><code>IL中间语言代码</code>：编译器编译源码的时候生成的代码。运行时，<code>CLR</code>将<code>IL</code>编译成<code>本机CPU指令</code></li>
 <li><code>元数据</code>：面向CLR的每个编译器要在每个托管模块中生成完整的元数据。元数据是一个数据表的集合。一些数据描述了模块中定义了什么，另一些描述了模块中引用了什么。由于编译器同时生成元数据和代码，把他们绑在一起，并嵌入最终生成的托管模块。所以元数据和他描述的代码不会失去同步。<br>-</li>
 </ul>
-<h2 id="可移植执行体PE文件的结构"><a href="#可移植执行体PE文件的结构" class="headerlink" title="可移植执行体PE文件的结构"></a>可移植执行体PE文件的结构</h2><p><img src="/2019/07/05/CLR读书笔记/1CLR基础/1CLR基础/PE文件架构.png" alt=""></p>
+<h2 id="可移植执行体PE文件的结构"><a href="#可移植执行体PE文件的结构" class="headerlink" title="可移植执行体PE文件的结构"></a>可移植执行体PE文件的结构</h2><p><img src="/2019/07/05/CLR读书笔记/1CLR基础/PE文件架构.png" alt=""></p>
 <h1 id="元数据是什么"><a href="#元数据是什么" class="headerlink" title="元数据是什么?"></a>元数据是什么?</h1><ol>
 <li><code>元数据</code>简单的说是一个数据表的集合.</li>
 <li>主要包含两种表:<ul>
@@ -285,7 +285,7 @@
 <h1 id="CLS通用语言规范是什么"><a href="#CLS通用语言规范是什么" class="headerlink" title="CLS通用语言规范是什么?"></a>CLS通用语言规范是什么?</h1><blockquote>
 <p>定义了一个最小公共集，任何编译器只有支持这个功能集，生成的类型才能兼容其他符合CLS、面向CLR的语言生成的组件</p>
 </blockquote>
-<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/1CLR基础/CLS图示.png" alt=""></p>
+<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/CLS图示.png" alt=""></p>
 <p>在开发类型和方法的时候，如果希望它们对外“可见”，能够从符合 CLS 的任何一种编程语言中访问，就必须遵守由 CLS 定义的规则。注意， 假如代码只是从定义（这些代码的）程序集的内部访问，CLS 规则就不适用了。</p>
 <pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System
 
@@ -322,11 +322,11 @@
 </li>
 <li>可执行文件执行时,Windows会检查文件头,64位系统会通过<code>WoW64(Windows on Windows64)</code>技术运行32位应用程序.</li>
 </ol>
-<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/1CLR基础/platform对生成的模块的影响.png" alt=""></p>
+<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/platform对生成的模块的影响.png" alt=""></p>
 <ol>
 <li>Windows启动托管应用程序的流程.</li>
 </ol>
-<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/1CLR基础/Windows运行EXE流程.png" alt=""></p>
+<p><img src="/2019/07/05/CLR读书笔记/1CLR基础/Windows运行EXE流程.png" alt=""></p>
 <ol>
 <li>可在代码中查询<ul>
 <li><code>Environment.Is64BitOperatingSystem</code>属性,判断是否在64位系统上运行.</li>
