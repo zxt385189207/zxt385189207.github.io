@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        23程序集加载和反射 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#程序集加载和反射"><span class="toc-text">程序集加载和反射</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#程序集加载"><span class="toc-text">程序集加载</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用反射构建动态可扩展应用程序"><span class="toc-text">使用反射构建动态可扩展应用程序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#反射的性能"><span class="toc-text">反射的性能</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#发现程序集中定义的类型"><span class="toc-text">发现程序集中定义的类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类型对象的准确含义"><span class="toc-text">类型对象的准确含义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#构建Exception-派生类型的层次结构"><span class="toc-text">构建Exception 派生类型的层次结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#构造类型的实例"><span class="toc-text">构造类型的实例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计支持加载项的应用程序"><span class="toc-text">设计支持加载项的应用程序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用反射发现类型的成员"><span class="toc-text">使用反射发现类型的成员</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#发现类型的成员"><span class="toc-text">发现类型的成员</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#调用类型的成员"><span class="toc-text">调用类型的成员</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#以下实例应用程序演示了用反射来访问类型成员的各种方式。"><span class="toc-text">以下实例应用程序演示了用反射来访问类型成员的各种方式。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用绑定句柄-Handle-减少进程的内存消耗"><span class="toc-text">使用绑定句柄(Handle)减少进程的内存消耗</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        23程序集加载和反射
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-16 12:08:40</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="程序集加载和反射"><a href="#程序集加载和反射" class="headerlink" title="程序集加载和反射"></a>程序集加载和反射</h1><p>本章主要讨论在编译时对一个类型一无所知的情况下，如何在<strong>运行时</strong>发现<strong>类型的信息</strong>、<strong>创建类型的实例</strong>以及<strong>访问类型的成员</strong>。可利用本章讲述的内容创建<strong>动态可扩展</strong>应用程序。</p>
+<p>动态可扩展应用程序可利用第22章讲述的CLR技术和AppDomain. 宿主可以在一个AppDomain中运行加载项代码, 这个AppDomain有它自己的安全性和配置设置. 宿主还可通过卸载AppDomain来卸载加载项.</p>
+<blockquote>
+<p>这里讨论的是.Net Framework 4.5引入的新的反射API.</p>
+</blockquote>
+<p><img src="/2019/09/16/CLR读书笔记/23程序集加载和反射/QQ截图20190916122107.png" alt=""></p>
+<h1 id="程序集加载"><a href="#程序集加载" class="headerlink" title="程序集加载"></a>程序集加载</h1><p>我们知道，JIT编译器将方法的IL代码编译成本机代码时，会查看IL代码中引用了哪些类型。在运行时，JIT编译器利用程序集的<code>TypeRef</code>和<code>AssemblyRef元数据表</code>来确定哪一个程序集定义了所引用的类型。在<code>AssemblyRef元数据表</code>的记录项中，包含了构成程序集<strong>强名称</strong>的各个部分。JIT编译器获取所有这些部分——包括名称、版本、语言文化和公钥信息（public key token）—-并把它们连接成一个字符串。然后，JIT编译器尝试将与该标识匹配的程序集加载到<code>AppDomain</code>中（如果还没有加载的话）。如果被加载的程序集是<strong>弱命名</strong>的，那么表示中就只包含程序集的名称。</p>
+<p>在内部, CLR使用<code>System.Reflection.Assembly</code>类的<code>静态Load方法</code>尝试加载这个程序集. 这个方法是公开的, 可以显式地将程序集加载到AppDomain中. 该方法是CLR的与Win32<code>LoadLibrary函数</code>等价的方法.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Assmbly</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 常用的重载的原型</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> Assembly <span class="token function">Load</span><span class="token punctuation">(</span>AssemblyName assemblyRef<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> Assembly <span class="token function">Load</span><span class="token punctuation">(</span>String assemblyString<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true">// 未列出不常用的函数</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在内部，Lad导致CLR向程序集应用一个版本绑定重定向策略，<strong>并在GAC（全局程序集缓存）中查找程序集</strong>。如果没找到，就接着去应用程序的基目录、私有路径子目录和codebase位置查找。如果调用Load时传递的是弱命名程序集，Load就不会向程序集应用版本绑定重定向策略，CLR也不会去GAC查找程序集。如果Load找到指定的程序集，会返回对代表已加载的那个程序集的一个Assembly对象的引用。如果没找到，会抛出<code>System.IO.FileNotFoundException</code>异常。</p>
+<p><img src="/2019/09/16/CLR读书笔记/23程序集加载和反射/QQ截图20190916123303.png" alt=""></p>
+<p><code>System.AppDomain</code>提供了<code>Load方法</code>. 和<code>Assembly</code>的<code>静态Load方法</code>不同, <strong>AppDomain的Load是实例方法,它允许将程序集加载到指定的AppDomain中</strong>. 该方法设计由非托管代码调用. 允许宿主将程序集<strong>注入</strong>特定AppDomain中.调用<code>System.AppDomain</code>的<code>Load方法</code>需要传递一个标识了程序集的字符串.</p>
+<p><code>AppDomain</code>的<code>Load方法</code>会返回对程序集的引用, 由于<code>Assembly</code>类不是从<code>System.MarshallByRefObject</code>派生的, 所以程序集对象必须<strong>按值封送回</strong>发出调用的AppDomain. <strong>应该避免使用AppDomain的Load方法</strong>.</p>
+<p><img src="/2019/09/16/CLR读书笔记/23程序集加载和反射/QQ截图20190916124703.png" alt=""></p>
+<p>在大多数动态可扩展应用程序中，<strong><code>Assembly</code>的<code>Load方法</code>是将程序集加载到AppDomain的首选方式</strong>。但它要求事先<strong>掌握构成程序集标识的各个部分</strong>。开发人员经常需要写一些工具或实用程序来操作程序集，他们都要获取引用了程序集文件路径名（包括文件扩展名）的命令行实参。</p>
+<p>调用Assembly的<code>LoadFrom方法</code>加载指定了路径名的程序集：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Assembly</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Assembly <span class="token function">LoadFrom</span><span class="token punctuation">(</span><span class="token keyword">string</span> path<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在内部，</p>
+<ol>
+<li><code>LoadFrom</code>首先调用<code>System.Reflection.AssemblyName类</code>的静态<code>GetAssemblyName</code>方法。</li>
+<li>该方法打开指定的文件，找到<code>AssemblyRef</code>元数据表的记录项，提取程序集标识信息，</li>
+<li>然后以一个<code>System.Reflection.AssemblyName</code>对象的形式返回这些信息。</li>
+<li>随后，<code>LoadFrom</code>方法在内部调用<code>Assembly</code>的<code>Load</code>方法，将AssemblyName对象传给它。</li>
+<li>然后，CLR应用版本绑定重定向策略，并在各个位置查找匹配的程序集。Load找到匹配程序集会加载它，并返回待办已加载程序集的Assembly对象；<code>LoadFrom</code>方法将返回到这个值。<ul>
+<li>如果Load没有找到匹配的程序集，LoadFrom会加载通过LoadFrom的实参传递的路径中的程序集。</li>
+<li>当然，如果已加载具有相同标识的程序集，LoadFrom方法就会直接返回代表已加载程序集的Assembly对象。</li>
+</ul>
+</li>
+</ol>
+<p><code>LoadForm方法</code>允许传递一个URL作为实参，如下：</p>
+<p><code>Assembly a=Assembly.LoadFrom(@”http://xxxxxxxxx.xxxxAssembly.dll”);</code></p>
+<p>如果传递的是一个internet位置，clr会下载文件，把它安装到用户的下载缓存中，再从那儿加载文件。注意，当前必须联网，否则会抛出异常。但如果文件之前已下载过，而且ie被设置为脱机工作，就会使用以前下载的文件, 不会抛出异常, 还可以调用<code>UnsafeLoadFrom</code>方法, 能够加载从网上下载的程序集,同时绕过一些安全检查.</p>
+<p><img src="/2019/09/16/CLR读书笔记/23程序集加载和反射/QQ截图20190916125533.png" alt=""></p>
+<p>VS的UI设计人员和其他工具一般用的是<code>Assembly</code>的<code>LoadFile</code>方法。<strong>这个方法可从任意路径加载程序集</strong>，而且可以将具有相同标识的程序集<strong>多次加载</strong>到一个AppDomain中。<strong>在设计器/工具中对应用程序的UI进行修改，而且用户重新生成了程序集时，便有可能发生这种情况</strong>。通过LoadFile加载程序集时，CLR<strong>不会自动解析任何依赖性问题</strong>；你的代码必须向AppDomain的AssemblyResolve事件登记，并让事件回调方法显式地加载任何依赖的程序集。</p>
+<p>如果你构建的一个工具只想通过反射来分析程序集的元数据，并希望<strong>确保程序集中的任何代码都不会执行</strong>，那么加载程序集的最佳方式就是使用<code>Assembly</code>的<code>ReflectionOnlyLoadFrom方法</code>或者使用<code>Assembly</code>的<code>ReflectionOnlyLoad方法</code>(比较少见)。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Assembly</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Assembly <span class="token function">ReflectionOnlyLoadFrom</span><span class="token punctuation">(</span><span class="token keyword">string</span> assemblyFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Assembly <span class="token function">ReflectionOnlyLoad</span><span class="token punctuation">(</span><span class="token keyword">string</span> assemblyString<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>ReflectionOnlyLoadFrom</code>方法加载由路径指定的文件；文件的强名称标识不会获取，也不会在GAC和其他位置搜索文件。<code>ReflectionOnlyLoad</code>方法会在GAC、应用程序基目录、私有路径和codebase指定的位置搜索指定的程序集。但和Load方法不同的是，<code>ReflectionOnlyLoad</code>方法<strong>不会应用版本控制策略</strong>，所以你指定的是哪个版本，获得的就是哪个版本。要自行向程序集标识应用版本控制策略，可将字符串传给AppDomain的<code>ApplyPolicy</code>方法。</p>
+<p>利用<strong>反射</strong>来分析由这两个方法之一加载的程序集时，代码经常需要向AppDomain的<code>ReflectionOnlyAssemblyResovle</code>事件注册一个回调方法，以便手动加载任何引用的程序集；CLR不会自动帮你做这个事情。回调方法被调用时，它必须调用Assembly的ReflectionOnlyLoadFrom或ReflectionOnlyLoad方法来显式加载引用程序集，并返回对程序集的引用。</p>
+<p><strong>CLR不提供卸载单独程序集的能力. 如果CLR允许这样做, 那么一旦线程从某个方法返回至已卸载的一个程序集中的代码, 应用程序就会崩溃, 健壮性和安全性是CLR最优先考虑的目标.</strong> 如果允许应用程序以这样的一种方式崩溃，就和它的设计初衷背道而驰了。卸载程序集必须卸载包含它的整个AppDomain。</p>
+<p>许多应用程序都是由一个要<strong>依赖于众多dll文件</strong>的exe文件构成。部署应用程序时，所有文件都必须部署。但有一个技术允许<strong>只部署一个exe文件</strong>。首先标识出exe文件要依赖的、不是作为.NET Framework一部分发布的所有dll文件。然后将这些dll添加到vs项目中。对于添加的每个dll，都显示它的属性，将它的“生成操作”更改为“<strong>嵌入的资源</strong>”。<strong>这会导致C#编译器将dll文件嵌入exe文件中，以后就只需要部署这个exe。</strong></p>
+<p>在运行时，CLR会找不到依赖的dll程序集。为了解决这个问题，当应用程序初始化时，向AppDomain的<code>ResolveAssembly</code>事件登记一个回调方法，代码大致如下：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> Assembly <span class="token function">ResolveEventHandler</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span>ResolveEventArgs args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">string</span> dllName<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">AssemblyName</span><span class="token punctuation">(</span>args<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">.</span>Name<span class="token operator">+</span><span class="token string">".dll"</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> assem <span class="token operator">=</span> Assembly<span class="token punctuation">.</span><span class="token function">GetExecutingAssembly</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">string</span> resourceName <span class="token operator">=</span> assem<span class="token punctuation">.</span><span class="token function">GetManifestResourceNames</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">FirstOrDefault</span><span class="token punctuation">(</span>c <span class="token operator">=</span><span class="token operator">></span> c<span class="token punctuation">.</span><span class="token function">EndsWith</span><span class="token punctuation">(</span>dllName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>resourceName<span class="token operator">==</span><span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//not found,maybe another handler will find it</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">using</span> <span class="token punctuation">(</span><span class="token keyword">var</span> stream<span class="token operator">=</span>assem<span class="token punctuation">.</span><span class="token function">GetManifestResourceStream</span><span class="token punctuation">(</span>resourceName<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> assemblyData<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span>stream<span class="token punctuation">.</span>Length<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        stream<span class="token punctuation">.</span><span class="token function">Read</span><span class="token punctuation">(</span>assemblyData<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> assemblyData<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> Assembly<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span>assemblyData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>现在，线程首次调用一个方法时，如果发现该方法引用了依赖DLL文件中的类型，就会引发一个<code>AssemblyResolve事件</code>，而上述回调代码会找到所需的签入DLL资源，并调用Assembly的Load方法获取一个<code>byte[]实参</code>的重载版本来加载所需的资源。虽然我喜欢将依赖DLL嵌入程序集的技术，但要注意这会增大应用程序在运行时的内存消耗。</p>
+<h1 id="使用反射构建动态可扩展应用程序"><a href="#使用反射构建动态可扩展应用程序" class="headerlink" title="使用反射构建动态可扩展应用程序"></a>使用反射构建动态可扩展应用程序</h1><p>总所周知，元数据时用一系列的表存储的。生成程序集或模块时，编译器会创建一个类型定义表、一个字段定义表、一个方法定义表以及其他表。利用System.Reflection命名空间中包含的类型，可以写代码来反射这些元数据表。实际上，这个命名空间中的类型为程序集或模块中包含的元数据提供了一个对象模型。</p>
+<p>利用对象模型中的类型，可以轻松枚举类型定义元数据表中的所有类型，而针对每个类型都可获取它的基类型、它实现的接口以及与类型关联的标志。利用System.Reflection命名空间中的其他类型，还可解析对应的元数据表来查询类型的字段、方法、属性和事件。还可发现应用于任何元数据实体的定制特性。甚至有些类允许判断引用的程序集；还有一些方法能返回一个方法的IL字节流。利用所有这些信息，很容易构建出与Microsoft的IlDasm.exe相似的工具。</p>
+<blockquote>
+<p>有些反射类型是专门由CLR编辑器开发人员使用的, 应用程序的开发人员一般用不着.</p>
+</blockquote>
+<p>在运行时，当应用程序需要从特定程序集中加载特定类型以执行特定任务时，也要使用反射。例如，应用程序可要求用户提供程序集和类型名。然后应用程序可显式加载程序集，构造类型的实例，再调用类型中定义的方法。以这种方式绑定到类型并调用方法称为<strong>晚期绑定</strong>。（对应的，早期绑定是指在编译时就确定应用程序要使用的类型和方法.）</p>
+<h1 id="反射的性能"><a href="#反射的性能" class="headerlink" title="反射的性能"></a>反射的性能</h1><p>反射是相当强大的机制，允许在<code>运行时</code>发现并使用编译时还不了解的类型及成员。但是，他也有下面两个缺点。</p>
+<ol>
+<li><p>反射造成编译时无法保证类型安全性。<strong>由于反射严重依赖字符串，所以会丧失编译时的类型安全性</strong>。例如，执行<code>Type.GetType(“int”);</code>要求通过反射在程序集中查找名为<code>int</code>的类型，代码会通过编译，但在运行时会返回<code>null</code>，因为CLR只知道<code>System.Int32</code>，不知道<code>int</code>。</p>
+</li>
+<li><p>反射速度慢。使用反射时，类型及其成员的名称在编译时未知；你要用字符串名称标识每个类型及成员，然后再运行时发现它们。也就是说，使用<code>System.Reflection</code>命名空间中的类型扫描程序集的元数据时，反射机制会不停执行字符串搜索。通常，<strong>字符串搜索执行的是不区分大小写的比较</strong>，这会进一步影响速度。</p>
+</li>
+</ol>
+<p>使用反射调用成员也会影响性能。用反射调用方法时，首先必须将实参<code>打包</code>成数组；在内部，反射必须将这些实参<code>解包</code>到线程栈上。此外，在调用方法前，CLR必须检查实参具有正确的数据类型。最后，CLR必须确保调用者有正确的安全权限来访问被调用成员。</p>
+<p>基于上述所有原因，最好避免利用反射来访问字段或调用<code>方法/属性</code>。</p>
+<p><strong>应该利用以下两种技术之一开发应用程序来动态发现和构造类型实例。</strong></p>
+<ol>
+<li>让类型从编译时已知的基类型派生。在运行时构造派生类型的实例，将对它的引用放到基类型的变量中，再调用基类型定义的虚方法。</li>
+<li>让类型实现编译时已知的接口。在运行时构造类型的实例，将对它的引用放到接口类型的变量中，再调用接口定义的方法。</li>
+</ol>
+<p>在这两种技术中，我个人更喜欢使用<code>接口技术</code>而非<code>基类技术</code>，因为基类技术不允许开发人员选择特定情况下工作得最好的基类。不过，需要版本控制的时候基类技术更合适，因为可随时向基类添加成员，派生类会直接继承该成员。相反，要向接口添加成员，实现该接口的所有类型都得修改它们的代码并重新编译。</p>
+<h2 id="发现程序集中定义的类型"><a href="#发现程序集中定义的类型" class="headerlink" title="发现程序集中定义的类型"></a>发现程序集中定义的类型</h2><p>反射经常用于判断程序集定义了哪些类型。FCL提供了许多api来获取这方面的信息。目前常用的是Assembly的<code>ExportedTypes属性</code>。 显示其中定义的所有公开导出的类型(也就是public类型).</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">string</span> dataAssembly <span class="token operator">=</span> <span class="token string">"System.Data,version=4.0.0.0,"</span> <span class="token operator">+</span> <span class="token string">"culture=neutral,PublicKeyToken=b77a5c561934e089"</span><span class="token punctuation">;</span>
+    <span class="token function">LoadAssemAndShowPublicTypes</span><span class="token punctuation">(</span>dataAssembly<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">LoadAssemAndShowPublicTypes</span><span class="token punctuation">(</span><span class="token keyword">string</span> assemblyName<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//显式地将程序集加载到这个appDomain中</span>
+    Assembly a <span class="token operator">=</span> Assembly<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span>assemblyName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//在一个循环中显示已加载程序集中每个公开导出type全名</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Type t <span class="token keyword">in</span> a<span class="token punctuation">.</span>ExportedTypes<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>t<span class="token punctuation">.</span>FullName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="类型对象的准确含义"><a href="#类型对象的准确含义" class="headerlink" title="类型对象的准确含义"></a>类型对象的准确含义</h2><p>注意，上述代码遍历<code>System.Type</code>对象构成的数组。<strong>System.Type类型是执行类型和对象操作的起点</strong>。<strong>System.Type对象代表一个类型引用（而不是类型定义）</strong>。</p>
+<p>总所周知，<code>System.Object</code>定义了公共<code>非虚实例方法GetType</code>。调用这个方法时，CLR会判定指定对象的类型，并返回对该类型的Type对象的引用。由于在一个AppDomain中，每个类型只有一个Type对象，所以可以使用相等和不相等操作符来判断两个对象是不是相同的类型。</p>
+<p><code>o1.GetType() == o2.GetType();</code></p>
+<p>除了调用Object的GetType方法，FCL还提供了获得Type对象的其他几种方式。</p>
+<ol>
+<li><code>System.Type</code>类型提供了静态<code>GetType</code>方法的几个重载版本。<strong>所有版本都接受一个String参数。字符串必须指定类型的全名,而不是编辑器支持的基元类型</strong>(int,string,bool等), 这些名称对CLR没有任何意义。</li>
+<li><code>System.Type</code>类型提供了静态的<code>ReflectionOnlyGetType</code>方法. 与上一条行为上相似, 只是类型会以”仅反射”的方式加载, 不能执行.</li>
+<li><p><code>System.TypeInfo</code>类型提供了实例成员<code>DeclaredNestedTypes</code>和<code>GetDeclaredNestedType</code>。</p>
+</li>
+<li><p><code>System.Reflection.Assembly</code>类型提供了实例成员<code>GetType</code>，<code>DefinedTypes</code>和<code>ExportedTypes</code>。</p>
+</li>
+</ol>
+<p><img src="/2019/09/16/CLR读书笔记/23程序集加载和反射/QQ截图20190916162528.png" alt=""></p>
+<blockquote>
+<p>参考文档: <a href="https://docs.microsoft.com/zh-cn/dotnet/framework/reflection-and-codedom/specifying-fully-qualified-type-names" target="_blank" rel="external">指定完全限定的类型名称</a></p>
+</blockquote>
+<p>许多编程语言都允许使用一个操作符(<code>typeof</code>)并根据编译时已知的类型名来获得Type对象。<strong>尽量用这个操作符获取Type引用，而不要使用上述列表中的任何方法，因为操作符生成的代码通畅更快</strong>。C#的这个操作符称为<code>typeof</code>，通常用它将晚期绑定的类型信息与早期绑定（编译时已知）的类型信息进行比较。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">SomeMethod</span><span class="token punctuation">(</span><span class="token keyword">object</span> o<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//getType在运行时返回对象的类型（晚期绑定）</span>
+    <span class="token comment" spellcheck="true">//typeof返回指定类的类型（早期绑定）</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>o<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">==</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>FileInfo<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//.....</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>o<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">==</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>DirectoryInfo<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//.....</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码中, 使用<code>typeof</code>是精确匹配, 而不是兼容匹配.</p>
+<ul>
+<li>精确匹配: 不检查是否从FileInfo类型<strong>派生的对象</strong>, 只检查是否引用了FileInfo类型对象.</li>
+<li>兼容匹配: 使用<code>转型或者C#is/as</code>操作符时, 测试的就是兼容匹配.</li>
+</ul>
+<p>如前所述，<strong>Type对象是轻量级的对象引用。要更多地了解类型本身，必须获取一个TypeInfo对象，后者才代表类型定义</strong>。可调用<code>System.Reflection.IntrospectionExtensions</code>的<code>GetTypeInfo</code>扩展方法将<code>Type</code>对象转换成<code>TypeInfo</code>对象。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Type typeReference <span class="token operator">=</span> o<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//例如o.gettype()或者typeof(Object)</span>
+<span class="token comment" spellcheck="true">// 将Type对象转换成TypeInfo对象</span>
+TypeInfo typeDefinition <span class="token operator">=</span> typeReference<span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 将TypeInfo对象转换为Type对象</span>
+Type typeReference2 <span class="token operator">=</span> typeDefinition<span class="token punctuation">.</span><span class="token function">AsType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>另外，虽然作用不大，但还可调用<code>TypeInfo</code>的<code>AsType方法</code>将<code>TypeInfo对象</code>转换为<code>Type对象</code>。</p>
+<p>获取TypeInfo对象会强迫CLR确保已加载类型的定义程序集，从而对类型进行解析。这个操作可能代价高昂。如果只需要类型引用（Type对象），就应该避免这个操作。但一旦获得了TypeInfo对象，就可查询类型的许多属性进一步了解它。大多数属性，比如<code>IsPublic</code>，<code>isSealed</code>，<code>isAbstract</code>，<code>isClass</code>和<code>isValueType</code>等，都指明了与类型关联的标志。另一些属性，比如Assembly，AssemblyQualifiedName，FullName和Module等，则返回定义该类型程序集或模块的名称以及类型全名。还可查询BaseType属性来获取对类型的基类型的引用。除此之外，还有许多方法能提供关于类型的更多信息。</p>
+<h2 id="构建Exception-派生类型的层次结构"><a href="#构建Exception-派生类型的层次结构" class="headerlink" title="构建Exception 派生类型的层次结构"></a>构建Exception 派生类型的层次结构</h2><p>以下代码使用本章讨论的许多概念将一组程序集加载到Appdomain中，并显示最终从System.Exception派生的所有类。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//显示加载想要反射的程序集</span>
+    <span class="token function">LoadAssemblies</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//对所有类型进行筛选和排序</span>
+    <span class="token keyword">var</span> allTypes <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">from</span> a <span class="token keyword">in</span> AppDomain<span class="token punctuation">.</span>CurrentDomain<span class="token punctuation">.</span><span class="token function">GetAssemblies</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">from</span> t <span class="token keyword">in</span> a<span class="token punctuation">.</span>ExportedTypes
+            <span class="token keyword">where</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>Exception<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">IsAssignableFrom</span><span class="token punctuation">(</span>t<span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">orderby</span> t<span class="token punctuation">.</span>Name
+            <span class="token keyword">select</span> t<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//生成并显示继承层次结构</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token function">WalkInheritanceHierarchy</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Exception<span class="token punctuation">)</span><span class="token punctuation">,</span>allTypes <span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> StringBuilder <span class="token function">WalkInheritanceHierarchy</span><span class="token punctuation">(</span>StringBuilder sb <span class="token punctuation">,</span><span class="token keyword">int</span> indent<span class="token punctuation">,</span>Type baseType<span class="token punctuation">,</span>IEnumerable<span class="token operator">&lt;</span>Type<span class="token operator">></span> allTypes<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">string</span> spaces <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">,</span> indent <span class="token operator">*</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sb<span class="token punctuation">.</span><span class="token function">AppendLine</span><span class="token punctuation">(</span>spaces <span class="token operator">+</span> baseType<span class="token punctuation">.</span>FullName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> t <span class="token keyword">in</span> allTypes<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>t<span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>BaseType<span class="token operator">!=</span>baseType<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">continue</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">WalkInheritanceHierarchy</span><span class="token punctuation">(</span>sb<span class="token punctuation">,</span> indent <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> t<span class="token punctuation">,</span> allTypes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> sb<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">LoadAssemblies</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> assemblies <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"System,PublicKeyToken={0}"</span><span class="token punctuation">,</span> <span class="token string">"System.Core,PublicKeyToken={0}"</span><span class="token punctuation">,</span><span class="token string">"System.Data,PublicKeyToken={0}"</span><span class="token punctuation">,</span><span class="token string">"System.Design,PublicKeyToken={1}"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">string</span> ecmaPublicKeyToken <span class="token operator">=</span> <span class="token string">"b77a5c561934e089"</span><span class="token punctuation">;</span>
+    <span class="token keyword">string</span> msPublicKeyToken <span class="token operator">=</span> <span class="token string">"b03f5f7f11d50a3a"</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//获取包含system.object的程序集的版本，假定其他所有程序集都是相同的版本</span>
+    Version version <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>Object<span class="token punctuation">)</span><span class="token punctuation">.</span>Assembly<span class="token punctuation">.</span><span class="token function">GetName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Version<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//显示加载想要反射的程序集</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> a <span class="token keyword">in</span> assemblies<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">string</span> assemblyIdentity <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> ecmaPublicKeyToken<span class="token punctuation">,</span> msPublicKeyToken<span class="token punctuation">)</span> <span class="token operator">+</span>
+                                  <span class="token string">",Culture=neutral,Version="</span> <span class="token operator">+</span> version<span class="token punctuation">;</span>
+        Assembly<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span>assemblyIdentity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/09/16/CLR读书笔记/23程序集加载和反射/QQ截图20190916173727.png" alt=""></p>
+<h2 id="构造类型的实例"><a href="#构造类型的实例" class="headerlink" title="构造类型的实例"></a>构造类型的实例</h2><p>获取对<code>Type派生对象</code>的引用之后，就可以构造该类型的实例了。FCL提供了一下几个机制。</p>
+<ol>
+<li><code>System.Activator</code>的<code>CreateInstance</code>方法</li>
+</ol>
+<p><code>Activator类</code>提供了<strong>静态</strong><code>CreateInstance</code>方法的几个重载版本.  可以传递<code>Type对象</code>引用, 也可以传递标识了类型的<code>String</code>, 直接获取类型对象的几个版本较为简单。你要为类型的构造器传递一组实参，方法返回新对象的引用。</p>
+<p>用字符串来制定类型的几个版本稍微复杂一些。首先必须指定另一个字符串来表示定义了类型的程序集。其次，如果正确配置了远程访问(remoting)选项，这些方法还允许构造远程对象, 这些版本返回的不是新对象的引用, 而是一个<code>System.Runtime.Remoting.ObjectHandle</code>对象(从<code>MarshalByRefObject</code>派生).  <code>ObjectHandle</code>允许将一个AppDomain中创建的对象传至其他AppDomain.  期间不强迫对象<strong>具体化(materialize)</strong> , 准备好具体化这个对象时, 它将定义了要具体化的类型的程序集加载到这个AppDomain中. 如果对象按引用封送, 会创建代理类型和对象. 如果按值封送, 对象的副本会被序列化.</p>
+<ol>
+<li><code>System.Activator</code>的<code>CreateInstanceForm</code>方法</li>
+</ol>
+<p>Activator类还提供了一组<strong>静态</strong>CreateInstanceForm方法，他们与CreateInstance的行为相似，只是必须通过<strong>字符串参数来指定</strong>类型及其程序集。程序集用Assembly的LoadForm（而非load）方法加载到调用AppDomain中。由于都不接受Type参数，所以返回的都是一个<code>ObjectHandle</code>对象引用，必须调用<code>ObjectHandle</code>的<code>Unwrap</code>方法进行具体化.</p>
+<ol>
+<li><code>System.Appdomain</code>的方法</li>
+</ol>
+<p>Appdomain类型提供了4个用于构造类型实例的<strong>实例方法</strong>，包括<code>CreateInstance</code>，<code>CreateInstanceFrom</code>和<code>CreateInstanceFromAndUnwrap</code>。这些方法和行为和Activator类的方法相似。区别在于他们都是实例方法，允许指定在哪个Appdomain中构造对象。另外，带Unwrap后缀的方法还能简化操作，不必执行额外的方法调用。</p>
+<ol>
+<li><code>System.Reflection.ConstructorInfo</code>的<code>Invoke</code>实例方法</li>
+</ol>
+<p>使用一个Type对象引用，可以绑定到一个特定的构造器，并获取对构造器的<code>ConstructorInfo</code>对象的引用。然后，可利用<code>ConstructorInfo</code>对象引用来调用它的<code>Invoke方法</code>。类型总是在调用Appdomain中创建，返回的是对新对象的引用。</p>
+<p>注意： CLR不要求<code>值类型</code>定义任何构造器。<code>Activator</code>的<code>CreateInstance方法</code><strong>允许在不调用构造器的情况下创建值类型的实例</strong>。必须调用<code>CreateInstance</code>方法获取单个Type参数的重载版本或者获取Type和Boolean参数的重载版本。</p>
+<p>利用前面列出的机制，可为除<strong>数组(System.Array派生类型)</strong> 和<strong>委托(System.MulticastDelegate派生类型)</strong> 之外的所有类型<strong>创建对象</strong>。</p>
+<p><strong>创建数组</strong> 需要调用<code>Array</code>的静态<code>CreateInstance方法</code>。所有版本的CreateInstance方法获取的第一个参数都是对数组元素<code>Type的引用</code>。<code>CreateInstance</code>的其他参数允许指定数组位数<strong>维数</strong>和<strong>上下限</strong>的各种组合。</p>
+<p><strong>创建委托</strong> 则要调用<code>MethodInfo</code>的静态<code>CreateDelegate方法</code>。所有版本的CreateDelegate方法获取的第一个参数都是对委托Type的引用。CreateDelegate方法的其他参数允许指定在调用实例方法时应将哪个对象作为this参数传递。</p>
+<p>构造泛型类型的实例首先要获取对开放类型的引用，然后调用<code>Type</code>的<code>MakeGenericType方法</code>并向其传递一个数组（其中包含要作为类型实参使用的类型）。然后，获取返回的Type对象并把它传给上面列出的某个方法。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Dictionary</span><span class="token operator">&lt;</span>TKey<span class="token punctuation">,</span>TValue<span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 获取对泛型类型的类型对象的引用 , 没限定泛型的类型就是开放类型</span>
+        Type openType <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>Dictionary<span class="token operator">&lt;</span><span class="token punctuation">,</span><span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 使用Tkey=string、Tvalue=int封闭泛型类型</span>
+        <span class="token comment" spellcheck="true">// 限定了泛型类型, 就是封闭类型</span>
+        Type closedType <span class="token operator">=</span> openType<span class="token punctuation">.</span><span class="token function">MakeGenericType</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 构造封闭类型的实例</span>
+        Object o <span class="token operator">=</span> Activator<span class="token punctuation">.</span><span class="token function">CreateInstance</span><span class="token punctuation">(</span>closedType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 证实能正常工作</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>o<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 输出:ConsoleApp2.Dictionary`2[System.String,System.Int32]</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="设计支持加载项的应用程序"><a href="#设计支持加载项的应用程序" class="headerlink" title="设计支持加载项的应用程序"></a>设计支持加载项的应用程序</h1><p>构建可扩展应用程序时, 接口是中心. 可用基类代替接口, 但接口通常是首选的. 因为它允许加载项开发人员选择他们自己的基类.  例如要写一个应用程序来无缝加载和使用别人的类型. 下面描述了如何设计:</p>
+<ul>
+<li>创建<code>宿主SDK</code>程序集, 它定义一个接口. <code>接口的方法</code>作为<strong>宿主应用程序</strong>与<strong>加载项</strong>之间的通信机制使用.  接口方法定义参数和返回类型时, 请尝试使用<code>MSCorLib.dll</code>中定义的其他接口或类型. 要传递并返回自己的数据类型, 也在<code>宿主SDK</code>程序集中定义.  一定搞定接口定义, 就可为这个程序集赋予<strong>强名称</strong>. 然后打包并部署到用户那里. 发布以后要避免对该程序集中的类型做出任何重大的改变. 例如: 不要以任何方式更改接口. 如果定义了任何数据类型, 在类型中添加新成员时完全允许的.</li>
+</ul>
+<blockquote>
+<p>之所以能用<code>MSCorLib.dll</code>中定义的类型, 是因为CLR总是加载与CLR本身的版本匹配的<code>MSCorLib.dll</code>. 此外, 一个CLR实例只会加载一个版本的<code>MSCorLib.dll</code>.</p>
+</blockquote>
+<ul>
+<li><p>加载项开发人员会在加载项程序集中定义自己的类型. 这些程序集引用你的<code>宿主</code>程序集中的类型. 加载项开发人员可按自己的步调推出程序集的新版本, <strong>而宿主应用程序能正常使用加载项中的类型.</strong></p>
+</li>
+<li><p>创建单独的”<strong>宿主应用程序</strong>“ 程序集, 在其中包含你的应用程序的类型, 这个程序集显然要引用<code>宿主SDK</code>, 并使用其中定义的类型. 可自由修改<code>宿主应用程序</code>程序集的代码, 由于加载项开发人员不会引用这个<code>宿主应用程序</code>程序集, 所以随时都能退出<code>宿主应用程序</code>程序集的新版本. 不会对加载项开发人员产生任何影响.</p>
+</li>
+</ul>
+<p>跨程序集使用类型时, 需要关注程序集的版本控制问题. 如果要修改,一定要修改程序集的版本号.</p>
+<p>下面演示一个例子:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// HostSDK.dll程序集的代码</span>
+<span class="token keyword">namespace</span> Wintellect<span class="token punctuation">.</span>HostSDK
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">IAddIn</span>
+    <span class="token punctuation">{</span>
+        String <span class="token function">DoSomething</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> Wintellect<span class="token punctuation">.</span>HostSDK<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// AddInTypes.dll程序集的代码 其中定义了两个公共类型</span>
+<span class="token comment" spellcheck="true">// 实现了HostSDK.dll的接口</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AddIn_A</span> <span class="token punctuation">:</span> IAddIn
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">AddIn_A</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> String <span class="token function">DoSomething</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"AddIn_A: "</span> <span class="token operator">+</span> x<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AddIn_B</span> <span class="token punctuation">:</span> IAddIn
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">AddIn_B</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> String <span class="token function">DoSomething</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"AddIn_B: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span>x <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后试一个简单的Host.exe程序集(控制台应用程序的代码). 生成该程序集必须引用HostSDK.dll.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Linq<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>IO<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Reflection<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">.</span>Generic<span class="token punctuation">;</span>
+<span class="token keyword">using</span> Wintellect<span class="token punctuation">.</span>HostSDK<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 查找Host.exe所在的目录</span>
+        <span class="token comment" spellcheck="true">// F:\迅雷下载\新建文件夹\bin\Debug</span>
+        String AddInDir <span class="token operator">=</span> Path<span class="token punctuation">.</span><span class="token function">GetDirectoryName</span><span class="token punctuation">(</span>Assembly<span class="token punctuation">.</span><span class="token function">GetEntryAssembly</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Location<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 假定加载项程序集和Host.exe文件在同一目录</span>
+        <span class="token comment" spellcheck="true">// 返回满足指定条件的文件名的可枚举集合。</span>
+        <span class="token comment" spellcheck="true">// F:\迅雷下载\新建文件夹\bin\Debug\Ch23-2-AddIn_SDKAssembly.dll</span>
+        <span class="token keyword">var</span> AddInAssemblies <span class="token operator">=</span> Directory<span class="token punctuation">.</span><span class="token function">EnumerateFiles</span><span class="token punctuation">(</span>AddInDir<span class="token punctuation">,</span> <span class="token string">"*.dll"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// Ch23-2-AddIn_SDKAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</span>
+        <span class="token keyword">var</span> test <span class="token operator">=</span> Assembly<span class="token punctuation">.</span><span class="token function">LoadFrom</span><span class="token punctuation">(</span><span class="token string">@"F:\迅雷下载\新建文件夹\bin\Debug\Ch23-2-AddIn_SDKAssembly.dll"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// Console.WriteLine(test.GetName());</span>
+
+        <span class="token keyword">var</span> test1 <span class="token operator">=</span> Assembly<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token string">"Ch23-2-AddIn_SDKAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// Console.WriteLine(test1.GetName());</span>
+
+
+        <span class="token comment" spellcheck="true">// 创建可由宿主使用的所有加载Type的一个集合</span>
+        <span class="token keyword">var</span> AddInTypes <span class="token operator">=</span>
+            <span class="token keyword">from</span> file <span class="token keyword">in</span> AddInAssemblies
+            <span class="token keyword">let</span> assembly <span class="token operator">=</span> Assembly<span class="token punctuation">.</span><span class="token function">LoadFrom</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 这里源代码错了, 书中代码写的是Assembly.Load, 通过给定程序集的长格式名称加载程序集。</span>
+            <span class="token keyword">from</span> t <span class="token keyword">in</span> assembly<span class="token punctuation">.</span>ExportedTypes <span class="token comment" spellcheck="true">// 公开导出的类型</span>
+            <span class="token comment" spellcheck="true">// 如果类型实现了IAddIn接口, 该类型就可由宿主使用</span>
+            <span class="token keyword">where</span> t<span class="token punctuation">.</span>IsClass <span class="token operator">&amp;&amp;</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>IAddIn<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">IsAssignableFrom</span><span class="token punctuation">(</span>t<span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">select</span> t<span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 初始化完成: 宿主已发现所有可用的加载项</span>
+
+        <span class="token comment" spellcheck="true">// 下面示范宿主如何构造加载项对象并使用</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Type t <span class="token keyword">in</span> AddInTypes<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            IAddIn ai <span class="token operator">=</span> <span class="token punctuation">(</span>IAddIn<span class="token punctuation">)</span> Activator<span class="token punctuation">.</span><span class="token function">CreateInstance</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>ai<span class="token punctuation">.</span><span class="token function">DoSomething</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// AddIn_A: 5</span>
+<span class="token comment" spellcheck="true">// AddIn_B: 10</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="使用反射发现类型的成员"><a href="#使用反射发现类型的成员" class="headerlink" title="使用反射发现类型的成员"></a>使用反射发现类型的成员</h1><p>本章剩余部分将从其他角度探讨反射，目的是发现并调用类型的成员。</p>
+<h2 id="发现类型的成员"><a href="#发现类型的成员" class="headerlink" title="发现类型的成员"></a>发现类型的成员</h2><p>字段、构造器、方法、属性、事件和嵌套类型都可以定义成类型的成员。FCL包含抽象基类<code>System.Reflection.MemberInfo</code>，封装了所有类型成员都通用的一组属性。<code>MemberInfo</code>有许多派生类, 每个都封装了与特定类型成员相关的更多属性.</p>
+<p><img src="/2019/09/16/CLR读书笔记/23程序集加载和反射/QQ截图20190917142359.png" alt=""></p>
+<p>演示如何查询类型的成员并显示成员的信息. <strong>代码处理的是由调用AppDomain加载的所有程序集定义的所有公共类型.</strong> 对每个类型都调用<code>DeclaredMembers</code>属性以返回由<code>MemberInfo</code>派生对象构成的集合; 每个对象都引用类型中定义的一个成员. 然后显示每个成员的种类(字段,构造器,方法和属性等)及其字符串值(调用ToString来获取).</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Reflection<span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//遍历这个appDomain中加载的所有程序集</span>
+        Assembly<span class="token punctuation">[</span><span class="token punctuation">]</span> assemblies <span class="token operator">=</span> AppDomain<span class="token punctuation">.</span>CurrentDomain<span class="token punctuation">.</span><span class="token function">GetAssemblies</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> a <span class="token keyword">in</span> assemblies<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 缩进0*3个空格, a代表单个程序集</span>
+            <span class="token comment" spellcheck="true">// Assembly:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</span>
+            <span class="token function">Show</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">"Assembly:{0}"</span><span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//查找程序集中的类型</span>
+            <span class="token comment" spellcheck="true">// a.ExportedTypes 是所有类型的集合</span>
+            <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> t <span class="token keyword">in</span> a<span class="token punctuation">.</span>ExportedTypes<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">//    Assembly:Microsoft.Win32.Registry</span>
+                <span class="token comment" spellcheck="true">// 缩进1*3个空格 t代表单个导出类型</span>
+                <span class="token function">Show</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"Assembly:{0}"</span><span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment" spellcheck="true">//发现类型的成员</span>
+                <span class="token comment" spellcheck="true">// t.GetTypeInfo().DeclaredMembers 类型的所有成员</span>
+                <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> mi <span class="token keyword">in</span> t<span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>DeclaredMembers<span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    <span class="token keyword">string</span> typeName                     <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">;</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>mi <span class="token keyword">is</span> Type<span class="token punctuation">)</span> typeName            <span class="token operator">=</span> <span class="token string">"(Nested) Type"</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>mi <span class="token keyword">is</span> FieldInfo<span class="token punctuation">)</span> typeName       <span class="token operator">=</span> <span class="token string">"FieldInfo"</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>mi <span class="token keyword">is</span> MethodInfo<span class="token punctuation">)</span> typeName      <span class="token operator">=</span> <span class="token string">"MethodInfo"</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>mi <span class="token keyword">is</span> ConstructorInfo<span class="token punctuation">)</span> typeName <span class="token operator">=</span> <span class="token string">"ConstructorInfo"</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>mi <span class="token keyword">is</span> PropertyInfo<span class="token punctuation">)</span> typeName    <span class="token operator">=</span> <span class="token string">"PropertyInfo"</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>mi <span class="token keyword">is</span> EventInfo<span class="token punctuation">)</span> typeName       <span class="token operator">=</span> <span class="token string">"EventInfo"</span><span class="token punctuation">;</span>
+
+                    <span class="token function">Show</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"{0}:{1}"</span><span class="token punctuation">,</span> typeName<span class="token punctuation">,</span> mi<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Show</span><span class="token punctuation">(</span><span class="token keyword">int</span> indent<span class="token punctuation">,</span> <span class="token keyword">string</span> format<span class="token punctuation">,</span> <span class="token keyword">params</span> <span class="token keyword">object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">string</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">,</span> <span class="token number">3</span> <span class="token operator">*</span> indent<span class="token punctuation">)</span> <span class="token operator">+</span> format<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/09/16/CLR读书笔记/23程序集加载和反射/QQ截图20190917143948.png" alt=""></p>
+<p>在查询<code>DeclaredMembers属性</code>所返回的集合中，每个元素都是对层次结构中的一个<strong>具体类型的引用</strong>。虽然<code>TypeInfo</code>的<code>DeclaredMembers属性</code>能返回类型的所有成员，但还可利用<code>TypeInfo</code>提供的一些方法返回具有指定字符串名称的成员类型。例如，利用<code>TypeInfo</code>的<code>GetDeclaredNestedType</code>、<code>GetDeclaredField</code>等. 而利用<code>GetDeclaredMethods</code>方法能返回由<code>MethodInfo</code>对象构成的集合.</p>
+<p><img src="/2019/09/16/CLR读书笔记/23程序集加载和反射/QQ截图20190917150817.png" alt=""></p>
+<p>总结了用于遍历反射对象模型的各种类型:</p>
+<ul>
+<li>基于<code>AppDoamin</code>,可发现其中加载的所有程序集, 可发现它的所有模块.</li>
+<li>基于<code>程序集或模块</code>, 可发现它定义的所有类型.</li>
+<li>基于<code>类型</code>,可以发现它的嵌套类型,字段,构造器,方法,属性和事件.</li>
+</ul>
+<p>命名空间不是这个层次结构的一部分.因为它们只是从语法角度将相关类型聚集到一起。CLR不知道什么是命名空间。要列出程序集中定义的所有命名空间，需枚举程序集中的所有类型，并查看其<code>Namespace属性</code>。</p>
+<p><img src="/2019/09/16/CLR读书笔记/23程序集加载和反射/QQ截图20190917151127.png" alt=""></p>
+<ul>
+<li>基于一个类型，还可发现它实现的接口。</li>
+<li>基于构造器、方法、属性访问器方法或者事件的添加、删除方法，可调用<code>GetParameters方法</code>来获取由<code>ParameterInfo</code>对象构成的数组，从而了解成员的参数的类型。</li>
+<li>还可查询只读属性<code>ReturnParameter</code>获得一个<code>ParameterInfo</code>对象，他详细描述了成员的返回类型。</li>
+<li>对于泛型类型或方法，可调用<code>GetgenericArguments方法</code>来获得类型参数的集合。</li>
+</ul>
+<p>最后，针对上述任何一项，都可查询<code>CustomAttributes属性</code>来获得应用于它们的自定义定制特性的集合。</p>
+<h2 id="调用类型的成员"><a href="#调用类型的成员" class="headerlink" title="调用类型的成员"></a>调用类型的成员</h2><p>发现类型定义的成员后可调用它们. “调用”(invoke)的确切含义取决于要调用的成员的种类.</p>
+<p><img src="/2019/09/16/CLR读书笔记/23程序集加载和反射/QQ截图20190917151843.png" alt=""></p>
+<p><code>PropertyInfo</code>类代表与属性有关的元数据信息；也就是说，PropertyInfo提供了<code>CanRead</code>、<code>CanWrite</code>和<code>PropertyType只读属性</code>，他们指出属性是否可读和可写，以及属性的数据类型是什么。PropertyInfo还提供了<code>只读GetMethod</code>和<code>SetMethod属性</code>，他们返回待办属性get和set访问器方法的<code>MethodInfo对象</code>。<code>PropertyInfo</code>的GetValue和SetValue方法只是为了提供方便：在内部，，他们会自己调用合适的MethodInfo对象。为了支持有参属性（c#的索引器），GetValue和SetValue方法提供了一个object[]类型的index参数。</p>
+<p><code>EventInfo</code>类型代表与事件有关的元数据信息。<code>EventInfo</code>类型提供了<code>只读EventHandlerType属性</code>，返回事件的基础<code>委托的Type</code>。EventInfo类型还提供了<code>只读AddMethod</code>和<code>RemoveMethod属性</code>，返回为事件增删委托的方法的MethodInfo对象。增删委托可调用这些MethodInfo对象，也可调用EventInfo类型提供的更好用的<code>AddEventHandler</code>和<code>RemoveEventHandler</code>方法。</p>
+<h3 id="以下实例应用程序演示了用反射来访问类型成员的各种方式。"><a href="#以下实例应用程序演示了用反射来访问类型成员的各种方式。" class="headerlink" title="以下实例应用程序演示了用反射来访问类型成员的各种方式。"></a>以下实例应用程序演示了用反射来访问类型成员的各种方式。</h3><p>SomeType类包含多种成员：一个私有字段（<code>m_someField</code>）；一个公共构造器（<code>SomeType</code>），它获取一个传引用的<code>Int32</code>实参；一个公共方法（<code>ToString</code>）；一个公共属性（<code>SomeProp</code>）；以及一个公共事件（<code>SomeEvent</code>）。定义好SomeType类型后，我提供了三个不同的方法，他们利用反射来访问SomeType的成员。三个方法用不同的方式做相同的事情。</p>
+<ol>
+<li><code>BindToMemberThenInvokeTheMember方法</code>,演示了如何绑定到成员并调用它。</li>
+<li><code>BindToMemberCreateDelegateToMemberThenInvokeTheMember方法</code>演示了如何绑定到一个对象或成员，然后创建一个委托来引用该对象或成员。通过委托来调用的速度很快。如果需要在相同的对象上多次调用相同的成员，<strong>这个技术的性能比上一个好</strong>。</li>
+<li><code>UseDynamicToBindAndInvokeTheMember方法</code>演示了如何利用C#的<code>dynamic</code>基元类型简化成员访问语法。此外，在相同类型的不同对象上调用相同成员时，这个技术还能提供不错的性能，因为针对每个类型，绑定都只会发生一次。而且可以缓存起来，以后多次调用的速度会非常快。用这个计数也可以调用不同类型的对象的成员。</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">.</span>Generic<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Linq<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Reflection<span class="token punctuation">;</span>
+<span class="token keyword">using</span> Microsoft<span class="token punctuation">.</span>CSharp<span class="token punctuation">.</span>RuntimeBinder<span class="token punctuation">;</span>
+
+<span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SomeType</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> m_someField<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">SomeType</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        x <span class="token operator">*</span><span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> m_someField<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> SomeProp
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> m_someField<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+        <span class="token keyword">set</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">value</span> <span class="token operator">&lt;</span> <span class="token number">1</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentOutOfRangeException</span><span class="token punctuation">(</span><span class="token string">"value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            m_someField <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">event</span> EventHandler SomeEvent<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">NoCompilerWarnings</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        SomeEvent<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Type t <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>SomeType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">BindToMemberThenInvokeTheMember</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">BindToMemberCreateDelegateToMemberThenInvokeTheMember</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">UseDynamicToBindAndInvokeTheMember</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">BindToMemberThenInvokeTheMember</span><span class="token punctuation">(</span>Type t<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"BindToMemberThenInvokeTheMember"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//构造实例</span>
+        Type ctorArgument <span class="token operator">=</span> Type<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token string">"System.Int32"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//或者typeof(Int32).MakeByRefType();</span>
+
+        <span class="token comment" spellcheck="true">// 获取当前类型t定义的构造函数集合</span>
+        IEnumerable<span class="token operator">&lt;</span>ConstructorInfo<span class="token operator">></span> ctors <span class="token operator">=</span> t<span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>DeclaredConstructors<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 找出参数是Int32类型的构造函数</span>
+        ConstructorInfo ctor  <span class="token operator">=</span> ctors<span class="token punctuation">.</span><span class="token function">First</span><span class="token punctuation">(</span>c <span class="token operator">=</span><span class="token operator">></span> c<span class="token punctuation">.</span><span class="token function">GetParameters</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>ParameterType <span class="token operator">==</span> ctorArgument<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//ConstructorInfo ctor = t.GetTypeInfo().DeclaredConstructors</span>
+        <span class="token comment" spellcheck="true">//    .First(c => c.GetParameters()[0].ParameterType == ctorArgument);</span>
+
+        <span class="token comment" spellcheck="true">//构造器的实参</span>
+        <span class="token keyword">object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">12</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"x before constructor called:"</span> <span class="token operator">+</span> args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 用绑定好的ConstructorInfo去调用Invoke并传入参数args</span>
+        <span class="token keyword">object</span> obj <span class="token operator">=</span> ctor<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span>args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Type"</span> <span class="token operator">+</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"x after constructor returns"</span> <span class="token operator">+</span> args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//读写字段</span>
+        FieldInfo fi <span class="token operator">=</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetDeclaredField</span><span class="token punctuation">(</span><span class="token string">"m_someField"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        fi<span class="token punctuation">.</span><span class="token function">SetValue</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> <span class="token number">33</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"someField:"</span> <span class="token operator">+</span> fi<span class="token punctuation">.</span><span class="token function">GetValue</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//调用方法</span>
+        MethodInfo mi <span class="token operator">=</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetDeclaredMethod</span><span class="token punctuation">(</span><span class="token string">"ToString"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">string</span>     s  <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">)</span> mi<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"ToString:"</span> <span class="token operator">+</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//读写属性</span>
+        PropertyInfo pi <span class="token operator">=</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetDeclaredProperty</span><span class="token punctuation">(</span><span class="token string">"SomeProp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            pi<span class="token punctuation">.</span><span class="token function">SetValue</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">TargetInvocationException</span> e<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>e<span class="token punctuation">.</span>InnerException<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>ArgumentOutOfRangeException<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">throw</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Property set catch "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        pi<span class="token punctuation">.</span><span class="token function">SetValue</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"SomeProp:"</span> <span class="token operator">+</span> pi<span class="token punctuation">.</span><span class="token function">GetValue</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//为事件添加和删除委托</span>
+        EventInfo    ei <span class="token operator">=</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetDeclaredEvent</span><span class="token punctuation">(</span><span class="token string">"SomeEvent"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        EventHandler eh <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventHandler</span><span class="token punctuation">(</span>EventCallback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ei<span class="token punctuation">.</span><span class="token function">AddEventHandler</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> eh<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ei<span class="token punctuation">.</span><span class="token function">RemoveEventHandler</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> eh<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//添加到事件的回调方法</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">EventCallback</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> EventArgs e<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">BindToMemberCreateDelegateToMemberThenInvokeTheMember</span><span class="token punctuation">(</span>Type t<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"BindToMemberCreateDelegateToMemberThenInvokeTheMember"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//构造实例（）不能创建对构造器的委托</span>
+        Object<span class="token punctuation">[</span><span class="token punctuation">]</span> args <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">12</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"x before constructor called:"</span> <span class="token operator">+</span> args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">object</span> obj <span class="token operator">=</span> Activator<span class="token punctuation">.</span><span class="token function">CreateInstance</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Type"</span> <span class="token operator">+</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"x after constructor returns"</span> <span class="token operator">+</span> args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//注意：不能创建对字段的委托</span>
+
+        <span class="token comment" spellcheck="true">//调用方法</span>
+        MethodInfo mi <span class="token operator">=</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetDeclaredMethod</span><span class="token punctuation">(</span><span class="token string">"ToString"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span> toString <span class="token operator">=</span> mi<span class="token punctuation">.</span>CreateDelegate<span class="token operator">&lt;</span>Func<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token operator">></span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">string</span> s  <span class="token operator">=</span> <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"ToString:"</span> <span class="token operator">+</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//读写属性</span>
+        PropertyInfo pi          <span class="token operator">=</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetDeclaredProperty</span><span class="token punctuation">(</span><span class="token string">"SomeProp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span>          setSomeProp <span class="token operator">=</span> pi<span class="token punctuation">.</span>SetMethod<span class="token punctuation">.</span>CreateDelegate<span class="token operator">&lt;</span>Action<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">></span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">setSomeProp</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ArgumentOutOfRangeException</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Property set catch "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token function">setSomeProp</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span> getSomeProp <span class="token operator">=</span> pi<span class="token punctuation">.</span>GetMethod<span class="token punctuation">.</span>CreateDelegate<span class="token operator">&lt;</span>Func<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">></span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"SomeProp:"</span> <span class="token operator">+</span> <span class="token function">getSomeProp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//为事件添加和删除委托</span>
+        EventInfo ei           <span class="token operator">=</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetDeclaredEvent</span><span class="token punctuation">(</span><span class="token string">"SomeEvent"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span>       addSomeEvent <span class="token operator">=</span> ei<span class="token punctuation">.</span>AddMethod<span class="token punctuation">.</span>CreateDelegate<span class="token operator">&lt;</span>Action<span class="token operator">&lt;</span>EventHandler<span class="token operator">></span><span class="token operator">></span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">addSomeEvent</span><span class="token punctuation">(</span>EventCallback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span> removeSomeEvent <span class="token operator">=</span> ei<span class="token punctuation">.</span>RemoveMethod<span class="token punctuation">.</span>CreateDelegate<span class="token operator">&lt;</span>Action<span class="token operator">&lt;</span>EventHandler<span class="token operator">></span><span class="token operator">></span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">removeSomeEvent</span><span class="token punctuation">(</span>EventCallback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">UseDynamicToBindAndInvokeTheMember</span><span class="token punctuation">(</span>Type t<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//构造实例（）不能创建对构造器的委托</span>
+        Object<span class="token punctuation">[</span><span class="token punctuation">]</span> args <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">12</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"x before constructor called:"</span> <span class="token operator">+</span> args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">dynamic</span> obj <span class="token operator">=</span> Activator<span class="token punctuation">.</span><span class="token function">CreateInstance</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Type"</span> <span class="token operator">+</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"x after constructor returns"</span> <span class="token operator">+</span> args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//读写字段</span>
+
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            obj<span class="token punctuation">.</span>m_someField <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+            <span class="token keyword">int</span> v <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> obj<span class="token punctuation">.</span>m_someField<span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"someField:"</span> <span class="token operator">+</span> v<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">RuntimeBinderException</span> e<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"failed to access field: "</span> <span class="token operator">+</span> e<span class="token punctuation">.</span>Message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">//调用方法</span>
+
+        <span class="token keyword">string</span> s <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">)</span> obj<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"ToString:"</span> <span class="token operator">+</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//读写属性</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            obj<span class="token punctuation">.</span>SomeProp <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ArgumentOutOfRangeException</span> e<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Property set catch "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        obj<span class="token punctuation">.</span>SomeProp <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> val <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> obj<span class="token punctuation">.</span>SomeProp<span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"SomeProp:"</span> <span class="token operator">+</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//为事件添加和删除委托</span>
+        obj<span class="token punctuation">.</span>SomeEvent <span class="token operator">+</span><span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventHandler</span><span class="token punctuation">(</span>EventCallback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        obj<span class="token punctuation">.</span>SomeEvent <span class="token operator">-</span><span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventHandler</span><span class="token punctuation">(</span>EventCallback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ReflectionExtensions</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> TDelegate <span class="token generic-method function">CreateDelegate<span class="token punctuation">&lt;</span>TDelegate<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">this</span> MethodInfo mi<span class="token punctuation">,</span> <span class="token keyword">object</span> target <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>TDelegate<span class="token punctuation">)</span> <span class="token punctuation">(</span>Object<span class="token punctuation">)</span> mi<span class="token punctuation">.</span><span class="token function">CreateDelegate</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>TDelegate<span class="token punctuation">)</span><span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// BindToMemberThenInvokeTheMember</span>
+<span class="token comment" spellcheck="true">// x before constructor called:12</span>
+<span class="token comment" spellcheck="true">// TypeConsoleApp2.SomeType</span>
+<span class="token comment" spellcheck="true">// x after constructor returns12</span>
+<span class="token comment" spellcheck="true">// someField:33</span>
+<span class="token comment" spellcheck="true">// ToString:33</span>
+<span class="token comment" spellcheck="true">// Property set catch</span>
+<span class="token comment" spellcheck="true">// SomeProp:2</span>
+<span class="token comment" spellcheck="true">//</span>
+<span class="token comment" spellcheck="true">// BindToMemberCreateDelegateToMemberThenInvokeTheMember</span>
+<span class="token comment" spellcheck="true">// x before constructor called:12</span>
+<span class="token comment" spellcheck="true">// TypeConsoleApp2.SomeType</span>
+<span class="token comment" spellcheck="true">// x after constructor returns12</span>
+<span class="token comment" spellcheck="true">// ToString:0</span>
+<span class="token comment" spellcheck="true">// Property set catch</span>
+<span class="token comment" spellcheck="true">// SomeProp:2</span>
+<span class="token comment" spellcheck="true">//</span>
+<span class="token comment" spellcheck="true">// x before constructor called:12</span>
+<span class="token comment" spellcheck="true">// TypeConsoleApp2.SomeType</span>
+<span class="token comment" spellcheck="true">// x after constructor returns12</span>
+<span class="token comment" spellcheck="true">// failed to access field: “ConsoleApp2.SomeType.m_someField”不可访问，因为它具有一定的保护级别</span>
+<span class="token comment" spellcheck="true">// ToString:0</span>
+<span class="token comment" spellcheck="true">// Property set catch</span>
+<span class="token comment" spellcheck="true">// SomeProp:2</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第三种方式简化了成员访问语法. 需要熟悉.</p>
+<h2 id="使用绑定句柄-Handle-减少进程的内存消耗"><a href="#使用绑定句柄-Handle-减少进程的内存消耗" class="headerlink" title="使用绑定句柄(Handle)减少进程的内存消耗"></a>使用绑定句柄(Handle)减少进程的内存消耗</h2><p>许多应用程序都绑定了一组类型（Type对象）或类型成员（MemberInfo派生对象），并将这些对象保存在某种形式的集合中。以后，应用程序搜索这个集合，查找特定对象，然后调用(invoke)这个对象。这个机制很好，只是有个小问题：<strong><code>Type</code>和<code>MemberInfo派生对象</code>需要大量内存</strong>。所以，如果应用程序容纳了太多这样的对象，但只是偶尔调用，应用程序消耗的内存就会急剧增加，对应用程序的性能产生负面影响。</p>
+<p>CLR内部用更精简的方式表示这种信息。CLR之所以为应用程序创建这些对象，只是为了方便开发人员。CLR不需要这些大对象就能运行。如果需要保存/缓存大量<code>Type和MemberInfo派生对象</code>，开发人员可以使用<code>句柄（Runtime Handle）</code>代替对象以减小工作集内存。FCL定义了三个运行时<code>句柄类型</code>（全部都在System命名空间），包括<code>RuntimeTypeHandle</code>，<code>RuntimeFieldHandle</code>和<code>RuntimeMethodHandle</code>。<strong>三个类型都是值类型，都只包含一个字段，也就是一个IntPtr；这使类型的实例显得相当精简</strong>。<code>IntPtr字段</code>是一个<strong>句柄</strong>，<strong>引用AppDomain的Loader堆中的一个类型、字段或方法</strong>。因此，现在需要以一种简单、高效的方式将重量级的<code>Type或MemberInfo对象</code>转换为轻量级的运行时<code>句柄实例</code>，反之亦然。幸好，使用以下转换方法和属性可轻松达到目的。</p>
+<ul>
+<li><code>Type对象</code>转为<code>RuntimeTypeHandle</code>, 调用Type的<code>静态GetTypeHandle方法</code>并传递那个Type对象引用.<ul>
+<li>反向转换, 调用Type的静态方法<code>GetTypeFromHandle</code>并传递那个<code>RuntimeTypeHandle</code>对象引用.</li>
+</ul>
+</li>
+<li>要将<code>FieldInfo对象</code>转为<code>RuntimeTypeHandle</code>, 查询<code>FieldInfo</code>的实例<code>只读属性FieldHandle</code>.<ul>
+<li>反向转换, 调用<code>FieldInfo</code>的<code>静态方法GetFieldFromHandle</code>.</li>
+</ul>
+</li>
+<li>要将<code>MethodInfo对象</code>转换为一个<code>RuntimeMethodHandle</code>, 查询<code>MethodInfo</code>的实例<code>只读属性MethodHandle</code>.<ul>
+<li>反向转换, 调用<code>MethodInfo</code>的<code>静态方法GetMethodFromHandle</code>.</li>
+</ul>
+</li>
+</ul>
+<p>以下实例程序获取许多<code>MethodInfo对象</code>，把它们转换为<code>RuntimeMethodHandle实例</code>，并演示了转换前后的工作集的差异。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">.</span>Generic<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Reflection<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">const</span> BindingFlags c_bf <span class="token operator">=</span> BindingFlags<span class="token punctuation">.</span>FlattenHierarchy <span class="token operator">|</span> BindingFlags<span class="token punctuation">.</span>Instance <span class="token operator">|</span> BindingFlags<span class="token punctuation">.</span>Static <span class="token operator">|</span>
+                                      BindingFlags<span class="token punctuation">.</span>Public <span class="token operator">|</span> BindingFlags<span class="token punctuation">.</span>NonPublic<span class="token punctuation">;</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//显示在任何反射操作之前堆的大小</span>
+        <span class="token function">Show</span><span class="token punctuation">(</span><span class="token string">"做任何事之前"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 刚开始占用的22384字节数</span>
+
+        <span class="token comment" spellcheck="true">//为MSCorlib.dll中所有方法构建MethodInfo对象缓存</span>
+        List<span class="token operator">&lt;</span>MethodBase<span class="token operator">></span> methodInfos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>MethodBase<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Type t <span class="token keyword">in</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token keyword">object</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Assembly<span class="token punctuation">.</span><span class="token function">GetExportedTypes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">//跳过任何泛型类型</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>t<span class="token punctuation">.</span>IsGenericTypeDefinition<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">continue</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment" spellcheck="true">// 获取位标志BindingFlags 的方法</span>
+            MethodBase<span class="token punctuation">[</span><span class="token punctuation">]</span> mb <span class="token operator">=</span> t<span class="token punctuation">.</span><span class="token function">GetMethods</span><span class="token punctuation">(</span>c_bf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// Add：添加单个元素</span>
+            <span class="token comment" spellcheck="true">// AddRange：添加实现了接口IEnumerable&lt;T>的一个泛型集合的所有元素到指定泛型集合末尾</span>
+            <span class="token comment" spellcheck="true">// 可以直接添加somelist.ToArray()</span>
+            methodInfos<span class="token punctuation">.</span><span class="token function">AddRange</span><span class="token punctuation">(</span>mb<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">//显示当绑定所有方法之后，方法的个数和堆的大小</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"# 方法个数:={0:N0}"</span><span class="token punctuation">,</span> methodInfos<span class="token punctuation">.</span>Count<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 有54333个方法</span>
+        <span class="token function">Show</span><span class="token punctuation">(</span><span class="token string">"在创建了MethodInfo对象的缓存之后"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 完成缓存后占用了3956516字节数</span>
+
+        <span class="token comment" spellcheck="true">//为所有methodINFO对象构建RuntimeMethodHandle缓存</span>
+        List<span class="token operator">&lt;</span>RuntimeMethodHandle<span class="token operator">></span> methodHandles <span class="token operator">=</span> methodInfos<span class="token punctuation">.</span><span class="token generic-method function">ConvertAll<span class="token punctuation">&lt;</span>RuntimeMethodHandle<span class="token punctuation">></span></span><span class="token punctuation">(</span>c <span class="token operator">=</span><span class="token operator">></span> c<span class="token punctuation">.</span>MethodHandle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">Show</span><span class="token punctuation">(</span><span class="token string">"保存MethodInfo和RuntimeMethodHandle缓存"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        GC<span class="token punctuation">.</span><span class="token function">KeepAlive</span><span class="token punctuation">(</span>methodInfos<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//阻止缓存被过早垃圾回收</span>
+
+        methodInfos <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//现在允许缓存垃圾回收</span>
+        <span class="token function">Show</span><span class="token punctuation">(</span><span class="token string">"在释放methodinfo对象之后"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+        methodInfos <span class="token operator">=</span> methodHandles<span class="token punctuation">.</span><span class="token generic-method function">ConvertAll<span class="token punctuation">&lt;</span>MethodBase<span class="token punctuation">></span></span><span class="token punctuation">(</span>c <span class="token operator">=</span><span class="token operator">></span> MethodBase<span class="token punctuation">.</span><span class="token function">GetMethodFromHandle</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">Show</span><span class="token punctuation">(</span><span class="token string">"重新创建methodInfo对象后堆的大小"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+        GC<span class="token punctuation">.</span><span class="token function">KeepAlive</span><span class="token punctuation">(</span>methodHandles<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//组织缓存被过早垃圾回收</span>
+        GC<span class="token punctuation">.</span><span class="token function">KeepAlive</span><span class="token punctuation">(</span>methodInfos<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//组织缓存被过早垃圾回收</span>
+
+        methodHandles <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//现在允许缓存垃圾回收</span>
+        methodInfos <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//现在允许缓存垃圾回收</span>
+
+        <span class="token function">Show</span><span class="token punctuation">(</span><span class="token string">"释放methodInfos和runtimemethodhandle之后"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Show</span><span class="token punctuation">(</span><span class="token keyword">string</span> s<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Heap size={0,2:N0}-{1}"</span><span class="token punctuation">,</span> GC<span class="token punctuation">.</span><span class="token function">GetTotalMemory</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// Heap size=22,092-做任何事之前</span>
+<span class="token comment" spellcheck="true">// # 方法个数:=54,333</span>
+<span class="token comment" spellcheck="true">// Heap size=4,095,280-在创建了MethodInfo对象的缓存之后</span>
+<span class="token comment" spellcheck="true">// Heap size=4,312,680-保存MethodInfo和RuntimeMethodHandle缓存</span>
+<span class="token comment" spellcheck="true">// Heap size=3,956,288-在释放methodinfo对象之后</span>
+<span class="token comment" spellcheck="true">// Heap size=4,173,700-重新创建methodInfo对象后堆的大小</span>
+<span class="token comment" spellcheck="true">// Heap size=82,596-释放methodInfos和runtimemethodhandle之后</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>RuntimeTypeHandle</code>，<code>RuntimeFieldHandle</code>和<code>RuntimeMethodHandle</code>。<strong>三个类型都是值类型，都只包含一个字段，也就是一个IntPtr；这使类型的实例显得相当精简</strong>。</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

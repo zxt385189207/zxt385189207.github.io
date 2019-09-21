@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        24运行时序列化 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#运行时序列化"><span class="toc-text">运行时序列化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#序列化-反序列化快速入门"><span class="toc-text">序列化/反序列化快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于Assembly-LoadFrom加载程序集的相关问题"><span class="toc-text">关于Assembly.LoadFrom加载程序集的相关问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使类型可序列化"><span class="toc-text">使类型可序列化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#控制序列化和反序列化"><span class="toc-text">控制序列化和反序列化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#格式化器如何序列化类型实例"><span class="toc-text">格式化器如何序列化类型实例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#以下步骤描述了格式化器如何自动序列化类型应用Serializable特性的对象。"><span class="toc-text">以下步骤描述了格式化器如何自动序列化类型应用Serializable特性的对象。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#以下步骤描述了格式化器如何自动反序列化类型应用Serializable特性的对象。"><span class="toc-text">以下步骤描述了格式化器如何自动反序列化类型应用Serializable特性的对象。</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#控制序列化-反序列化的数据"><span class="toc-text">控制序列化/反序列化的数据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#要实现ISerializable但基类型没有实现怎么办？"><span class="toc-text">要实现ISerializable但基类型没有实现怎么办？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#流上下文"><span class="toc-text">流上下文</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#类型序列化为不同类型以及对象反序列化为不同对象"><span class="toc-text">类型序列化为不同类型以及对象反序列化为不同对象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#序列化代理"><span class="toc-text">序列化代理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#代理选择器链"><span class="toc-text">代理选择器链</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#反序列化对象时重写程序集-类型"><span class="toc-text">反序列化对象时重写程序集/类型</span></a></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        24运行时序列化
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-17 18:35:22</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="运行时序列化"><a href="#运行时序列化" class="headerlink" title="运行时序列化"></a>运行时序列化</h1><p><strong>序列化</strong> 是将对象或对象图转换成字节流的过程，反序列化是将字节流转换回对象图的过程。在对象和字节流之间转换是很有用的机制。</p>
+<ol>
+<li>应用程序的状态（对象图）可轻松保存到磁盘文件或数据库中，并在应用程序下次运行时恢复。ASP.NET就是利用序列化和反序列来保存和还原会话状态。</li>
+<li>一组对象可轻松复制到系统的剪贴板，再粘贴回同一个或另一个应用程序。事实上，windows窗体和Windows Presentation Foundation（WPF）就利用了这个功能。</li>
+<li>一组对象可克隆并放到一边作为“备份”；与此同时，用户操纵一组“主”对象。</li>
+<li>一组对象可轻松地通过网络发送给另一台机器上运行的进程。Microsoft .Net Framework的<strong>Remoting（远程处理）</strong> 架构会对按值封送（marshaled by value）的对象进行序列化和反序列化。这个技术还可跨AppDomain边界发送对象。</li>
+</ol>
+<p>除了上述应用，一旦将对象序列化成内存中的字节流，就可方便地以一些更有用的方式处理数据，比如进行加密和压缩。</p>
+<p>由于序列化如此有用，所以许多程序员耗费了大量时间写代码执行这些操作。历史上，这种代码很难编写，相等繁琐，还容易出错。开发人员需要克服的难题包括通信协议、客户端/服务器数据类型不匹配（比如低位优先/高位优先问题）、错误处理、一个对象引用了其他对象、in和out参数以及由结构构成的数组。</p>
+<p>让人高兴的是，.Net Framework内建了出色的序列化和反序列化支持。上述所有难题都迎刃而解，而且.Net Framework是在后台悄悄帮你解决的。开发者现在只需负责序列化之前和反序列化之后的对象处理，中间过程由.Net Framework负责。</p>
+<p>本章解释了.Net Framework如何公开它的序列化和序列化服务。对于几乎所有数据类型，这些服务的默认行为已经足够。也就是说，几乎不需要做任何工作就可以使自己的类型“可序列化”。但对于少量类型，序列化服务的默认行为是不够的。幸好，序列化服务的扩展性极佳，本章将解释如何利用这些扩展性机制，在序列化或反序列化对象时采取一些相当强大的操作。</p>
+<p>注意：本章重点在于CLR的运行时序列化技术。这种技术对CLR数据类型有很深刻的理解，能将对象的所有公共、受保护、内部甚至私有字段序列化到压缩的二进制流中，从而获得很好的性能。 <strong>要把CLR数据类型序列化成XML流</strong>, 参见<code>System.Runtime.Serialization.NetDataContractSerializer</code>类. .Net Framework还提供了其他序列化技术, 它们主要是为了<strong>CLR数据类型和非CLR数据类型</strong>之间的互操作而设计的. 这些技术用的是<code>System.Xml.Serialization.XmlSerializer</code>类和<code>System.Runtime.Serialization.DataContractSerializer</code>类.</p>
+<h1 id="序列化-反序列化快速入门"><a href="#序列化-反序列化快速入门" class="headerlink" title="序列化/反序列化快速入门"></a>序列化/反序列化快速入门</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//创建对象图以便把它们序列化到流中</span>
+    <span class="token keyword">var</span> objectGraph <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> <span class="token punctuation">{</span><span class="token string">"Jeff"</span><span class="token punctuation">,</span> <span class="token string">"Kristin"</span><span class="token punctuation">,</span> <span class="token string">"Aidan"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    Stream stream <span class="token operator">=</span> <span class="token function">SerializeToMemory</span><span class="token punctuation">(</span>objectGraph<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//为了演示，将一切都重置</span>
+    stream<span class="token punctuation">.</span>Position <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    objectGraph <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//反序列化对象，证明它能工作</span>
+    objectGraph <span class="token operator">=</span> <span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token function">DeserializeFromMemory</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> s <span class="token keyword">in</span> objectGraph<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> MemoryStream <span class="token function">SerializeToMemory</span><span class="token punctuation">(</span><span class="token keyword">object</span> objectGraph<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//构造流来容纳序列化对象</span>
+    MemoryStream stream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MemoryStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//构造序列化格式化器来执行所有真正的工作</span>
+    BinaryFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//告诉格式化器将对象序列化到流中</span>
+    formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">,</span>objectGraph<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//将序列化好的对象流返回给调用者</span>
+    <span class="token keyword">return</span> stream<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">object</span> <span class="token function">DeserializeFromMemory</span><span class="token punctuation">(</span>Stream stream<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//构造序列化格式器来做所有真正的工作</span>
+    BinaryFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//告诉格式化器从流中反序列化对象</span>
+    <span class="token keyword">return</span> formatter<span class="token punctuation">.</span><span class="token function">Deserialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一切视乎都很简单<code>！SerializeToMemory</code>方法构造一个<code>System.Io.MemoryStream</code>对象。这个对象表明要将序列化好的字节块放在哪儿。然后，方法构造一个<code>BinaryFormatter</code>对象（在<code>System.Runtime.Serialization.Formatters.Binary</code>命名空间中定义）。格式化器是实现了<code>System.Runtime.Serialization.IFormatter</code>接口的类型，它知道如何序列化和反序列化对象图。</p>
+<p>序列化对象图只需调用格式化器的<code>Serialize方法</code>，并向它传递两样东西：<strong>对流对象的引用</strong>，以及对想要序列化的<strong>对象图的引用</strong>。流对象表示了序列化好的字节应该放到哪里，它可以是从System.IO.Stream抽象基类派生的任何类型的对象。 也就是说对象图可序列化成一个<code>MemoryStream</code>,<code>FileStream</code>或者<code>NetworkStream</code>等.</p>
+<p>格式化器参考<strong>对每个对象的类型进行描述的元数据</strong>，从而了解如何序列化完整的对象图。序列化时，<code>Serialize方法</code>利用反射来查看每个对象的类型中都有哪些实例字段。在这些字段中，任何一个引用了其他对象，格式化器的<code>Serialize方法</code>就知道哪些对象也要进行序列化。</p>
+<p>格式化器的算法非常智能。他们知道如何确保对象图中的每个对象都只序列化一次。<strong>换言之，如果对象图中的两个对象互相引用，格式化器会检测到这一点，每个对象都只序列化一次，避免发生死循环</strong>。</p>
+<p>在内部，格式化器的<code>Deserialize方法</code>检查流的内容，构造流中所有对象的实例，并<strong>初始化所有这些对象中的字段</strong>，使它们具有与当初序列化时相同的值。通常要将<code>Deserialize方法</code>返回的对象引用<strong>转型为应用程序期待的类型</strong>。</p>
+<p><strong>利用序列化创建对象的深拷贝</strong>:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">object</span> <span class="token function">DeepClone</span><span class="token punctuation">(</span><span class="token keyword">object</span> original<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//构造临时内存流</span>
+    <span class="token keyword">using</span> <span class="token punctuation">(</span>MemoryStream stream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MemoryStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//构造序列化格式器来做所有真正的工作</span>
+        BinaryFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 之后讲解 "流上下文"</span>
+        formatter<span class="token punctuation">.</span>Context <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StreamingContext</span><span class="token punctuation">(</span>StreamingContextStates<span class="token punctuation">.</span>Clone<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//将对象图序列化到内存流中</span>
+        formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">,</span> original<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//反序列化前，定位到内存流的起始位置</span>
+        stream<span class="token punctuation">.</span>Position <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//将对象图反序列化成一组新对象，向调用者返回对象图（深拷贝）的根</span>
+        <span class="token keyword">return</span> formatter<span class="token punctuation">.</span><span class="token function">Deserialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>有几点需要注意。首先，是由你来保证代码为序列化和反序列化使用相同的格式化器。其次，可以将多个对象图序列化到一个流中，这是很有用的一个操作。例如，假定有以下两个类定义：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Customer</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Oreder</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后，在应用程序的主要类中定义了以下静态字段：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> List<span class="token operator">&lt;</span>Customer<span class="token operator">></span> s_customers    <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Customer<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> List<span class="token operator">&lt;</span>Oreder<span class="token operator">></span> s_pendingOrders  <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Oreder<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> List<span class="token operator">&lt;</span>Oreder<span class="token operator">></span> s_processedOrders<span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Oreder<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>现在，可利用如下所示方法将应用程序的状态序列化到单个流中：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">SaveApplicationState</span><span class="token punctuation">(</span>Stream stream<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//构造序列化格式器来做所有真正的工作</span>
+    BinaryFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//序列化我们的应用程序的完整状态</span>
+    formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">,</span>s_customers<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">,</span>s_pendingOrders<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">,</span>s_processedOrders<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>最后一个注意事项与<strong>程序集</strong>有关。序列化对象时，<strong>类型的全名和类型定义程序集的全名会被写入流</strong>。<code>BinaryFormatter</code>默认输出程序集的完整表示，其中包括程序集的文件名（无扩展名）、版本号、语言文化以及公钥信息。反序列化对象是，格式化器首先获取程序集标识信息，并通过调用<code>System.Reflection.Assembly</code>的<code>Load方法</code>确保程序集已加载到正在执行的Appdomain中。</p>
+<p>程序集加载好之后，格式化器在程序集中查找与要反序列化的对象匹配的类型</p>
+<ul>
+<li><strong>找不到匹配类型就抛出异常</strong>，不再对更多的对象进行反序列化。<ul>
+<li>找到匹配的类型，就创建类型的实例，并用流中包含的值对其字段字段进行初始化。</li>
+</ul>
+</li>
+<li>如果类型中的字段与流中读取的<strong>字段名不完全匹配</strong>，就抛出<code>SerializationException异常</code>，不再对更多的对象进行反序列化。</li>
+</ul>
+<h2 id="关于Assembly-LoadFrom加载程序集的相关问题"><a href="#关于Assembly-LoadFrom加载程序集的相关问题" class="headerlink" title="关于Assembly.LoadFrom加载程序集的相关问题"></a>关于Assembly.LoadFrom加载程序集的相关问题</h2><p><img src="/2019/09/17/CLR读书笔记/24运行时序列化/QQ截图20190918114813.png" alt=""></p>
+<p>反序列化会调用<code>Assembly.Load</code>而非<code>LoadFrom</code>, 一般情况下无法定位程序集, 造成<code>SerializationException异常</code>.</p>
+<p>如果这样做了, 建议在<strong>调用格式化器的Deserialize方法之前</strong>, 实现一个方法, 它的<strong>签名匹配<code>System.ResolueEventHandler</code>委托</strong>. 并向<code>AppDomain</code>的<code>AssemblyResolve事件</code>注册这个方法.  <code>Deserialize方法</code>结束后,马上向事件注销这个方法. 现在每个格式化器加载一个程序集失败,CLR都会自动调用你的<code>ResolueEventHandler</code>方法, 加载失败的程序集的标识会传给这个方法, 方法可以从程序集的标识知道去哪里寻找文件. 然后方法可调用<code>Assembly.LoadFrom</code>加载程序集, 最后返回对结果程序集的引用.</p>
+<h1 id="使类型可序列化"><a href="#使类型可序列化" class="headerlink" title="使类型可序列化"></a>使类型可序列化</h1><p>设计类型时，设计人员必须郑重地决定是否允许类型的实例序列化。<strong>类型默认是不可序列化的</strong>。开发者必须向类型应用<code>定制特性System.SerializableAttribute</code>。<strong>任何对象不可序列化，格式化器的<code>Serialize方法</code>都会抛出异常</strong>。</p>
+<p>注意: 序列化对象图时, 也许有的对象的类型能序列化,有的不能. 考虑到性能, 在序列化之前, 格式化器<strong>不会验证</strong>对象图中的所有对象都能序列化. 所以序列化对象图时, 在抛出<code>SerializationException</code>异常之前, 完全有可能已经有一部分对象序列化到流中, 如果发生这种情况, 流中就会包含已损坏的数据.</p>
+<p>序列化对象图时, 如果你认为有一些对象不可序列化, 那么写的代码就应该能得体地从这种情况中恢复. <strong>一个方案是,先将对象序列化到<code>MemoryStream</code>中, 然后如果所有对象都成功序列化, 才将<code>MemoryStream</code>中的字节复制到<code>你正在希望的目标流(文件或网络流)</code>中.</strong></p>
+<p><strong><code>SerializableAttribute</code>定制特性只能应用于引用类型(class), 值类型(struct),枚举类型(enum)和委托类型(delegate).</strong>  注意, 枚举和委托类型总是可序列化的.所以不必显式应用此特性. 除此之外,<strong>此特性不会被派生类型继承</strong>.</p>
+<p>如果基类型没有应用<code>SerializableAttribute</code>定制特性, 那么很难想象如何从它的派生出可序列化的类型. 这样设计的原因是如果基类型不允许它的实例序列化, 它的字段就不能序列化. 因为基对象实际就是派生对象的一部分. 这也是基对象<code>Object</code>已经应用了<code>SerializableAttribute</code>特性的原因.</p>
+<p>一般建议将你定义的大多数类型都设置成可序列化. 毕竟, 这样能为类型的用户提供很大的灵活性. 但必须注意的是, 序列化会读取对象的<strong>所有字段</strong>. 不管这些字段声明为public, protected,internal,private. <strong>如果类型的实例要包含敏感或安全数据(比如密码), 或者数据在转移之后便没有含义或者没有值, 就不应该使类型变得可序列化.</strong></p>
+<h1 id="控制序列化和反序列化"><a href="#控制序列化和反序列化" class="headerlink" title="控制序列化和反序列化"></a>控制序列化和反序列化</h1><p>用<code>SerializableAttribute</code>定制特性应用于类型, 但类型可能定义了一些不应序列化的实例字段. 一般有两个原因造成我们不想序列化部分实例字段:</p>
+<ul>
+<li>字段含有反序列化后变得无效的信息.<ul>
+<li>例如, 对象包含Windows内核对象（如文件、进程、线程、互斥体、事件、信号量等）的句柄，那么在反序列化到另一个进程或另一台机器之后，就会失去意义。因为Windows内核对象是跟进程相关的值。</li>
+</ul>
+</li>
+<li>字段含有很容易计算的信息.<ul>
+<li>这时要选出哪些无须序列化的字段, 减少需要传输的数据, 增强应用程序的性能.</li>
+</ul>
+</li>
+</ul>
+<p>以下代码使用<code>System.NonSerializedAttribute</code>定制特性指出类型中不应序列化的字段.<strong>注意，该特性只能应用于类型中的字段，而且会被派生类型继承。</strong></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Circle</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Double m_radius<span class="token punctuation">;</span>
+
+    <span class="token punctuation">[</span>NonSerialized<span class="token punctuation">]</span>
+    <span class="token keyword">private</span> Double m_area<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">Circle</span><span class="token punctuation">(</span>Double radius<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_radius <span class="token operator">=</span> radius<span class="token punctuation">;</span>
+        m_area <span class="token operator">=</span> Math<span class="token punctuation">.</span>PI <span class="token operator">*</span> m_radius <span class="token operator">*</span> m_radius<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码中, Circle对象可以序列化, 但格式化器只会序列化对象的<code>m_radius字段</code>的值. <code>m_area</code>的值不会被序列化, 因为字段应用了<code>[NonSerialized]</code>特性. 并且会被派生类型继承.</p>
+<p>假如构造一个Circle对象: <code>Circle c = new Circle(10);</code>, 在内部, <code>m_area</code>值会设置成一个月为314.159的值.  这个对象序列化时, 只有<code>m_radius</code>字段的值(10)才会写入流. 但当流反序列化<code>Circle对象</code>时, 就会遇到一个问题, <code>Circle对象</code>的<code>m_radius</code>值会被设为10, 但它的<code>m_area</code>字段会被初始化成0, 而不是314.159 !</p>
+<p>以下代码演示如何修正上述问题:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Circle</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Double m_radius<span class="token punctuation">;</span>
+
+    <span class="token punctuation">[</span>NonSerialized<span class="token punctuation">]</span>
+    <span class="token keyword">private</span> Double m_area<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">Circle</span><span class="token punctuation">(</span>Double radius<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_radius <span class="token operator">=</span> radius<span class="token punctuation">;</span>
+        m_area <span class="token operator">=</span> Math<span class="token punctuation">.</span>PI <span class="token operator">*</span> m_radius <span class="token operator">*</span> m_radius<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span>OnDeserialized<span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">OnDeserialized</span><span class="token punctuation">(</span>StreamContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+       m_area <span class="token operator">=</span> Math<span class="token punctuation">.</span>PI <span class="token operator">*</span> m_radius <span class="token operator">*</span> m_radius<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>要在对象反序列化时调用一个方法, System.Runtime.Serialization.OnDeserialized 定制特性时首选方案, 而不是上类型实现 System.Runtime.Serialization.IDeserializationCallback接口的OnDeserialized方法</p>
+</blockquote>
+<p>应用了此特性<code>[OnDeserialized]</code>的方法, 每次反序列化类型的实例, <code>格式化器</code>都会检查类型中是否定义了应用该特性的方法, 如果是,就调用该方法, 从而确保对象的完全反序列化.</p>
+<ul>
+<li><code>OnSerializingAttribute</code></li>
+<li><code>OnSerializedAttribute</code></li>
+<li><code>OnDeserializingAttribute</code></li>
+<li><code>OnDeserializedAttribute</code></li>
+</ul>
+<p>可以将它们应用于类型汇总定义的方法, 对序列化和反序列化过程进行更多的控制.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyType</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> x<span class="token punctuation">,</span> y<span class="token punctuation">;</span>
+    <span class="token punctuation">[</span>NonSerialized<span class="token punctuation">]</span> <span class="token keyword">private</span> <span class="token keyword">int</span> sum<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">MyType</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span><span class="token keyword">int</span> y<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>x <span class="token operator">=</span> x<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>y <span class="token operator">=</span> y<span class="token punctuation">;</span>
+        sum <span class="token operator">=</span> x <span class="token operator">+</span> y<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token punctuation">[</span>OnDeserializing<span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">OnDeserializing</span><span class="token punctuation">(</span>StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 在类型的新版本中,(反序列化开始时)为字段设置默认值</span>
+    <span class="token punctuation">}</span>
+    <span class="token punctuation">[</span>OnDeserialized<span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">OnDeserialized</span><span class="token punctuation">(</span>StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 反序列化结束后, 根据字段值初始化瞬时状态比如sum值</span>
+        sum <span class="token operator">=</span> x <span class="token operator">+</span> y<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token punctuation">[</span>OnSerializing<span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">OnSerializing</span><span class="token punctuation">(</span>StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 在序列化前, 修改任何需要修改的状态</span>
+    <span class="token punctuation">}</span>
+    <span class="token punctuation">[</span>OnSerialized<span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">OnSerialized</span><span class="token punctuation">(</span>StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 在序列化后, 恢复任何需要恢复的状态</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用这4个属性中的任何一个时, 你定义的方法必须获取一个<code>StreamingContext</code>参数”流上下文”, 并返回void. 方法名可以是任意名称, 且方法声明为private,以免被普通的代码调用; <strong>格式化器运行时有充足的安全权限. 所以能调用私有方法</strong>.  </p>
+<p>序列化一组对象时,</p>
+<ol>
+<li>格式化器首先调用对象的标记了<code>[OnSerializing]</code>的所有方法.</li>
+<li>接着序列化对象的所有字段</li>
+<li>最后完调用对象的标记了<code>[OnSerialized]</code>的所有方法</li>
+</ol>
+<p>反序列化一组对象时,</p>
+<ol>
+<li>首先, 格式化器调用对象的标记了<code>[OnDeserializing]</code>的所有方法.</li>
+<li>然后, 它反序列化对象的所有字段.</li>
+<li>最后, 调用对象的标记了<code>[OnDeserialized]</code>的所有方法.</li>
+</ol>
+<p>反序列化期间, 格式化器处理带有<code>[OnDeserialized]</code>特性的方法时, 会将这个对象的引用添加到一个内部<strong>列表</strong>中. 所有对象都反序列化之后, <strong>格式化器反向遍历列表</strong>.  之所以要以相反的顺序调用这些方法, 因为这样才能<strong>使内层对象先于外层对象完成反序列化</strong>.</p>
+<p>例如, <code>Hashtable</code>或<code>Dictonary</code>内部用了一个哈希表维护它的数据项列表. 这个集合中的对象类型有标记了<code>[OnDeserialized]</code>特性的方法(用于反序列化之后的操作). 即使集合对象先反序列化(先于它包含的数据项). 它的<code>[OnDeserialized]</code>方法也会最后调用(在调用完它的数据项的所有<code>[OnDeserialized]</code>方法之后). 这样一来, 所有数据项在反序列化后它们的所有字段都能得到正确的初始化, 以便计算出一个好的哈希码值. 利用哈希码将数据放到内部哈希桶中.</p>
+<p><strong>如果序列化类型的实例, 在类型中添加新字段, 然后视图反序列化不包含新字段的对象, 格式化器就会抛出<code>SerializationException异常</code>, 并显示一条消息告诉你流中要反序列化的数据包含错误的成员数目. 这时可以利用<code>System.Runtime.Serialization.OptionalFieldAttribute</code>特性. 类型中新增的每个字段都要应用<code>[OptionalField]</code>特性(可选字段), 这样格式化器就不会因为流中的数据不包含这个字段而抛出<code>SerializationException异常</code>.</strong></p>
+<h1 id="格式化器如何序列化类型实例"><a href="#格式化器如何序列化类型实例" class="headerlink" title="格式化器如何序列化类型实例"></a>格式化器如何序列化类型实例</h1><p>本节将深入讨论格式化器<strong>如何序列化对象的字段</strong>。为了简化格式化器的操作，FCL在<code>System.Runtime.Serialization</code>命名空间提供了一个<code>FormatterServices类型</code>。该类型只包含静态方法，而且该类型不能实例化。</p>
+<h2 id="以下步骤描述了格式化器如何自动序列化类型应用Serializable特性的对象。"><a href="#以下步骤描述了格式化器如何自动序列化类型应用Serializable特性的对象。" class="headerlink" title="以下步骤描述了格式化器如何自动序列化类型应用Serializable特性的对象。"></a>以下步骤描述了格式化器如何<strong>自动序列化类型</strong>应用<code>Serializable</code>特性的对象。</h2><ol>
+<li><p>格式化器调用<code>FormatterService</code>的<code>GetSerializableMembers方法</code>.</p>
+<p><code>public static MemberInfo[] GetSerializableMembers(Type type, StreamingContext context);</code></p>
+<p>这个方法利用反射获取类型的<code>public</code>和<code>private</code>实例字段(标记了<code>NonSerializedAttribute特性</code>的字段除外). 方法返回由<code>MemberInfo</code>对象构成的数组, 其中每个元素都对应一个可序列化的实例字段.</p>
+</li>
+<li><p>对象被序列化, <code>System.Reflection.MemberInfo</code>对象数组传给<code>FormatterServices</code>的静态方法<code>GetObjectData</code></p>
+</li>
+</ol>
+<p><code>public static object[] GetObjectData(object obj, MemberInfo[] members);</code>  </p>
+<p>这个方法返回一个Object数组, 每个元素都表示了被序列化的那个对象中的一个字段的值. 这个<code>Object数组</code>和<code>MemberInfo数组</code>是<strong>并行</strong>的. <strong>换言之, Object数组中的元素0是MemberInfo数组中的元素0所标识的那个成员的值</strong>.</p>
+<ol>
+<li>格式化器将程序集标识和类型的完整名称写入流中。</li>
+<li>格式化器然后<strong>遍历两个数组</strong>中的元素，将每个成员的名称和值写入流中。</li>
+</ol>
+<h2 id="以下步骤描述了格式化器如何自动反序列化类型应用Serializable特性的对象。"><a href="#以下步骤描述了格式化器如何自动反序列化类型应用Serializable特性的对象。" class="headerlink" title="以下步骤描述了格式化器如何自动反序列化类型应用Serializable特性的对象。"></a>以下步骤描述了格式化器如何<strong>自动反序列化类型</strong>应用<code>Serializable</code>特性的对象。</h2><ol>
+<li>格式化器从流中读取程序集标识和完整类型名称. 如果程序集当前没有加载到AppDomain中, 就加载它,如果加载失败就抛出<code>SerializationException异常</code>,程序集已加载,格式化器将程序集标识信息和类型全名传给<code>FormatterServices</code>的<code>静态方法GetTypeFromAssembly</code>;</li>
+</ol>
+<p><code>public static Type GetTypeFromAssembly(Assembly assem, String name);</code></p>
+<p>这个方法返回一个System.Type对象, 它代表要反序列化的那个对象的类型.</p>
+<ol>
+<li>格式化器调用<code>FormatterServices</code>的<code>静态方法GetUninitializedObject</code>:</li>
+</ol>
+<p><code>public static Object GetUninitializedObject(Type type);</code></p>
+<p>这个方法为一个新对象分配内存, <strong>但不为对象调用构造器</strong>. 然而, <strong>对象的所有字节都被初始化成null或0</strong>.</p>
+<ol>
+<li><p>格式化器现在构造并初始化一个<code>MemberInfo数组</code>, 具体做法和前面一样, 都是调用<code>FormatterServices</code>的<code>GetSerializableMembers</code>方法, 这个方法返回序列化好,现在需要反序列化的一组字段.</p>
+</li>
+<li><p>格式化器根据流中包含的数据创建并初始化一个Object数组.</p>
+</li>
+<li>将新分配对象, MemberInfo数组(包含字段类型)以及并行Object数组(包含字段值)的引用传给<code>FormatterServices</code>的<code>静态方法PopulateObjectMembers</code>:</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> Object <span class="token function">PopulateObjectMembers</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">,</span> MemberInfo<span class="token punctuation">[</span><span class="token punctuation">]</span> members<span class="token punctuation">,</span> Object<span class="token punctuation">[</span><span class="token punctuation">]</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这个方法遍历数组, 将每个字段初始化成对应的值. 到此为止, 对象就算是被彻底反序列化了.</p>
+<h1 id="控制序列化-反序列化的数据"><a href="#控制序列化-反序列化的数据" class="headerlink" title="控制序列化/反序列化的数据"></a>控制序列化/反序列化的数据</h1><p>本章前面讨论过，控制序列化和反序列过程的最佳方式就是使用<code>OnSerializing</code>等<strong>特性</strong>。然后，一些极少的情况下，这些特性不能提供你想要的全部控制。此外，格式化器(<code>Formatter</code>)内部使用的是<strong>反射</strong>，而反射的速度是比较慢的，这会增大序列化和反序列化对象所花的时间。</p>
+<p>为了对序列化、反序列化的数据进行完全控制，并避免使用反射，你的类型可实现<code>System.Runtime.Serialization. ISerializable</code>接口，定义如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">ISerializable</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个接口只有一个方法，即<code>GetObjectData</code>。但实现这个接口的大多数类型还实现了一个<code>特殊的构造器</code>。</p>
+<p>重要提示：<code>ISerializable</code>接口最大的问题在于，<strong>一旦类型实现了它，所有派生类型也必须实现它</strong>，<strong>而且派生类型必须保证调用基类的GetObjectData方法和特殊构造器</strong>。此外，一旦类型实现了该接口，便永远不能删除它，否则会时区与派生类型的兼容性。所以，密封类实现ISerializable接口是最让人放心的。</p>
+<p><code>ISerializable</code>接口和<code>特殊构造器</code>旨在由格式化器使用, 但其他代码可能调用<code>GetObjectData</code>来返回敏感数据. 另外其他代码可能构造对象, 并传入损坏的数据. 因此, 建议向<code>GetObjectData</code>方法和特殊构造器应用以下特性:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// .net framework 4.8 中 此 API 现已过时。</span>
+<span class="token punctuation">[</span><span class="token function">SecurityPermissionAttribute</span><span class="token punctuation">(</span>SecurityAction<span class="token punctuation">.</span>Demand<span class="token punctuation">,</span> SerializionFormatter <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong>格式化器</strong> 序列化对象图时会检查每个对象。如果发现一个对象的类型实现了<code>ISerializable接口</code>，就会<strong>忽略所有定制特性</strong>，改为构造新的<code>System.Runtime.Serialization.SerializationInfo</code>对象。该对象包含了要为对象序列化的值的集合。</p>
+<p>构造<code>SerializationInfo对象</code>时，格式化器要传递两个参数：<code>Type</code>和<code>System.Runtime.Serialization.IFormatterConverter</code>。Type参数标识要序列化的对象。</p>
+<ul>
+<li>类型的全名<code>SerializationInfo.FullTypeName</code></li>
+<li>程序集的标识<code>SerializationInfo.AssemblyName</code></li>
+<li>构造器获取类型的定义程序集: 内部查询<code>Type</code>的<code>Module</code>属性, 再查询<code>Module</code>的<code>Assembly</code>属性, 再查询<code>Assembly</code>的<code>FullName</code>属性.</li>
+</ul>
+<p><img src="/2019/09/17/CLR读书笔记/24运行时序列化/QQ截图20190919143558.png" alt=""></p>
+<p>构造好并初始化好<code>SerializationInfo</code>对象后，格式化器调用类型的<code>GetObjectData方法</code>，向它传递对<code>SerializationInfo对象</code>的引用。<code>GetObjectData</code>调用<code>SerializationInfo</code>类型提供的<code>AddValue</code>方法的众多重载版本之一来指定要序列化的信息。针对要添加的每个数据，都要调用一次<code>AddValue</code>。</p>
+<p>以下代码展示了<code>Dictionary&lt;TKey,TValue&gt;类型</code>如何实现<code>ISerializable</code>和<code>IDeserializationCallback接口</code>来控制其对象的序列化和反序列化。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Dictionary</span><span class="token operator">&lt;</span>TKey<span class="token punctuation">,</span> TValue<span class="token operator">></span> <span class="token punctuation">:</span> ISerializable<span class="token punctuation">,</span> IDeserializationCallback
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 其他一些私有字段未列出</span>
+
+    <span class="token keyword">private</span> SerializationInfo m_siInfo<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//只用于反序列化</span>
+
+    <span class="token comment" spellcheck="true">//用于控制反序列化的特殊构造器（这是ISerializable需要的）</span>
+    <span class="token punctuation">[</span><span class="token function">SecurityPermission</span><span class="token punctuation">(</span>SecurityAction<span class="token punctuation">.</span>Demand<span class="token punctuation">,</span> SerializationFormatter <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">protected</span> <span class="token function">Dictionary</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//反序列化期间，为OnDeserialization保存SerializationInfo</span>
+        m_siInfo <span class="token operator">=</span> info<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//用于控制序列化的方法</span>
+    <span class="token punctuation">[</span>SecurityCritical<span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span><span class="token string">"Version"</span><span class="token punctuation">,</span>m_version<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//......</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">//所有key/value对象都反序列化好之后调用的方法</span>
+    <span class="token keyword">public</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> IDeserializationCallback<span class="token punctuation">.</span><span class="token function">OnDeserialization</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>m_siInfo<span class="token operator">==</span><span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//从不设置，直接返回</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// ....</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>每个Addvalue方法都获取一个String名称和一些数据。数据一般是简单的值类型。然后，还可以在调用AddValue时向它传递对一个object的引用。<code>GetObjectData</code>添加好所有必要的序列化信息之后，会返回至格式化器。</p>
+<p><img src="/2019/09/17/CLR读书笔记/24运行时序列化/QQ截图20190919144728.png" alt=""></p>
+<p>现在,格式化器获取已添加到<code>SerializationInfo</code>对象的所有值, 并把它们都序列化到流中.  我们还向<code>GetObjectData</code>方法传递了另一个参数 <code>StreamingContext</code>对象的引用, 大多数类型的<code>GetObjectData</code>都会完全忽略这个参数.</p>
+<p>知道了如何设置序列化所需的全部信息之后，再来看<strong>反序列化</strong>。格式化器从流中提取一个对象时，会为新对象分配内存（<code>FormatterService</code>的静态方法<code>GetUninitializedObject</code>）。最初，<strong>这个对象的所有字段都设为0或者null</strong>。然后，格式化器检查类型是否实现了<code>ISerializable接口</code>。如果存在这个接口，格式化器就尝试调用一个<strong>特殊构造器</strong>，他的参数和<code>GetObjectData</code>方法完全一致。</p>
+<blockquote>
+<p>如果是密封类,强烈建议声明特殊构造器为private防止任何代码不慎调用到它. 而不是密封类, 则声明为protected,确保只有派生类才能调用. 但是无论怎么声明,格式化器都能调用它.</p>
+</blockquote>
+<p>构造器获取了<code>SerializationInfo</code>对象引用, 其中包含了序列化时添加的所有值. 特殊构造器可调用<code>GetInt</code>,<code>GetString</code>等Get方法, 向它传递与序列化一个值所用的名称对应的字符串. 获取的值再去初始化字段.</p>
+<p>反序列化对象的字段时，应调用和对象序列化时传给<code>AddValue方法</code>的值的类型匹配的get方法。换言之，<strong>如果GetObjectData方法调用AddValue时传递的是一个<code>int值</code>，那么在反序列化对象时，应该为同一个值调用<code>GetInt32</code>方法</strong>。<strong>如果值在流中的类型和你试图获取get的类型不符，格式化器会尝试用一个IFormatterConverter对象将流中的值类型转型成你指定的类型</strong>。</p>
+<p><code>FormatterConverter</code>会调用<code>System.Convert类</code>的各种静态方法在不同的核心类型之间对值进行转换. (比如Int64转成一个Int32), 然而,为了在其他任意类型之间转换一个值, <code>FormatterConverter</code>要调用<code>Convert类</code>的<code>ChangeType方法</code>将序列化好的类型转型为一个<code>IConvertible</code>接口, 再调用恰当的接口方法.  </p>
+<p><strong>所以要允许一个可序列化类型的对象反序列化成一个不同的类型, 可考虑让自己的类型实现IConvertible接口</strong>. 注意, 只有在反序列化对象时调用一个Get方法,发现它的类型和流中的类型不符时,才会使用<code>FormatterConverter</code>对象.</p>
+<p>特殊构造器也可以不调用上面列出的各个Get方法, 而是调用<code>GetEnumerator</code>. 该方法返回一个<code>SerializationInfo.Enumerator</code>对象, 可用该对象遍历<code>SerializationInfo</code>对象中包含的所有值. 枚举的每个值都是一个<code>SerializationEntry</code>对象.</p>
+<p>当然, 完全可以定义自己的类型, 让它从实现了<code>ISerializable</code>的<code>GetObjectData方法</code>和<code>特殊构造器</code>的类型派生. 如果你的类型也实现了<code>ISerializable</code>, <strong>那么在你实现的<code>GetObjectData方法</code>和<code>特殊构造器</code>中,必须调用基类中的同名方法</strong>. <strong>确保对象能正确序列化和反序列化. 这一点很重要</strong>.</p>
+<p><img src="/2019/09/17/CLR读书笔记/24运行时序列化/QQ截图20190920113237.png" alt=""></p>
+<h2 id="要实现ISerializable但基类型没有实现怎么办？"><a href="#要实现ISerializable但基类型没有实现怎么办？" class="headerlink" title="要实现ISerializable但基类型没有实现怎么办？"></a>要实现ISerializable但基类型没有实现怎么办？</h2><p>前面讲过，<code>ISerializable接口</code>的功能非常强大，允许类型完全控制如何对类型的实例进行序列化和反序列化。但这个能力是有代价的：现在，<strong>该类型还要负责它的基类型的所有字段的序列化</strong>。如果基类型也实现了<code>ISerializable接口</code>，那么对基类型的字段进行序列化时很容易。调用基类型的<code>GetObjectData</code>即可。</p>
+<p>但是如果基类型没有实现<code>ISerializable接口</code>，在这种情况下，<strong>派生类必须手动序列化基类的字段</strong>。<strong>具体的做法是获取它们的值，并把这些值添加到<code>SerializationInfo集合</code>中。然后，在你的特殊构造器中，还必须从集合中取出值，并以某种方式设置基类的字段。如果是public或者protected的,那么一切很容易实现, 如果是private字段,就不可能实现.</strong></p>
+<p>以下代码演示了如何正确实现<code>ISerializable接口</code>的<code>GetObjectData方法</code>和它的隐含的<code>构造器</code>, 使基类的字段能被序列化:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">internal</span> <span class="token keyword">class</span> <span class="token class-name">Base</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">protected</span> <span class="token keyword">string</span> m_name <span class="token operator">=</span> <span class="token string">"Jeff"</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">Base</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">internal</span> <span class="token keyword">class</span> <span class="token class-name">Derived</span><span class="token punctuation">:</span>Base<span class="token punctuation">,</span>ISerializable
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> DateTime m_date<span class="token operator">=</span>DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">Derived</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 如果这个构造器不存在, 便会引发一个SerializationException异常</span>
+    <span class="token comment" spellcheck="true">// 如果这个类不是密封类, 这个构造器就应该是protected的</span>
+    <span class="token punctuation">[</span><span class="token function">SecurityPermission</span><span class="token punctuation">(</span>SecurityAction<span class="token punctuation">.</span>Demand<span class="token punctuation">,</span>SerializationFormatter <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token function">Derived</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">//为我们的类和基类获取可序列化的成员集合</span>
+        Type baseType <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>BaseType<span class="token punctuation">;</span>
+        MemberInfo<span class="token punctuation">[</span><span class="token punctuation">]</span> mi <span class="token operator">=</span> FormatterServices<span class="token punctuation">.</span><span class="token function">GetSerializableMembers</span><span class="token punctuation">(</span>baseType<span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//从info对象反序列化基类的字段</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> mi<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">//获取字段，并把它设为反序列化好的值</span>
+            FieldInfo fi <span class="token operator">=</span> <span class="token punctuation">(</span>FieldInfo<span class="token punctuation">)</span> mi<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            fi<span class="token punctuation">.</span><span class="token function">SetValue</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span>info<span class="token punctuation">.</span><span class="token function">GetValue</span><span class="token punctuation">(</span>baseType<span class="token punctuation">.</span>FullName<span class="token operator">+</span><span class="token string">"+"</span><span class="token operator">+</span>fi<span class="token punctuation">.</span>Name<span class="token punctuation">,</span>fi<span class="token punctuation">.</span>FieldType<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">//反序列化为这个类序列化的值</span>
+        m_date <span class="token operator">=</span> info<span class="token punctuation">.</span><span class="token function">GetDateTime</span><span class="token punctuation">(</span><span class="token string">"Date"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span><span class="token function">SecurityPermission</span><span class="token punctuation">(</span>SecurityAction<span class="token punctuation">.</span>Demand<span class="token punctuation">,</span>SerializationFormatter <span class="token operator">=</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//为这个类序列化希望的值</span>
+        info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span><span class="token string">"Date"</span><span class="token punctuation">,</span>m_date<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//获取我们的类和基类的可序列化的成员</span>
+        Type baseType <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>BaseType<span class="token punctuation">;</span>
+        MemberInfo<span class="token punctuation">[</span><span class="token punctuation">]</span> mi <span class="token operator">=</span> FormatterServices<span class="token punctuation">.</span><span class="token function">GetSerializableMembers</span><span class="token punctuation">(</span>baseType<span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//将基类的字段序列化到info对象中</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> mi<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">//为字段名附加基类型全名作为前缀</span>
+            info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span>baseType<span class="token punctuation">.</span>FullName<span class="token operator">+</span><span class="token string">"+"</span><span class="token operator">+</span>mi<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>Name<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>FieldInfo<span class="token punctuation">)</span>mi<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetValue</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"Name={0},Date={1}"</span><span class="token punctuation">,</span> m_name<span class="token punctuation">,</span> m_date<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码有一个名为<code>Base</code>的基类,它只用<code>SerializableAttribute</code>定制特性进行标识, 从它派生的<code>Derived</code>类,除了应用了此特性还实现了<code>ISerializable</code>接口. 两个类都定义了<code>m_name</code>的String字段, <strong>调用<code>SerializationInfo</code>的<code>AddValue</code>不能添加多个同名值</strong>. 解决这个问题的方案是在字段名前附加类名作为前缀. 从而对每个字段进行标识. 例如, 当GetObjectData方法调用<code>AddValue</code>来序列化<code>Base的m_name字段</code>时, 写入的值名称是”Base+m_name”.</p>
+<h1 id="流上下文"><a href="#流上下文" class="headerlink" title="流上下文"></a>流上下文</h1><p>前面讲过，一组序列化好的对象可以有许多目的地：同一个进程、同一台机器上的不同进程、不同机器上的不同进程等。在一些比较少见的情况下，一个对象可能想知道它要在什么地方反序列化，从而以不同的方式生产它的状态。例如，如果对象中包装了windows信号量对象，如果它知道要反序列化到同一个进程，就可决定对它的内核句柄进行序列化，这是因为内核句柄在一个进程中有效。但如果要反序列化到同一台计算机的不同进程中，就可决定对信号量的字符串名称名称进行序列化。最后，如果要反序列化到不同计算机上的进程，就可决定抛出异常，因为信号量只在一台机器内有效。</p>
+<p>本章提到的大量方法都接受一个<code>StreamingContext（流上下文）</code>。<code>StreamingContext</code>结构是一个非常简单的<strong>值类型</strong>，它只提供了两个公共只读属性，如下:</p>
+<p><img src="/2019/09/17/CLR读书笔记/24运行时序列化/QQ截图20190920144424.png" alt=""></p>
+<p><img src="/2019/09/17/CLR读书笔记/24运行时序列化/QQ截图20190920151102.png" alt=""></p>
+<p>知道如何获取这些信息后，接着讨论如何设置。<code>IFormatter接口</code>定义了<code>StreamingContext</code>类型的可读写属性<code>Context</code>。构造格式化器时，格式化器会初始化它的Context属性，将<code>StreamingContextStates</code>设为All，将对额外状态对象的引用设为null。</p>
+<p>格式化器构造好之后，就可以使用任何<code>StreamingContextStates位标志</code>来构造一个<code>StreamingContext结构</code>，并可选择传递一个<code>对象(包含你需要的任何额外的上下文信息)引用</code>。现在，在调用格式化器的<code>Serialize</code>或<code>Deserialize</code>方法之前，你只需要将格式化器的<code>context属性</code>设为这个新的<code>StreamingContext对象</code>。</p>
+<h1 id="类型序列化为不同类型以及对象反序列化为不同对象"><a href="#类型序列化为不同类型以及对象反序列化为不同对象" class="headerlink" title="类型序列化为不同类型以及对象反序列化为不同对象"></a>类型序列化为不同类型以及对象反序列化为不同对象</h1><p>.Net Framework的序列化架构是相当全面的，本节要讨论如何设计类型<strong>将自己序列化或反序列化成不同的类型或对象</strong>。下面列举了一些有趣的例子。</p>
+<ol>
+<li><p>有的类型（比如<code>System.DBNull</code>和<code>System.Reflection.Missing</code>）设计为每个Appdomain一个实例。经常将这些类型称为<strong>单实例（Singleton）类型</strong>。<strong>给定一个DBNull对象引用，序列化和反序列化它不应造成在appdomain中新建一个DBNull对象，反序列化后，返回的引用应指向appdomain中现有的DBNull对象。</strong></p>
+</li>
+<li><p>对某些类型（比如<code>System.Type</code>和<code>System.Reflection.Assembly</code>，以及其他反射类型，例如<code>MemberInfo</code>），每个类型、程序集或成员等都只能有一个实例。例如，假定一个数组中的每个元素都引用一个<code>MemberInfo</code>对象，其中5个元素引用的都是一个<code>MemberInfo对象</code>。序列化和反序列化这个数组后，那5个元素引用的应该还是一个<code>MemberInfo对象</code>。除此之外，这些元素引用的<code>MemberInfo</code>对象还必须实际对应于Appdomain中的一个特定成员。轮询数据库连接对象或者其他任何类型的对象时，这个功能也是很好用的。</p>
+</li>
+<li><p>对于远程控制的对象，CLR序列化与服务器对象有关的信息。在客户端上反序列化时，会造成CLR创建一个代理对象。这个代理对象的类型有别于服务器对象的类型，但这对于客户端代码来说是透明的（客户端不需要关心这个问题）。客户端直接在代理对象上调用实例方法。然后，代理代码内部会调用远程发送给服务器，由后者实际执行请求操作。</p>
+</li>
+</ol>
+<p>如何正确的序列化和反序列化<code>单实例类型</code>:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Singleton</span> <span class="token punctuation">:</span> ISerializable
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//这是该类型的一个实例</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> Singleton s_theOneObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Singleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//这些是实例字段</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token operator">=</span> <span class="token string">"Jeff"</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> DateTime Date<span class="token operator">=</span>DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//私有构造器，允许这个类型构造单实例</span>
+    <span class="token keyword">private</span> <span class="token function">Singleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//该方法返回对单实例的引用</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Singleton <span class="token function">GetSingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> s_theOneObject<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 序列化一个singleton时调用的方法</span>
+    <span class="token comment" spellcheck="true">// 我建议在这里使用一个显式接口方法实现（eimi）</span>
+    <span class="token punctuation">[</span><span class="token function">SecurityPermission</span><span class="token punctuation">(</span>SecurityAction<span class="token punctuation">.</span>Demand<span class="token punctuation">,</span>SerializationFormatter <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">void</span> ISerializable<span class="token punctuation">.</span><span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+       info<span class="token punctuation">.</span><span class="token function">SetType</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>SingletonSerializationHelper<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token comment" spellcheck="true">// 不需要设置其他值</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SingletonSerializationHelper</span><span class="token punctuation">:</span>IObjectReference
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//这个方法在对象（它没有字段）反序列化之后调用</span>
+        <span class="token keyword">public</span> <span class="token keyword">object</span> <span class="token function">GetRealObject</span><span class="token punctuation">(</span>StreamingContext context<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> Singleton<span class="token punctuation">.</span><span class="token function">GetSingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 特殊构造器是不必要的,因为它永远不会调用</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Singleton类所代表的类型规定每个AppDomain只能存在它的一个实例. 以下是测试序列化和反序列化代码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 创建数组，其中多个元素引用一个singleton对象</span>
+    Singleton<span class="token punctuation">[</span><span class="token punctuation">]</span> a1 <span class="token operator">=</span> <span class="token punctuation">{</span> Singleton<span class="token punctuation">.</span><span class="token function">GetSingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Singleton<span class="token punctuation">.</span><span class="token function">GetSingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"两个元素都指向同一个对象吗?"</span><span class="token operator">+</span><span class="token punctuation">(</span>al<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">==</span>al<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// True</span>
+    <span class="token keyword">using</span> <span class="token punctuation">(</span><span class="token keyword">var</span> stream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MemoryStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        BinaryFormatter formatter<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//先序列化再反序列化数组元素</span>
+        formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">,</span> a1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        stream<span class="token punctuation">.</span>Position <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        Singleton<span class="token punctuation">[</span><span class="token punctuation">]</span> a2 <span class="token operator">=</span> <span class="token punctuation">(</span>Singleton<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> formatter<span class="token punctuation">.</span><span class="token function">Deserialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//证明它的工作和预期一样</span>
+        <span class="token comment" spellcheck="true">// 证明a2数组的两个元素引用的同一个对象</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"两个都指向同一个对象吗?"</span><span class="token operator">+</span><span class="token punctuation">(</span>a2<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">==</span>a2<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//true</span>
+        <span class="token comment" spellcheck="true">// 两个数组中的元素引用是同一个对象</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"所有的元素都指向同一个对象吗?"</span><span class="token operator">+</span><span class="token punctuation">(</span>a1<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">==</span>a2<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//true</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>现在，我们通过分析代码来理解所发生的事情。Singleton类型加载到Appdomain中时，CLR调用它的静态构造器来构造一个Singleton对象，并将对它的引用保存到静态字段<code>s_theOneObject</code>中。<code>Singleton</code>类没有提供任何公共构造器，<strong>这防止了其他任何代码构造该类的其他实例</strong>。</p>
+<p><code>formatter.Serialize</code>时, 格式器检测到<code>Singleton</code>类型实现了<code>ISerializable</code>接口. 并调用<code>GetObjectData</code>方法, 这个方法调用<code>SetType</code>,向它传递<code>SingletonSerializationHelper</code>对象, 由于没有调用<code>AddValue</code>, 所以没有额外的字段信息写入流. 格式化器自动检测出两个数组元素都引用一个对象. 所以格式化器只序列化一个对象.</p>
+<p>序列化数组之后，调用格式化器的<code>Deserialize</code>方法。对流进行反序列化时，格式化器尝试反序列化一个<code>SingletonSerializationHelper</code>对象，这是格式化器之前被“欺骗”所序列化的东西(事实上着正是为什么Singleton类不提供特殊构造器的原因, 实现了<code>ISerializable</code>接口的通常都需要提供这个特殊构造器)。构造好<code>SingletonSerializationHelper</code>对象后，格式化器发现这个类型实现了<code>System.Runtime.Serialization.IObjectReference</code>接口。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">IObjectReference</span>
+<span class="token punctuation">{</span>
+   Object <span class="token function">GetRealObject</span><span class="token punctuation">(</span>StreamingContext context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果类型实现了这个接口，格式化器会调用<code>GetRealObject</code>方法。这个方法返回在对象反序列化好之后你真正想引用的对象。在我的例子中，<code>SingletonSerializationHelper</code>类型让<code>GetRealObject</code>返回对Appdomain中已经存在的<code>Singleton对象</code>的一个引用。所以，当格式化器的Deserialize方法返回时，a2数组包含两个元素，两者都引用<code>Appdomain</code>的<code>Singleton</code>对象。用于帮助进行反序列化的<code>SingletonSerializationHelper</code>对象立即变得“不可达”了，将来会被垃圾回收。</p>
+<h1 id="序列化代理"><a href="#序列化代理" class="headerlink" title="序列化代理"></a>序列化代理</h1><p>格式化器还允许不是“类型实现的一部分”的代码重写该类型“序列化和反序列化其对象”的方式。应用程序代码之所以要重写（覆盖）类型的行为，主要是出于两方面的考虑。</p>
+<ol>
+<li>允许开发人员序列化最初没有设计要序列化的类型。</li>
+<li>允许开发人员提供一种方式将类型的一个版本映射到类型的一个不同的版本。</li>
+</ol>
+<p>简单地说，为了使这个机制工作起来，首先要定义一个“<strong>代理类型</strong>”（surrogate type），它接管对现有类型进行序列化和反序列化的行动。然后，向格式化器登记该代理类型的实例，告诉格式化器代理类型要作用于现有的哪个类型。一旦格式化器要对现有类型的实例进行序列化和反序列化，就调用由你的代理对象定义的方法。下面例子演示这一切如何工作:</p>
+<p>序列化<strong>代理类型</strong>必须实现<code>ISerializationSurrogate接口</code>，如下定义</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">ISerializationSurrogate</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">void</span> <span class="token function">GetObjectData</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">,</span> SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token keyword">object</span> <span class="token function">SetObjectData</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">,</span> SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">,</span> ISurrogateSelector selector<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>假定程序含有一些DateTime对象, 其中包含用户计算机的本地值. 如果想把DateTime对象序列化到流中, 同时希望值用国际标准时间序列化, 如何操作呢?  这样一来就可以将数据通过网络流发送给世界上其他地方的另一台机器, 使DateTime值保持正确. 它能控制DateTime对象的序列化和反序列化方式.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UniversalToLocalTimeSerializationSurrogate</span><span class="token punctuation">:</span>ISerializationSurrogate
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">GetObjectData</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">,</span>SerializationInfo info<span class="token punctuation">,</span>StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//将datetime从本地时间转换成UTC</span>
+        info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span><span class="token string">"Date"</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token punctuation">(</span>DateTime<span class="token punctuation">)</span>obj<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToUniversalTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token string">"u"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">object</span> <span class="token function">SetObjectData</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">,</span>SerializationInfo info<span class="token punctuation">,</span>StreamingContext context<span class="token punctuation">,</span>ISurrogateSelector selector<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//将datetime从UTC转换成本地时间</span>
+        <span class="token keyword">return</span> DateTime<span class="token punctuation">.</span><span class="token function">ParseExact</span><span class="token punctuation">(</span>info<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span><span class="token string">"Date"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"u"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToLocalTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>GetObjectData</code>方法在这里的工作方式与<code>ISerializable接口的GetObjectData方法</code>差不多, 唯一区别在于,<strong>要多获取一个额外的参数—-对要序列化的”真实”对象的引用</strong>. 上述方法中,这个对象是DateTime. 值从本地时间转换为世界时. 并将一个字符串(使用通用完整日期/事件模式来格式化)添加到<code>SerializationInfo</code>集合.</p>
+<p><code>SetObjectData</code>方法用于反序列化一个DateTime对象, 调用这个方法时要向它传递一个<code>SerializationInfo</code>对象的引用,<code>SetObjectData</code>从这个集合中获取字符串形式的日期, 把它解析成通用完整日期/事件模式的字符串, 然后将结果DateTime对象从世界时转换成计算机的本地时间.</p>
+<p>传给<code>SetObjectData</code>第一个参数的object有点奇怪。在调用<code>SetObjectData</code>之前，格式化器分配（调用<code>FormatterService</code>的静态方法<code>GetUninitializedObject</code>）要代理的那个类型的实例。实例的字段全是<code>0/null</code>，而且没有在对象上调用构造器。<code>SetObjectData</code>内部的代码为了初始化这个实例的字段，可以使用传入的<code>SerializationInfo</code>中的值，并让<code>SetObjectData</code>返回<code>null</code>。另外，<code>SetObjectData</code>可以创建一个完全不同的对象，甚至创建不同类型的对象，并返回对新对象的引用。这种情况下，格式化器会忽略对传给<code>SetObjectData</code>对象的任何更改。</p>
+<p>在例子中, <code>UniversalToLocalTimeSerializationSurrogate</code>类扮演了DateTime类型的代理的角色, DateTime是值类型, 所以obj参数引用一个DateTime的已装箱实例. 大多数值类型中的字段都无法更改, 所以我的<code>SetObjectData</code>方法会忽略obj参数, 并返回一个新的DateTime对象, 其中已装好了期望的值.</p>
+<p>序列化/反序列化一个DateTime对象时，格式化器怎么知道要用这个<code>ISerializationSurrogate</code>类型呢？一下代码进行测试：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">using</span> <span class="token punctuation">(</span><span class="token keyword">var</span> stream<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">MemoryStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//1 构造所需的格式化器</span>
+        IFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//2 构造一个SurrogateSelector代理选择器对象</span>
+        SurrogateSelector ss <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SurrogateSelector</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//3 告诉代理选择器为datetime对象使用我们的代理</span>
+        ss<span class="token punctuation">.</span><span class="token function">AddSurrogate</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>DateTime<span class="token punctuation">)</span><span class="token punctuation">,</span>formatter<span class="token punctuation">.</span>Context<span class="token punctuation">,</span><span class="token keyword">new</span> <span class="token class-name">UniversalToLocalTimeSerializationSurrogate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//4 告诉格式化器使用代理选择器</span>
+        formatter<span class="token punctuation">.</span>SurrogateSelector <span class="token operator">=</span> ss<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//创建一个datetime来代表机器上的本地时间，并序列化它</span>
+        DateTime localTimeBeforeSerialize <span class="token operator">=</span> DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">;</span>
+        formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">,</span>localTimeBeforeSerialize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//stream将university时间作为一个字符串显示，证明能正常工作</span>
+        stream<span class="token punctuation">.</span>Position <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">StreamReader</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ReadToEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//反序列化universal时间字符串，并且把它转换成本地datetime</span>
+        stream<span class="token punctuation">.</span>Position <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        DateTime localTimeAfterDeserialize <span class="token operator">=</span> <span class="token punctuation">(</span>DateTime<span class="token punctuation">)</span> formatter<span class="token punctuation">.</span><span class="token function">Deserialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//证明它能正确工作</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"LocalTimeBeforeSerialize ={0}"</span><span class="token punctuation">,</span>localTimeBeforeSerialize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"LocalTimeAfterDeserialize={0}"</span><span class="token punctuation">,</span>localTimeAfterDeserialize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>步骤1到步骤4执行完毕后，格式化器就准备好实用已登记的代理类型。调用格式化器的<code>Serialize方法</code>时，会在<code>SurrogateSelector</code>维护的集合（一个哈希表）中查找（要序列化的）每个对象的类型。如果发现一个匹配，就调用<code>ISerializationSurrogate</code>对象的<code>GetObjectData</code>方法来获取应该写入流的信息。</p>
+<p>格式化器的<code>Deseialize方法</code>在调用时，会在格式化器的<code>SurrogateSelector</code>中查找要反序列化的对象的类型。如果发现一个匹配，就调用<code>ISerializationSurrogate对象</code>的<code>SetObjectData方法</code>来设置要反序列化的对象中的字段。</p>
+<p>SurrogateSelector对象在内部维护了一个私有哈希表。调用AddSurrogate时，type和StreamingContext构成了哈希表的键（key），对应的值（value）就是ISerializationSurrogate对象。如果已经存在和要添加的Type/StreamingContext相同的一个键，AddSurrogate会抛出一个ArgumentException。通过在键中包含一个StramingContext，可以登记一个代理类型对象，它知道如何将Datetime对象序列化/反序列化到一个文件中；再登记一个不同的代理对象，它知道如何将Datetime对象序列化/反序列化到一个不同的进程中。</p>
+<p><img src="/2019/09/17/CLR读书笔记/24运行时序列化/QQ截图20190921155118.png" alt=""></p>
+<h2 id="代理选择器链"><a href="#代理选择器链" class="headerlink" title="代理选择器链"></a>代理选择器链</h2><p>多个SurrogateSelector对象可连接到一起。例如，可以让一个SurrogateSelector对象维护一组序列化代理，这些序列化代理（Surrogate）用于将类型序列化成代理（proxy），以便通过网络传送，或者跨越不同的AppDomain传送。还可以让另一个SurrogateSelector对象维护一组序列化代理，这些序列化代理用于将版本1的类型转换成版本2的类型。</p>
+<blockquote>
+<p>Surrogate 代理: 负责序列化<br>proxy 代理: 负责跨越AppDomain边界访问对象</p>
+</blockquote>
+<p><img src="/2019/09/17/CLR读书笔记/24运行时序列化/QQ截图20190921155443.png" alt=""></p>
+<p><img src="/2019/09/17/CLR读书笔记/24运行时序列化/QQ截图20190921155501.png" alt=""></p>
+<h1 id="反序列化对象时重写程序集-类型"><a href="#反序列化对象时重写程序集-类型" class="headerlink" title="反序列化对象时重写程序集/类型"></a>反序列化对象时重写程序集/类型</h1><p>序列化对象时, 格式化器输出类型及其定义程序集的全名. 反序列化对象时, 格式化器根据这个信息确定要为对象构造并初始化什么类型. 前面讨论了如何利用<code>ISerializationSurrogate</code>接口来接管特定类型的序列化和反序列化工作, 实现了<code>ISerializationSurrogate</code>接口的类型与特定程序集中的特定类型关联.</p>
+<p>有的时候<code>ISerializationSurrogate</code>机制的灵活性显得有点不足, 下面列举的情形中,有必要将对象反序列化成和序列化时不同的类型.</p>
+<ul>
+<li>开发人员可能想把一个类型的实现从一个程序集移动到另一个程序集. 例如, 程序集的版本号的变化造成新程序集有别于原始程序集.</li>
+<li>服务器对象序列化到发送给客户端的流中. 客户端处理流时, 可以将对象反序列化成完全不同的类型, 该类型的代码知道如何向服务器的对象发出远程方法调用.</li>
+<li>开发人员创建了类型的新版本, 想把已序列化的对象反序列化成类型的新版本.</li>
+</ul>
+<p>利用<code>SerializationBinder</code>类, 可以非常简单地将一个对象反序列化成不同类型. 为此,要先定义自己的类型, 让它从抽象类<code>SerializationBinder</code>类派生, 假定你的版本1.0.0.0程序集定义了名为Ver1的类, 并假定程序集的新版本定义<code>Ver1ToVer2SerializationBinder</code>类, 还定义了名为Ver2的类:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">SerializationBinderDemo</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">using</span> <span class="token punctuation">(</span><span class="token keyword">var</span> stream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MemoryStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            IFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            formatter<span class="token punctuation">.</span>Binder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Ver1ToVer2SerializationBinder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Ver1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            stream<span class="token punctuation">.</span>Position <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            Ver2 t <span class="token operator">=</span> <span class="token punctuation">(</span>Ver2<span class="token punctuation">)</span> formatter<span class="token punctuation">.</span><span class="token function">Deserialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"反序列化:{0}, ToString={{{1}}}"</span><span class="token punctuation">,</span> t<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Ver1</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> Int32 x <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span> y <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">,</span> z <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Ver2</span> <span class="token punctuation">:</span> ISerializable
+    <span class="token punctuation">{</span>
+        Int32 a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> c<span class="token punctuation">;</span>
+
+        <span class="token punctuation">[</span><span class="token function">SecurityPermissionAttribute</span><span class="token punctuation">(</span>SecurityAction<span class="token punctuation">.</span>Demand<span class="token punctuation">,</span> SerializationFormatter <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">/* Never called: do nothing */</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 特殊构造器</span>
+        <span class="token punctuation">[</span><span class="token function">SecurityPermissionAttribute</span><span class="token punctuation">(</span>SecurityAction<span class="token punctuation">.</span>Demand<span class="token punctuation">,</span> SerializationFormatter <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+        <span class="token keyword">private</span> <span class="token function">Ver2</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            a <span class="token operator">=</span> info<span class="token punctuation">.</span><span class="token function">GetInt32</span><span class="token punctuation">(</span><span class="token string">"x"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            b <span class="token operator">=</span> info<span class="token punctuation">.</span><span class="token function">GetInt32</span><span class="token punctuation">(</span><span class="token string">"y"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            c <span class="token operator">=</span> info<span class="token punctuation">.</span><span class="token function">GetInt32</span><span class="token punctuation">(</span><span class="token string">"z"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> String<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"a={0}, b={1}, c={2}"</span><span class="token punctuation">,</span> a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Ver1ToVer2SerializationBinder</span> <span class="token punctuation">:</span> SerializationBinder
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">void</span> <span class="token function">BindToName</span><span class="token punctuation">(</span>Type serializedType<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token keyword">string</span> assemblyName<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token keyword">string</span> typeName<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            assemblyName <span class="token operator">=</span> Assembly<span class="token punctuation">.</span><span class="token function">GetExecutingAssembly</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>FullName<span class="token punctuation">;</span>
+            typeName     <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>Ver2<span class="token punctuation">)</span><span class="token punctuation">.</span>FullName<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">override</span> Type <span class="token function">BindToType</span><span class="token punctuation">(</span>String assemblyName<span class="token punctuation">,</span> String typeName<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 将任何Ver1对象从版本1.0.0.0反序列化成一个Ver2对象</span>
+
+            <span class="token comment" spellcheck="true">// 计算定义Ver1类型的程序集名称</span>
+            AssemblyName assemVer1 <span class="token operator">=</span> Assembly<span class="token punctuation">.</span><span class="token function">GetExecutingAssembly</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            assemVer1<span class="token punctuation">.</span>Version <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Version</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 如果从V1.0.0.0反序列化Ver1对象, 就把它转变成一个Ver2对象</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>assemblyName <span class="token operator">==</span> assemVer1<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> typeName <span class="token operator">==</span> <span class="token string">"SerializationBinderDemo+Ver1"</span><span class="token punctuation">)</span>
+                <span class="token keyword">return</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>Ver2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 否则, 就只返回请求的同一类型</span>
+            <span class="token keyword">return</span> Type<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0}, {1}"</span><span class="token punctuation">,</span> typeName<span class="token punctuation">,</span> assemblyName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/09/17/CLR读书笔记/24运行时序列化/QQ截图20190921170339.png" alt=""></p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

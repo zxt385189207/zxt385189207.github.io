@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        4类型基础 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#所有类型都从System-Object派生"><span class="toc-text">所有类型都从System.Object派生</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Object的公共方法Equals"><span class="toc-text">System.Object的公共方法Equals</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象的相等性和同一性"><span class="toc-text">对象的相等性和同一性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#同一性"><span class="toc-text">同一性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#重写Equals方法"><span class="toc-text">重写Equals方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#值类型的基类ValueType重写了Equals方法"><span class="toc-text">值类型的基类ValueType重写了Equals方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重写Equals方法还需要做的事"><span class="toc-text">重写Equals方法还需要做的事</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Object的公共方法GetHashCode"><span class="toc-text">System.Object的公共方法GetHashCode</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象哈希码"><span class="toc-text">对象哈希码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自己实现哈希算法"><span class="toc-text">自己实现哈希算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Object的公共方法ToString"><span class="toc-text">System.Object的公共方法ToString</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Object的公共方法GetType"><span class="toc-text">System.Object的公共方法GetType</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GetType是非虚方法"><span class="toc-text">GetType是非虚方法.</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Object的受保护方法MemberwiseClone"><span class="toc-text">System.Object的受保护方法MemberwiseClone</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是浅表副本"><span class="toc-text">什么是浅表副本?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#深度复制原理"><span class="toc-text">深度复制原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#深拷贝的帮助类"><span class="toc-text">深拷贝的帮助类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Object的受保护方法Finalize"><span class="toc-text">System.Object的受保护方法Finalize</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#所有对象都要用new操作符"><span class="toc-text">所有对象都要用new操作符</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#类型转换及类型安全性"><span class="toc-text">类型转换及类型安全性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用C-的is和as操作符来转型"><span class="toc-text">使用C#的is和as操作符来转型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#命名空间和程序集"><span class="toc-text">命名空间和程序集</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#运行时的相互关系"><span class="toc-text">运行时的相互关系</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建线程栈"><span class="toc-text">创建线程栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始调用一个方法M1"><span class="toc-text">开始调用一个方法M1</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#围绕CLR来观察-来演示CLR如何工作的"><span class="toc-text">围绕CLR来观察,来演示CLR如何工作的</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR内部发生的事情"><span class="toc-text">CLR内部发生的事情</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化什么呢"><span class="toc-text">初始化什么呢?</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        4类型基础
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-07-08 22:57:50</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="所有类型都从System-Object派生"><a href="#所有类型都从System-Object派生" class="headerlink" title="所有类型都从System.Object派生"></a>所有类型都从System.Object派生</h1><p><strong><code>运行时</code>要求每个类型都从<code>System.Object</code>派生</strong>.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//隐式派生自Object</span>
+<span class="token keyword">class</span> <span class="token class-name">Employee</span>｛
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+｝
+<span class="token comment" spellcheck="true">//显式派生自Object</span>
+<span class="token keyword">class</span> <span class="token class-name">Employee</span><span class="token punctuation">:</span> System<span class="token punctuation">.</span>Object<span class="token punctuation">{</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="System-Object的公共方法Equals"><a href="#System-Object的公共方法Equals" class="headerlink" title="System.Object的公共方法Equals"></a>System.Object的公共方法Equals</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">公共方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Equals</td>
+<td>如果两个对象具有<code>相同的值</code>就返回true</td>
+</tr>
+</tbody>
+</table>
+<h3 id="对象的相等性和同一性"><a href="#对象的相等性和同一性" class="headerlink" title="对象的相等性和同一性"></a>对象的相等性和同一性</h3><h4 id="同一性"><a href="#同一性" class="headerlink" title="同一性"></a>同一性</h4><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 此虚方法实现的是同一性,而非相等性.</span>
+<span class="token comment" spellcheck="true">// 因为obj引用的对象如果不是引用相同对象,那就无法比较值是否相等.</span>
+<span class="token keyword">public</span> <span class="token keyword">virtual</span> Boolean <span class="token function">Equals</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 如果两个引用指向同一个对象,它们肯定包含相同的值</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token operator">==</span> obj<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 假定对象包含不同的值</span>
+  <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">静态方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">ReferenceEquals</td>
+<td>检查两个引用是否指向同一对象</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>检查同一性务必调用ReferenceEquals,不应该使用C#的== 操作符 (除非都转成Object), 因为某个操作数可能重载了==操作符.</p>
+</blockquote>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 上述方法是不合理的,因此Microsft提供了检查同一性的方法</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">bool</span> <span class="token function">ReferenceEquals</span> <span class="token punctuation">(</span>Object objA<span class="token punctuation">,</span> Object objB<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> objA <span class="token operator">==</span> objB<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="重写Equals方法"><a href="#重写Equals方法" class="headerlink" title="重写Equals方法"></a>重写Equals方法</h4><ol>
+<li>Equals 必须自反: x.Equals(x)肯定返回true</li>
+<li>Equals 必须对称:  x.Equals(y)和y.Equals(x)返回相同</li>
+<li>Equals 必须可传递:  x.Equals(y)返回true,  y.Equals(z)返回true,那么 x.Equals(z)肯定是true</li>
+<li>Equals 必须一致:比较的两个值不变,返回值也不能变.</li>
+</ol>
+<h3 id="值类型的基类ValueType重写了Equals方法"><a href="#值类型的基类ValueType重写了Equals方法" class="headerlink" title="值类型的基类ValueType重写了Equals方法"></a>值类型的基类ValueType重写了Equals方法</h3><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">bool</span> <span class="token function">Equals</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 1.判断实参obj是否为null</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>obj <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+  RuntimeType type <span class="token operator">=</span> <span class="token punctuation">(</span>RuntimeType<span class="token punctuation">)</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 2.this和obj实参引用不同类型的对象,返回false</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>RuntimeType<span class="token punctuation">)</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> type<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+  <span class="token keyword">object</span> a <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">object</span><span class="token punctuation">)</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">// 3. 如果对象的成員中存在对于堆上的引用，那么返回false，</span>
+  <span class="token comment" spellcheck="true">// 如果不存在，返回true。例如按照ValPoint的定义，它仅包含一个int类型的字段x，自然不存在对堆上其他对象的引用，所以返回了true</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>ValueType<span class="token punctuation">.</span><span class="token function">CanCompareBits</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">object</span><span class="token punctuation">)</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> ValueType<span class="token punctuation">.</span><span class="token function">FastEqualsCheck</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">// 4.利用反射获取值的所有字段</span>
+  FieldInfo<span class="token punctuation">[</span><span class="token punctuation">]</span> fields <span class="token operator">=</span> type<span class="token punctuation">.</span><span class="token function">GetFields</span><span class="token punctuation">(</span>BindingFlags<span class="token punctuation">.</span>Instance <span class="token operator">|</span> BindingFlags<span class="token punctuation">.</span>Public <span class="token operator">|</span> BindingFlags<span class="token punctuation">.</span>NonPublic<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> index <span class="token operator">&lt;</span> fields<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> <span class="token operator">++</span>index<span class="token punctuation">)</span>
+  <span class="token punctuation">{</span>
+    <span class="token keyword">object</span> obj1 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>RtFieldInfo<span class="token punctuation">)</span> fields<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">UnsafeGetValue</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">object</span> obj2 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>RtFieldInfo<span class="token punctuation">)</span> fields<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">UnsafeGetValue</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 5. 判断是否为null</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>obj1 <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>obj2 <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 6. 通过调用字段的Equals方法进行比较</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>obj1<span class="token punctuation">.</span><span class="token function">Equals</span><span class="token punctuation">(</span>obj2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由于CLR反射机制慢,定义自己的值类型时应重写<code>Equals</code>方法来提供自己的实现.从而提高用自己类型的实例进行值相等性比较的性能. <strong>当然,自己的实现不调用 <code>base.Equals</code></strong>.</p>
+<h3 id="重写Equals方法还需要做的事"><a href="#重写Equals方法还需要做的事" class="headerlink" title="重写Equals方法还需要做的事"></a>重写Equals方法还需要做的事</h3><ol>
+<li>让类型实现<code>System.IEquatable&lt;T&gt;</code>接口的<code>Equals</code>方法<ul>
+<li>泛型接口,定义类型安全的<code>Equals</code>方法<code>bool Equals(T other)</code>;</li>
+</ul>
+</li>
+<li>重载==和!=操作符方法( 这些方法内部调用了类型安全的<code>CompareTo</code>方法. )</li>
+<li>如果需要排序,类型还应该实现<code>System.IComparable</code>的<code>CompareTo</code>方法和泛型接口<code>System.IComparable&lt;T&gt;</code>的类型安全的<code>CompareTo</code>方法.</li>
+<li>重载比较操作符方法&lt;,&lt;=,&gt;,&gt;= ( 这些方法内部调用了类型安全的<code>CompareTo</code>方法.)</li>
+</ol>
+<h2 id="System-Object的公共方法GetHashCode"><a href="#System-Object的公共方法GetHashCode" class="headerlink" title="System.Object的公共方法GetHashCode"></a>System.Object的公共方法GetHashCode</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">公共方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">GetHashCode</td>
+<td>返回对象值的哈希码.如果某个类型的对象要在哈希表集合(比如<code>Dictionary</code>)中作为键使用,类型应重写该方法.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="对象哈希码"><a href="#对象哈希码" class="headerlink" title="对象哈希码"></a>对象哈希码</h3><p>FCL的设计者认为,如果能将任何对象的任何实例放到<code>哈希集合</code>中,能带来很多好处。为此<code>System.Object</code>提供了虚方法<code>GetHashCode</code>,它能获取任意对象的Int32哈希码.</p>
+<p>如果你定义的类型重写了Equals方法,还应该重写GetHashCode方法. 这是因为<code>System.Collections.Hashtable</code>类型,<code>System.Collections.Generic.Dictionary</code>类型以及一些其他的集合中,要求两个对象必须具有<strong>相同哈希码才能被视为相等</strong>. 确保相等性算法和对象哈希码算法一致.</p>
+<ul>
+<li>添加<ul>
+<li>向集合添加<code>键/值对</code>,首先要获取<code>键</code>对象的哈希码, 该哈希码指出这个<code>键/值对</code>要存储到哪个<code>哈希桶bucket</code>中.</li>
+</ul>
+</li>
+<li>查找<ul>
+<li>集合需要查找<code>键</code>时候, 会获取<code>键</code>对象的哈希码, 此哈希码标识了现在要以顺序的方式搜索的哈希桶. 在这个哈希桶中查找哈希码相同的<code>键</code>对象,以及对应的<code>值</code>对象.</li>
+</ul>
+</li>
+<li>修改<ul>
+<li><strong>错误的方式: 直接修改集合中的<code>键</code>对象,修改后的键对象的哈希码与原来不同,就会去搜索错误的哈希桶,找不到对应的值对象.</strong></li>
+<li>正确做法: 从集合中移除原来的<code>键/值对</code>, 修改键对象, 重新将新的键值对添加回哈希表.</li>
+</ul>
+</li>
+</ul>
+<h3 id="自己实现哈希算法"><a href="#自己实现哈希算法" class="headerlink" title="自己实现哈希算法"></a>自己实现哈希算法</h3><p>自定义GetHashCode方法,取决于数据类型和数据分布情况, 需要设计出能返回良好分布值的哈希算法.</p>
+<p>要遵循的规则:</p>
+<ol>
+<li>算法要提供良好的随机分布,使哈希表获得最佳性能.</li>
+<li>一般不要调用Object或ValueType的GetHashCode方法, 因为两者的实现与高性能哈希算法不沾边.</li>
+<li>算法至少使用一个实例字段.</li>
+<li>理想情况下, 算法使用的字段值应该不可变,也就是说,字段在对象构造时初始化,在对象的生存期永不言变.</li>
+<li>算法执行速度尽量快.</li>
+<li>包含相同值的不同对象应返回相同的哈希码.</li>
+</ol>
+<blockquote>
+<p>System.Object实现的GetHashCode方法对派生类型和其中的字段一无所知,所以返回一个在对象生存期保证不变的编号.</p>
+<p>最好不要将哈希码持久化, 因为生成哈希码的算法可能会发生改变. 例如:CLR版本升级后,String的GetHashCode方法发生了改变. 之前如果存储的是string的哈希码,则导致全部不对应了.</p>
+</blockquote>
+<h2 id="System-Object的公共方法ToString"><a href="#System-Object的公共方法ToString" class="headerlink" title="System.Object的公共方法ToString"></a>System.Object的公共方法ToString</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">公共方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">ToString</td>
+<td>默认返回类型的完整名称<code>this.GetType().FullName</code> . 经常用于调试的目的重写该方法,返回一些值的字符串表示.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="System-Object的公共方法GetType"><a href="#System-Object的公共方法GetType" class="headerlink" title="System.Object的公共方法GetType"></a>System.Object的公共方法GetType</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">公共方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">GetType</td>
+<td>返回从Type派生的一个类型的实例,指出调用GetType的对象是什么类型.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="GetType是非虚方法"><a href="#GetType是非虚方法" class="headerlink" title="GetType是非虚方法."></a>GetType是非虚方法.</h3><p>目的是<code>不允许重写</code>. 防止类重写该方法,隐瞒其类型,进而破坏类型安全性.(用new关键字告诉编译器定义一个新方法<code>new public void F()</code>)</p>
+<blockquote>
+<p>返回的Type对象可以和反射类配合,获取与对象的类型有关的元数据信息.</p>
+</blockquote>
+<h2 id="System-Object的受保护方法MemberwiseClone"><a href="#System-Object的受保护方法MemberwiseClone" class="headerlink" title="System.Object的受保护方法MemberwiseClone"></a>System.Object的受保护方法MemberwiseClone</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">受保护方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">MemberwiseClone</td>
+<td>就是创建一个浅表副本的新对象，然后将当前对象的非静态字段复制到该新对象.</td>
+</tr>
+</tbody>
+</table>
+<p><code>MemberwiseClone</code> 方法创建一个<code>浅表副本</code>，。如果字段是值类型的，则对该字段执行逐位复制。如果字段是引用类型，则<strong>复制引用但不复制引用的对象</strong>；因此，原始对象及其复本引用同一对象。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> DemoClass <span class="token function">Clone1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//浅CLONE</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">MemberwiseClone</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> DemoClass<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> DemoClass <span class="token function">Clone2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//深clone</span>
+<span class="token punctuation">{</span>
+    MemoryStream stream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MemoryStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    BinaryFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    stream<span class="token punctuation">.</span>Position <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> formatter<span class="token punctuation">.</span><span class="token function">Deserialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span> <span class="token keyword">as</span> DemoClass<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="什么是浅表副本"><a href="#什么是浅表副本" class="headerlink" title="什么是浅表副本?"></a>什么是浅表副本?</h3><ul>
+<li>浅度拷贝( <strong>浅表副本</strong> )<ul>
+<li>一个集合的浅度拷贝意味着只拷贝集合中的元素，不管他们是引用类型或者是值类型，但是它<code>不拷贝引用所指的对象</code>。这就是说新集合中的引用和原始集合中的<code>引用所指的对象是同一个对象</code>。</li>
+</ul>
+</li>
+<li>深度拷贝( <strong>深表副本</strong> )<ul>
+<li>深度拷贝不仅拷贝集合中的元素，而且还拷贝了这些元素直接或者间接引用的所有内容。这也就意味着，新集合中的引用和原始集合中的<code>引用所指的对象是不同的</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="深度复制原理"><a href="#深度复制原理" class="headerlink" title="深度复制原理"></a>深度复制原理</h3><p>为了实现<code>深度复制</code>，我们就必须遍历有相互引用的对象构成的图，并需要处理其中的循环引用结构。这无疑是十分复杂的。幸好借助.Net的<code>序列化和反序列化机制</code>，可以十分简单的深度Clone一个对象。原理很简单，首先将对象序列化到内存流中，此时对象和对象引用的所用对象的状态都被保存到内存中。.Net的序列化机制会自动处理循环引用的情况。然后将内存流中的状态信息反序列化到一个新的对象中。这样一个对象的深度复制就完成了。在原型设计模式中CLONE技术非常关键。</p>
+<h3 id="深拷贝的帮助类"><a href="#深拷贝的帮助类" class="headerlink" title="深拷贝的帮助类"></a>深拷贝的帮助类</h3><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ObjectCopier</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// Perform a deep Copy of the object.</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token comment" spellcheck="true">/// &lt;typeparam name="T">The type of object being copied.&lt;/typeparam></span>
+    <span class="token comment" spellcheck="true">/// &lt;param name="source">The object instance to copy.&lt;/param></span>
+    <span class="token comment" spellcheck="true">/// &lt;returns>The copied object.&lt;/returns></span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> T <span class="token generic-method function">Clone<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span>T source<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 判断泛型T是否能序列化</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>T<span class="token punctuation">)</span><span class="token punctuation">.</span>IsSerializable<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentException</span><span class="token punctuation">(</span><span class="token string">"The type must be serializable."</span><span class="token punctuation">,</span> <span class="token string">"source"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// Don't serialize a null object, simply return the default for that object</span>
+        <span class="token comment" spellcheck="true">// 不能序列化一个null对象</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>Object<span class="token punctuation">.</span><span class="token function">ReferenceEquals</span><span class="token punctuation">(</span>source<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">default</span><span class="token punctuation">(</span>T<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 流操作</span>
+        IFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Stream stream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MemoryStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">using</span> <span class="token punctuation">(</span>stream<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">,</span> source<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            stream<span class="token punctuation">.</span><span class="token function">Seek</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> SeekOrigin<span class="token punctuation">.</span>Begin<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token punctuation">(</span>T<span class="token punctuation">)</span>formatter<span class="token punctuation">.</span><span class="token function">Deserialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="System-Object的受保护方法Finalize"><a href="#System-Object的受保护方法Finalize" class="headerlink" title="System.Object的受保护方法Finalize"></a>System.Object的受保护方法Finalize</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">受保护方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Finalize</td>
+<td>在垃圾回收器判断此对象作为垃圾被回收之后,在对象的内存被实际回收之前,调用此虚方法.</td>
+</tr>
+</tbody>
+</table>
+<p>需要在回收之前执行清理工作的类型应重写此方法.</p>
+<h1 id="所有对象都要用new操作符"><a href="#所有对象都要用new操作符" class="headerlink" title="所有对象都要用new操作符"></a>所有对象都要用new操作符</h1><blockquote>
+<p>实例字段(实例成员)是非静态字段  — 属于类的对象<br>静态成员———————– 属于类</p>
+</blockquote>
+<p><strong>new 操作符所做的事情</strong></p>
+<ol>
+<li>计算类型及其所有基类(一直到System.Object)中定义的所有实例字段需要的字节数. (计算需要的字节数 )<ul>
+<li><code>堆</code>上的每个对象都需要有<code>开销成员overhead</code>,包括 <code>类型对象指针(type object pointer)</code>和<code>同步块索引sync block index</code>.</li>
+<li>CLR利用这些<code>开销成员</code>管理对象. <code>开销成员</code>的字节数要计入对象的大小.</li>
+</ul>
+</li>
+<li>从<code>托管堆</code>中分配类型要求的字节数, 从而分配对象的<code>内存</code>, 分配的所有字节都设置为<code>零(0)</code>.</li>
+<li>初始化对象的<code>开销成员</code>:<code>类型对象指针(type object pointer)</code>和<code>同步块索引sync block index</code>.</li>
+<li>调用类型的实例化<code>构造器</code>,传递在new调用中指定的<code>实参</code>.<ul>
+<li>每个类型的构造器都负责初始化该类型定义的实例字段. 最终调用System.Object的构造器,该构造器什么都不做,简单地返回.</li>
+</ul>
+</li>
+<li>返回新建对象的一个引用(或指针).</li>
+</ol>
+<blockquote>
+<p>没有delete操作符用来显示释放为对象分配的内存, CLR采用垃圾回收机制.</p>
+</blockquote>
+<h1 id="类型转换及类型安全性"><a href="#类型转换及类型安全性" class="headerlink" title="类型转换及类型安全性"></a>类型转换及类型安全性</h1><blockquote>
+<p>CLR最重要的特性就是类型安全. 在运行时,CLR总是知道对象的类型是什么.<br>调用GetType方法即可知道对象的确切类型.<br>由于它是非虚方法,所以不可能伪装成别的类型.</p>
+</blockquote>
+<p>CLR运行将对象转换为<code>它的(实际)类型</code>或者<code>它的任何基类型</code>.</p>
+<ul>
+<li><code>对象类型</code> –转换成–&gt; <code>该对象的基类型</code><ul>
+<li>C#中, <code>向基类型的转换</code>是一种安全的<strong>隐式转换</strong> .</li>
+</ul>
+</li>
+<li>而将<code>对象类型</code> –转换成–&gt; <code>该对象的某个派生类型</code><ul>
+<li>C#要求开发人员只能进行 <strong>显示转换(强制类型转换)</strong> .</li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// Employee的基类是Object</span>
+<span class="token comment" spellcheck="true">// 不需要转换, 派生类对象转基类对象是类型安全的隐式转换</span>
+Object o <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Employee</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// Employee是Object的派生类,需要进行转型</span>
+<span class="token comment" spellcheck="true">// 必须用强制类型转换</span>
+Employee e <span class="token operator">=</span> <span class="token punctuation">(</span>Employee<span class="token punctuation">)</span>o<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>为了方便记忆,打个比方</p>
+<ul>
+<li><code>公交汽车(派生类)</code> 可以认为是 <code>汽车(基类)</code> , 因为包含<code>汽车(基类)</code>都存在的东西.</li>
+<li>但是, <code>汽车(基类)</code> 并不只有<code>公交汽车(派生类)</code>,还有其他类型的汽车.</li>
+</ul>
+</blockquote>
+<p>这样才能让编译器顺利编译这些代码.</p>
+<p>运行时做的事:</p>
+<ol>
+<li>CLR检查转型操作, 确保总是转换为对象的实际类型或者它的任何基类.</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 在运行时, CLR会检查转换,判断o的实际类型是否是Employee类型或者它的派生类.</span>
+Employee e <span class="token operator">=</span> <span class="token punctuation">(</span>Employee<span class="token punctuation">)</span> o<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>( <code>A</code> ) &gt;= <code>A/A的派生类</code>.</p>
+<p>因此,类型安全是CLR及其重要的一个特点.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">:</span>A<span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+
+<span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  B b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">B</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">test</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  DateTime t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DateTime</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 编译期 t的基类也是object,能通过编译</span>
+  <span class="token function">test</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token function">test</span><span class="token punctuation">(</span>Object o<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 运行期会CLR会进行类型检查,</span>
+  <span class="token comment" spellcheck="true">// 传进来的参数t类型基类不是A,也不是A的派生类,</span>
+  <span class="token comment" spellcheck="true">// 会报System.InvalidCastException异常</span>
+  A a <span class="token operator">=</span> <span class="token punctuation">(</span>A<span class="token punctuation">)</span>o<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>给方法合适的参数能在编译期就能发现错误,而非运行期报错.例如改为<code>test(A a){}</code>而不是<code>Object</code>参数类型.</p>
+<h1 id="使用C-的is和as操作符来转型"><a href="#使用C-的is和as操作符来转型" class="headerlink" title="使用C#的is和as操作符来转型"></a>使用C#的is和as操作符来转型</h1><blockquote>
+<p>相较于is操作符,使用as操作符来简化写法和提升性能.</p>
+</blockquote>
+<p>相较于之前的<code>()</code>强转语法,C#还有另外一方式进行类型转换. 是使用<code>is</code>操作符,区别如下</p>
+<ol>
+<li>返回Boolean值true或false;</li>
+<li>并且永远不会抛出异常.</li>
+<li>如果对象引用null,is操作符总是返回false.</li>
+</ol>
+<p>通常使用方法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 这种用法有个缺点,</span>
+<span class="token comment" spellcheck="true">// CLR实际检查两次对象类型.</span>
+<span class="token comment" spellcheck="true">// 1. is操作符首先核实o是否兼容于A类型,</span>
+<span class="token comment" spellcheck="true">// 2. 如果是,在if内部转型时,CLR再次核实o是否引用一个A类型.</span>
+<span class="token comment" spellcheck="true">// 这样对性能造成了一定的影响</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>o <span class="token keyword">is</span> A<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  A a <span class="token operator">=</span> <span class="token punctuation">(</span>A<span class="token punctuation">)</span>o<span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 在if剩余语句使用a</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>这种写法对性能造成影响,是因为CLR必须遍历继承层次结构,用每个基类型去核对指定的类型(上述例子中的A类型).</strong></p>
+<p>C#专门提供了as操作符,目的就是简化这种写法,同时提升性能.</p>
+<ol>
+<li><code>as</code>操作符返回对同一个对象的<code>非null引用</code>.</li>
+<li>工作方式与强制转换一样,并且不会抛出异常.</li>
+<li>如果对象不能转型,则返回<code>null</code>.</li>
+<li><code>as</code>操作符造成CLR值校验一次对象类型</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// as操作符造成CLR值校验一次对象类型</span>
+<span class="token comment" spellcheck="true">// 从而提高性能</span>
+A a <span class="token operator">=</span> o <span class="token keyword">as</span> A<span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 在if语句中使用a</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>编译时错误 Complier Time Error 运行时错误Run Time Error</p>
+</blockquote>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 向基类型的转换是一种安全的隐式转换</span>
+        Base b2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dervied</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// CTE 编译时错误</span>
+
+        <span class="token comment" spellcheck="true">// Base派生自object,不能由new基类创建子类. new子类可以创建基类</span>
+        <span class="token comment" spellcheck="true">// Base b3 = new Object(); // CTE</span>
+        Object o2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Base</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// Dervied d3 = new Object(); // CTE</span>
+        Object o3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dervied</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// new Dervied()隐式转为Base类. b2要转成原本的Dervied类型需要显示转换</span>
+        <span class="token comment" spellcheck="true">// Dervied d3 = b2; // Base b2 = new Dervied();  // CTE</span>
+        Dervied d3 <span class="token operator">=</span> <span class="token punctuation">(</span>Dervied<span class="token punctuation">)</span>b2<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// RTE 运行时错误</span>
+
+        <span class="token comment" spellcheck="true">// 不能由new基类转换子类,CLR会在运行期检查类型,判断 (Dervied) >= new Base()</span>
+        Dervied d6 <span class="token operator">=</span> <span class="token punctuation">(</span>Dervied<span class="token punctuation">)</span> <span class="token keyword">new</span> <span class="token class-name">Base</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// RTE</span>
+        Base b5 <span class="token operator">=</span> <span class="token punctuation">(</span>Base<span class="token punctuation">)</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//RTE</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Base</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Dervied</span> <span class="token punctuation">:</span> Base<span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>注意: C#允许类型定义<code>转换操作符</code>方法, 只有在使用转型表达式时才调用这些方法,使用C# <code>as/is操作符</code>永远不会调用它们.</strong></p>
+<h1 id="命名空间和程序集"><a href="#命名空间和程序集" class="headerlink" title="命名空间和程序集"></a>命名空间和程序集</h1><ol>
+<li>命名空间和程序集不一定相关, 同一个命名空间中的类型可能在不同程序集中实现.同一程序集也可能包含不同命名空间中的类型.</li>
+<li>使用命名空间用<code>using</code>指令<ul>
+<li>引用类库,标记命名, 少写代码.</li>
+<li>为类型和命名空间创建别名, 消除歧义.</li>
+</ul>
+</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> Microsoft<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 可以少写Microsoft.前缀</span>
+<span class="token keyword">using</span> Wintellect<span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 可以少写Wintellect.前缀</span>
+
+<span class="token keyword">using</span> WintellectWidget <span class="token operator">=</span> Wintellect<span class="token punctuation">.</span>Widget<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 这样写会有歧义,不明确引用. 两个命名空间中都包含Widget类</span>
+  <span class="token comment" spellcheck="true">// Widget w = new Widget();</span>
+
+  <span class="token comment" spellcheck="true">// 消除了歧义, 需要多打一点字</span>
+  Wintellect<span class="token punctuation">.</span>Widget w <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Wintellect<span class="token punctuation">.</span>Widget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">// 使用using别名方式</span>
+  WintellectWidget w <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WintellectWidget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li><code>外部别名extren alias</code> 用于更精细的消除歧义<ul>
+<li>公司Axxxx Bxxxx Cxxxxx和Ayyyy Byyyy Cyyyyy公司都发布一个<code>BuyProduct</code>类型</li>
+<li>如果他们都用ABC作为命名空间, 那同时引用这2个公司的dll就会出现一个问题<ul>
+<li><code>ABC.BuyProduct</code>方法会报不明确引用.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><img src="/2019/07/08/CLR读书笔记/4类型基础/外部别名.png" alt=""></p>
+<blockquote>
+<p>为此,为了降低冲突发生的概率,应该使用全称来作为自己的顶级命名空间名称.</p>
+</blockquote>
+<h1 id="运行时的相互关系"><a href="#运行时的相互关系" class="headerlink" title="运行时的相互关系"></a>运行时的相互关系</h1><ul>
+<li>C#中<code>栈</code> 是<strong>编译期间就分配好的内存空间</strong>，因此你的代码中必须就<code>栈的大小</code>有明确的定义；</li>
+<li><code>堆</code> 是<strong>程序运行期间动态分配的内存空间</strong>，你可以根据程序的运行情况确定要分配的堆内存的大小.</li>
+</ul>
+<h2 id="创建线程栈"><a href="#创建线程栈" class="headerlink" title="创建线程栈"></a>创建线程栈</h2><p>已加载CLR的一个Windows进程，进程中可能有多个线程。</p>
+<p><strong>线程创建时会分到1MB的栈。</strong></p>
+<ul>
+<li>栈空间用于向方法<code>传递实参</code></li>
+<li>方法内部定义的<code>局部变量</code>也在栈上。</li>
+<li>栈从高位内存地址向地位地址构建。</li>
+</ul>
+<h2 id="开始调用一个方法M1"><a href="#开始调用一个方法M1" class="headerlink" title="开始调用一个方法M1"></a>开始调用一个方法M1</h2><p>在开始调用之前,</p>
+<ul>
+<li><code>序幕(prologue)代码</code>对其进行初始化.</li>
+</ul>
+<p>在方法做完工作后</p>
+<ul>
+<li><code>尾声(epilogue)代码</code>对其进行清理,以便返回至调用者.</li>
+</ul>
+<p><img src="/2019/07/08/CLR读书笔记/4类型基础/4-2.png" alt=""></p>
+<ol>
+<li>假定线程执行的代码要调用M1方法</li>
+<li>M1方法开始执行时,它的<code>序幕代码</code>在线程栈上分配<code>局部变量name</code>的内存,如4-3图示.</li>
+</ol>
+<p><img src="/2019/07/08/CLR读书笔记/4类型基础/4-3.png" alt=""></p>
+<ol>
+<li>然后M1调用M2方法, 将<code>局部变量name</code>作为<code>实参</code>传递,将这个实参也<code>压入栈</code>,并且将<code>返回地址</code>压栈.<ul>
+<li><code>返回地址</code>:被调用的方法在结束之后应该回至该位置.如4-4图示.</li>
+</ul>
+</li>
+</ol>
+<p><img src="/2019/07/08/CLR读书笔记/4类型基础/4-4.png" alt=""></p>
+<ol>
+<li>M2方法开始执行时, 它的<code>序幕代码</code>在线程栈上分配<code>局部变量length和tally</code>的内存. 如4-5所示.</li>
+</ol>
+<p><img src="/2019/07/08/CLR读书笔记/4类型基础/4-5.png" alt=""></p>
+<ol>
+<li>M2方法内部开始执行,最终达到<code>return</code>语句,CPU的指令指针被设置成<code>返回地址</code>. M2的<code>栈帧展开(unwind)</code>.恢复成4-3所示.</li>
+</ol>
+<blockquote>
+<p><code>栈帧展开(unwind)</code> : 这个翻译来源自生活,把线缠到线圈上称为wind,从线圈上搜开称为unwind.同样的调用方法时压入栈帧称为wind,方法执行完毕弹出栈帧称为unwind.</p>
+</blockquote>
+<ol>
+<li>最终M1会返回到它的调用者. 这同样通过将CPU的指令指针设置成返回地址来实现.</li>
+</ol>
+<h1 id="围绕CLR来观察-来演示CLR如何工作的"><a href="#围绕CLR来观察-来演示CLR如何工作的" class="headerlink" title="围绕CLR来观察,来演示CLR如何工作的"></a>围绕CLR来观察,来演示CLR如何工作的</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span>               int32         <span class="token function">GetYearsEmployed</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span>    <span class="token keyword">virtual</span>    String        <span class="token function">GenProgressReport</span><span class="token punctuation">(</span><span class="token punctuation">)</span>      <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span>    <span class="token keyword">static</span>     Employee      <span class="token function">Lookup</span><span class="token punctuation">(</span>String name<span class="token punctuation">)</span>      <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>    
+<span class="token punctuation">}</span>
+<span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Manager</span> <span class="token punctuation">:</span> Employee <span class="token punctuation">{</span>
+    <span class="token keyword">public</span>    <span class="token keyword">override</span>   String         <span class="token function">GenProgressReport</span><span class="token punctuation">(</span><span class="token punctuation">)</span>    <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>Window进程已经启动,CLR已经加载到其中,托管堆已经初始化,而且创建了一个线程(连同它的1MB栈空间).</li>
+<li>准备要调用M3方法.</li>
+</ol>
+<p><img src="/2019/07/08/CLR读书笔记/4类型基础/4-6.png" alt=""></p>
+<ol>
+<li><strong>JIT编译器</strong> 将M3的<code>IL代码</code>转换成<code>本机CPU指令</code>时, CLR需要确认定义了这些类的类型都已加载.<ul>
+<li><code>Employee</code>,<code>Int32</code>,<code>Manager</code>,以及<code>String</code>(因为存在一个”Joe”的字符串).</li>
+</ul>
+</li>
+<li>然后利用程序集的<code>元数据</code>,CLR提取与这些类型有关的信息. 并创<code>建一些数据结构</code>来表示类型本身.<ul>
+<li>图4-7展示了<code>Employee</code>和<code>Manager</code>类型对象使用的<code>数据结构</code>.</li>
+<li>至于<code>Int32</code>,<code>String</code>的<code>数据结构</code>可以认为之前已经定义好了.因为它们都是很常用的类型.所以图中没显示它们.</li>
+</ul>
+</li>
+</ol>
+<p><img src="/2019/07/08/CLR读书笔记/4类型基础/4-7.png" alt=""></p>
+<ul>
+<li>堆上所有对象都包含两个额外成员:<ul>
+<li><code>类型对象指针(type object pointer)</code></li>
+<li><code>同步索引块(sync block index)</code></li>
+</ul>
+</li>
+<li>静态数据字段.</li>
+<li>方法表: 定义的所有方法都有一个对应的记录项.</li>
+</ul>
+<ol>
+<li>当CLR确认方法需要的所有类型对象都已创建,M3的代码编译之后,就允许线程执行M3的<code>本机代码</code>.<ul>
+<li>M3的<code>序幕代码</code>执行时必须在线程栈中为局部变量分配内存.</li>
+<li>在调用类型构造器之前,CLR会先初始化同步块索引,将对象的所有实例字段设为null或者0.</li>
+<li>CLR自动将所有局部变量初始化为<code>null</code>或者<code>0</code>.</li>
+<li>Manager只定义了1个方法(GetProgressReport的重写)</li>
+</ul>
+</li>
+</ol>
+<p><img src="/2019/07/08/CLR读书笔记/4类型基础/4-8-9.png" alt=""></p>
+<ol>
+<li>任何时候在堆上新建对象,CLR都自动初始化内部的<code>类型对象指针</code>成员来引用和对象对应的类型对象.</li>
+<li>new 操作符返回Manager对象的内存地址. 该地址保存到变量e中,(e在线程栈上).</li>
+<li>M3下一行代码调用Employee的<code>静态方法Lookup</code>.<ul>
+<li>CLR定位类型对象</li>
+<li>JIT编译器查找类型对象的方法表中对应的记录项, 对方法进行JIT(如果需要的话).</li>
+<li>再调用JIT编译好的代码.</li>
+</ul>
+</li>
+<li>假定<code>静态方法Lookup</code>会从数据库找出一名经理Joe.<ul>
+<li>在方法内会在堆上构造一个新的Manager对象, 用Joe的对象初始化它.返回该对象的地址.</li>
+<li>该地址保存到变量e中</li>
+<li>这里e不再引用第一个Manager对象, 第一个对象会被垃圾回收.</li>
+</ul>
+</li>
+<li>M3的下一行代码调用Employee的非虚实例方法GetYearsEmployed<ul>
+<li>JIT编译器会找到 <strong>发出调用的那个变量(e)的类型 对应的类型对象(Employee)</strong>.</li>
+<li>此时e的类型定义为<code>Employee</code>类型</li>
+<li>如果此类型中没有定义被调用的方法</li>
+<li>JIT编译器会<strong>回溯类层次结构</strong>(一直到Object),并沿途的每个类型中查找该方法.</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>之所以能<code>回溯</code>,是因为每个类型对象都有一个字段引用了它的<code>基类型</code>.</p>
+</blockquote>
+<p><img src="/2019/07/08/CLR读书笔记/4类型基础/4-10.png" alt=""></p>
+<ol>
+<li><p>JIT编译器找到了被调用方法的记录项, 进行JIT编译,再调用JIT编译好的代码,将返回的数据放到临时变量中保存.</p>
+</li>
+<li><p>M3的下一行代码调用了Employee的<code>虚实例方法(虚方法,重写过的)</code>GetProgressReport.</p>
+<ul>
+<li><code>调用虚方法</code>时,JIT编译器要在方法中生成一些额外的代码.</li>
+<li>方法每次调用都会执行这些代码, 这些代码首先</li>
+<li>检查<code>发出调用的变量</code>, 并跟随地址来到<code>发出调用的对象</code></li>
+<li>变量e当前引用的是代表”Joe”的Manager对象.</li>
+<li>代码检查对象内部的<code>类型对象指针</code>成员, 该成员指向对象的实际类型.</li>
+<li>代码在类型对象的方法表中查找对应调用方法的<code>记录项</code>,对方法进行JIT编译</li>
+<li>再调用编译好的代码.</li>
+<li>由于目前e引用的是一个Manager对象,所以会调用Manager的GetProgressReport实现</li>
+</ul>
+</li>
+</ol>
+<p><img src="/2019/07/08/CLR读书笔记/4类型基础/4-11-12.png" alt=""></p>
+<blockquote>
+<p>注意:  如果Employee对象的<code>Lookup方法</code>发现”Joe”是<code>Employee</code>而不是<code>Manager</code>,则Lookup会在内部构造一个Employee对象,它的类型对象指针将引用Employee类型, 最终执行的则是Employee的GetProgressReport实现,而不是Manager的.</p>
+</blockquote>
+<h1 id="CLR内部发生的事情"><a href="#CLR内部发生的事情" class="headerlink" title="CLR内部发生的事情"></a>CLR内部发生的事情</h1><p>Employee和Manager类型对象都包含”类型对象指针”成员. 这是由于类型对象本质上也是对象.</p>
+<p>CLR创建类型对象时, 必须初始化这些成员.</p>
+<h2 id="初始化什么呢"><a href="#初始化什么呢" class="headerlink" title="初始化什么呢?"></a>初始化什么呢?</h2><ol>
+<li>CLR开始在一个进程中运行时, 会立即为MSCorLib.dll中定义的<code>System.Type</code>类型创建一个特殊的类型对象.</li>
+<li>Employee和Manager类型对象都是该类型的”<code>实例</code>“``</li>
+<li>System.Object的<code>GetType方法</code>返回存储在指定对象的<code>类型对象指针</code>成员中的地址.<ul>
+<li>也就是说,GetType方法返回<code>指向对象的类型对象</code>的指针.</li>
+<li>这样就可以判断系统中任何对象的真实类型.</li>
+</ul>
+</li>
+</ol>
+<p><img src="/2019/07/08/CLR读书笔记/4类型基础/4-13.png" alt=""></p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

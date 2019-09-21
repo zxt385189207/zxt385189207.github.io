@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        2CLR基础3 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Net-Framework部署目标"><span class="toc-text">.Net Framework部署目标</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是DLL-Hell"><span class="toc-text">什么是DLL Hell?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#将类型生成到模块中"><span class="toc-text">将类型生成到模块中</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#生成三种应用程序的编译器开关"><span class="toc-text">生成三种应用程序的编译器开关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集合开关命令的文件-响应文件"><span class="toc-text">集合开关命令的文件:响应文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是元数据-元数据概述"><span class="toc-text">什么是元数据? 元数据概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#元数据描述的信息"><span class="toc-text">元数据描述的信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义表-definiton-talbe"><span class="toc-text">定义表(definiton talbe)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用表-reference-table"><span class="toc-text">引用表(reference table)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#清单表-mainfest-table"><span class="toc-text">清单表(mainfest table)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#将模块合并成程序集"><span class="toc-text">将模块合并成程序集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Microsoft为何考虑要引入程序集这一概念"><span class="toc-text">Microsoft为何考虑要引入程序集这一概念?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#程序集-Assembly-是什么组成的"><span class="toc-text">程序集(Assembly)是什么组成的?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译生成含有清单元数据表的PE文件"><span class="toc-text">编译生成含有清单元数据表的PE文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用程序集链接器-AL-exe-生成程序集"><span class="toc-text">使用程序集链接器(AL.exe)生成程序集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为程序集添加资源文件"><span class="toc-text">为程序集添加资源文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#程序集版本资源信息"><span class="toc-text">程序集版本资源信息</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#语言文化"><span class="toc-text">语言文化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR探测程序集文件会扫描的目录"><span class="toc-text">CLR探测程序集文件会扫描的目录</span></a></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        2CLR基础3
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-07-07 20:51:50</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="Net-Framework部署目标"><a href="#Net-Framework部署目标" class="headerlink" title=".Net Framework部署目标"></a>.Net Framework部署目标</h1><h2 id="什么是DLL-Hell"><a href="#什么是DLL-Hell" class="headerlink" title="什么是DLL Hell?"></a>什么是DLL Hell?</h2><blockquote>
+<p>Windows早期并没有很严谨的DLL版本管理机制，以致经常发生安装了某软件后，因为其覆盖了系统上原有的同一个DLL文件，而导致原有可运行的程序无法运行。但还原回原有的DLL文件之后，所新安装的软件就无法运行。若影响到系统所使用的重要DLL时也可能让系统容易死机甚至无法正常启动。</p>
+</blockquote>
+<p><a href="https://web.archive.org/web/20080208173943/http://www.iiiedu.org.tw/knowledge/knowledge20021130_1.htm" target="_blank" rel="external">別再掉進DLL地獄的陷阱裡(DLL Hell)~.NET解決之道 資策會數位教育研究所講師 王芳芳</a></p>
+<p>总结:</p>
+<ol>
+<li><p>The .NET Framework NET Assembly 自描述与版本管理功能让 zero-impact(零影响) 的部署安装成为可能，同時也终结了DLL Hell 。</p>
+</li>
+<li><p>Application-Private Assemblies (or 被隔离的assembly) 只能被一个应用程式所使用- 它不会被其他的应用程式所影响。 隔离的assembly 让程式开发者对应用程式有着绝对的控制权，开发好的Application-Private Assemblies只要部署在和应用程式同一目录即可。</p>
+</li>
+<li><p>透过Side by side execution(并行执行)的技术，应用程式只要安装成功之后，就不用担心DLL更新版本，或规格的改变， 它允许一个assembly 的多个版本在一个机器上同时被安装并执行， 而且每一个应用程式都可以要求和不同的Assembly 版本系结。</p>
+</li>
+<li><p>The .NET Framework 纪录应用程式版本资讯，并在执行应用程式时使用此资讯载入应用程式所需依赖的正确版本的Assemblies。</p>
+</li>
+</ol>
+<h1 id="将类型生成到模块中"><a href="#将类型生成到模块中" class="headerlink" title="将类型生成到模块中"></a>将类型生成到模块中</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Program</span><span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+          <span class="token comment" spellcheck="true">// 由于引用了Console类的WriteLine方法</span>
+          <span class="token comment" spellcheck="true">// 要顺利通过编译，必须向C#编译器提供一组程序集</span>
+          <span class="token comment" spellcheck="true">// 使他能解析对外部类型的引用</span>
+          System<span class="token punctuation">.</span>Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Hi"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>System.Console是Microsoft实现好的类型，用于实现这个类型的各个方法的IL代码存储在MSCorLib.dll</p>
+<p>此处”r“意为<code>reference</code></p>
+</blockquote>
+<p>因此需要添加<code>r:MSCorLib.dll</code> 开关命令，完整编译命令行应如下：<br><code>csc.exe /out:Program.exe /t:exe /r:MSCorLib.dll Program.cs</code></p>
+<p>但由于其他命令均为默认命令，本例中的编译命令行可以简化为<br><code>csc.exe Program.cs</code></p>
+<p>如果不想C#编译器自动引用<code>MSCorLib.dll</code>程序集，可以使用<code>/nostdlib</code>开关。</p>
+<h2 id="生成三种应用程序的编译器开关"><a href="#生成三种应用程序的编译器开关" class="headerlink" title="生成三种应用程序的编译器开关"></a>生成三种应用程序的编译器开关</h2><blockquote>
+<p>此处”t“意为<code>target</code></p>
+</blockquote>
+<ul>
+<li>生成控制台用户界面(Console User Interface, CUI)应用程序使用<code>/t:exe</code>开关；</li>
+<li>生成图形用户界面(Graphical User Interface, GUI)应用程序使用<code>/t:winexe</code>开关；</li>
+<li>生成Windows Store应用程序使用<code>/t:appcontainerexe</code>开关；</li>
+</ul>
+<h2 id="集合开关命令的文件-响应文件"><a href="#集合开关命令的文件-响应文件" class="headerlink" title="集合开关命令的文件:响应文件"></a>集合开关命令的文件:响应文件</h2><p>编译时可以指定包含编译器设置命令的响应文件，例如：假定响应文件<code>MyProject.rsp</code>包含以下文本</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// MyProject.rsp</span>
+<span class="token operator">/</span><span class="token keyword">out</span><span class="token punctuation">:</span>MyProject<span class="token punctuation">.</span>exe
+<span class="token operator">/</span>target<span class="token punctuation">:</span>winexe
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>为了让CSC.exe使用该响应文件，可以像下面这样调用它</p>
+<p><code>csc.exe @MyProject.rsp CodeFile1.cs CodeFile2.cs</code></p>
+<p>C#支持多个响应文件，其先后顺序服从就近原则，优先级为<code>控制台命令&gt;本地&gt;全局</code>。</p>
+<p>.NET Framework具有一个默认的全局CSC.rsp文件，在运行CSC.exe进行编译时会自动调用，全局CSC.rsp文件中列出了所有的程序集，就不必使用C#的/reference开关显式引用这些程序集，这会对编译速度有一些影响，但不会影响最终的程序集文件，以及执行性能，开发者也可以自己为全局CSC.rsp添加命令开关，但这可能为在其他机器上重现编译过程带来麻烦。</p>
+<p>另外，指定/noconfig开关后，编译器将忽略本地和全局CSC.rsp文件。</p>
+<h1 id="什么是元数据-元数据概述"><a href="#什么是元数据-元数据概述" class="headerlink" title="什么是元数据? 元数据概述"></a>什么是元数据? 元数据概述</h1><blockquote>
+<p>元数据（英语：metadata），又称诠释数据、中介数据、中继数据、后设数据等，为描述其他数据信息的数据.</p>
+<p>元数据概述：元数据是一种二进制信息，用以对存储在公共语言运行库可移植可执行文件 (PE) 文件或存储在内存中的程序进行描述。将您的代码编译为 PE 文件时，便会将元数据插入到该文件的一部分中，而将代码转换为 Microsoft 中间语言 (MSIL) 并将其插入到该文件的另一部分中。在模块或程序集中定义和引用的每个类型和成员都将在元数据中进行说明。当执行代码时，运行库将元数据加载到内存中，并引用它来发现有关代码的类、成员、继承等信息。</p>
+</blockquote>
+<p>首先回顾一下<code>托管模块(Managed Module)</code>。<code>托管模块</code>是一个需要<code>CLR</code>才能执行的<code>标准WindowsPE(Portable executable，简称PE)文件</code>。</p>
+<ul>
+<li><code>PE32(+)头</code> :PE 文件主要部分的索引和入口点的地址。运行库使用该信息确定该文件为 PE 文件并确定当将程序加载到内存时执行从何处开始。</li>
+<li><code>CLR表头</code>:是一个小的信息块，是托管模块特有的，包含生成时所面向的版本号、一些标志、和一个MethodDef token用来指定模块的入口方法，最后，CLR头还包含模块内部的一些元数据表的大小的偏移量</li>
+<li><code>中间语言(IL)代码</code> : 编译器在编译源代码时产生的指令。CLR在运行时会将IL代码编译成本地CPU指令</li>
+<li><code>元数据</code>: 元数据表和堆,是由三种表构成的二进制数据块，这三种表分别为<code>定义表(definiton talbe)</code>、<code>引用表(reference table)</code>和<code>清单表(mainfest table)</code>。运行库使用该部分记录您的代码中每个类型和成员的信息。本部分还包括自定义属性和安全性信息。</li>
+</ul>
+<h2 id="元数据描述的信息"><a href="#元数据描述的信息" class="headerlink" title="元数据描述的信息"></a>元数据描述的信息</h2><p>元数据以非特定语言的方式描述在代码中定义的每一类型和成员。元数据存储以下信息：</p>
+<ul>
+<li>程序集的说明<ul>
+<li>标识（名称、版本、区域性、公钥）。</li>
+<li>导出的类型</li>
+<li>该程序集所依赖的其他程序集。</li>
+<li>运行所需的安全权限。</li>
+</ul>
+</li>
+<li>类型的说明<ul>
+<li>名称、可见性、基类和实现的接口。</li>
+<li>成员（方法、字段、属性、事件、嵌套的类型）。</li>
+</ul>
+</li>
+<li>属性<ul>
+<li>修饰类型和成员的其他说明性元素。</li>
+</ul>
+</li>
+</ul>
+<h3 id="定义表-definiton-talbe"><a href="#定义表-definiton-talbe" class="headerlink" title="定义表(definiton talbe)"></a>定义表(definiton talbe)</h3><p><strong>代码中定义的任何东西都将在上表中的某个表创建一个记录项。</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><code>定义表</code>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">ModuleDef</td>
+<td>包含<code>模块</code>文件名,扩展名(不含路径),编辑器创建的GUID 的 记录项.</td>
+</tr>
+<tr>
+<td style="text-align:left">TypeDef</td>
+<td>每个<code>类型</code>都在这个表中有一个记录项,包含类型的名称,基类,标志(public/private等),一些索引.这些索引指向MethodDef中属于该类型的方法、FieldDef表中该类的字段、PropertyDef表中该类型的属性以及EventDef表中该类型的时间.</td>
+</tr>
+<tr>
+<td style="text-align:left">MetodDef</td>
+<td>每个<code>方法</code>(包括入口方法)都在这个表中有一个记录项, 包含方法的名称,标志,签名,以及方法的IL代码在模块中的偏移量(位置),每个记录项还引用了ParamDef表中的一个记录项，后者包括与方法参数有关的更多信息。</td>
+</tr>
+<tr>
+<td style="text-align:left">FieldDef</td>
+<td>模块定义的每一个<code>字段</code>在这个表中都有一个记录项。每个记录项都包括标志、类型和名称。</td>
+</tr>
+<tr>
+<td style="text-align:left">ParamDef</td>
+<td>关于<code>参数</code>的记录项</td>
+</tr>
+<tr>
+<td style="text-align:left">PropertyDef</td>
+<td>模块定义的每个<code>属性</code>在这个表中都有一个记录项。每个记录项都包含标志、类型和名称。</td>
+</tr>
+<tr>
+<td style="text-align:left">EventDef</td>
+<td>模块定义的每个事件在这个表中都有一个记录项。每个记录项都包含标志和名称。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="引用表-reference-table"><a href="#引用表-reference-table" class="headerlink" title="引用表(reference table)"></a>引用表(reference table)</h3><table>
+<thead>
+<tr>
+<th style="text-align:left"><code>引用表</code>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">AssemblyRef</td>
+<td><code>引用的每个程序集</code>的记录项,每个记录项都包含绑定(bind)该程序集所需的信息：程序集名称(不包含路径和扩展名)、版本号、语言文化及公钥Token(根据发布者的公钥生成一个小的哈希值，标识了所引用程序集的发布者)。</td>
+</tr>
+<tr>
+<td style="text-align:left">ModuleRef</td>
+<td>实现该模块所引用的类型的<code>每个PE模块</code>在这个表中都有一个记录项。每个记录项都包含模块的文件名和扩展名(不含路径),如果存在别的模块实现了你需要的类型，这个表的作用便是同哪些类型建立绑定关系</td>
+</tr>
+<tr>
+<td style="text-align:left">TypeRef</td>
+<td>模块引用的每一个<code>引用类型</code>…..</td>
+</tr>
+<tr>
+<td style="text-align:left">MemberRef</td>
+<td>模块引用的<code>每个成员</code>（字段和方法，以及属性方法和事件方法）在这个表中都有一个记录项。每个记录项都包含成员的名称和签名，并指向对成员进行定义的那个类型的TypeRef记录项</td>
+</tr>
+</tbody>
+</table>
+<h3 id="清单表-mainfest-table"><a href="#清单表-mainfest-table" class="headerlink" title="清单表(mainfest table)"></a>清单表(mainfest table)</h3><table>
+<thead>
+<tr>
+<th style="text-align:left"><code>引用表</code>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">AssemblyDef</td>
+<td>如果模块标识的是程序集，这个元数据表就包含<code>单一记录项来列出程序集名称</code>(不包含路径和扩展名)、版本(major，minor，build和revision)、语言文化、标志、哈希算法以及发布者公钥(可为null)</td>
+</tr>
+<tr>
+<td style="text-align:left">FileDef</td>
+<td>每个<code>PE文件和资源文件</code>在这个表中都有一个记录项(清单本身所在的文件除外，该文件在AssemblyDef表的单一记录项中列出) 在每个记录项中，都包含文件名和扩展名(不含路径)、哈希值和一些标志。如果程序集只包含他的主模块，不包含其他非主模块和资源文件。FileDef将无记录</td>
+</tr>
+<tr>
+<td style="text-align:left">ManifestResourceDef</td>
+<td>每个<code>资源</code>在这个表中都有一个记录项 .记录项中包含资源名称、一些标志(如果程序集外部可见，就为public，否则为private)以及FileDef表的一个索引(指出资源或流包含在哪个文件中)。如果资源不是独立文件(比如.jpg或者.gif文件)，那么资源就是包含在PE文件中的流。对于嵌入资源，记录项还包含一个偏移量，指出资源流在PE文件中的起始位置</td>
+</tr>
+<tr>
+<td style="text-align:left">ExportedTypesDef</td>
+<td>从程序集的所有PE模块中<code>导出的每个public类型</code>在这个表中都有一个记录项。</td>
+</tr>
+</tbody>
+</table>
+<h1 id="将模块合并成程序集"><a href="#将模块合并成程序集" class="headerlink" title="将模块合并成程序集"></a>将模块合并成程序集</h1><h2 id="Microsoft为何考虑要引入程序集这一概念"><a href="#Microsoft为何考虑要引入程序集这一概念" class="headerlink" title="Microsoft为何考虑要引入程序集这一概念?"></a>Microsoft为何考虑要引入程序集这一概念?</h2><p>这是因为使用程序集，<code>可重用类型</code>的<code>逻辑表示</code>和<code>物理表示</code>就可以分开。</p>
+<ul>
+<li>物理上，可以将常用的类型放在一个文件中，不常用的程序放在另一些文件中，只在使用时加载，</li>
+<li>在逻辑上，这些程序仍然被组织于同一程序集中，不需要编写额外的代码显式进行链接。</li>
+</ul>
+<h2 id="程序集-Assembly-是什么组成的"><a href="#程序集-Assembly-是什么组成的" class="headerlink" title="程序集(Assembly)是什么组成的?"></a>程序集(Assembly)是什么组成的?</h2><p>程序集(Assembly)是一个或多个类型定义文件及资源文件的集合。在程序集的所有文件中，有一个文件容纳了<code>清单(Manifest)</code>，如上一节一开始所述，<code>清单</code>也是<code>元数据</code>的组成部分之一，表中主要包含作为程序集组成部分的那些文件的名称。此外还描述程序集的版本、语言文化、发布者、公开导出类型以及构成程序集的所有文件。</p>
+<p><code>CLR</code>操作的是程序集，对于程序集，有以下几点重要特性：</p>
+<ul>
+<li>程序集定义了可重用的类型。</li>
+<li>程序集用一个版本号标记。</li>
+<li>程序集可以关联安全信息。</li>
+</ul>
+<p><strong>程序集是进行重用、版本控制和应用安全性设置的基本单元。</strong></p>
+<p>对于一个程序集来说，除了包含清单元数据表的文件，程序集中的其他文件独立时不具备以上特点.</p>
+<h2 id="编译生成含有清单元数据表的PE文件"><a href="#编译生成含有清单元数据表的PE文件" class="headerlink" title="编译生成含有清单元数据表的PE文件"></a>编译生成含有清单元数据表的PE文件</h2><p>C#编译器都会生成程序集： <code>/t: exe</code>, <code>/t: winexe</code>, <code>/t: appcontainerexe</code>, <code>/t: library</code> 或者<code>/t: winmdobj</code>。这些开关会指示编译器生成含有清单元数据表的PE文件。</p>
+<p>C#编译器还支持<code>/t: module</code>开关。这个开关指示编译器生成一个不包含清单元数据表的PE文件。这样生成的肯定是一个DLL PE文件。CLR要想访问其中的任何类型，必须先将该文件添加到一个程序集中。使用<code>/t: module</code>开关时，C#编译器默认为输出文件使用<code>.netmodule</code>扩展名。</p>
+<p>例如:<br>将不常用类型编译到一个单独模块，这样一来如果程序集的用户永远不使用不常用类型，就不需要部署这个模块。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 使用`/t: module`开关时，C#编译器默认为输出文件使用`.netmodule`扩展名。</span>
+csc <span class="token operator">/</span>t<span class="token punctuation">:</span>module 不常用类型<span class="token punctuation">.</span>cs
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>不常用类型.netmodule</code>这是一个标准的DLL PE文件，但是CLR不能但单独加载它。</p>
+<p>将输出的文件名改为MultiFileLibrary.dll, 目标是生成库文件,添加<code>不常用类型</code>的模块, 编译<code>FUI.cs</code></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 指定了/t: library开关，所以生成的是含有清单元数据表的DLL PE文件</span>
+<span class="token comment" spellcheck="true">// /addmodule:不常用类型.netmodule 开关告诉编译器不`常用类型.netmodule`文件是程序集的一部分，从而将其添加到FileDef清单元数据表，并将`不常用类型.netmodule`的公开导出类型添加到ExportedTypesDef清单源数据表。</span>
+csc <span class="token operator">/</span><span class="token keyword">out</span><span class="token punctuation">:</span>NultiFileLibray<span class="token punctuation">.</span>dll <span class="token operator">/</span>t<span class="token punctuation">:</span>library <span class="token operator">/</span>addmodule<span class="token punctuation">:</span>不常用类型<span class="token punctuation">.</span>netmodule FUT<span class="token punctuation">.</span>cs
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="使用程序集链接器-AL-exe-生成程序集"><a href="#使用程序集链接器-AL-exe-生成程序集" class="headerlink" title="使用程序集链接器(AL.exe)生成程序集"></a>使用程序集链接器(AL.exe)生成程序集</h2><p>除了使用C#编译器，还可以使用”程序集链接器“实用程序AL.exe来创建程序集。如果程序集要求包含由不同编译器生成的模块(而这些编译器不支持与C#编译器的/addmodule开关等家的几种机制)，程序集连接器就显得相当有用。</p>
+<p><strong>AL.exe能生成EXE文件，或者生成只包含清单的DLL PE文件。程序集链接器不能将多个文件合并成一个文件。</strong></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">csc <span class="token operator">/</span>t<span class="token punctuation">:</span>module RUT<span class="token punctuation">.</span>cs
+csc <span class="token operator">/</span>t<span class="token punctuation">:</span>module FUT<span class="token punctuation">.</span>cs
+al <span class="token operator">/</span><span class="token keyword">out</span><span class="token punctuation">:</span>MultiFileLibrary<span class="token punctuation">.</span>dll <span class="token operator">/</span>t<span class="token punctuation">:</span>library FUT<span class="token punctuation">.</span>netmodule RUT<span class="token punctuation">.</span>netmodule
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="为程序集添加资源文件"><a href="#为程序集添加资源文件" class="headerlink" title="为程序集添加资源文件"></a>为程序集添加资源文件</h2><ul>
+<li>用AL.exe创建程序集时，可用<code>/enbed [resource]</code>开关将文件作为资源添加到程序集。该开关获取任意文件，并将文件内容嵌入最终的PE文件。也可用<code>/Link [resource]</code>开关获取资源文件，但只指出资源包含在程序集的哪个文件，并不嵌入到PE文件中；该资源文件独立，并必须与程序集文件一同被打包部署</li>
+<li>C#编译器用<code>/resource</code>开关将资源嵌入PE文件，用<code>/linkresource</code>开关添加记录项引用资源文件。以上开关均会修改ManifestResourceDef清单表添加记录项，外部引用的开关还会修改FileDef表以指出资源包文件。</li>
+</ul>
+<h1 id="程序集版本资源信息"><a href="#程序集版本资源信息" class="headerlink" title="程序集版本资源信息"></a>程序集版本资源信息</h1><blockquote>
+<p>Visual Studio新建C#项目时会在一个Properties文件夹中自动创建AssemblyInfo.cs文件。可直接打开该文件并修改自己的程序集特有信息。</p>
+</blockquote>
+<p>在应用程序代码中调用<code>System.Diagnostics.FileVersionInfo的</code>静态方法<code>GetVersionInfo</code>并传递程序集路径作为参数可以获取并检查这些信息。</p>
+<p><img src="/2019/07/07/CLR读书笔记/2CLR基础3/版本资源字段和对应的特性.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 有关程序集的一般信息由以下</span>
+<span class="token comment" spellcheck="true">// 控制。更改这些特性值可修改</span>
+<span class="token comment" spellcheck="true">// 与程序集关联的信息。</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span> <span class="token function">AssemblyTitle</span><span class="token punctuation">(</span><span class="token string">"LentilToolbox"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span> <span class="token function">AssemblyDescription</span><span class="token punctuation">(</span><span class="token string">"Licensed under the MIT license"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span> <span class="token function">AssemblyConfiguration</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span> <span class="token function">AssemblyCompany</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span> <span class="token function">AssemblyProduct</span><span class="token punctuation">(</span><span class="token string">"LentilToolbox"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span> <span class="token function">AssemblyCopyright</span><span class="token punctuation">(</span><span class="token string">"Copyright ©  2016 Lentil Sun"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span> <span class="token function">AssemblyTrademark</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span> <span class="token function">AssemblyCulture</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+<span class="token comment" spellcheck="true">//将 ComVisible 设置为 false 将使此程序集中的类型</span>
+<span class="token comment" spellcheck="true">//对 COM 组件不可见。  如果需要从 COM 访问此程序集中的类型，</span>
+<span class="token comment" spellcheck="true">//请将此类型的 ComVisible 特性设置为 true。</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span> <span class="token function">ComVisible</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+<span class="token comment" spellcheck="true">// 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span> <span class="token function">Guid</span><span class="token punctuation">(</span><span class="token string">"ac315d57-80ca-4e7a-b55c-064b94547552"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+<span class="token comment" spellcheck="true">// 程序集的版本信息由下列四个值组成:</span>
+<span class="token comment" spellcheck="true">//</span>
+<span class="token comment" spellcheck="true">//      主版本</span>
+<span class="token comment" spellcheck="true">//      次版本</span>
+<span class="token comment" spellcheck="true">//      生成号</span>
+<span class="token comment" spellcheck="true">//      修订号</span>
+<span class="token comment" spellcheck="true">//</span>
+<span class="token comment" spellcheck="true">//可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值，</span>
+<span class="token comment" spellcheck="true">// 方法是按如下所示使用“*”: :</span>
+<span class="token comment" spellcheck="true">// [assembly: AssemblyVersion("1.0.*")]</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span> <span class="token function">AssemblyVersion</span><span class="token punctuation">(</span><span class="token string">"1.1.0.2"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span> <span class="token function">AssemblyFileVersion</span><span class="token punctuation">(</span><span class="token string">"1.1.0.2"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">-</th>
+<th style="text-align:center">major（主版本号）</th>
+<th style="text-align:center">minor（次版本号）</th>
+<th style="text-align:center">build（内部版本号）</th>
+<th style="text-align:center">revision（修订号）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">示例</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">719</td>
+<td style="text-align:center">2</td>
+</tr>
+</tbody>
+</table>
+<p>注意：程序集有三个版本号，每个版本号都有不同的用途：</p>
+<ul>
+<li><code>AssemblyFileVersion</code>：这个版本号存储在Win32版本资源中供使用者参考，CLR既不检查，也不关心，这个版本号的作用是说明<strong>该程序集的版本</strong>。</li>
+<li><code>AssemblyInformationalVersion</code>：同上，这个版本号存储在Win32版本资源中供使用者参考，CLR既不检查，也不关心，这个版本号作用是说明<strong>使用该程序集的产品的版本</strong>。</li>
+<li><code>AssemblyVersion</code>：存储在AssemblyDef清单元数据表中，CLR在绑定到强命名程序集时会用到它。这个版本号很重要，它<strong>唯一性地标识了程序集。</strong></li>
+</ul>
+<h1 id="语言文化"><a href="#语言文化" class="headerlink" title="语言文化"></a>语言文化</h1><p><img src="/2019/07/07/CLR读书笔记/2CLR基础3/语言文化标记.png" alt=""></p>
+<p>未指定具体语言文化的程序集成为<code>语言文化中性(Culture neutral)</code>。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 将程序集的语言文化设为瑞士德语</span>
+<span class="token punctuation">[</span>assembly<span class="token punctuation">:</span> <span class="token function">AssemblyCulture</span><span class="token punctuation">(</span><span class="token string">"de-CH"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="CLR探测程序集文件会扫描的目录"><a href="#CLR探测程序集文件会扫描的目录" class="headerlink" title="CLR探测程序集文件会扫描的目录"></a>CLR探测程序集文件会扫描的目录</h1>
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

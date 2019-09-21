@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        21托管堆和垃圾回收2 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#使用需要特殊清理的类型"><span class="toc-text">使用需要特殊清理的类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#StreamWriter和FileStream的一个问题讨论"><span class="toc-text">StreamWriter和FileStream的一个问题讨论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GC为本机资源提供的其他功能"><span class="toc-text">GC为本机资源提供的其他功能</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#终结的内部工作原理"><span class="toc-text">终结的内部工作原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#手动监视和控制对象的生存期"><span class="toc-text">手动监视和控制对象的生存期</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#关于强弱引用"><span class="toc-text">关于强弱引用</span></a></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        21托管堆和垃圾回收2
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-11 00:02:00</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="使用需要特殊清理的类型"><a href="#使用需要特殊清理的类型" class="headerlink" title="使用需要特殊清理的类型"></a>使用需要特殊清理的类型</h1><p>.</p>
+<h2 id="StreamWriter和FileStream的一个问题讨论"><a href="#StreamWriter和FileStream的一个问题讨论" class="headerlink" title="StreamWriter和FileStream的一个问题讨论"></a>StreamWriter和FileStream的一个问题讨论</h2><p><code>System.IO.FileStream</code>类型允许用户打开文件进行读写。为提高性能，该类型的实现利用了一个<strong>内存缓冲区</strong>。<strong>只有缓冲区满时，类型才将缓冲区中的数据刷入文件</strong>。FileStream类型只支持字节的写入。写入字符和字符串可以使用一个<code>System.IO.StreamWriter</code>，如下所示</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">FileStream fs<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">FileStream</span><span class="token punctuation">(</span><span class="token string">"temp.dat"</span><span class="token punctuation">,</span>FileMode<span class="token punctuation">.</span>Create<span class="token punctuation">)</span><span class="token punctuation">;</span>
+StreamWriter sw<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">StreamWriter</span><span class="token punctuation">(</span>fs<span class="token punctuation">)</span><span class="token punctuation">;</span>
+sw<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span>“Hi There”<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 不要忘记写下面这个Dispose调用</span>
+<span class="token comment" spellcheck="true">// 由于StreamWriter对象实现了IDisposable接口, 所以可以使用C#的using语句</span>
+<span class="token comment" spellcheck="true">// 调用Dispose,StreamWriter对象将数据flush到Stream对象并关闭该对象</span>
+sw<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 调用StreamWriter 的Dispose会关闭FileStream</span>
+<span class="token comment" spellcheck="true">// FileStream无需显示关闭</span>
+<span class="token comment" spellcheck="true">// 不需要再FileStream上显式调用Dispose,因为StreamWriter会帮你调用, 非要显式调用Dispose</span>
+<span class="token comment" spellcheck="true">// FileStream会发现对象已经清理过了, 所以方法什么都不做而直接返回.</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>不需要再<code>FileStream</code>上显式调用<code>Dispose</code>,因为<code>StreamWriter</code>会帮你调用, 非要显式调用<code>Dispose</code>,<code>FileStream</code>会发现对象已经清理过了, 所以方法什么都不做而直接返回.</p>
+<p>没有代码显式调用Dispose会发生什么? 在某个时刻,垃圾回收器会正确检测到对象是垃圾,并对其进行终结, 但垃圾回收器不保证对象的终结顺序.  所以, 如果<code>FileStream</code>对象先终结, 就会先关闭文件,然后<code>StreamWriter</code>对象终结时,会试图向已关闭的文件flush(冲入,写入)数据, 造成抛出异常. 如果<code>StreamWriter</code>对象先终结,数据就会安全写入文件.</p>
+<p>Microsoft解决这个问题是让<code>StreamWriter</code>对象类型<strong>不支持终结器</strong>, <strong>如果不调用<code>Dispose</code>方法,就永远不会将缓冲区的数据flush到<code>FileStream</code>对象.</strong> 数据肯定丢失.</p>
+<h2 id="GC为本机资源提供的其他功能"><a href="#GC为本机资源提供的其他功能" class="headerlink" title="GC为本机资源提供的其他功能"></a>GC为本机资源提供的其他功能</h2><p>包装本机资源的<code>托管对象</code>只占用<strong>很少</strong>的内存,但是本机资源有时会消耗大量内存.例如位图, 如果大量分配数百个位图(CLR觉得这些对象占用的内存很少不需要去GC),但进程的内存将以一个恐怖的速度增长.</p>
+<p>为了修正这个问题,GC类提供了以下2个静态方法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">AddMemoryPressure</span><span class="token punctuation">(</span>Int64 bytesAllocated<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">RemoveMemoryPressure</span><span class="token punctuation">(</span>Int64 bytesAllocated<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>如果一个类要包装可能很大的本机资源,就应该使用这些方法提示垃圾回收器实际需要消耗多少内存. 垃圾回收器会监视内存压力, 压力变大时,就强制执行垃圾回收.</p>
+<p>详细例子可以去看原文.</p>
+<h1 id="终结的内部工作原理"><a href="#终结的内部工作原理" class="headerlink" title="终结的内部工作原理"></a>终结的内部工作原理</h1><p>终结器表面上很简单: 创建对象, 当它被回收时, 它的Finalize方法得以调用.  深究下去, 就会发现终结的门道很多.</p>
+<ol>
+<li><code>new</code>操作符会从堆中分配内存</li>
+<li>如果对象的类型<strong>重写</strong>了<code>System.Object</code>继承的<code>Finalize</code>方法(就认为此类和派生类是可终结对象).<ol>
+<li>不重写,就会被CLR认为忽略掉.认为是不可终结对象.</li>
+</ol>
+</li>
+<li>类型构造器被调用之前,会将该对象指针放入 <code>终结列表(finalization list)</code>中<ol>
+<li>这个<code>终结列表</code>是由垃圾回收器孔子的一个内部数据结构.</li>
+</ol>
+</li>
+<li>回收对象的内存前,应调用该对象的<code>Finalize</code>方法.</li>
+</ol>
+<p><img src="/2019/09/11/CLR读书笔记/21托管堆和垃圾回收2/QQ截图20190911141358.png" alt=""></p>
+<p>系统检测到CEFIJ对象定义了Finalize方法, 所以将指向这些对象的指针添加到终结列表中.</p>
+<p><img src="/2019/09/11/CLR读书笔记/21托管堆和垃圾回收2/QQ截图20190911141737.png" alt=""></p>
+<p>垃圾回收开始时,对象BEGHIJ被判定为垃圾, 垃圾回收器扫描<code>终结队列</code>查找这些对象的引用, 找到后从终结列表移除, 移除并附加到<code>freachable队列</code>(也是垃圾回收器的一个内部数据结构)</p>
+<blockquote>
+<p>freachable 名字的由来: f 代表终结 finalization . freachable队列中的每个记录项都是对托管堆中应调用其Finalize方法的一个对象的引用.   reachable 代表对象是可达的.<br>换言之: 可将freachable队列看成是像静态字段那样的一个根(引用对象). 所以freachable队列中的引用使它指向的对象保持可达,不是垃圾.</p>
+</blockquote>
+<p><img src="/2019/09/11/CLR读书笔记/21托管堆和垃圾回收2/QQ截图20190911145528.png" alt=""></p>
+<p>BGH占用的内存已经被回收, EIJ占用的内存暂时不能回收, 因为它们的Finalize方法还没有调用.</p>
+<p>一个特殊的高优先级CLR线程专门调用<code>Finalize</code>方法. <code>freachable队列</code>为空时,线程睡眠,一但进来记录项,就会唤醒线程去执行, 然后调用<code>Finalize</code>方法后移除. 注意不应该在<code>Finalize</code>中访问线程的本地存储.</p>
+<p>当一个对象不可达时, 垃圾回收器就视它为垃圾. <strong>但是当垃圾回收器将对象引用从<code>终结列表</code>移至<code>freachable队列</code>时, 就不再被认为是垃圾, 不能回收它的内存.  对象复活了…</strong></p>
+<p>标记<code>freachable</code>对象时, <code>垃圾回收器</code>将递归<strong>标记</strong>对象中的引用类型的字段所引用的<code>对象</code>; 所以这些对象也必须复活以便在回收过程中存活. 之后, 垃圾回收器才结束对垃圾的标识. 在这个过程中, 一些原本被认为是垃圾的对象复活了,然后垃圾回收器压缩(移动)可回收的内存, 将复活的对象提升到较老的一<code>代</code>(这不理想), 现在,特殊的<code>终结线程</code>清空<code>freachable队列</code>,执行每个对象的<code>Finalize</code>方法.</p>
+<p>在下一次对老一<code>代</code>进行回收时,会发现已终结的对象称为真正的垃圾, 因为没有<code>根</code>指向他们. <code>freachable队列</code>也不再指向它们.  <strong>所以在整个过程中, 可终结对象需要执行两次垃圾回收才能释放它们占用的内存. 在实际应用中可能不止两次, 可能被提升至另一<code>代</code>了.</strong></p>
+<p><img src="/2019/09/11/CLR读书笔记/21托管堆和垃圾回收2/QQ截图20190911153218.png" alt=""></p>
+<h1 id="手动监视和控制对象的生存期"><a href="#手动监视和控制对象的生存期" class="headerlink" title="手动监视和控制对象的生存期"></a>手动监视和控制对象的生存期</h1><p>CLR为每个AppDomain都提供了<code>GC句柄表(GC Handle table)</code>, 允许应用程序监视或手动控制对象的生存期.  这个表创建之初是空白的, 其中的记录项包含2中信息:</p>
+<ul>
+<li>对托管堆中的一个对象的<code>引用</code></li>
+<li>如何监视或控制对象的<code>标志flag</code></li>
+</ul>
+<p><img src="/2019/09/11/CLR读书笔记/21托管堆和垃圾回收2/QQ截图20190911155057.png" alt=""></p>
+<p><img src="/2019/09/11/CLR读书笔记/21托管堆和垃圾回收2/QQ截图20190911155106.png" alt=""></p>
+<p>简单地说,为了控制或监视对象的生存期, 可调用<code>GCHandle</code>的<code>静态Alloc方法</code>,并传递想控制/监视的对象的<code>引用</code>.  还可传递一个<code>GCHandleType</code>枚举标志,定义如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">enum</span> GCHandleType
+<span class="token punctuation">{</span>
+   Weak <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span>                  <span class="token comment" spellcheck="true">// 用于监视对象的存在</span>
+   WeakTrackResurrection <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 用于监视对象的存在</span>
+   Normal <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">,</span>                <span class="token comment" spellcheck="true">// 用于控制对象的生存期</span>
+   Pinned <span class="token operator">=</span> <span class="token number">3</span>                 <span class="token comment" spellcheck="true">// 用于控制对象的生存期</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>Weak</code> : 监视对象的生存期, 具体地说,可以检测垃圾回收器在什么时候判断该对象在应用程序代码中不可达. 注意, 此时对象的Finalize方法可能执行,也可能没执行, 对象可能还在内存中.</li>
+<li><code>WeakTrackResurrection</code> : 与上面相同, 不同的是此时对象的<code>Finalize方法</code>已经执行,对象的内存已经回收.</li>
+<li><code>Normal</code> : 该标志允许控制对象的生存期. 是告诉垃圾回收器: 即使应用程序中没有变量(根)引用该对象. 该变量也必须留在内存中. 垃圾回收发生时, 该对象的内存可以压缩(移动). <strong>不向Alloc方法传递任何GCHandleType标志.就默认用<code>Normal</code>.</strong></li>
+<li><code>Pinned</code> : 与上面那条不同的是, 垃圾回收发生时, 该对象的内存<strong>不能</strong>压缩(移动). 这个功能用于需要将内存地址交给本机代码时,本机代码知道GC不会移动对象,所以能放心地向托管堆的这个内存写入.</li>
+</ul>
+<p><code>GCHandle</code>的<code>静态Alloc方法</code>会在调用时扫描AppDomain的<code>GC句柄表</code>,调用<code>GCHandle</code>的<code>Free方法</code>, 将IntPtr字段设为0, 使实例变得无效.</p>
+<p>垃圾回收器如何使用GC句柄表, 当垃圾回收发生时, 垃圾回收器的行为如下:</p>
+<p><img src="/2019/09/11/CLR读书笔记/21托管堆和垃圾回收2/QQ截图20190911173608.png" alt=""></p>
+<p>在什么情况下使用, 具体看书.</p>
+<p>fix语句的使用</p>
+<p><img src="/2019/09/11/CLR读书笔记/21托管堆和垃圾回收2/QQ截图20190911174650.png" alt=""></p>
+<h1 id="关于强弱引用"><a href="#关于强弱引用" class="headerlink" title="关于强弱引用"></a>关于强弱引用</h1><p>开发人员刚开始学习<code>弱引用</code>时, 会马上想到它们在缓存情形中的用处. 例如: 构造包含大量数据的一组对象, 并创建这些对象的<code>弱引用</code>. 需要数据时就去检查这些弱引用, 看看包含这些数据的对象是否依然”健在”, 对象还在就直接使用对象; 这与程序就会有较好的性能, <strong>但是如果发生垃圾回收, 包含数据的对象就会被销毁</strong>. 一旦需要重新创建数据,性能就会收到影响.</p>
+<p><strong>垃圾回收不是内存满或接近满时才发生的, 只要第0代满了,垃圾回收就会发生.</strong></p>
+<p><code>弱引用</code>在缓存情形中确实能得到高效应用,但构建良好的缓存算法来找到内存消耗和速度之间的平衡点十分复杂. 简单的说: 你希望缓存保持对自己的所有对象的<code>强引用</code>, 内存吃紧就开始将<code>强引用</code>转换为<code>弱引用</code>. 通过调用WIN32的<code>GlobalMemoryyStatusEx</code>函数并检查返回<code>MEMORYSTATUSEX</code>结构的<code>dwMemoryLoad</code>成员做到这一点. 当大于80,内存空间处于吃紧状态.</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
