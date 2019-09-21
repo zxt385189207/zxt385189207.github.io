@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        8方法 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#方法"><span class="toc-text">方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实例构造器和类-引用类型"><span class="toc-text">实例构造器和类(引用类型)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#不要在构造器中调用虚方法"><span class="toc-text">不要在构造器中调用虚方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优化构造器代码膨胀效应的方法"><span class="toc-text">优化构造器代码膨胀效应的方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实例构造器和结构-值类型"><span class="toc-text">实例构造器和结构(值类型)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于值类型的实例构造器"><span class="toc-text">关于值类型的实例构造器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#类型构造器"><span class="toc-text">类型构造器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#操作符重载方法"><span class="toc-text">操作符重载方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#操作符方法的友好名称方法"><span class="toc-text">操作符方法的友好名称方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#转换操作符方法"><span class="toc-text">转换操作符方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#扩展方法"><span class="toc-text">扩展方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展方法的规则和原则"><span class="toc-text">扩展方法的规则和原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为接口类型定义扩展方法"><span class="toc-text">为接口类型定义扩展方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LINQ-Language-Integrated-Query-语言集成查询"><span class="toc-text">LINQ (Language Integrated Query) 语言集成查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为委托类型定义扩展方法"><span class="toc-text">为委托类型定义扩展方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#向枚举类型添加扩展方法"><span class="toc-text">向枚举类型添加扩展方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建委托来引用对象上的扩展方法"><span class="toc-text">创建委托来引用对象上的扩展方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关于invoke和call的翻译区别"><span class="toc-text">关于invoke和call的翻译区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ExtensionAttribute特性类"><span class="toc-text">ExtensionAttribute特性类</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#分部方法"><span class="toc-text">分部方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#分部方法的规则和原则"><span class="toc-text">分部方法的规则和原则</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        8方法
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-07-28 15:43:48</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><h1 id="实例构造器和类-引用类型"><a href="#实例构造器和类-引用类型" class="headerlink" title="实例构造器和类(引用类型)"></a>实例构造器和类(引用类型)</h1><p>构造器方法在<code>方法定义元数据表</code>中始终叫做<code>.ctor</code>(constructor简称).</p>
+<p>创建引用类型的实例时</p>
+<ul>
+<li>首先,为实例的数据字段分配内存</li>
+<li>初始化对象的附加字段(<code>类型对象指针</code>和<code>同步索引块</code>)<ul>
+<li>这些附加字段称为<code>overhead fields</code>,创建对象时必须的开销.</li>
+</ul>
+</li>
+<li>最后调用类型的<code>实例构造器</code>,来设置对象的初始状态.</li>
+</ul>
+<p>构造引用类型对象时,在调用类型的实例构造器之前,为对象分配的内存总是先被归零,<strong>没有被构造器显示重写的字段都保证获得0或null值.</strong></p>
+<ul>
+<li>实例构造器不能使用以下修饰符: <code>virtual</code>,<code>new</code>,<code>override</code>,<code>sealed</code>,<code>abstract</code>.</li>
+<li>没有显示定义任何构造器时,C#编译器将定义一个默认的<code>无参构造器</code>.</li>
+<li>如果是抽象类(abstract),那么编译器生成的默认构造器可访问性是<code>protected</code>,否则就是<code>public</code>.</li>
+<li>如果基类没有提供 <strong>无参构造器</strong>,那么派生类必须 <strong>显式调用一个基类构造器</strong>.</li>
+<li>如果是静态类(static),编译器不会再定义中生成默认构造器.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SomeType</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 等价于</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SomeType</span>
+<span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token function">SomeType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">base</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>类的实例构造器在访问从基类继承的任何字段之前,都必须先调用基类的构造器.</li>
+<li>如果派生类的构造器没有显式调用一个基类构造器,C#编译器会自动生成对默认的基类构造器的调用.(System.Object的无参构造器会得到调用,直接返回什么都不做)</li>
+<li>极少数情况可以在不调用构造器的前提下创建类型的实例.<ul>
+<li>一个典型的例子是Object的<code>MemberwiseClone</code>方法.该方法的作用是分配内存,初始化对的额外开销成员,然后将源对象的字节数据复制到新对象中.(不需要构造器去初始化成员)</li>
+<li>另外<code>运行时序列化器</code>反序列化对象时也不需要调用构造器.反序列化代码使用<code>System.Runtime.Serialization.FormatterServices</code>类型的<code>GetUninitializedObject</code>或者<code>GetSafeUninitializedObject</code>方法为对象分配内存. 期间不会调用一个构造器.</li>
+</ul>
+</li>
+</ul>
+<h2 id="不要在构造器中调用虚方法"><a href="#不要在构造器中调用虚方法" class="headerlink" title="不要在构造器中调用虚方法"></a>不要在构造器中调用虚方法</h2><ul>
+<li>假如基类构造器中调用了虚方法,派生类重写了虚方法, 派生类被实例化时,会先调用基类的构造器,但是基类构造器中的虚方法会使用派生类重写后的虚方法,但是派生类构造器还没运行,所以会导致无法预测的行为.</li>
+<li>尚未完成对继承层次结构中所有字段的初始化.</li>
+</ul>
+<p>归根到底,这是由于调用虚方法时,直到运行之前都不会选择执行该方法实际的类型.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SomeType</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// C# 编译器允许嵌入方式初始化实例字段</span>
+  <span class="token comment" spellcheck="true">// 但是在幕后,它会将语法转换成构造器方法中的代码来初始化. &lt;----代码膨胀效应</span>
+  <span class="token keyword">private</span> Int32 m_x <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这段代码在IL代码如下工作:</p>
+<ol>
+<li>SomeType的构造器把值5存储到m_x.</li>
+<li>再调用基类构造器<code>System.Object::.cotr()</code>.</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SomeType</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 内联方式初始化实例字段   等同于嵌入代码的形式</span>
+  <span class="token comment" spellcheck="true">// 会将此种语法转换成代码在构造器方法中来执行初始化</span>
+  <span class="token comment" spellcheck="true">// 所以有多少个构造器,都会生成多少次所有字段初始化的代码</span>
+  <span class="token keyword">private</span> Int32  m_x <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+  <span class="token keyword">private</span> String m_s <span class="token operator">=</span> <span class="token string">"Hi there"</span><span class="token punctuation">;</span>
+  <span class="token keyword">private</span> Double m_d <span class="token operator">=</span> <span class="token number">3.1415</span><span class="token punctuation">;</span>
+  <span class="token keyword">private</span> Byte   m_b<span class="token punctuation">;</span>
+
+  <span class="token keyword">public</span> <span class="token function">SomeType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+  <span class="token keyword">public</span> <span class="token function">SomeType</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// 此构造器的执行过程</span>
+  <span class="token comment" spellcheck="true">// 1. 编译器生成代码 初始化m_x,m_s和 m_d(没有显示初始化也保证会被初始化为0)</span>
+  <span class="token comment" spellcheck="true">// 2. 调用基类构造器 base()  基类的无参构造器调用</span>
+  <span class="token comment" spellcheck="true">// 3. 再调用SomeType(String s) 类型自己的构造器</span>
+  <span class="token comment" spellcheck="true">// 4. 用10覆盖掉m_d值</span>
+  <span class="token keyword">public</span> <span class="token function">SomeType</span><span class="token punctuation">(</span>String s<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span> m_d<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">.</span>method <span class="token keyword">public</span> hidebysig specialname rtspecialname
+        instance <span class="token keyword">void</span>  <span class="token punctuation">.</span><span class="token function">ctor</span><span class="token punctuation">(</span><span class="token keyword">string</span> s<span class="token punctuation">)</span> cil managed
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 代码大小       64 (0x40)</span>
+  <span class="token punctuation">.</span>maxstack  <span class="token number">2</span>
+  <span class="token comment" spellcheck="true">//////////////////////////////////////////////////////////////////</span>
+  IL_0000<span class="token punctuation">:</span>  ldarg<span class="token number">.0</span>
+  IL_0001<span class="token punctuation">:</span>  ldc<span class="token punctuation">.</span>i4<span class="token number">.5</span>
+  IL_0002<span class="token punctuation">:</span>  stfld      int32 ConsoleApp1<span class="token punctuation">.</span>SomeType<span class="token punctuation">:</span><span class="token punctuation">:</span>m_x
+  IL_0007<span class="token punctuation">:</span>  ldarg<span class="token number">.0</span>
+  IL_0008<span class="token punctuation">:</span>  ldstr      <span class="token string">"Hi there"</span>
+  IL_000d<span class="token punctuation">:</span>  stfld      <span class="token keyword">string</span> ConsoleApp1<span class="token punctuation">.</span>SomeType<span class="token punctuation">:</span><span class="token punctuation">:</span>m_s
+  IL_0012<span class="token punctuation">:</span>  ldarg<span class="token number">.0</span>
+  IL_0013<span class="token punctuation">:</span>  ldc<span class="token punctuation">.</span>r8     <span class="token number">3.1415000000000002</span>
+  IL_001c<span class="token punctuation">:</span>  stfld      float64 ConsoleApp1<span class="token punctuation">.</span>SomeType<span class="token punctuation">:</span><span class="token punctuation">:</span>m_d
+  IL_0021<span class="token punctuation">:</span>  ldarg<span class="token number">.0</span>
+  <span class="token comment" spellcheck="true">////////////////////以上就是每个构造器都要生成的初始化m_x,m_s和 m_d代码</span>
+  <span class="token comment" spellcheck="true">// 调用基类构造器</span>
+  IL_0022<span class="token punctuation">:</span>  call       instance <span class="token keyword">void</span> <span class="token punctuation">[</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">]</span>System<span class="token punctuation">.</span>Object<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token punctuation">.</span><span class="token function">ctor</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  IL_0027<span class="token punctuation">:</span>  nop
+  IL_0028<span class="token punctuation">:</span>  nop
+  <span class="token comment" spellcheck="true">// 调用自己的构造器</span>
+  IL_0029<span class="token punctuation">:</span>  ldarg<span class="token number">.0</span>
+  IL_002a<span class="token punctuation">:</span>  ldarg<span class="token number">.1</span>
+  IL_002b<span class="token punctuation">:</span>  stfld      <span class="token keyword">string</span> ConsoleApp1<span class="token punctuation">.</span>SomeType<span class="token punctuation">:</span><span class="token punctuation">:</span>m_s
+  <span class="token comment" spellcheck="true">// m_d=10;用10覆盖掉m_d值</span>
+  IL_0030<span class="token punctuation">:</span>  ldarg<span class="token number">.0</span>
+  IL_0031<span class="token punctuation">:</span>  ldc<span class="token punctuation">.</span>r8     <span class="token number">10</span><span class="token punctuation">.</span>
+  IL_003a<span class="token punctuation">:</span>  stfld      float64 ConsoleApp1<span class="token punctuation">.</span>SomeType<span class="token punctuation">:</span><span class="token punctuation">:</span>m_d
+  IL_003f<span class="token punctuation">:</span>  ret
+<span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// end of method SomeType::.ctor</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li><strong>编译器为这3个构造器方法生成代码时,在每个方法的开始位置,都会包含用于初始化m_x,m_s和m_d的代码.</strong></li>
+<li><strong>在这些初始化代码之后,编译器会插入对基类构造器的调用.</strong></li>
+<li><strong>再然后,会插入构造器自己的代码.</strong></li>
+</ol>
+<p><em><strong>编译器在调用基类构造器前使用简化语法对所有字段初始化.</strong></em></p>
+<p>因此上述3个构造器就要生成3次这样相同的代码(初始化m_x,m_s和 m_d代码).</p>
+<h2 id="优化构造器代码膨胀效应的方法"><a href="#优化构造器代码膨胀效应的方法" class="headerlink" title="优化构造器代码膨胀效应的方法"></a>优化构造器代码膨胀效应的方法</h2><p>如果有几个已初始化的实例字段和许多重载构造器方法,可以创建单个构造器来执行公共的初始化. 让其他构造器都显示调用这个公共初始化构造器.  不显示初始化字段(不在定义时赋值初始化).</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">    <span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SomeType</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 不要显示初始化下面的字段,减少生成相同的代码</span>
+        <span class="token comment" spellcheck="true">// 不然会在没个构造器中生成相同的初始化代码,</span>
+        <span class="token keyword">private</span> Int32  m_x<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> String m_s<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> Double m_d<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> Byte   m_b<span class="token punctuation">;</span>
+
+        <span class="token keyword">public</span> <span class="token function">SomeType</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            m_x <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+            m_s <span class="token operator">=</span> <span class="token string">"ssss"</span><span class="token punctuation">;</span>
+            m_d <span class="token operator">=</span> <span class="token number">3.1415</span><span class="token punctuation">;</span>
+            m_b <span class="token operator">=</span> <span class="token number">0xff</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 先调用基类System.Object的无参构造器</span>
+        <span class="token comment" spellcheck="true">// 调用自己的无参构造器初始化</span>
+        <span class="token keyword">public</span> <span class="token function">SomeType</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            m_x <span class="token operator">=</span> x<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 先调用基类System.Object的无参构造器</span>
+        <span class="token comment" spellcheck="true">// 调用自己的无参构造器初始化</span>
+        <span class="token comment" spellcheck="true">// 用10覆盖m_d</span>
+        <span class="token keyword">public</span> <span class="token function">SomeType</span><span class="token punctuation">(</span>String s<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            m_s <span class="token operator">=</span> s<span class="token punctuation">;</span>
+            m_d <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 先调用基类System.Object的无参构造器</span>
+        <span class="token comment" spellcheck="true">// 调用自己的无参构造器初始化</span>
+        <span class="token keyword">public</span> <span class="token function">SomeType</span><span class="token punctuation">(</span>Byte b<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            m_b <span class="token operator">=</span> b<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">.</span>method <span class="token keyword">public</span> hidebysig specialname rtspecialname
+        instance <span class="token keyword">void</span>  <span class="token punctuation">.</span><span class="token function">ctor</span><span class="token punctuation">(</span><span class="token keyword">string</span> s<span class="token punctuation">)</span> cil managed
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 代码大小       31 (0x1f)</span>
+  <span class="token punctuation">.</span>maxstack  <span class="token number">8</span>
+  IL_0000<span class="token punctuation">:</span>  ldarg<span class="token number">.0</span>
+  IL_0001<span class="token punctuation">:</span>  call       instance <span class="token keyword">void</span> ConsoleApp1<span class="token punctuation">.</span>SomeType<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token punctuation">.</span><span class="token function">ctor</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  IL_0006<span class="token punctuation">:</span>  nop
+  IL_0007<span class="token punctuation">:</span>  nop
+  IL_0008<span class="token punctuation">:</span>  ldarg<span class="token number">.0</span>
+  IL_0009<span class="token punctuation">:</span>  ldarg<span class="token number">.1</span>
+  IL_000a<span class="token punctuation">:</span>  stfld      <span class="token keyword">string</span> ConsoleApp1<span class="token punctuation">.</span>SomeType<span class="token punctuation">:</span><span class="token punctuation">:</span>m_s
+  IL_000f<span class="token punctuation">:</span>  ldarg<span class="token number">.0</span>
+  IL_0010<span class="token punctuation">:</span>  ldc<span class="token punctuation">.</span>r8     <span class="token number">10</span><span class="token punctuation">.</span>
+  IL_0019<span class="token punctuation">:</span>  stfld      float64 ConsoleApp1<span class="token punctuation">.</span>SomeType<span class="token punctuation">:</span><span class="token punctuation">:</span>m_d
+  IL_001e<span class="token punctuation">:</span>  ret
+<span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// end of method SomeType::.ctor</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>如果还在字段定义时赋值, 其他构造器使用:this(),则不会在这些构造器中生成字段初始化的代码,而会在无参构造器中生成. 关键在于:this()</p>
+</blockquote>
+<h1 id="实例构造器和结构-值类型"><a href="#实例构造器和结构-值类型" class="headerlink" title="实例构造器和结构(值类型)"></a>实例构造器和结构(值类型)</h1><p>值类型(struct)构造器的工作方式与引用类型(class)的构造器截然不同. CLR总是允许创建值类型的实例,并且没有办法阻止类型的实例化.</p>
+<ul>
+<li>值类型构造器需要显示调用才会执行.</li>
+<li>不显式调用构造器都将初始化为0或null</li>
+<li>C#编译器不允许结构包含显式的无参构造器.</li>
+<li>由于不能定义无参构造器,所以编译器永远不会生成自动调用它的代码</li>
+</ul>
+<blockquote>
+<p><strong>引用类型中的字段</strong> 保证初始化为0或null, C#是能生成”可验证”代码的编译器,可以保证所以 <strong>基于栈的值类型字段</strong> 对它们进行”置零”.</p>
+</blockquote>
+<h2 id="关于值类型的实例构造器"><a href="#关于值类型的实例构造器" class="headerlink" title="关于值类型的实例构造器"></a>关于值类型的实例构造器</h2><ol>
+<li>C#不允许 值类型带有无参构造器</li>
+<li>也就不允许值类型使用内联实例字段的初始化语法<ol>
+<li><code>private Int32 m_x =5;</code> 在结构中会编译出错.</li>
+</ol>
+</li>
+<li>值类型的任何构造器都必须初始化值类型的全部字段. 否则编译出错.</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token function">SomeType</span><span class="token punctuation">(</span>Int32 x<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 值类型结构中,this代表值类型本身的一个实例, 可以赋值(引用类型this是只读的)</span>
+  <span class="token comment" spellcheck="true">// 显示调用无参值类型构造函数, 所有值类型字段初始化为0或null</span>
+  <span class="token keyword">this</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SomeType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">// 覆盖原始的0</span>
+  m_x <span class="token operator">=</span> x<span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// m_y已经初始化,所以不会编译出错.</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="类型构造器"><a href="#类型构造器" class="headerlink" title="类型构造器"></a>类型构造器</h1><p>除了实例构造器,CLR还支持类型构造器.也称为静态构造器,类构造器,类型初始化器.</p>
+<ul>
+<li>类型构造器的作用是<code>设置类型</code>的初始状态.<ul>
+<li>实例构造器作用是<code>设置类型实例</code>的初始状态.</li>
+</ul>
+</li>
+<li>类型构造器永远没有参数</li>
+<li>类型构造器必须标static,且默认不可更改,访问性是private</li>
+</ul>
+<p>类型默认没有定义类型构造器, 如果定义也只能定义一个.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SomeRefType</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 类型构造器必须标static,且默认不可更改访问性是private</span>
+    <span class="token keyword">static</span> <span class="token function">SomeRefType</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// SomeRefType被首次访问时,执行这里的代码</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">/// 永远不要定义值类型类型构造器, CLR有时不会调用值类型的静态类型构造器</span>
+<span class="token keyword">internal</span> <span class="token keyword">struct</span> SomeValType
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// C#允许值类型定义无参的构造类型</span>
+    <span class="token comment" spellcheck="true">// 类型构造器必须标static,且默认不可更改访问性是private</span>
+    <span class="token keyword">static</span> <span class="token function">SomeValType</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// SomeValType被首次访问时,执行这里的代码</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>之所以是私有,是为了防止任何开发人员写代码去调用它,<strong>对它(类型构造器)的调用总是由CLR负责.</strong></p>
+<ol>
+<li>不要在静态构造函数中执行复杂的逻辑、它只是为了对静态字段进行初始化而设置的,并且只能访问静态字段.</li>
+<li>不要出现两个或者多个类的静态构造函数相互调用的情况，因为它是线程安全的，是要加锁的，如果出现相互调用，可能导致死锁。</li>
+<li>不要在类的静态构造函数中写你期望按照某个顺序执行的代码逻辑，因为静态构造函数的调用时由CLR控制的，程序员不能准确把握运行时机。</li>
+<li><strong>永远不要定义值类型类型构造器, CLR有时不会调用值类型的静态类型构造器</strong></li>
+<li>如果在类型构造器中抛出未处理的异常,CLR会认为类型不可用,访问该类型的字段或方法都会抛出<code>System.TypeInitializationException</code>异常.</li>
+</ol>
+<blockquote>
+<p>CLR并不支持静态的Finalize方法, 就是在类型卸载时执行一些代码,类型只有在AppDomain卸载时才会卸载,AppDomain卸载时,用于标识类型的对象将成为不可达的对象,垃圾回收期会回收类型对象的内存.<br>要实现这样的需求,要在AppDomain卸载时执行一些代码,可向System.AppDomain类型的DomainUnload啥时间登记一个回调方法.</p>
+</blockquote>
+<h1 id="操作符重载方法"><a href="#操作符重载方法" class="headerlink" title="操作符重载方法"></a>操作符重载方法</h1><p>CLR对操作符重载一无所知.甚至不知道什么是操作符.</p>
+<ul>
+<li>操作符重载必须是 public static</li>
+<li>操作符重载方法的参数类型至少有一个和当前定义这个方法的类型相同.(能在合理的时间内找到要绑定的操作符重载方法)</li>
+<li>编译器会为名为op_Addition的方法生成元数据方法定义项,还会设置一个specialname标志.表明这是一个特殊的方法.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Complex</span>
+<span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> Complex <span class="token keyword">operator</span><span class="token operator">+</span><span class="token punctuation">(</span>Complex c1<span class="token punctuation">,</span> Complex c2<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>FCL的System.Decimal类型很好地演示了如何重载操作符并根据Microsoft的设计规范定义友好的方法名.</p>
+</blockquote>
+<h2 id="操作符方法的友好名称方法"><a href="#操作符方法的友好名称方法" class="headerlink" title="操作符方法的友好名称方法"></a>操作符方法的友好名称方法</h2><p><img src="/2019/07/28/000000目录-CLR读书笔记/8方法/操作符.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Complex</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 重载操作符方法</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> Complex <span class="token keyword">operator</span><span class="token operator">+</span><span class="token punctuation">(</span>Complex c1<span class="token punctuation">,</span> Complex c2<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// 定义友好方法,内部调用操作符重载方法</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> Complex <span class="token function">Add</span><span class="token punctuation">(</span>Complex c1<span class="token punctuation">,</span> Complex c2<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token keyword">return</span> c1<span class="token operator">+</span>c2<span class="token punctuation">;</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>作者认为这种额外的复杂性没必要,调用它们导致额外的性能损失.</p>
+</blockquote>
+<h1 id="转换操作符方法"><a href="#转换操作符方法" class="headerlink" title="转换操作符方法"></a>转换操作符方法</h1><p>将对象从一种类型转换为另一种类型.</p>
+<ul>
+<li>如果源类型和目标类型都是编译器识别的基元类型,编译器自己就知道如何生成转换对象所需的代码.</li>
+<li>如果不是,编译器会生成代码,要求CLR执行强制转型.</li>
+<li>转换操作符重载方法必须是 public static</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Rational</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">Rational</span><span class="token punctuation">(</span>Int32 num<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">Rational</span><span class="token punctuation">(</span>Single num<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> Int32 <span class="token function">ToInt32</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> Single <span class="token function">ToSingle</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// implicit关键字告诉编译器为了生成代码来调用方法. 不需要在源代码中进行显示转换.</span>
+    <span class="token comment" spellcheck="true">// 由一个Int32隐式构造并返回一个Rational</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">implicit</span> <span class="token keyword">operator</span> <span class="token function">Rational</span><span class="token punctuation">(</span>Int32 num<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Rational</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 由一个Single隐式构造并返回一个Single</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">implicit</span> <span class="token keyword">operator</span> <span class="token function">Rational</span><span class="token punctuation">(</span>Single num<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Rational</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// explicit关键字告诉编译器只有在发现了显示转型时,才调用方法.</span>
+    <span class="token comment" spellcheck="true">// 由一个Rational 显式返回一个Int32</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">explicit</span> <span class="token keyword">operator</span> <span class="token function">Int32</span><span class="token punctuation">(</span>Rational r<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> r<span class="token punctuation">.</span><span class="token function">ToInt32</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 由一个Rational 显式返回一个Single</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">explicit</span> <span class="token keyword">operator</span> <span class="token function">Single</span><span class="token punctuation">(</span>Rational r<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> r<span class="token punctuation">.</span><span class="token function">ToSingle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>implicit关键字</code><ul>
+<li>该关键字告诉编译器为了生成代码来调用方法. 不需要在源代码中进行显示转换.</li>
+</ul>
+</li>
+<li><code>explicit关键字</code><ul>
+<li>该关键字告诉编译器只有在发现了显示转型时,才调用方法.</li>
+</ul>
+</li>
+</ul>
+<p>关键字之后要指定operator关键字告诉编译器该方法是一个转换操作符, 在operator之后,指定对象要转换成什么类型,圆括号内指定要从什么类型转换.<br><code>public static explicit/implicit operator 目标类型(源类型 r)</code></p>
+<p>定义完转换操作符之后,就可以写出像下面这样的C#代码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Rational r1 <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Int32隐式转型为Rational</span>
+Rational r2 <span class="token operator">=</span> <span class="token number">2.5f</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// Single隐式转型为Rational</span>
+
+Int32 x <span class="token operator">=</span> <span class="token punctuation">(</span>Int32<span class="token punctuation">)</span> r1<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Rational 显示转型为Int32</span>
+Single s <span class="token operator">=</span> <span class="token punctuation">(</span>Single<span class="token punctuation">)</span> r2<span class="token punctuation">;</span><span class="token comment" spellcheck="true">// Rational显示转型为Single</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>使用强制类型转换表达式时,C#生成代码来调用显示转换操作符方法, 使用C#的as或is操作符时,则永远不会调用这些方法.</strong></p>
+<p>要理解操作符重载和转换操作符方法. 建议用<code>System.Decimal</code>类型作为典型来研究.</p>
+<h1 id="扩展方法"><a href="#扩展方法" class="headerlink" title="扩展方法"></a>扩展方法</h1><p>理解C#扩展方法最好是从例子中学习.</p>
+<p>允许定义一个静态方法,并用实例方法的语法来调用. 只需要在第一个参数前添加this关键字.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">StringBuilderExtensions</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Int32 <span class="token function">IndexOf</span><span class="token punctuation">(</span><span class="token keyword">this</span> StringBuilder sb<span class="token punctuation">,</span> Char <span class="token keyword">value</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这样就可以通过<code>Int32 index = sb.IndexOf(&#39;X&#39;);</code>方式去调用.</p>
+<p>编译这句话的过程:</p>
+<ol>
+<li>首先检查<code>StringBuilder</code>类或者它的任何基类是否提供了参数为Char,名为IndexOf的一个实例方法.</li>
+<li>如果有,就生成IL代码来调用它.</li>
+<li>如果没有找到匹配的实例方法,就继续检查是否有任何静态类定义了名为IndexOf的静态方法,方法的第一个参数和类型和当前调用方法的表达式类型匹配,必须用this关键字标识.</li>
+<li>编辑器就会找到<code>IndexOf(this StringBuilder sb, Char value)</code>方法,生成对应的IL代码来调用这个静态方法.</li>
+</ol>
+<h2 id="扩展方法的规则和原则"><a href="#扩展方法的规则和原则" class="headerlink" title="扩展方法的规则和原则"></a>扩展方法的规则和原则</h2><ul>
+<li>C#<strong>只支持扩展方法</strong>,不支持扩展属性,扩展事件,扩展操作符等等.</li>
+<li>扩展方法(第一个参数前面有this的方法)必须在 <strong>非泛型的静态类</strong> 中声明.</li>
+<li>类名没有限制.</li>
+<li>至少要有一个参数,而且第一个参数能用 <strong>this关键字标记</strong>.</li>
+<li>扩展方法必须在 <strong>顶级静态类</strong> 中定义.具有 <strong>整个文件的作用域</strong> (不能嵌套在另一个类中而只有该类的作用域).</li>
+<li>C#要求导入扩展方法所在的命名空间. 例如:在<code>Wintellect</code>命名空间下定义了一个扩展方法,那么别人访问这个扩展方法就需要添加<code>using Wintellect;</code>语句.</li>
+<li>如果多个静态类存在相同的扩展方法,就必须显示指定静态类(扩展方法所在类)的名称,明确指定.</li>
+<li>同时也会扩展派生类型.</li>
+<li>如果<code>StringBuilder</code>未来提供了<code>IndexOf</code>方法,则程序不会调用我的静态扩展方法,而是绑定微软提供的<code>IndexOf</code>方法.</li>
+<li>由于扩展方法实际是一个静态方法的调用.<strong>CLR不会对调用的表达式进行null值检查(不保证非空)</strong>.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp">StringBuilder sb <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 调用扩展方法: NullReferenceException异常不会在调用IndexOf时抛出</span>
+<span class="token comment" spellcheck="true">// 而会在,IndexOf内部的for循环中抛出</span>
+sb<span class="token punctuation">.</span><span class="token function">IndexOf</span><span class="token punctuation">(</span><span class="token string">'x'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 调用实例方法,NullReferenceException异常在调用Replace时抛出</span>
+sb<span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span><span class="token string">'x'</span><span class="token punctuation">,</span><span class="token string">'!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="为接口类型定义扩展方法"><a href="#为接口类型定义扩展方法" class="headerlink" title="为接口类型定义扩展方法"></a>为接口类型定义扩展方法</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 每个char在控制台上单独显示一行</span>
+        <span class="token string">"Grant"</span><span class="token punctuation">.</span><span class="token function">ShowItems</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 每个String在控制在单独显示一行</span>
+        <span class="token keyword">new</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token string">"Jeff"</span><span class="token punctuation">,</span><span class="token string">"Kristin"</span><span class="token punctuation">}</span><span class="token punctuation">.</span><span class="token function">ShowItems</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 每个Int32在控制台上单独显示一行</span>
+        <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Int32<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">.</span><span class="token function">ShowItems</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ExClass</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// // 任何表达式只要它最终的类型实现了IEnumerable&lt;T>接口,就能此调用扩展方法</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token generic-method function">ShowItems<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">this</span> IEnumerable<span class="token operator">&lt;</span>T<span class="token operator">></span> collection<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> collection<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>任何表达式只要它最终的类型实现了<code>IEnumerable&lt;T&gt;</code>接口,就能调用此扩展方法.</p>
+<h3 id="LINQ-Language-Integrated-Query-语言集成查询"><a href="#LINQ-Language-Integrated-Query-语言集成查询" class="headerlink" title="LINQ (Language Integrated Query) 语言集成查询"></a>LINQ (Language Integrated Query) 语言集成查询</h3><p>想要仔细研究提供了许多扩展方法的一个典型类, System.LinQ.Enumerable及其所有静态扩展方法.这个类中每个扩展方法.</p>
+<h2 id="为委托类型定义扩展方法"><a href="#为委托类型定义扩展方法" class="headerlink" title="为委托类型定义扩展方法"></a>为委托类型定义扩展方法</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 抛出NullReferenceException</span>
+        Action<span class="token operator">&lt;</span>Object<span class="token operator">></span> action <span class="token operator">=</span> o <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>o<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 吞噬NullReferenceException</span>
+        action<span class="token punctuation">.</span><span class="token generic-method function">InvokeAndCatch<span class="token punctuation">&lt;</span>NullReferenceException<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ExClass</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token generic-method function">InvokeAndCatch<span class="token punctuation">&lt;</span>TException<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">this</span> Action<span class="token operator">&lt;</span>Object<span class="token operator">></span> d<span class="token punctuation">,</span> Object o<span class="token punctuation">)</span> <span class="token keyword">where</span> TException <span class="token punctuation">:</span> Exception
+    <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span> <span class="token function">d</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">TException</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="向枚举类型添加扩展方法"><a href="#向枚举类型添加扩展方法" class="headerlink" title="向枚举类型添加扩展方法"></a>向枚举类型添加扩展方法</h2><p>在15.3节有例子.</p>
+<h2 id="创建委托来引用对象上的扩展方法"><a href="#创建委托来引用对象上的扩展方法" class="headerlink" title="创建委托来引用对象上的扩展方法"></a>创建委托来引用对象上的扩展方法</h2><pre class="line-numbers language-csharp"><code class="language-csharp">Action a <span class="token operator">=</span> <span class="token string">"Jeff"</span><span class="token punctuation">.</span>ShowItems<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 调用(Invoke)委托,后者调用(call)ShowItems</span>
+<span class="token comment" spellcheck="true">// 并向它传递对字符串"Jeff"的引用</span>
+<span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>编译器生成IL代码来构造一个Action委托.</li>
+<li>创建委托时,会向构造器传递应调用的方法,同时传递一个对象引用,这个引用传给方法的隐藏this阐述.</li>
+<li>正常情况下,创建引用静态方法的委托时,对象引用为null,因为静态方法没有this参数</li>
+<li>这个例子中,C#编译器生成特殊代码创建一个委托来引用静态方法(ShowItems),而静态方法的目标对象是”Jeff”字符串的引用.</li>
+<li>这个委托被调用时,CLR会调用静态方法,并向其传递对”Jeff”字符串的引用.</li>
+</ol>
+<h3 id="关于invoke和call的翻译区别"><a href="#关于invoke和call的翻译区别" class="headerlink" title="关于invoke和call的翻译区别"></a>关于invoke和call的翻译区别</h3><p>调用:</p>
+<ul>
+<li><code>invoke</code>:理解为<code>唤出</code>更为恰当,  需要先唤出某个东西帮你调用一个信息不明的方法时,用invoke比较恰当.</li>
+<li><code>call</code>:调用, 在执行一个所有信息都已知的方法时,用call比较恰当.</li>
+</ul>
+<h2 id="ExtensionAttribute特性类"><a href="#ExtensionAttribute特性类" class="headerlink" title="ExtensionAttribute特性类"></a>ExtensionAttribute特性类</h2><ol>
+<li>一旦用this关键字标记了某个静态方法的第一个参数</li>
+<li>编辑器就会在内部向该方法应用一个定制特性</li>
+<li>此特性会在最终生成的文件的元数据中持久性的存储下来.</li>
+<li>任何静态类只要包含扩展方法,它的元数据也会应用这个特效.</li>
+</ol>
+<h1 id="分部方法"><a href="#分部方法" class="headerlink" title="分部方法"></a>分部方法</h1><p>假设用某个工具生成了C#源代码文件,并且这个类会让你定制类型的行为.<br>一般做法:</p>
+<ol>
+<li>定义个虚方法</li>
+<li>从这个类派生并定义自己的类</li>
+<li>重写虚方法,实现定制的行为</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//工具生成的代码，存储在某个代码文件中</span>
+<span class="token keyword">internal</span> <span class="token keyword">class</span> <span class="token class-name">Base</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> String m_name<span class="token punctuation">;</span>    
+    <span class="token comment" spellcheck="true">// 虚方法定义</span>
+    <span class="token keyword">protected</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">OnNameChanging</span><span class="token punctuation">(</span>String <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> String Name
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span><span class="token punctuation">{</span><span class="token keyword">return</span> m_name<span class="token punctuation">;</span><span class="token punctuation">}</span>
+        <span class="token keyword">set</span><span class="token punctuation">{</span>
+            <span class="token function">OnNameChanging</span><span class="token punctuation">(</span><span class="token keyword">value</span><span class="token punctuation">.</span><span class="token function">ToUpper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            m_name<span class="token operator">=</span><span class="token keyword">value</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">//开发人员生成的代码。存储在另一个源代码文件中</span>
+<span class="token keyword">internal</span> <span class="token keyword">class</span> <span class="token class-name">Derived</span><span class="token punctuation">:</span>Base
+<span class="token punctuation">{</span>
+    <span class="token keyword">protected</span> <span class="token keyword">override</span> <span class="token keyword">void</span> <span class="token function">OnNameChanging</span><span class="token punctuation">(</span><span class="token keyword">string</span> <span class="token keyword">value</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token function">IsNullOrEmpty</span><span class="token punctuation">(</span><span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentNullException</span><span class="token punctuation">(</span><span class="token string">"value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个做法有几个问题:</p>
+<ol>
+<li>因为用到继承,所以基类不能是密封类,也不能用于值类型(值类型隐式密封).</li>
+<li>不能用于静态方法,静态方法不能重写.</li>
+<li>效率问题,如果派生类不重写方法,也会生成对ToUpper()进行调用的IL代码</li>
+</ol>
+<p>以下用 <strong>分部方法</strong> 功能来解决,并且在一些情况下能提升运行时性能:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//工具生成的代码，存储在某个代码文件中</span>
+<span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">partial</span> <span class="token keyword">class</span> <span class="token class-name">Base</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> String m_name<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 分部方法的声明</span>
+    <span class="token keyword">partial</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">OnNameChanging</span><span class="token punctuation">(</span>String <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> String Name
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span><span class="token punctuation">{</span><span class="token keyword">return</span> m_name<span class="token punctuation">;</span><span class="token punctuation">}</span>
+        <span class="token keyword">set</span><span class="token punctuation">{</span>
+            <span class="token function">OnNameChanging</span><span class="token punctuation">(</span><span class="token keyword">value</span><span class="token punctuation">.</span><span class="token function">ToUpper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            m_name<span class="token operator">=</span><span class="token keyword">value</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">//开发人员生成的代码。存储在另一个源代码文件中</span>
+<span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">partial</span> <span class="token keyword">class</span> <span class="token class-name">Base</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">partial</span> <span class="token keyword">void</span> <span class="token function">OnNameChanging</span><span class="token punctuation">(</span><span class="token keyword">string</span> <span class="token keyword">value</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token function">IsNullOrEmpty</span><span class="token punctuation">(</span><span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentNullException</span><span class="token punctuation">(</span><span class="token string">"value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>类可以是密封类,静态类,值类型.</li>
+<li>工具生成的代码包含分部方法的声明,要用partial关键字标记,无主体.</li>
+<li>开发者生成的代码实现这个声明. 该方法也要用partial关键字标记,有主题.</li>
+</ol>
+<blockquote>
+<p>输入partial按空格能智能感知列出当前类型定义的还没有匹配实现的所有分部方法声明.</p>
+</blockquote>
+<p><strong>如果不提供自己的源文件(不需要修改工具生成的类型的行为),编译器编译工具生成的代码就不会包含任何代表分部方法的元数据,也不会生成任何调用分部方法的IL指令. 而且, 编译器不会生成对本该传给分部方法的实参进行求值的IL指令.</strong> 在此例中,编译器不会生成调用ToUpper方法的代码. 使运行时的性能得到了提升.</p>
+<h2 id="分部方法的规则和原则"><a href="#分部方法的规则和原则" class="headerlink" title="分部方法的规则和原则"></a>分部方法的规则和原则</h2><ol>
+<li>只能在分部类或结构中声明.</li>
+<li>分部方法的返回类型始终是void, 任何蚕食都不能用out修饰符来标记.<ol>
+<li>是因为运行时,方法可能不存在(之前说过,可以不提供自己的实现代码),不能进行初始化(out参数必须进行初始化)</li>
+</ol>
+</li>
+<li>分部方法可以有ref参数,可以是泛型方法,可以使实例或静态方法,而且可以标记为unsafe.</li>
+<li>分部方法的声明和实现必须有完全一致的签名.</li>
+<li>分部方法总是被视为private方法,但C#编译器禁止在分部方法声明之前添加private关键字.</li>
+<li>如果没有对应的实现部分,便不能在代码中创建一个委托来引用这个分部方法.</li>
+</ol>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

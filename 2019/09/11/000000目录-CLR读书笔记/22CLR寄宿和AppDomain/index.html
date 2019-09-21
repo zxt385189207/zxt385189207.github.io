@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        22CLR寄宿和AppDomain - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR寄宿和AppDomain"><span class="toc-text">CLR寄宿和AppDomain</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR寄宿"><span class="toc-text">CLR寄宿</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AppDomain"><span class="toc-text">AppDomain</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#跨越AppDomain边界访问对象"><span class="toc-text">跨越AppDomain边界访问对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#演示Demo-1-使用”按引用封送”进行跨AppDomain通信"><span class="toc-text">演示Demo 1 : 使用”按引用封送”进行跨AppDomain通信</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#租约管理器"><span class="toc-text">租约管理器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#演示Demo-2-使用”按值封送”进行跨AppDomain通信"><span class="toc-text">演示Demo 2 : 使用”按值封送”进行跨AppDomain通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#演示Demo-3-使用不可封送的进行跨AppDomain通信"><span class="toc-text">演示Demo 3 : 使用不可封送的进行跨AppDomain通信</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#卸载AppDomain"><span class="toc-text">卸载AppDomain</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#监视AppDomain"><span class="toc-text">监视AppDomain</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AppDomain-FirstCance异常通知"><span class="toc-text">AppDomain FirstCance异常通知</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#宿主如何使用AppDomain"><span class="toc-text">宿主如何使用AppDomain</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#可执行应用程序"><span class="toc-text">可执行应用程序</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#高级宿主控制"><span class="toc-text">高级宿主控制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用托管代码管理CLR"><span class="toc-text">使用托管代码管理CLR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#写健壮的宿主应用程序"><span class="toc-text">写健壮的宿主应用程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#宿主如何拿回它的线程"><span class="toc-text">宿主如何拿回它的线程</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        22CLR寄宿和AppDomain
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-11 18:02:28</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="CLR寄宿和AppDomain"><a href="#CLR寄宿和AppDomain" class="headerlink" title="CLR寄宿和AppDomain"></a>CLR寄宿和AppDomain</h1><p><code>寄宿(Hosting)</code> 使任何应用程序都能利用CLR的功能.</p>
+<p><code>AppDomain</code>允许第三方的,不受信任的代码在现有的进程中运行,而CLR保证数据结构,代码和安全上下文不被滥用和破坏.</p>
+<h1 id="CLR寄宿"><a href="#CLR寄宿" class="headerlink" title="CLR寄宿"></a>CLR寄宿</h1><p><code>.Net Framework</code>在Windows平台的顶部运行, 这意味着.net必须用Windows能理解的技术来构建。首先，所有托管模块和程序集文件都必须使用<code>windows PE文件格式</code>，而且要么是windows <code>EXE文件</code>，要么是<code>Dll文件</code>。</p>
+<p>开发CLR时, Microsoft实际是把它写成一个包含一个DLL中的COM服务器. 安装<code>.Net Framework</code>时, 代表CLR的COM服务器一样在注册表中注册. 任何Windows应用程序都能寄宿(容纳)CLR。</p>
+<p><img src="/2019/09/11/000000目录-CLR读书笔记/22CLR寄宿和AppDomain/QQ截图20190913103810.png" alt=""></p>
+<blockquote>
+<p>CLRCreateInstance函数在MSCorEE.dll文件中实现，该文件一般在system32目录中。这个dll被人们亲切地称为垫片（shim），它的工作是决定创建哪个版本的CLR：垫片DLL本身不包含CLR com服务器。</p>
+</blockquote>
+<p><code>CLRCreateInstance</code>函数可返回一个<code>ICLRMetaHost接口</code>。宿主应用程序可调用这个接口的<code>GetRuntime函数</code>，指定数组要创建的<code>CLR</code>的版本。然后，垫片将所需版本的CLR加载到宿主的进程中。</p>
+<h1 id="AppDomain"><a href="#AppDomain" class="headerlink" title="AppDomain"></a>AppDomain</h1><p>CLR COM服务器服务器初始化时会创建一个AppDomain。AppDomain是一组程序集的逻辑容器. CLR初始化时创建的第一个AppDomain称为<code>默认AppDomain</code>，这个默认的AppDomain只有在windows进程终止时才会被注销。</p>
+<p>除了默认AppDomain，正在使用非托管com接口方法或托管类型方法的宿主还可要求CLR创建额外的AppDomain。AppDomain是为了提供隔离而设计的。下面总结了AppDomain的具体功能。</p>
+<ol>
+<li>一个AppDomain的代码不能直接访问另一个AppDomain的代码创建的对象</li>
+</ol>
+<p>一个AppDomain中的代码创建了一个对象后，该对象便被该AppDomain拥有。换言之，它的生存期不能超过创建它的代码所在的AppDomain。<strong>一个AppDomain中的代码要访问另一个AppDomain中的对象，只能使用按<code>引用封送(marshal-by-reference)</code>或者<code>按值封送(marshal-by-value)</code>的语义</strong>。这就强制建立了清晰的分隔和边界，因为一个AppDomain中的代码<strong>不能</strong>直接引用另一个AppDomain中的代码创建的对象。这种隔离使得AppDomain能很容易地从进程中卸载，不会影响其他AppDomain正在运行的代码。</p>
+<ol>
+<li>AppDomain可以卸载</li>
+</ol>
+<p><strong>CLR不支持从AppDomain中卸载特定的程序集。但可以告诉clr卸载一个AppDomain，从而卸载该AppDomain当前包含的所有程序集。</strong></p>
+<ol>
+<li>AppDomain可以单独保护</li>
+</ol>
+<p>AppDomain创建后会应用一个权限集，它决定了向这个AppDomain中运行的程序集授予的最大权限。正式由于存在这些权限，所以当宿主加载一些代码后，可以保证这些代码不会破坏（或读取）宿主本身使用的一些重要数据结构。</p>
+<ol>
+<li>AppDomain可以单独配置</li>
+</ol>
+<p>AppDomain创建后会管理一组配置设置，这些设置主要影响clr在AppDomain中加载程序集的方式。涉及搜索路径、版本绑定重定向、劵影复制以及加载器优化。</p>
+<blockquote>
+<p>在windows中创建进程的开销很大。win32 createProcess函数的速度很慢，而且windows需要大量内存来虚拟化进程的地址空间。但是，如果应用程序完全由托管代码构成，同时这些代码没有调用非托管代码，那么在一个windows进程中运行多个托管应用程序是没有问题的。</p>
+</blockquote>
+<p>图22-1演示了一个<strong>windows进程</strong>，其中运行着一个<strong>CLR COM服务器</strong>。该CLR当前管理着两个AppDomain（虽然在一个windows进程中可以运行的AppDomain数量没有硬性限制）。每个AppDomain都有自己的<code>Loader堆</code>，每个<code>Loader堆</code>都记录了自AppDomain创建以来访问过哪些类型。<code>Loader堆</code>中的每个类型对象都有一个方法表，方法表中的每个记录项都指向JIT编译的本机代码（前提是方法至少执行过一次）。</p>
+<p><img src="/2019/09/11/000000目录-CLR读书笔记/22CLR寄宿和AppDomain/QQ截图20190913110455.png" alt=""></p>
+<p>除此之外，每个AppDomain都加载了一些程序集。AppDomain #1（默认AppDomain）有三个程序集：myApp.exe，TypeLib.dll和System.dll。AppDomain#2有两个程序集Wintellect.dll和System.dll。</p>
+<p>两个AppDomain都加载了System.dll程序集。<strong>如果这两个AppDomain都使用来自System.dll的一个类型，那么两个AppDomain的Loader堆会为相同的类型分别分配一个类型对象：类型对象的内存不会由两个AppDomain共享</strong>。另外，一个AppDomain中的代码调用一个类型定义的方法时，方法IL代码会进行JIT编译，生成的本机代码单独与每个AppDomain关联，而<strong>不是由调用它的所有AppDomain共享</strong>。</p>
+<p>不共享类型对象的内存或本机代码显得有些浪费。但AppDomain的设计宗旨就是提供<strong>隔离</strong>：<strong>CLR要求在卸载某个AppDomain并释放其所有资源时不会影响到其他任何AppDomain</strong>。复制CLR的数据结构才能保证这一点。另外，还保证多个AppDomain使用的类型在每个AppDomain中都有一组静态字段。</p>
+<p>有的程序集本来就要有多个AppDomain使用。最典型的例子就是<code>MSCorLib.dll</code>。该程序集包含了<code>System.object</code>,<code>System.int32</code>以及其他所有.net密不可分的类型。CLR初始化时，该程序集会自动加载，而且所有AppDomain都<strong>共享该程序集中的类型</strong>。为了减少资源消耗，<strong>MSCorLib程序集以一种AppDomain中立的方式加载</strong>。也就是说，针对以<strong>AppDomain中立方式加载的程序集</strong>，CLR会为他们维护一个<strong>特殊</strong>的<code>Loader堆</code>。<strong>该Loader堆中的所有类型对象，以及为这些类型定义的方法JIT编译生成的所有本机代码，都会由进程中所有AppDomain共享</strong>。遗憾的是，共享这些资源所获得的收益并不是没有代价，这个代价就是，以AppDomain中立方式加载的所有程序集<strong>永远不能卸载</strong>。要回收他们占用的资源，唯一的办法就是<strong>终止Windows进程</strong>，让Windows去回收资源。</p>
+<h2 id="跨越AppDomain边界访问对象"><a href="#跨越AppDomain边界访问对象" class="headerlink" title="跨越AppDomain边界访问对象"></a>跨越AppDomain边界访问对象</h2><p>一个AppDomain中的代码可以和另一个AppDomain中的类型和对象通信. 但只能通过良好定义的机制进行, 以下例子演示三种类型构造时的不同行为,以及卸载时的不同行为:</p>
+<ul>
+<li><code>引用封送(marshal-by-reference)</code></li>
+<li><code>按值封送(marshal-by-value)</code></li>
+<li>完全不能封送的类型</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">.</span>Generic<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Linq<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Reflection<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>Remoting<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>Serialization<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Text<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Threading<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>Tasks<span class="token punctuation">;</span>
+
+
+<span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">Marshalling</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Marshalling</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//获取AppDomain引用（“调用线程”当前正在该AppDomain中执行）</span>
+        AppDomain adCallingThreadDomain <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">GetDomain</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//每个AppDomain都分配了友好字符串名称（以便调试）</span>
+        <span class="token comment" spellcheck="true">//获取这个AppDomain的友好名称并显示它</span>
+        String CallingDomainName <span class="token operator">=</span> adCallingThreadDomain<span class="token punctuation">.</span>FriendlyName<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ClassLibrary1.exe\r\n无上下文策略\r\n</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"默认AppDomain友好的名称={0}"</span><span class="token punctuation">,</span> adCallingThreadDomain<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//获取并显示我们的AppDomain中包含了“Main”方法的程序集</span>
+        String exeAssembly <span class="token operator">=</span> Assembly<span class="token punctuation">.</span><span class="token function">GetEntryAssembly</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>FullName<span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"包含“Main”方法的程序集={0}"</span><span class="token punctuation">,</span>
+            exeAssembly<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ClassLibrary1, Version=1.0.0.0, Culture=neutral, PublicKeyToken = null</span>
+
+
+        <span class="token comment" spellcheck="true">//定义局部变量来引用一个AppDomain</span>
+        AppDomain ad2 <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//***********************************************</span>
+        <span class="token comment" spellcheck="true">//DEMO 1：使用“按引用封送”进行跨AppDomain通信 ***</span>
+        <span class="token comment" spellcheck="true">//***********************************************</span>
+
+        <span class="token comment" spellcheck="true">//Environment.NewLine 获取为该环境定义的换行字符串。</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"{0} Demo1 按引用封送"</span><span class="token punctuation">,</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//新建一个AppDomain（从当前AppDomain继承安全性和配置）</span>
+        ad2 <span class="token operator">=</span> AppDomain<span class="token punctuation">.</span><span class="token function">CreateDomain</span><span class="token punctuation">(</span><span class="token string">"AD #2"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        MarshalByRefType mbrt <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//将我们的程序集加载到新AppDomain,构造一个对象，把它封送回我们的AppDomain（实际得到对一个代理的引用）</span>
+        mbrt <span class="token operator">=</span> <span class="token punctuation">(</span>MarshalByRefType<span class="token punctuation">)</span> ad2<span class="token punctuation">.</span><span class="token function">CreateInstanceAndUnwrap</span><span class="token punctuation">(</span>exeAssembly<span class="token punctuation">,</span> <span class="token string">"MarshalByRefType"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// CLR在类型上撒谎了</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Type={0}"</span><span class="token punctuation">,</span> mbrt<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//Type=MarshalByRefType</span>
+
+        <span class="token comment" spellcheck="true">//证明得到的是对一个代理对象的引用</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Is proxy={0}"</span><span class="token punctuation">,</span> RemotingServices<span class="token punctuation">.</span><span class="token function">IsTransparentProxy</span><span class="token punctuation">(</span>mbrt<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Is proxy=True</span>
+
+        <span class="token comment" spellcheck="true">//看起来像是在MarshalByRefType上调用了一个方法，实则不然。</span>
+        <span class="token comment" spellcheck="true">//我们是在代理类型上调用了一个方法，代理是线程切换到拥有对象的那个</span>
+        <span class="token comment" spellcheck="true">//AppDomain,并在真实的对象上调用这个方法</span>
+        mbrt<span class="token punctuation">.</span><span class="token function">SomeMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//卸载新的AppDomain</span>
+        AppDomain<span class="token punctuation">.</span><span class="token function">Unload</span><span class="token punctuation">(</span>ad2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//此时，mbrt引用了一个有效的代理对象；代理对象引用一个无效的AppDomain</span>
+        <span class="token comment" spellcheck="true">// 会抛出异常,AppDomain被卸载了</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            mbrt<span class="token punctuation">.</span><span class="token function">SomeMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"调用成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">AppDomainUnloadedException</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"调用失败，AppDomain被卸载了"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">//**********************************************</span>
+        <span class="token comment" spellcheck="true">// DEMO 2：使用“按值封送”进行跨AppDomain通信 ***</span>
+        <span class="token comment" spellcheck="true">//**********************************************</span>
+
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"{0} Demo2 按值封送"</span><span class="token punctuation">,</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+        ad2  <span class="token operator">=</span> AppDomain<span class="token punctuation">.</span><span class="token function">CreateDomain</span><span class="token punctuation">(</span><span class="token string">"AD #2"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mbrt <span class="token operator">=</span> <span class="token punctuation">(</span>MarshalByRefType<span class="token punctuation">)</span> ad2<span class="token punctuation">.</span><span class="token function">CreateInstanceAndUnwrap</span><span class="token punctuation">(</span>exeAssembly<span class="token punctuation">,</span> <span class="token string">"MarshalByRefType"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//对象的方法返回所返回对象的副本</span>
+        <span class="token comment" spellcheck="true">//对象按值（而非按引用）封送</span>
+        MarshalByValType mbvt <span class="token operator">=</span> mbrt<span class="token punctuation">.</span><span class="token function">MethodWithReturn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//证明得到的是对一个代理对象的引用</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Is proxy={0}"</span><span class="token punctuation">,</span> RemotingServices<span class="token punctuation">.</span><span class="token function">IsTransparentProxy</span><span class="token punctuation">(</span>mbvt<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Is proxy=False</span>
+
+        <span class="token comment" spellcheck="true">//看起来在MarshalByValType上调用一个方法，实际也是如此</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Return object created "</span> <span class="token operator">+</span> mbvt<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Return object created 2019年9月13日</span>
+
+        <span class="token comment" spellcheck="true">//卸载新的AppDomain</span>
+        AppDomain<span class="token punctuation">.</span><span class="token function">Unload</span><span class="token punctuation">(</span>ad2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 此时，mbrt引用了一个有效的x代理对象；代理对象引用一个无效的AppDomain</span>
+        <span class="token comment" spellcheck="true">// 不会抛出异常</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">//卸载AppDomain之后调用mbvt方法不会抛出异常</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Return object created "</span> <span class="token operator">+</span> mbvt<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Return object created 2019年9月13日</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"调用成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">AppDomainUnloadedException</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"调用失败，AppDomain被卸载了"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">//**********************************************</span>
+        <span class="token comment" spellcheck="true">//DEMO 3：使用不可封送的类型进行跨AppDomain通信*</span>
+        <span class="token comment" spellcheck="true">//**********************************************</span>
+        ad2  <span class="token operator">=</span> AppDomain<span class="token punctuation">.</span><span class="token function">CreateDomain</span><span class="token punctuation">(</span><span class="token string">"AD #2"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mbrt <span class="token operator">=</span> <span class="token punctuation">(</span>MarshalByRefType<span class="token punctuation">)</span> ad2<span class="token punctuation">.</span><span class="token function">CreateInstanceAndUnwrap</span><span class="token punctuation">(</span>exeAssembly<span class="token punctuation">,</span> <span class="token string">"MarshalByRefType"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 对象的方法返回一个不可封送的对象,抛出异常</span>
+            NonMarshalableType nmt <span class="token operator">=</span> mbrt<span class="token punctuation">.</span><span class="token function">MethodArgAndReturn</span><span class="token punctuation">(</span>CallingDomainName<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//抛出异常:未标记为可序列化</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">SerializationException</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"抛出异常:未标记为可序列化"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//该类型的实例可跨越AppDomain的边界“按引用封送”</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">MarshalByRefType</span> <span class="token punctuation">:</span> MarshalByRefObject
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">MarshalByRefType</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"{0} 构造器运行在 {1} 中"</span><span class="token punctuation">,</span> <span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Thread<span class="token punctuation">.</span><span class="token function">GetDomain</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>FriendlyName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SomeMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Executing in "</span> <span class="token operator">+</span> Thread<span class="token punctuation">.</span><span class="token function">GetDomain</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>FriendlyName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> MarshalByValType <span class="token function">MethodWithReturn</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Execute in "</span> <span class="token operator">+</span> Thread<span class="token punctuation">.</span><span class="token function">GetDomain</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>FriendlyName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        MarshalByValType t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MarshalByValType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> t<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> NonMarshalableType <span class="token function">MethodArgAndReturn</span><span class="token punctuation">(</span><span class="token keyword">string</span> callingDomainName<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//注意：callingDomainName是可序列化的</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Calling from '{0}' to '{1}'."</span><span class="token punctuation">,</span> callingDomainName<span class="token punctuation">,</span> Thread<span class="token punctuation">.</span><span class="token function">GetDomain</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>FriendlyName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        NonMarshalableType t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NonMarshalableType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> t<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//该类的实例可跨越AppDomain的边界“按值封送”</span>
+<span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">MarshalByValType</span> <span class="token punctuation">:</span> Object
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> DateTime m_creationTime <span class="token operator">=</span> DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//注意：DateTime是可序列化的</span>
+
+    <span class="token keyword">public</span> <span class="token function">MarshalByValType</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"{0} ctor running in {1}, Created no {2:D}"</span><span class="token punctuation">,</span> <span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Thread<span class="token punctuation">.</span><span class="token function">GetDomain</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>FriendlyName<span class="token punctuation">,</span>
+            m_creationTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> m_creationTime<span class="token punctuation">.</span><span class="token function">ToLongDateString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//该类的实例不能跨AppDomain边界进行封送</span>
+<span class="token comment" spellcheck="true">//[Serializable]</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">NonMarshalableType</span> <span class="token punctuation">:</span> Object
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">NonMarshalableType</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Execute in "</span> <span class="token operator">+</span> Thread<span class="token punctuation">.</span><span class="token function">GetDomain</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>FriendlyName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>Marshalling方法首先获得一个AppDomain对象引用, 当前”调用线程”当前正在该AppDomain中执行.</li>
+</ol>
+<p>在Windows中, <strong>线程</strong> 总是在一个<strong>进程的上下文中</strong>创建, 而且线程的整个生存期都在该进程的生存期内. 但<strong>线程和AppDomain没有一对一关系. AppDomain是一项CLR功能.</strong> Windows对AppDomain无所知.</p>
+<p>由于一个Windows进程可包含多个AppDomain,所以线程能执行一个AppDomain中的代码,再执行另一个AppDomain. <strong>从CLR的角度看, 线程一次只能执行一个AppDomain中的代码.</strong></p>
+<ol>
+<li><p>线程可以调用<code>System.Threading.Thread</code>的静态方法<code>GetDomain</code>向CLR询问它正在哪个AppDomain中执行. 线程还可以查询AppDomain的<code>静态只读属性CurrentDomain</code>获得相同的信息.</p>
+</li>
+<li><p>AppDomain创建后可以赋予一个<code>友好名称</code>, 是用于标识AppDomain的一个<code>String</code>. 作用是用来方便的调试. <strong>CLR在任何代码执行前创建默认的AppDomain, 所以使用可执行文件的文件名作为默认的AppDomain名称</strong>. <code>Marshalling</code>方法使用AppDomain的只读<code>FriendlyName</code>属性来查询默认AppDomain的友好名称.</p>
+</li>
+<li><p><code>Marshalling</code>方法查询默认AppDomain中加载的程序集的强命名标识, 这个程序集定义了入口方法Main(其中调用了Marshalling方法),类型<code>MarshalByRefType</code>,<code>MarshalByValType</code>,<code>NonMarshalableType</code>.</p>
+</li>
+</ol>
+<h3 id="演示Demo-1-使用”按引用封送”进行跨AppDomain通信"><a href="#演示Demo-1-使用”按引用封送”进行跨AppDomain通信" class="headerlink" title="演示Demo 1 : 使用”按引用封送”进行跨AppDomain通信"></a>演示Demo 1 : 使用”按引用封送”进行跨AppDomain通信</h3><p><code>AppDomain.CreateDomain</code>三个参数:</p>
+<ul>
+<li>友好名称<code>AD #2</code></li>
+<li>用于计算AppDomain<code>权限集</code>的证据, 传null代表新的AppDomain从创建它的AppDomain继承权限集.</li>
+<li>代表AppDomain使用的配置参数,  传null代表新的AppDomain从创建它的AppDomain继承配置设置.</li>
+</ul>
+<p><code>CreateDomain</code>方法内部会在进程中新建一个AppDomain, 有自己的Loader堆,这个堆目前是空的.</p>
+<p>现在要在新的AppDomain中创建类型的实例. 首先要将程序集加载到新的AppDomain中,然后构造定义类型的实例. 这就是<code>CreateInstanceAndUnwrap</code>方法所做的事情: 传递了两个参数</p>
+<ul>
+<li><code>String</code> : 标识了想在新AppDomain中加载的程序集</li>
+<li><code>String</code> : 要构建实例的类型名称<code>MarshalByRefType</code></li>
+</ul>
+<p><code>CreateInstanceAndUnwrap</code>方法会在内部从当前AppDomain切换到新AppDomain, 线程将指定程序集加载到新AppDomain中, 扫描程序集的类型定义元数据表, 找到类型后,线程调用<code>MarshalByRefType</code>的无参构造器, 现在线程又切换回默认的AppDomain. 使<code>CreateInstanceAndUnwrap</code>能返回对新<code>MarshalByRefType</code>对象的引用.</p>
+<blockquote>
+<p>CreateInstanceAndUnwrap 有重载方法可以传递实参</p>
+</blockquote>
+<p><strong>但是, CLR不允许一个AppDomain中的<code>变量</code>引用另一个AppDomain中创建的对象.</strong> 如果<code>CreateInstanceAndUnwrap</code>方法照顾会返回对象引用, 隔离性就会被打破, 隔离是AppDomain的全部目的! 因此<code>CreateInstanceAndUnwrap</code>方法在返回对象引用前要执行一些额外的逻辑.</p>
+<p><code>MarshalByRefType</code>类型从一个很特别的基类<code>MarshalByRefObject</code>派生, 当<code>CreateInstanceAndUnwrap</code>发现它封送的对象的类型继承自<code>MarshalByRefObject</code>时, CLR就会跨AppDomain边界<code>按引用封送对象</code>.</p>
+<p>将一个引用对象从<code>源AppDomain</code>封送到<code>目标AppDomain</code>的具体含义:</p>
+<ul>
+<li>CLR会在目标AppDomain的Loader堆中定义一个<code>代理类型</code>, 是用原始类型的元数据定义的<ul>
+<li><strong>有完全的一样的实例成员(属性,事件,方法)</strong></li>
+<li><strong>但是唯独没有实例字段</strong>, 因为代理类型会定义自己的实例字段, 和原始字段不一致.</li>
+<li>这些字段只是指出哪个AppDomain拥有真实的对象, 以及如何找到真实的对象</li>
+<li>在内部,<code>代理对象</code>用一个GCHandle实例引用真实的对象</li>
+</ul>
+</li>
+</ul>
+<p>在目标AppDomain中定义好这个类型之后,<code>CreateInstanceAndUnwrap</code>方法就会创建代理类型的实例,初始化它的字段来标识源AppDomain和真实的对象, 然后将这个代理对象的引用返回给<code>源AppDomain</code>.</p>
+<p><code>MarshalByRefType mbrt变量</code>被设为引用这个代理. 注意! 实际上返回的对象不是<code>MarshalByRefType</code>类型的实例,当前情况下CLR之所以允许转型, 是因为新类型具有和原始类型一样的实例成员. 代理对象调用<code>GetType()</code>,它会向你撒谎说自己是一个<code>MarshalByRefType</code>对象.</p>
+<p><code>RemotingServices.IsTransparentProxy(mbrt)</code> 用这个证明mbrt是代理, 也就是<code>CreateInstanceAndUnwrap</code>方法返回的是代理.</p>
+<p><code>mbrt.SomeMethod();</code> 通过代理, 调用由<strong>代理实现的SomeMethod方法</strong>, 代理的实现利用代理对象中的信息字段,<strong>将调用线程从默认AppDomain切换至对应AppDomain</strong>. 线程接着使用代理对象的<code>GCHandle</code>字段查找<code>新AppDomain</code>中的<strong>真实对象</strong>,  并用真实对象调用<strong>真实的SomeMethod方法</strong>.</p>
+<p>两个办法可以证明调用线程已经从默认的AppDomain切换至新AppDomain.</p>
+<ol>
+<li><code>Thread.GetDomain().FriendlyName</code> 将返回<code>AD #2</code></li>
+<li>通过逐语句调试代码,并打开调用堆栈窗口, [外部代码]行会标注一个线程什么位置跨域AppDomain边界.(VS中)</li>
+</ol>
+<p>在Rider中是:</p>
+<p><img src="/2019/09/11/000000目录-CLR读书笔记/22CLR寄宿和AppDomain/QQ截图20190914113026.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">MarshalByRefType<span class="token punctuation">.</span><span class="token function">SomeMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token punctuation">,</span> ClassLibrary1<span class="token punctuation">.</span>exe
+<span class="token punctuation">[</span>Application Domain Transition<span class="token punctuation">]</span>
+Program<span class="token punctuation">.</span><span class="token function">Marshalling</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token punctuation">,</span> ClassLibrary1<span class="token punctuation">.</span>exe
+Program<span class="token punctuation">.</span><span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token punctuation">,</span> ClassLibrary1<span class="token punctuation">.</span>exe
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>真实的SomeMethod方法</code>返回后, 会返回至<code>代理的SomeMethod方法</code>, 后者会将线程切换至默认AppDomain,线程继续执行默认AppDomain中的代码.</p>
+<p><code>AppDomain.Unload(ad2);</code>这会指定卸载指定的AppDomain包括加载到其中的所有程序集. 并强行执行一次垃圾回收, 来释放由卸载的AppDomain中的代码创建的所有对象. mbrt变量引用的仍然的是有效的代理对象, 但是代理对象已不再引用一个有效的AppDomain(已经卸载了).</p>
+<p>当默认AppDomain试图使用代理对象调用SomeMethod方法时, 调用的是该方法在代理中的实现, 代理发现包含真实对象的AppDomain已经卸载, 就抛出<code>AppDomainUnloadedException</code>异常,告诉操作者无法完成.</p>
+<blockquote>
+<p>一个AppDomain的方法执行完毕,才能执行另一个AppDomain的方法,不能多个AppDomain的代码并发执行.</p>
+</blockquote>
+<p><strong>使用”按引用封送”的语义进行跨AppDomain边界的对象访问,会产生一些性能上的开销. 一般尽量少用这个功能.</strong></p>
+<p>从<code>MarshalByRefObject</code>派生的类型可以定义实例字段, 但是这些字段不会成为代理类型的一部分,也不会包含在代理对象中.  这实例字段的读写会用到反射,性能很差, 访问默认AppDomain中的性能也好不到那里去.</p>
+<p><img src="/2019/09/11/000000目录-CLR读书笔记/22CLR寄宿和AppDomain/QQ截图20190914140533.png" alt=""></p>
+<p>派生自<code>MarshalByRefObject</code>的类型应该避免定义任何静态成员, 因为静态成员总是在调用AppDomain的上下文中访问. 静态成员的一个AppDomain中执行, 实例成员却在另一个AppDomain中执行. 这样的编程模型太丑了.</p>
+<h4 id="租约管理器"><a href="#租约管理器" class="headerlink" title="租约管理器"></a>租约管理器</h4><p><img src="/2019/09/11/000000目录-CLR读书笔记/22CLR寄宿和AppDomain/QQ截图20190914141009.png" alt=""></p>
+<h3 id="演示Demo-2-使用”按值封送”进行跨AppDomain通信"><a href="#演示Demo-2-使用”按值封送”进行跨AppDomain通信" class="headerlink" title="演示Demo 2 : 使用”按值封送”进行跨AppDomain通信"></a>演示Demo 2 : 使用”按值封送”进行跨AppDomain通信</h3><p>前面一样, 不一样的是, 代理还需要调用 <code>MarshalByValType mbvt = mbrt.MethodWithReturn();</code>, 将在<strong>新的AppDomain</strong>中执行以创建<code>MarshalByValType</code>类型的实例, 并将一个对象引用返回给<strong>默认的AppDomain</strong>.</p>
+<p><code>MarshalByValType</code>不从<code>MarshalByRefObject</code>派生, 所以CLR不能定义一个代理类型并创建代理类型的实例. 对象不能按引用跨AppDomain边界进行封送.</p>
+<p>由于<code>MarshalByValType</code>标记了自定义特性[Serializable], 所以<code>MethodWithReturn</code>方法能按值封送对象. 下面描述将一个对象按值从源AppDomain封送到目标AppDomain的含义.</p>
+<p>源AppDomain想向目标AppDomain发送或返回一个对象引用时, CLR将对象的实例字段序列化成一个字节数组. 字节数组从源AppDomain复制到目标AppDomain. 然后CLR在目标AppDomain中反序列化字节数组, 这里会强制CLR将定义了此类型的程序集加载到目标AppDomain中. CLR创建类型时,并利用字节数组中的值初始化对象的字段,使之与源对象中的值相同.  <strong>也就是说 CLR在目标AppDomain中精确复制了源对象.</strong> 然后<code>MethodWithReturn</code>返回对这个副本的引用.</p>
+<p><code>RemotingServices.IsTransparentProxy(mbvt)</code>返回是false, 说明对象是一个真实的对象,不是代理. 由于mbvt引用真实的对象, 在卸载新AppDomain之后, <code>mbvt.ToString()</code>会调用这个方法的真实实现, 线程不会在AppDomain之间切换.</p>
+<h3 id="演示Demo-3-使用不可封送的进行跨AppDomain通信"><a href="#演示Demo-3-使用不可封送的进行跨AppDomain通信" class="headerlink" title="演示Demo 3 : 使用不可封送的进行跨AppDomain通信"></a>演示Demo 3 : 使用不可封送的进行跨AppDomain通信</h3><p>与之前大致相似, 不同的是 <code>NonMarshalableType nmt = mbrt.MethodArgAndReturn(CallingDomainName);</code>, 由于<code>NonMarshalableType</code>不是<code>MarshalByRefObject</code>派生的, 也没有用<code>[Serializable]</code>定制特性进行标记, 所以不允许<code>MethodArgAndReturn</code>按引用或按值封送对象. 此对象完全不能跨越AppDomain边界进行封送.</p>
+<p>此例子中传递的参数String不是从<code>MarshalByRefObject</code>派生,但是String被标记为<code>[Serializable]</code>,所以CLR能按值封送它.</p>
+<p>对于String对象,CLR会采取特殊的优化措施. 跨越AppDomain边界封送一个String对象时, <strong>CLR只是跨越边界传递对String对的引用, 不会真的生成String对象的副本,</strong> 之所以提供这个优化,是因为String对象是不可变的.</p>
+<h1 id="卸载AppDomain"><a href="#卸载AppDomain" class="headerlink" title="卸载AppDomain"></a>卸载AppDomain</h1><p>AppDomain很强大的一个地方就是可以卸载它. 卸载AppDomain会导致CLR卸载AppDomain中的所有程序集. 还会释放AppDomain的Loader堆. <strong>卸载AppDomain的办法是调用AppDomain的静态Unload方法</strong>.</p>
+<ol>
+<li>CLR挂起进程中执行过托管代码的所有线程</li>
+<li>CLR检查所有线程栈, 查看哪些线程正在执行要卸载的AppDomain中的代码,或者哪些线程会在某个时候返回至要卸载的AppDomain. 任何栈上有要卸载的AppDomain, CLR都会强迫对应线程抛出一个 <code>ThreadAbortException</code>(同时恢复线程的执行), 这导致线程展开(unwind), 并执行遇到的所有finally块以清理资源. 如果没有代码捕捉<code>ThreadAbortException</code>,会成为未处理异常, 特殊的是CLR会吞噬这个异常, 线程终止,但进程可以继续. 对于其他所有未经处理的异常CLR都会终止进程.</li>
+</ol>
+<p><img src="/2019/09/11/000000目录-CLR读书笔记/22CLR寄宿和AppDomain/QQ截图20190915102254.png" alt=""></p>
+<p>临界执行区  : 指线程终止或未处理异常的影响可能不限于当前任务的区域.<br>非临界执行区: 终止或失败只对出错的任务有影响.</p>
+<ol>
+<li>当第二步发现的而所有线程都离开AppDomain后, CLR遍历堆, 为引用了<strong>由已卸载的AppDomain创建的对象</strong>的<strong>每个代理对象都设置一个标志(flag)</strong> .这些对象现在知道它们引用的真实对象已经不在了, 现在, 任何代码在无效的代理对象上调用方法都会抛出一个AppDomainUnloadedException异常.</li>
+<li>CLR强制垃圾回收,回收由已卸载的AppDomain创建的任何对象的内存. 这些对象Finalize方法被调用, 使对象有机会正确清理它们占用的资源.</li>
+<li>CLR恢复剩余所有线程的执行, 调用AppDomain.Unload方法的线程将继续运行; 对AppDomain.Unload的调用是同步进行的.</li>
+</ol>
+<p><strong>当一个线程 调用AppDomain.Unload方法时, 针对要卸载的AppDomain中的<code>线程</code>,CLR会给它们10秒钟的时间离开. 10秒钟后, 如果调用AppDomain.Unload方法的线程还没有返回,CLR将抛出<code>CannotUnloadAppDomianException</code>异常, AppDomain将来可能会,也可能不会卸载.</strong></p>
+<h1 id="监视AppDomain"><a href="#监视AppDomain" class="headerlink" title="监视AppDomain"></a>监视AppDomain</h1><p>AppDomain的静态<code>MonitoringEnabled属性</code>设置为true, 显式打开监控。打开监控后便不能关闭，再设为false会抛ArgumentException, 代码可查询AppDomain类提供的以下4个只读属性</p>
+<ol>
+<li><p><code>MonitoringSurvivedProcessMemorySize</code>:这个Int64静态属性返回由当前CLR实例控制的所有AppDomain使用的字节数。这个数字值保证在上一次垃圾回收时时准确的</p>
+</li>
+<li><p><code>MonitoringTotalAllocatedMemorySize</code>:这个Int64实例属性返回特定AppDomain已分配的字节数。这个数字只保证在上一次垃圾回收时是准确的</p>
+</li>
+<li><p><code>MonitoringSuvivedMemorySize</code>:这个Int64实例属性返回特定AppDomain当前正在使用的字节数。这个数字只保证在上一次垃圾回收时是准确的</p>
+</li>
+<li><p><code>MonitoringTotalProcessorTime</code>:这个TimeSpan实例返回特定AppDomain的CPU占用率</p>
+</li>
+</ol>
+<h1 id="AppDomain-FirstCance异常通知"><a href="#AppDomain-FirstCance异常通知" class="headerlink" title="AppDomain FirstCance异常通知"></a>AppDomain FirstCance异常通知</h1><p><strong>每个AppDomain都可关联一组回调方法. 回调方法不能处理异常,也不能吞噬异常, 它们只是接收关于异常发生的通知. 要接收通知, 为AppDomain的实例事件FirstChanceException添加一个委托就就可以了.</strong></p>
+<ul>
+<li>异常首次抛出时，CLR调用向抛出异常的AppDomain登记的所有FirstChanceException回调方法。</li>
+<li>然后。CLR查找栈上同一个AppDomain中的任何catch块，有一个catch块能处理异常，则异常处理完成，将继续执行</li>
+<li>如果AppDomain中没有一个catch块能处理异常，则CLR沿着栈向上来到调用AppDomain，再次抛出同一异常对象（序列化和反序列化之后）</li>
+<li>这时感觉就像是抛出一个全新新的异常，CLR调用当前AppDomain登记的所有FirstChanceException回调方法.</li>
+<li>这个过程会一直执行，直到抵达线程栈顶部。如果异常还未处理，则进程终止.</li>
+</ul>
+<h1 id="宿主如何使用AppDomain"><a href="#宿主如何使用AppDomain" class="headerlink" title="宿主如何使用AppDomain"></a>宿主如何使用AppDomain</h1><p>不同应用程序类型如何寄宿(容纳)CLR, 以及如何管理AppDomain.</p>
+<h2 id="可执行应用程序"><a href="#可执行应用程序" class="headerlink" title="可执行应用程序"></a>可执行应用程序</h2><p>控制台UI应用程序、NT Service应用程序、Windows窗体应用程序和Windows Presentation Foundation（WPF）应用程序都是自寄宿（self-hosted，即自己容纳CLR）的应用程序，它们都有托管exe文件。Windows用托管exe文件初始化进程时，会加载垫片。垫片检查应用程序的程序集（exe文件）中的CLR头信息。头信息指明了生成和测试应用程序时使用的CLR版本。垫片根据这些信息决定将哪个版本的CLR加载到进程中，<strong>CLR加载并初始化好之后，会再次检查程序集CLR头，判断哪个方法是应用程序的入口方法（main）</strong>。CLR调用该方法，此时应用程序才真正启动并运行起来。</p>
+<p>代码运行时会访问其他类型。引用另一个程序集中的类型时，CLR会定位所需的程序集，并将其加载到同一个AppDomain中。应用程序的main方法返回后，Windows进程终止（销毁默认AppDomain和其他所有AppDomain）</p>
+<blockquote>
+<p>注意：要关闭Windows进程（包括它所有AppDomain），可调用System.Environment的静态方法Exit。<strong>Exit是终止进程最得体的方式</strong>，因为它首先调用托管堆上的所有对象的Finalize方法，再释放CLR容纳的所有非托管com对象。最后，exit调用win32 <code>ExitProcess函数</code>。</p>
+</blockquote>
+<h1 id="高级宿主控制"><a href="#高级宿主控制" class="headerlink" title="高级宿主控制"></a>高级宿主控制</h1><h2 id="使用托管代码管理CLR"><a href="#使用托管代码管理CLR" class="headerlink" title="使用托管代码管理CLR"></a>使用托管代码管理CLR</h2><p><code>System.AppDomainManager类</code>允许宿主使用托管代码（而不是非托管代码）覆盖CLR的默认行为。你唯一要做的就是定义自己的类，让它从<code>System.AppDomainManager派生</code>，重写想要接手控制的任何虚方法。然后，在专用的程序集中生成类，并将程序集安装到GAC中。(GAC中的所有程序集都总是被授予完全信任权限).</p>
+<h2 id="写健壮的宿主应用程序"><a href="#写健壮的宿主应用程序" class="headerlink" title="写健壮的宿主应用程序"></a>写健壮的宿主应用程序</h2><p>托管代码出现错误时，宿主可告诉CLR采取什么行动。</p>
+<ol>
+<li>如果线程执行时间过长，CLR可终止线程并返回一个响应。</li>
+<li>CLR可卸载AppDomain。这会终止线程并返回一个响应。</li>
+<li>CLR可被禁用。这会阻止更多的托管代码在程序中运行，但仍允许非托管代码运行。</li>
+<li>CLR 可退出Windows进程。首先会终止所有线程，并卸载所有AppDomain，使资源清理操作得以执行，然后才会终止进程。</li>
+</ol>
+<p>CLR可以得体地或者粗鲁地终止线程或者AppDomain.</p>
+<ul>
+<li>得体地: 会执行资源清理代码, finally块会运行, 对象的Finalize方法也将被执行.<ul>
+<li>如果正在一个catch块或者finally块中的线程, 则无法终止.</li>
+</ul>
+</li>
+<li>粗鲁地: 清理代码不会执行, finally和Finalize可能不会执行.<ul>
+<li>能终止在一个catch块或者finally块中的线程</li>
+<li>非托管代码或约束执行区中的线程完全无法终止.</li>
+</ul>
+</li>
+</ul>
+<h2 id="宿主如何拿回它的线程"><a href="#宿主如何拿回它的线程" class="headerlink" title="宿主如何拿回它的线程"></a>宿主如何拿回它的线程</h2><p><img src="/2019/09/11/000000目录-CLR读书笔记/22CLR寄宿和AppDomain/QQ截图20190916113812.png" alt=""></p>
+<ol>
+<li><p>客户端向服务器发送请求</p>
+</li>
+<li><p>服务器线程获得请求，把它派发给一个线程池线程来执行实际工作。</p>
+</li>
+<li><p>线程池线程获得客户端的请求，执行由构建并测试宿主应用程序的那个公司写的可信代码</p>
+</li>
+<li><p>可信代码进入一个try块。从这个try块中，<strong>跨越一个AppDomain的边界进行调用（通过派生自MarshalByRefObject的一个类型）</strong>。AppDomain中包含的是不可信代码（可能是存储过程），这些代码不是由制作宿主应用程序的那个公司生成和测试的可信代码。在这个时候，服务器相当于把它的线程的控制权交给了一些不可信的代码，服务器感到有点紧张了。</p>
+</li>
+<li><p>宿主会记录接收到客户端请求的时间。不可信代码在管理员设定的时间内没有对客户端做出响应，宿主就会调用Thread的<code>Abort方法</code>要求CLR终止线程池线程，强制它抛出一个<code>ThreadAbortException</code>。</p>
+</li>
+<li><p>这时，线程池线程开始展开(unwind)，调用finally块，使清理代码得以执行。最后，线程池线程穿越<code>AppDomain</code>边界返回。由于宿主的存根代码是从一个<code>try块</code>中调用不可信代码，所以宿主的存根代码有一个<code>catch块</code>捕捉<code>ThreadAbortException</code>。</p>
+</li>
+<li><p>为了响应捕捉到的<code>ThreadAbortException异常</code>，宿主调用Thread的<code>ResetAbort</code>方法。</p>
+</li>
+<li><p>现在，宿主代码已捕捉到<code>ThreadAbortException异常</code>。因此，宿主可向客户端返回某种形式的错误，允许线程池线程返回线程池，供未来的客户端请求使用。</p>
+</li>
+</ol>
+<p>澄清一下上述架构中容易被忽视的地方。首先，<strong>thread的Abort方法是异步的</strong>。调用Abort方法时，会在设置目标线程的<code>AbortRequested标志</code>后立即返回。“运行时”检测到一个线程要中止时，<strong>会尝试将线程弄到一个安全地点（safe place）</strong>。如果“运行时”认为能安全地停止线程正在做的事情，不会造成灾难性后果，就说线程在安全地点。如果线程正在执行一个托管的阻塞,他就在一个安全地点。如果线程正在执行类型的类构造器、catch块或者finally块中的代码、cer中的代码或者非托管代码，线程就不在安全地点.</p>
+<p>线程到达安全地点后，“运行时”检测到线程已设置了<code>AbortRequested标志</code>。这导致线程抛出一个<code>ThreadAbortException</code>，如果该异常未被捕捉，异常就会成为未处理的异常，所有挂起的finally块将执行，线程得体地终止。<strong>和其他所有异常不同，未处理的ThreadAbortException不会导致应用程序终止</strong>。“运行时”会悄悄地吞噬这个异常（假装它没有发生），线程将死亡。当应用程序及其剩余的所有线程都将继续运行。</p>
+<p>在本例中，宿主捕捉<code>ThreadAbortException</code>，允许宿主重新获取该线程的控制权，并把它归还到线程池中。但还有一个问题：宿主用什么办法阻止不可信代码自己捕获<code>ThreadAbortException</code>，从而保持宿主对线程的控制呢？<strong>答案是CLR以一种非常特殊的方法对待ThreadAbortException。即使代码捕捉了ThreadAbortException，CLR也不允许代码悄悄地吞噬该异常。换言之，在catch块的尾部，CLR会自动重新抛出ThreadAbortException。</strong></p>
+<p>CLR的这个功能又引起另一个问题：如果CLR在catch块的尾部重新抛出了ThreadAbortException异常，宿主如何捕捉它并重新获取线程的控制权呢？<strong>宿主的catch块中有一个对Thread的<code>ResetAbort方法</code>的调用。调用该方法会告诉CLR在catch块的尾部不要重新抛出ThreadAbortException异常。</strong></p>
+<p>这又引起了另一个问题：宿主怎么阻止不可信代码自己捕捉<code>ThreadAbortException</code>并调用Thread的<code>ResetAbort方法</code>，从而保持宿主对线程的控制呢？<strong>答案是Thread的ResetAbort方法要求调用者被授权了<code>SecurityPermission</code>权限</strong>，而且其<code>ControlThread标志</code>已被设置为true。宿主为不可信代码创建AppDomain时，不会向其授予这个权限，所以不可信代码不能保持对宿主的线程的控制权。</p>
+<p>需要指出的是，这里仍然存在一个潜在的漏洞：当线程从它的<code>ThreadAbortException</code>展开时，不可信代码可执行catch块和finally块。在这些块中，不可信代码可能进入死循环，阻止宿主重新获取线程的控制权。宿主应用程序通过设置一个升级策略来修正这个问题。要终止的线程在合理的时间内没有完成，CLR可将线程的终止方式升级成“粗鲁”的线程终止、“粗鲁”的AppDomain卸载、禁用CLR甚至杀死整个进程。还要注意，不可信代码可捕捉<code>ThreadAbortException</code>，并在catch块中抛出其他种类的一个异常。如果这个其他的异常被捕捉到，CLR会在catch块的尾部自动重新抛出ThreadAbortException异常。</p>
+<p>需要指出的是，大多数不可信的代码实际并非故意写成恶意代码：只是根据宿主的标准，它们的执行时间太长了一点。通常，catch块和finally块只包含及少量代码，这些代码可以很快地执行，不会造成死循环，也不会执行耗时很长的任务。所以，宿主为了重新获取线程的控制权限，一般情况都不会动用升级策略（开始各种各样的“粗鲁”行为）。</p>
+<p>顺便说一句，thread类实际提供了两个<code>Abort方法</code>：一个<code>无参</code>；另一个获取一个<code>object参数</code>，允许传递任何东西进来。代码捕捉到<code>ThreadAbortException</code>时，可查询它的只读<code>Exception属性</code>。该属性返回的就是传给<code>Abort</code>的对象。这就允许调用Abort的线程指定了一些额外的信息，供捕捉ThreadAbortException异常的代码检查。宿主可利用这个功能让自己的处理代码知道它为什么要中止线程。</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

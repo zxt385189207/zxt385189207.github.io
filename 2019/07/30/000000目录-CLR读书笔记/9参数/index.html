@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        9参数 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#参数"><span class="toc-text">参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#可选参数和命名参数"><span class="toc-text">可选参数和命名参数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#部分参数指定默认值的规则和原则"><span class="toc-text">部分参数指定默认值的规则和原则</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#隐式类型-var-的局部变量"><span class="toc-text">隐式类型( var )的局部变量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#以传引用的方式向方法传递参数"><span class="toc-text">以传引用的方式向方法传递参数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ref和out关键字"><span class="toc-text">ref和out关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#值类型使用ref和out关键字"><span class="toc-text">值类型使用ref和out关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么C-要求必须在调用方法时指定out或ref"><span class="toc-text">为什么C#要求必须在调用方法时指定out或ref</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用类型使用ref和out关键字"><span class="toc-text">引用类型使用ref和out关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#是ref关键字实现一个用于交换两个引用类型"><span class="toc-text">是ref关键字实现一个用于交换两个引用类型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#向方法传递可变数量的参数（params）"><span class="toc-text">向方法传递可变数量的参数（params）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#获取任意数量-任意类型的参数方法"><span class="toc-text">获取任意数量,任意类型的参数方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参数和返回类型的设计规范"><span class="toc-text">参数和返回类型的设计规范</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#常量性"><span class="toc-text">常量性</span></a></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        9参数
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-07-30 18:07:23</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h1><h1 id="可选参数和命名参数"><a href="#可选参数和命名参数" class="headerlink" title="可选参数和命名参数"></a>可选参数和命名参数</h1><ol>
+<li>设计方法参数时,可以为部分或全部参数分配默认值.</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">CLR</span>可选参数
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> s_n <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">M</span><span class="token punctuation">(</span><span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token keyword">string</span> s <span class="token operator">=</span> <span class="token string">"A"</span><span class="token punctuation">,</span> DateTime dt <span class="token operator">=</span> <span class="token keyword">default</span><span class="token punctuation">(</span>DateTime<span class="token punctuation">)</span><span class="token punctuation">,</span> Guid guid <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Guid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"x={x},s={s},dt={dt},guid={guid}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//等同于M(9, "A", default(DateTime), new Guid())</span>
+        <span class="token function">M</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//等同于M(8, "X", default(DateTime), new Guid())</span>
+        <span class="token function">M</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token string">"X"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//等同于M(5, "A", DateTime.Now, Guid.NewGuid()))</span>
+        <span class="token function">M</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> guid<span class="token punctuation">:</span> Guid<span class="token punctuation">.</span><span class="token function">NewGuid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> dt<span class="token punctuation">:</span> DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">M</span><span class="token punctuation">(</span>s_n<span class="token operator">++</span><span class="token punctuation">,</span>s_n<span class="token operator">++</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//等同于string t1=0,t2=1;</span>
+        <span class="token comment" spellcheck="true">//M(t2,t1,default(DateTime), new Guid())</span>
+        <span class="token function">M</span><span class="token punctuation">(</span>s<span class="token punctuation">:</span> <span class="token punctuation">(</span>s_n<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> x<span class="token punctuation">:</span> s_n<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">//输出</span>
+<span class="token comment" spellcheck="true">//x=9,s=A,dt=0001/1/1 0:00:00,guid=00000000-0000-0000-0000-000000000000</span>
+<span class="token comment" spellcheck="true">//x=8,s=X,dt=0001/1/1 0:00:00,guid=00000000-0000-0000-0000-000000000000</span>
+<span class="token comment" spellcheck="true">//x=5,s=A,dt=2019/7/31 11:03:00,guid=afb6f487-dc69-4ae4-ba58-588982d1e68a</span>
+<span class="token comment" spellcheck="true">//x=0,s=1,dt=0001/1/1 0:00:00,guid=00000000-0000-0000-0000-000000000000</span>
+<span class="token comment" spellcheck="true">//x=3,s=2,dt=0001/1/1 0:00:00,guid=00000000-0000-0000-0000-000000000000</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="部分参数指定默认值的规则和原则"><a href="#部分参数指定默认值的规则和原则" class="headerlink" title="部分参数指定默认值的规则和原则"></a>部分参数指定默认值的规则和原则</h2><ol>
+<li>可以为方法,构造器方法,有参属性(C#索引器)的参数指定默认值.</li>
+<li><strong>有默认值的参数必须放在没有默认值的所有参数之后.</strong></li>
+<li><strong>“参数数组”必须放到所有参数之后(包括有默认值的这些),而数组本身不能由默认值.</strong></li>
+<li>默认值必须是编译时能确定的常量值.<ol>
+<li>值类型参数可将默认值设为值类型的实例. default()关键字和new关键字会生成完全一致的IL代码.<code>DateTime dt = default(DateTime), Guid guid = new Guid()</code></li>
+</ol>
+</li>
+<li>不要重命名参数变量,不然之后的指定赋值时变量名就需要修改.<code>s: (s_n++).ToString(), x: s_n++</code>就会报错.</li>
+<li>更改参数的默认值具有潜在危险性. call site在它的调用中嵌入<code>默认值</code>, <strong>建议将默认值0/null作为哨兵值使用</strong>.<ol>
+<li>如果方法被模块外部调用,外部使用默认值,如果以后修改方法的默认值,没有重新编译call site外部的代码.那它在调用方法时,传递的还是旧的默认值.</li>
+</ol>
+</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 不要这样做</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> String <span class="token function">MakePath</span><span class="token punctuation">(</span>String filename <span class="token operator">=</span> <span class="token string">"Untitled"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// 参数中的默认值会被直接嵌入到方法调用中的IL代码里</span>
+<span class="token comment" spellcheck="true">// 如果修改默认参数后,call site代码没有重新编译,仍旧会使用旧默认值</span>
+<span class="token punctuation">{</span>
+  <span class="token keyword">return</span> String<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span>$<span class="token string">"C:\{filename}.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 建议这样做</span>
+<span class="token comment" spellcheck="true">// 默认值用0/null作为哨兵值使用</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> String <span class="token function">MakePath</span><span class="token punctuation">(</span>String filename <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 在语句中就不会出现这样的问题</span>
+  <span class="token keyword">return</span> String<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"C:\{0}.txt"</span><span class="token punctuation">,</span> filename <span class="token operator">?</span><span class="token operator">?</span> <span class="token string">"Untitled"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>如果参数用ref或out关键字进行标识,就不能设置默认值. 没办法为这些参数传递有意义的默认值.</li>
+</ol>
+<p>使用可选或命名参数调用方法时,</p>
+<ol>
+<li>实参可按任意顺序传递,命名实参只能出现在实参列表的尾部.( <code>x: s_n++</code> 命名实参:值)</li>
+<li>C#不允许省略逗号之间的实参.(如果想省略, 就用要以传递<code>参数名:</code>的方式传递实参就可以)</li>
+<li>如果参数要求ref/out, 为了以传参数名的方式传递实参,使用以下语法</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 方法声明</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">M</span><span class="token punctuation">(</span><span class="token keyword">ref</span> Int32 x<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 方法调用</span>
+Int32 a <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+<span class="token function">M</span><span class="token punctuation">(</span>x<span class="token punctuation">:</span> <span class="token keyword">ref</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="隐式类型-var-的局部变量"><a href="#隐式类型-var-的局部变量" class="headerlink" title="隐式类型( var )的局部变量"></a>隐式类型( var )的局部变量</h1><ol>
+<li>不能用var声明参数,因为编译器必须根据在call site传递的实参来推断类型,但是call site可能一处没有,也可能有很多处.</li>
+<li>不能用var声明字段. 应该显式陈述.</li>
+</ol>
+<blockquote>
+<p>不要混淆dynamic和var<br>用var声明局部变量只是一种简化语法.</p>
+</blockquote>
+<h1 id="以传引用的方式向方法传递参数"><a href="#以传引用的方式向方法传递参数" class="headerlink" title="以传引用的方式向方法传递参数"></a>以传引用的方式向方法传递参数</h1><p>CLR默认所有方法参数都传值. 传递引用类型的对象时, 引用(或指针)本身是传值的.</p>
+<ul>
+<li>引用类型: 方法能修改对象,而调用者能看到这些修改</li>
+<li>值类型:传给方法的是实例的一个副本,调用者的实例不受影响.</li>
+</ul>
+<h2 id="ref和out关键字"><a href="#ref和out关键字" class="headerlink" title="ref和out关键字"></a>ref和out关键字</h2><p>CLR运行以传引用而非传值的方式传递参数. C#用关键字<code>out/ref</code>来支持这个功能. 两个关键字都告诉C#编译器生成元数据来指明该参数时传引用的. <strong>编译器会生成代码来传递参数的地址,而不是传递参数本身.</strong></p>
+<p>CLR不区分关键字<code>out/ref</code>,都会生成相同的IL代码,元数据几乎完全一致,只有一个bit除外,记录指定的是out还是ref.</p>
+<p>C#编译器则是区别对待<code>out/ref</code>的.</p>
+<ul>
+<li><code>out标记</code>:被传入调用方法的参数 <strong>不必要初始化</strong>, 被调用的方法 <strong>不能读取参数值</strong>, 在返回前<br><strong>必须向这个值写入</strong>.</li>
+<li><code>ref标记</code>:调用方法前 <strong>必须先初始化被ref标记的参数</strong>, 被调用的方法 <strong>可以读写</strong> 这个参数值.</li>
+</ul>
+<h2 id="值类型使用ref和out关键字"><a href="#值类型使用ref和out关键字" class="headerlink" title="值类型使用ref和out关键字"></a>值类型使用ref和out关键字</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> x<span class="token punctuation">;</span>                <span class="token comment" spellcheck="true">//x没有初始化</span>
+    <span class="token function">GetVal</span><span class="token punctuation">(</span><span class="token keyword">out</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">//x不必初始化</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//显示10</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">GetVal</span><span class="token punctuation">(</span><span class="token keyword">out</span> <span class="token keyword">int</span> v<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 访问前必须先赋值v</span>
+    <span class="token comment" spellcheck="true">// Console.WriteLine(v); 这句话编译时会报错</span>
+    v <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//该方法必须初始化v</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>x在Main的栈帧(当前线程的调用栈中的一个方法调用)</li>
+<li>x的地址传递给GetVal, GetVal的参数v是一个指针,指向Main栈帧中的Int32值.</li>
+<li>在GetVal方法内部,v指向的那个Int32值被更改为10.</li>
+</ol>
+<blockquote>
+<p>栈帧: 在执行线程的过程中进行的每个方法调用都会在调用栈中创建并压入一个StackFrame</p>
+</blockquote>
+<p> <strong>用处: 为 <code>大的值类型</code>使用out, 可以避免在进行方法调用时复制值类型实例的字段.</strong></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>            <span class="token comment" spellcheck="true">//已经初始化</span>
+    <span class="token function">AddVal</span><span class="token punctuation">(</span><span class="token keyword">ref</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">//x必须初始化</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//显示15</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">AddVal</span><span class="token punctuation">(</span><span class="token keyword">ref</span> <span class="token keyword">int</span> v<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    v <span class="token operator">+</span><span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//该方法可使用v的已初始化的值</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>和out不同的是,在AddVal内部,v指向的那个Int32值必须是已经初始化的.</li>
+<li>AddVal可以对v进行读写</li>
+</ol>
+<p>综上所述:</p>
+<ol>
+<li>从IL和CLR角度看,out和ref是同一回事: <strong>都传递指向实例的一个指针.</strong></li>
+<li>从编译器角度看,两者的区别在于:<strong>会按不同的标准验证你写的代码是否正确,是否已赋值.</strong></li>
+<li>为值类型使用out/ref,效果等同于以传值的方式传递引用类型.</li>
+</ol>
+<h2 id="为什么C-要求必须在调用方法时指定out或ref"><a href="#为什么C-要求必须在调用方法时指定out或ref" class="headerlink" title="为什么C#要求必须在调用方法时指定out或ref"></a>为什么C#要求必须在调用方法时指定out或ref</h2><p>C#语言设计者认为调用者应该显式表明意图,只有这样,在<code>call site(调用位置)</code>那里,才能清楚地知道被调用的方法<code>是否需要对传递的变量值</code>进行更改.</p>
+<p>C#允许 使用out/ref参数对方法进行重载.但是两个不能同时出现,因为2个签名的元数据形式完全相同.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Point</span>
+<span class="token punctuation">{</span>
+  <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Add</span><span class="token punctuation">(</span>Point p<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+  <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">ref</span> Point p<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// Add不能定义仅在ref和out上有差别的重载方法</span>
+  <span class="token comment" spellcheck="true">// 因为这两个方法签名生成的元数据形式完全相同</span>
+  <span class="token comment" spellcheck="true">// static void Add(out Point p) { ... }</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="引用类型使用ref和out关键字"><a href="#引用类型使用ref和out关键字" class="headerlink" title="引用类型使用ref和out关键字"></a>引用类型使用ref和out关键字</h2><p>和值类型使用out/ref参数的区别:</p>
+<ol>
+<li><code>值类型</code>:调用者必须 <strong>为实例分配内存</strong>. 被调用者则操作该内存中的内容.</li>
+<li><code>引用类型</code>:调用代码 <strong>为一个指针分配内存</strong>,指针指向引用类型的对象. 被调用者操纵这个指针.</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    FileStream fs <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 初始化为null (必要操作)</span>
+
+    <span class="token comment" spellcheck="true">// 打开第一个待处理的文件</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token punctuation">;</span> fs <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">;</span> <span class="token function">ProcessFiles</span><span class="token punctuation">(</span><span class="token keyword">ref</span> fs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">//处理文件</span>
+      fs<span class="token punctuation">.</span><span class="token function">Read</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">ProcessFiles</span><span class="token punctuation">(</span><span class="token keyword">ref</span> FileStream fs<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 如果先前的文件是打开的,就将其关闭</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>fs<span class="token operator">!=</span><span class="token keyword">null</span><span class="token punctuation">)</span> fs<span class="token punctuation">.</span><span class="token function">Close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 打开下一个文件,如果没有,就返回null</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>noMoreFilesToProcess<span class="token punctuation">)</span> fs <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token keyword">else</span>
+    <span class="token punctuation">{</span>
+        fs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileStream</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="是ref关键字实现一个用于交换两个引用类型"><a href="#是ref关键字实现一个用于交换两个引用类型" class="headerlink" title="是ref关键字实现一个用于交换两个引用类型"></a>是ref关键字实现一个用于交换两个引用类型</h3><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    String s1 <span class="token operator">=</span> <span class="token string">"111"</span><span class="token punctuation">;</span>
+    String s2 <span class="token operator">=</span> <span class="token string">"222"</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 无法通过编译,参数类型不匹配</span>
+    <span class="token comment" spellcheck="true">// 它的类型必须与签名中声明的类型相同</span>
+    <span class="token comment" spellcheck="true">// Swap需要的是两个Object的引用,而不是String</span>
+    <span class="token comment" spellcheck="true">// Swap(ref s1,ref s2);</span>
+
+
+    <span class="token comment" spellcheck="true">// 需要进行转型</span>
+    Object o1 <span class="token operator">=</span> s1<span class="token punctuation">,</span> o2 <span class="token operator">=</span> s2<span class="token punctuation">;</span>
+    <span class="token function">Swap</span><span class="token punctuation">(</span><span class="token keyword">ref</span> o1<span class="token punctuation">,</span><span class="token keyword">ref</span> o2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 完事后,再将Object转型为String</span>
+    s1 <span class="token operator">=</span> <span class="token punctuation">(</span>String<span class="token punctuation">)</span> o1<span class="token punctuation">;</span>
+    s2 <span class="token operator">=</span> <span class="token punctuation">(</span>String<span class="token punctuation">)</span> o2<span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Swap</span><span class="token punctuation">(</span><span class="token keyword">ref</span> Object a<span class="token punctuation">,</span><span class="token keyword">ref</span> Object b<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Object t <span class="token operator">=</span> b<span class="token punctuation">;</span>
+    b <span class="token operator">=</span> a<span class="token punctuation">;</span>
+    a <span class="token operator">=</span> t<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 泛型版本</span>
+<span class="token comment" spellcheck="true">// 这样之前就不需要再转型了,能直接通过编译完美运行</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token generic-method function">Swap<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">ref</span> T a<span class="token punctuation">,</span><span class="token keyword">ref</span> T b<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    T t <span class="token operator">=</span> b<span class="token punctuation">;</span>
+    b <span class="token operator">=</span> a<span class="token punctuation">;</span>
+    a <span class="token operator">=</span> t<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>传递参数的类型必须与签名中声明的类型相同.</strong></p>
+<h1 id="向方法传递可变数量的参数（params）"><a href="#向方法传递可变数量的参数（params）" class="headerlink" title="向方法传递可变数量的参数（params）"></a>向方法传递可变数量的参数（params）</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 用params关键字</span>
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">params</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> values<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>values <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> x <span class="token operator">&lt;</span> values<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+            sum <span class="token operator">+</span><span class="token operator">=</span> values<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//调用方法1</span>
+<span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//调用方法2，</span>
+<span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>params关键字告诉编译器向参数定制特性System.ParamArrayAttribute的一个实例.</p>
+<p>C#编译器检测方法调用时,会先检查所有具有指定名称,同时参数没有应用ParamArray的方法.如果没有找到,就检查应用了ParamArray特性的方法,生成代码来构造数组,填充它的元素,再生成代码来调用所选的方法.</p>
+<ol>
+<li>只有方法的<code>最后一个参数</code>才可以用<code>params关键字</code>(ParamArrayAttribute)标记.</li>
+<li><strong>只能标识一维数组(任意类型)</strong>.</li>
+<li>可为这个参数传递null值. <code>Console.WriteLine(Add(null));//生成的结果是0,不会分配数组</code></li>
+</ol>
+<h2 id="获取任意数量-任意类型的参数方法"><a href="#获取任意数量-任意类型的参数方法" class="headerlink" title="获取任意数量,任意类型的参数方法"></a>获取任意数量,任意类型的参数方法</h2><p>只需要修改方法原型,让它获取<code>Object[]</code>而不是<code>Int32[]</code>;</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">DisplayTypes</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">"Jeff"</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">DisplayTypes</span><span class="token punctuation">(</span><span class="token keyword">params</span> Object<span class="token punctuation">[</span><span class="token punctuation">]</span> objects<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>objects<span class="token operator">!=</span><span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">object</span> o <span class="token keyword">in</span> objects<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>o<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// System.Object</span>
+<span class="token comment" spellcheck="true">// System.Random</span>
+<span class="token comment" spellcheck="true">// System.String</span>
+<span class="token comment" spellcheck="true">// System.Int32</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用params会对性能有所影响</p>
+<ol>
+<li>数组必须在堆上分配</li>
+<li>数组元素必须初始化</li>
+<li>数组内存最终需要垃圾回收</li>
+</ol>
+<h1 id="参数和返回类型的设计规范"><a href="#参数和返回类型的设计规范" class="headerlink" title="参数和返回类型的设计规范"></a>参数和返回类型的设计规范</h1><p>这里例子讨论的是集合,是用接口体系结构来设计的.</p>
+<ol>
+<li>声明方法的参数类型时, <strong>应尽量指定最弱的类型,宁愿要接口也不要基类.</strong> 最好是使用接口声明参数比如<code>IEnumerable&lt;T&gt;</code></li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 好: 方法使用弱参数类型</span>
+<span class="token comment" spellcheck="true">// 参数的类型只要实现了IEnumerable&lt;T>接口就可以</span>
+<span class="token comment" spellcheck="true">// 方法更灵活,适合更广泛的情形</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token generic-method function">MainpulateItems<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span>IEnumerable<span class="token operator">&lt;</span>T<span class="token operator">></span> collection<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 不好: 方法使用强参数类型</span>
+<span class="token comment" spellcheck="true">// 参数不接受数组或String对象</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token generic-method function">MainpulateItems<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>T<span class="token operator">></span> collection<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>如果方法需要的是列表,就应该将参数类型声明为<code>IList&lt;T&gt;</code> ,避免声明为<code>List&lt;T&gt;</code></li>
+<li>强参数类型和弱参数类型,<code>参数类型</code>最好是弱类型</li>
+<li><code>返回类型</code>最好是声明为最强的类型</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 好: 方法使用弱参数类型</span>
+<span class="token comment" spellcheck="true">// 能处理任何流包括FileStream,NetworkStream,MemoryStream等</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">ProcessBytes</span><span class="token punctuation">(</span>Stream someStream<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 不好: 方法使用强参数类型</span>
+<span class="token comment" spellcheck="true">// 只能处理FileStream</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">ProcessBytes</span><span class="token punctuation">(</span>FileStream someStream<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 好: 方法使用强返回类型</span>
+<span class="token keyword">public</span> FileStream <span class="token function">OpenFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 不好: 方法使用弱返回类型</span>
+<span class="token keyword">public</span> Stream <span class="token function">OpenFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="常量性"><a href="#常量性" class="headerlink" title="常量性"></a>常量性</h1><ol>
+<li>不能将方法或参数声明为常量.</li>
+<li>CLR也没提供对常量对象/实参的支持.</li>
+</ol>
+<blockquote>
+<p>String类就没有提供任何能更改String对象的方法,所以字符串是不可变的(immutable).</p>
+</blockquote>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        20异常和状态管理 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#异常和状态管理"><span class="toc-text">异常和状态管理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#定义”异常”"><span class="toc-text">定义”异常”</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异常处理机制"><span class="toc-text">异常处理机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#try块"><span class="toc-text">try块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#catch块"><span class="toc-text">catch块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#finally块"><span class="toc-text">finally块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CLS和非CLS异常"><span class="toc-text">CLS和非CLS异常</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Exception类"><span class="toc-text">Exception类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#用特性禁止方法内联"><span class="toc-text">用特性禁止方法内联</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#FCL定义的异常类"><span class="toc-text">FCL定义的异常类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#抛出异常"><span class="toc-text">抛出异常</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#定义自己的异常类"><span class="toc-text">定义自己的异常类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用可靠性换取开发效率"><span class="toc-text">用可靠性换取开发效率</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于状态已损坏之后的处理"><span class="toc-text">关于状态已损坏之后的处理</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        20异常和状态管理
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-06 18:41:48</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="异常和状态管理"><a href="#异常和状态管理" class="headerlink" title="异常和状态管理"></a>异常和状态管理</h1><p>定义错误,如何从错误中恢复. 错误在不恰当的时候发生,代码可能在状态改变的中途发生错误,这时需要将一些状态还原为改变之前的样子. 还要通知调用者有错误发生.</p>
+<h1 id="定义”异常”"><a href="#定义”异常”" class="headerlink" title="定义”异常”"></a>定义”异常”</h1><p>设计类型时要想好各种使用情况. 当一个类型的成员（如方法，属性）不能完成任务时，就应抛出异常。</p>
+<blockquote>
+<p>异常是指成员没有完成它的名称时所宣称的行动.</p>
+</blockquote>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">class</span> <span class="token class-name">Account</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 两个账户,转账金额</span>
+   <span class="token comment" spellcheck="true">// 此方法的作用是从一个函数扣钱,添加到另一个账户中</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Transfer</span><span class="token punctuation">(</span>Account <span class="token keyword">from</span><span class="token punctuation">,</span> Account to<span class="token punctuation">,</span> Decimal amount<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token keyword">from</span> <span class="token operator">-</span><span class="token operator">=</span> amount<span class="token punctuation">;</span>
+      to <span class="token operator">+</span><span class="token operator">=</span>amount<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以上转账方法可能有多种原因导致失败:</p>
+<ul>
+<li>from,to实参可能是0</li>
+<li>from账户没有足够的资金</li>
+<li>to账户可能资金过多,以至于增加资金时导致账户溢出</li>
+<li>amount参数为0,负数或者小数超过2位</li>
+</ul>
+<p><code>Boolean f = &quot;Jeff&quot;.Substring(1,1).ToUpper().EndsWith(&quot;E&quot;); // true</code></p>
+<p>利用<code>C#扩展方法</code>将多个操作链接到一起, 但是有一个重要的前提,这行代码没有操作失败和中途出错. 为了让不返回错误代码的方法报告错误, .NetFramework通过<code>异常处理</code>来解决这个问题.</p>
+<h1 id="异常处理机制"><a href="#异常处理机制" class="headerlink" title="异常处理机制"></a>异常处理机制</h1><p>本文旨在提供何时以及如何使用异常处理的设计规范.</p>
+<p>.NetFramework异常机制使用Windows提供的<code>结构化异常处理(Structured Exception Handling,SEH)</code>机制构建的. (Windows核心编程(第5版)一书,其中有3章专门谈论SEH).</p>
+<p>异常处理机制的标准用法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">SomeMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">try</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 需要进行恢复 和/或 清理的代码放在这里</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InvalidOperationException</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 从 InvalidOperationException 恢复的代码放这</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 从 IOException 恢复的代码放这</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">catch</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 从除了上述异常之外的其他所有异常恢复的代码放在这里</span>
+        <span class="token keyword">throw</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 如果什么异常都捕捉,通常需要重新抛出异常</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">finally</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 这里的代码对始于try块的任何操作进行清理</span>
+        <span class="token comment" spellcheck="true">// 这里的代码总是执行,不管是不是抛出了异常</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 如果try块没有抛出异常, 或者某个catch块捕捉到异常,但没有抛出或重新抛出就执行下面的代码</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>大多数情况只有一个try块和一个匹配finally块, 或者一个try块和一个匹配的catch块</p>
+<h2 id="try块"><a href="#try块" class="headerlink" title="try块"></a>try块</h2><p>如果代码需要执行一般性的资源清理操作,需要从异常中恢复,或者两者都需要,就可以放到<code>try</code>块. 负责清理的代码应放到一个<code>finally</code>块.  <code>try</code>块还可包含也许会抛出异常的代码, 负责异常恢复的代码应放到一个或多个<code>catch</code>块中. 针对应用程序能从安全恢复的每一种异常,都应该创建一个<code>catch</code>块中. 单独的<code>try</code>块没有意义C#也不允许.</p>
+<p><strong>重要提示: 开发人员有时不知道应该在一个try块中放入多少代码, 这具体取决于<code>状态管理</code>. 如果在一个try块中执行多个可能抛出<code>同一个异常类型</code>的操作, 但不同的操作有不同的异常恢复措施,就应该将每个操作都放到它自己的try块中, 这样才能正确地恢复状态.</strong></p>
+<h2 id="catch块"><a href="#catch块" class="headerlink" title="catch块"></a>catch块</h2><p><code>catch</code>包括的是响应一个异常需要执行的代码.  <strong>如果try块没有抛出异常,CLR永远不会执行它的任何catch块.</strong> 线程将跳过所有的<code>catch</code>块,直接执行<code>finally</code>(如果有的话). 然后继续执行<code>finally</code>之后的语句.</p>
+<p>catch关键字后的圆括号中的表达式称为<strong>捕捉类型</strong>. C#要求捕捉类型必须是<code>System.Exception</code>或者是它的派生类型. 最后一个catch块没有指定捕捉类型,能处理除了前面的catch块指定的之外的其他所有异常. <strong>这相当于捕捉System.Exception(只是catch块大括号中的代码访问不了异常信息).</strong></p>
+<blockquote>
+<p>可以在监视窗口中添加特殊变量名称$exception来查看当前抛出的异常对象</p>
+</blockquote>
+<p>CLR自上而下搜索匹配的<code>catch</code>块. 较具体的异常类型放在顶部, 最后是<code>System.Exception</code>.</p>
+<p>在<code>try</code>块的代码(或者从<code>try</code>块调用的任何代码)中抛出异常, CLR将搜索<code>捕捉类型</code>与抛出的异常相同的<code>catch</code>块. <strong>如果没有匹配的,CLR回去调用<code>栈</code>更高的一层去搜索与异常匹配的捕捉类型, 如果到了栈的顶部还是没有找到匹配的catch块,就会发生未处理的异常.</strong></p>
+<p><strong>一旦CLR找到匹配的<code>catch</code>块,就会执行内层所有<code>finally</code>块中的代码.</strong>.</p>
+<blockquote>
+<p>所谓<code>内层finally块</code>是指从抛出异常的<code>try</code>块开始, 到匹配异常的<code>catch</code>块之间的所有<code>finally</code>块</p>
+</blockquote>
+<p><strong>注意,匹配异常的那个<code>catch</code>块所关联的<code>finally</code>块尚未执行,该<code>finally</code>块中的代码一直要等到这个<code>catch</code>块中的代码执行完毕后才会执行.</strong></p>
+<p>所有<code>内层finally块</code>执行完毕之后,匹配异常的那个<code>catch</code>块中的代码开始执行. <code>catch</code>块中的代码通常执行一些对异常处理的操作, 在<code>catch</code>块的末尾,有以下三个选择:</p>
+<ul>
+<li>重新抛出相同的异常,向调用栈高一层的代码通知该异常的发生</li>
+<li>抛出一个不同的异常,想调用栈高一层的代码提供更丰富的异常信息.<ul>
+<li>这两种技术将抛出异常,CLR的行为就和之前说的,回溯调用栈(去更高一层查找捕捉类型和抛出的异常类型匹配的<code>catch</code>块).</li>
+</ul>
+</li>
+<li>让线程从<code>catch</code>块的底部退出(正常执行下去,并执行匹配的<code>finally</code>块).<ul>
+<li>最后一种是当线程<code>catch</code>块的底部退出后,立即执行包含在<code>finally</code>块中的代码. 执行完毕后,线程退出<code>finally</code>块.</li>
+</ul>
+</li>
+</ul>
+<p>C#允许在<code>捕捉类型</code>后指定一个变量. 该变量引用抛出异常的对象,<code>catch</code>块可以通过引用此变量来访问异常的具体信息(例如发生时的堆栈跟踪), 最好把它当成是只读的,不建议修改.</p>
+<blockquote>
+<p>你的代码可以向AppDomain的<code>FirstChanceException事件</code>登记, 这样只要AppDomain中发生异常,就会收到通知. 这个通知是在CLR开始搜索任何<code>catch块</code><strong>之前</strong> 发生的.</p>
+</blockquote>
+<h2 id="finally块"><a href="#finally块" class="headerlink" title="finally块"></a>finally块</h2><p><code>finally</code>块包含的是保证会执行的代码. 一般在<code>finally</code>块中执行<code>try</code>块的行动所要求的资源清理操作.</p>
+<p><img src="/2019/09/06/000000目录-CLR读书笔记/20异常和状态管理/QQ截图20190908152538.png" alt=""></p>
+<p>例如,在<code>try</code>块中打开了文件,就应该将关闭文件的代码放到<code>finally</code>块中.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">try</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 不管此句代码是否会发生异常, 文件保证会在finally块中被关闭.</span>
+   fs <span class="token operator">=</span> <span class="token function">FileStream</span><span class="token punctuation">(</span>pathname<span class="token punctuation">,</span> FileMode<span class="token punctuation">.</span>Open<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span><span class="token punctuation">(</span>IOException<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 在此添加从IOException恢复的代码</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">finally</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 确保文件被关闭</span>
+   <span class="token keyword">if</span><span class="token punctuation">(</span>fs <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> fs<span class="token punctuation">.</span><span class="token function">Close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 这句话不能发在外部, 因为如果没有捕捉到异常, finally块中后面的语句就不会执行</span>
+<span class="token comment" spellcheck="true">// 以至于文件不会被关闭, 造成文件一直保持打开状态(直到下一次垃圾回收)</span>
+<span class="token comment" spellcheck="true">// if(fs != null) fs.Close();</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一个<code>try</code>块最多只能关联一个<code>finally</code>块,而且必须出现在所有的<code>catch</code>块之后.</p>
+<p>记住<code>finally</code>块中的代码是清理代码. 这些代码只需对<code>try</code>块中发起的操作进行清理.</p>
+<p><strong>如果在<code>catch</code>块和<code>finally</code>块内部抛出了异常,CLR的异常机制仍会正常运转.</strong> 就好像异常是在<code>finally</code>块之后抛出的一样. 出现这种情况,CLR不会记录对应的<code>try</code>块中抛出的第一个异常,关于第一个异常的所有堆栈跟踪信息都将丢失, 并且程序也会被CLR终止.</p>
+<h2 id="CLS和非CLS异常"><a href="#CLS和非CLS异常" class="headerlink" title="CLS和非CLS异常"></a>CLS和非CLS异常</h2><p>C#编译器值允许代码抛出从<code>Exception</code>派生的对象,而用其他一些语言写的代码不仅允许抛出<code>Exception派生对象</code>,还允许抛出<code>非Exception派生对象</code>.</p>
+<p>CLR2.0的版本中引入了新的<code>RuntimeWrappedException类</code>,派生自<code>Exception</code>. <code>WrappedException</code>含有一个Object类型的私有字段, 在非CLS相容的一个异常被抛出时, CLR会自动构造这个类的实例, 初始化这个字段,使之引用实际抛出的对象. 这样就能捕捉非CLS相容的异常, 任何捕捉Exception类型的代码都能捕捉非CLS相容的异常.消除了安全隐患.</p>
+<p><img src="/2019/09/06/000000目录-CLR读书笔记/20异常和状态管理/QQ截图20190908161027.png" alt=""></p>
+<h1 id="Exception类"><a href="#Exception类" class="headerlink" title="Exception类"></a>Exception类</h1><p>Exception是一个很简单的类型,一般不写任何代码以任何方式查询或访问这些属性. 在应用程序因为未处理的异常而终止时, 可以在调试器中查看这些属性,或者在Windows应用程序事件日志或崩溃转储(crash dump)中查看.</p>
+<p><img src="/2019/09/06/000000目录-CLR读书笔记/20异常和状态管理/QQ截图20190908162101.png" alt=""></p>
+<ul>
+<li>只读<code>StackTrace</code>属性:<ul>
+<li><code>catch</code>块可读取该属性来获取一个堆栈跟踪(stack trace). <strong>它描述了异常发生前调用了哪些方法.</strong></li>
+<li>访问该属性实际会调用CLR中的代码</li>
+<li>该属性并不是简单地返回一个字符串<ul>
+<li>构造<code>Exception</code>派生类型的新对象时,<code>StackTrace</code>属性被初始化为<code>null</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>一个异常抛出时, CLR在内部记录throw指令的位置(抛出位置). 一个<code>catch</code>块捕捉到该异常时, CLR会记录捕捉位置. 在<code>catch</code>块内访问被抛出的异常对象的<code>StackTrace</code>属性, 负责实现该属性的代码会调用CLR内部的代码, 后者创建一个字符串来指出从异常抛出位置到异常捕捉位置的所有方法.</p>
+<p>抛出异常时, CLR会重置异常起点,也就是说,CLR只记录最新的异常对象的抛出位置.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">SomeMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">try</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+   <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+      <span class="token comment" spellcheck="true">// 抛出</span>
+      <span class="token keyword">throw</span> e<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// CLR认为这是异常的起点, Fxcop报错</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">SomeMethod2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">try</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+   <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+      <span class="token comment" spellcheck="true">// 重新抛出异常</span>
+      <span class="token keyword">throw</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 不影响CLR对异常起点的认知,Fxcop不再报错</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>两个方法的区别是: CLR对于异常起始抛出位置的认知. <code>window</code>都会重置栈的起点. 如果有一个异常成为未处理的异常, 那么向<code>Window Error Reporting</code>报告的栈位置就是最后一次抛出或重新抛出的位置(即使CLR知道异常的原始抛出位置).</p>
+<p><code>StackTrace属性</code>返回的字符串不包含调用<strong>栈</strong>中比接受异常对象的那个<code>catch</code>高的任何方法. 要获得从线程起始处到异常处理程序(<code>catch</code>块)之间的完整堆栈跟踪, 需要使用<code>System.Diagnostics.StackTrace</code>类型, 该方法定义了一些属性和方法,允许开发人员程序化地处理堆栈以及构成堆栈跟踪的<strong>栈帧</strong>.</p>
+<blockquote>
+<p>栈帧: 代表当前线程调用栈中的一个方法调用. 执行线程的过程中进行的每个方法调用都会在调用栈中创建并压入一个StackFrame.</p>
+</blockquote>
+<p><strong>如果CLR能找到你的程序集的调试符号(存储在.pdb文件中), 那么在<code>System.Exception</code>的<code>StackTrace属性</code>或者<code>System.Diagnostics.StackTrace</code>的ToString方法返回的字符串中,将包括源代码文件路径和代码行号. 这些信息对于调试很有用.</strong></p>
+<p>获得堆栈跟踪后,可能发现一些方法没有出现在堆栈跟踪字符串中. 有两方面的原因:</p>
+<ul>
+<li>调用栈记录的是线程的返回位置(而非来源位置)</li>
+<li>JIT编译器可能进行了优化<ul>
+<li>将一些方法内联,以避免调用单独的方法并从中返回的开销.</li>
+<li>/debug命令行开关,使用这个开关可以在生成的程序集中嵌入信息,告诉编译器不要内联程序集中的任何方法. 确保调试人员获得完整的更有意义的堆栈跟踪.</li>
+</ul>
+</li>
+</ul>
+<h2 id="用特性禁止方法内联"><a href="#用特性禁止方法内联" class="headerlink" title="用特性禁止方法内联"></a>用特性禁止方法内联</h2><p>设置/debug命令行开关就是设置了<code>DebuggableAtrriable</code>定制特性,如果指定了<code>DisableOptimizations</code>标志,JIT编译器就不会对程序集的方法进行任何内联.</p>
+<p>单独方法则应用<code>MethodImpIAttribute</code>特性.</p>
+<p><img src="/2019/09/06/000000目录-CLR读书笔记/20异常和状态管理/QQ截图20190908173529.png" alt=""></p>
+<h1 id="FCL定义的异常类"><a href="#FCL定义的异常类" class="headerlink" title="FCL定义的异常类"></a>FCL定义的异常类</h1><p>Exception派生类的结构层次:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//#define TEST</span>
+<span class="token comment" spellcheck="true">//#define VERIFY</span>
+
+<span class="token keyword">using</span> System<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">.</span>Generic<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Diagnostics<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Linq<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Reflection<span class="token punctuation">;</span>
+<span class="token keyword">using</span> System<span class="token punctuation">.</span>Text<span class="token punctuation">;</span>
+
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 显式加载想要反射的程序集</span>
+        <span class="token function">LoadAssemblies</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 对所有类型进行筛选和排序</span>
+        <span class="token keyword">var</span> allTypes <span class="token operator">=</span>
+            <span class="token punctuation">(</span><span class="token keyword">from</span> a <span class="token keyword">in</span> <span class="token keyword">new</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Object<span class="token punctuation">)</span><span class="token punctuation">.</span>Assembly<span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// AppDomain.CurrentDomain.GetAssemblies()</span>
+                <span class="token keyword">from</span> t <span class="token keyword">in</span> a<span class="token punctuation">.</span>ExportedTypes
+                <span class="token keyword">where</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>Exception<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">IsAssignableFrom</span><span class="token punctuation">(</span>t<span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token keyword">orderby</span> t<span class="token punctuation">.</span>Name
+                <span class="token keyword">select</span> t<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 生成并显示继承层次结构</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token function">WalkInheritanceHierarchy</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>Exception<span class="token punctuation">)</span><span class="token punctuation">,</span> allTypes<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> StringBuilder <span class="token function">WalkInheritanceHierarchy</span><span class="token punctuation">(</span>StringBuilder sb<span class="token punctuation">,</span> Int32 indent<span class="token punctuation">,</span> Type baseType<span class="token punctuation">,</span>
+        IEnumerable<span class="token operator">&lt;</span>Type<span class="token operator">></span> allTypes<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        String spaces <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">,</span> indent <span class="token operator">*</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        sb<span class="token punctuation">.</span><span class="token function">AppendLine</span><span class="token punctuation">(</span>spaces <span class="token operator">+</span> baseType<span class="token punctuation">.</span>FullName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> t <span class="token keyword">in</span> allTypes<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>t<span class="token punctuation">.</span><span class="token function">GetTypeInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>BaseType <span class="token operator">!=</span> baseType<span class="token punctuation">)</span> <span class="token keyword">continue</span><span class="token punctuation">;</span>
+            <span class="token function">WalkInheritanceHierarchy</span><span class="token punctuation">(</span>sb<span class="token punctuation">,</span> indent <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> t<span class="token punctuation">,</span> allTypes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> sb<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">LoadAssemblies</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        String<span class="token punctuation">[</span><span class="token punctuation">]</span> assemblies <span class="token operator">=</span>
+        <span class="token punctuation">{</span>
+            <span class="token string">"System,                        PublicKeyToken={0}"</span><span class="token punctuation">,</span>
+            <span class="token string">"System.Core,                   PublicKeyToken={0}"</span><span class="token punctuation">,</span>
+            <span class="token string">"System.Data,                   PublicKeyToken={0}"</span><span class="token punctuation">,</span>
+<span class="token comment" spellcheck="true">//            "System.Design,                 PublicKeyToken={1}",</span>
+<span class="token comment" spellcheck="true">//            "System.DirectoryServices,      PublicKeyToken={1}",</span>
+<span class="token comment" spellcheck="true">//            "System.Drawing,                PublicKeyToken={1}",</span>
+<span class="token comment" spellcheck="true">//            "System.Drawing.Design,         PublicKeyToken={1}",</span>
+<span class="token comment" spellcheck="true">//            "System.Management,             PublicKeyToken={1}",</span>
+<span class="token comment" spellcheck="true">//            "System.Messaging,              PublicKeyToken={1}",</span>
+<span class="token comment" spellcheck="true">//            "System.Runtime.Remoting,       PublicKeyToken={0}",</span>
+<span class="token comment" spellcheck="true">//            "System.Runtime.Serialization,  PublicKeyToken={0}",</span>
+<span class="token comment" spellcheck="true">//            "System.Security,               PublicKeyToken={1}",</span>
+<span class="token comment" spellcheck="true">//            "System.ServiceModel,           PublicKeyToken={0}",</span>
+<span class="token comment" spellcheck="true">//            "System.ServiceProcess,         PublicKeyToken={1}",</span>
+<span class="token comment" spellcheck="true">//            "System.Web,                    PublicKeyToken={1}",</span>
+<span class="token comment" spellcheck="true">//            "System.Web.RegularExpressions, PublicKeyToken={1}",</span>
+<span class="token comment" spellcheck="true">//            "System.Web.Services,           PublicKeyToken={1}",</span>
+<span class="token comment" spellcheck="true">//            "System.Xml,                    PublicKeyToken={0}",</span>
+<span class="token comment" spellcheck="true">//            "System.Xml.Linq,               PublicKeyToken={0}",</span>
+            <span class="token string">"Microsoft.CSharp,              PublicKeyToken={1}"</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">const</span> String EcmaPublicKeyToken <span class="token operator">=</span> <span class="token string">"b77a5c561934e089"</span><span class="token punctuation">;</span>
+        <span class="token keyword">const</span> String MSPublicKeyToken   <span class="token operator">=</span> <span class="token string">"b03f5f7f11d50a3a"</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 获取包含 System.Object的程序集的版本</span>
+        <span class="token comment" spellcheck="true">// We'll assume the same version for all the other assemblies</span>
+        Version version <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>Object<span class="token punctuation">)</span><span class="token punctuation">.</span>Assembly<span class="token punctuation">.</span><span class="token function">GetName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Version<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 显式加载想要反射的程序集</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span>String a <span class="token keyword">in</span> assemblies<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            String AssemblyIdentity <span class="token operator">=</span>
+                String<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> EcmaPublicKeyToken<span class="token punctuation">,</span> MSPublicKeyToken<span class="token punctuation">)</span> <span class="token operator">+</span>
+                <span class="token string">", Culture=neutral, Version="</span> <span class="token operator">+</span> version<span class="token punctuation">;</span>
+            Assembly<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span>AssemblyIdentity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+
+System<span class="token punctuation">.</span>Exception
+   System<span class="token punctuation">.</span>AggregateException
+   System<span class="token punctuation">.</span>ApplicationException
+      System<span class="token punctuation">.</span>Reflection<span class="token punctuation">.</span>InvalidFilterCriteriaException
+      System<span class="token punctuation">.</span>Reflection<span class="token punctuation">.</span>TargetException
+      System<span class="token punctuation">.</span>Reflection<span class="token punctuation">.</span>TargetInvocationException
+      System<span class="token punctuation">.</span>Reflection<span class="token punctuation">.</span>TargetParameterCountException
+      System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>WaitHandleCannotBeOpenedException
+   System<span class="token punctuation">.</span>Diagnostics<span class="token punctuation">.</span>Contracts<span class="token punctuation">.</span>ContractException
+   System<span class="token punctuation">.</span>Diagnostics<span class="token punctuation">.</span>Tracing<span class="token punctuation">.</span>EventSourceException
+   System<span class="token punctuation">.</span>InvalidTimeZoneException
+   System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>LockRecursionException
+   System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>CompilerServices<span class="token punctuation">.</span>RuntimeWrappedException
+   System<span class="token punctuation">.</span>SystemException
+      System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>AbandonedMutexException
+      System<span class="token punctuation">.</span>AccessViolationException
+      System<span class="token punctuation">.</span>Reflection<span class="token punctuation">.</span>AmbiguousMatchException
+      System<span class="token punctuation">.</span>ArgumentException
+         System<span class="token punctuation">.</span>ArgumentNullException
+         System<span class="token punctuation">.</span>ArgumentOutOfRangeException
+         System<span class="token punctuation">.</span>Globalization<span class="token punctuation">.</span>CultureNotFoundException
+         System<span class="token punctuation">.</span>Text<span class="token punctuation">.</span>DecoderFallbackException
+         System<span class="token punctuation">.</span>DuplicateWaitObjectException
+         System<span class="token punctuation">.</span>Text<span class="token punctuation">.</span>EncoderFallbackException
+      System<span class="token punctuation">.</span>ArithmeticException
+         System<span class="token punctuation">.</span>DivideByZeroException
+         System<span class="token punctuation">.</span>NotFiniteNumberException
+         System<span class="token punctuation">.</span>OverflowException
+      System<span class="token punctuation">.</span>ArrayTypeMismatchException
+      System<span class="token punctuation">.</span>BadImageFormatException
+      System<span class="token punctuation">.</span>Security<span class="token punctuation">.</span>Cryptography<span class="token punctuation">.</span>CryptographicException
+      System<span class="token punctuation">.</span>DataMisalignedException
+      System<span class="token punctuation">.</span>ExecutionEngineException
+      System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>InteropServices<span class="token punctuation">.</span>ExternalException
+         System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>InteropServices<span class="token punctuation">.</span>COMException
+         System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>InteropServices<span class="token punctuation">.</span>SEHException
+      System<span class="token punctuation">.</span>FormatException
+         System<span class="token punctuation">.</span>Reflection<span class="token punctuation">.</span>CustomAttributeFormatException
+      System<span class="token punctuation">.</span>IndexOutOfRangeException
+      System<span class="token punctuation">.</span>InsufficientExecutionStackException
+      System<span class="token punctuation">.</span>InvalidCastException
+      System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>InteropServices<span class="token punctuation">.</span>InvalidComObjectException
+      System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>InteropServices<span class="token punctuation">.</span>InvalidOleVariantTypeException
+      System<span class="token punctuation">.</span>InvalidOperationException
+         System<span class="token punctuation">.</span>ObjectDisposedException
+      System<span class="token punctuation">.</span>InvalidProgramException
+      System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>IOException
+         System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>DirectoryNotFoundException
+         System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>EndOfStreamException
+         System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>FileLoadException
+         System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>FileNotFoundException
+         System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>PathTooLongException
+      System<span class="token punctuation">.</span>Collections<span class="token punctuation">.</span>Generic<span class="token punctuation">.</span>KeyNotFoundException
+      System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>InteropServices<span class="token punctuation">.</span>MarshalDirectiveException
+      System<span class="token punctuation">.</span>MemberAccessException
+         System<span class="token punctuation">.</span>FieldAccessException
+         System<span class="token punctuation">.</span>MethodAccessException
+         System<span class="token punctuation">.</span>MissingMemberException
+            System<span class="token punctuation">.</span>MissingFieldException
+            System<span class="token punctuation">.</span>MissingMethodException
+      System<span class="token punctuation">.</span>Resources<span class="token punctuation">.</span>MissingManifestResourceException
+      System<span class="token punctuation">.</span>Resources<span class="token punctuation">.</span>MissingSatelliteAssemblyException
+      System<span class="token punctuation">.</span>MulticastNotSupportedException
+      System<span class="token punctuation">.</span>NotImplementedException
+      System<span class="token punctuation">.</span>NotSupportedException
+         System<span class="token punctuation">.</span>PlatformNotSupportedException
+      System<span class="token punctuation">.</span>NullReferenceException
+      System<span class="token punctuation">.</span>OperationCanceledException
+         System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>Tasks<span class="token punctuation">.</span>TaskCanceledException
+      System<span class="token punctuation">.</span>OutOfMemoryException
+         System<span class="token punctuation">.</span>InsufficientMemoryException
+      System<span class="token punctuation">.</span>RankException
+      System<span class="token punctuation">.</span>Reflection<span class="token punctuation">.</span>ReflectionTypeLoadException
+      System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>InteropServices<span class="token punctuation">.</span>SafeArrayRankMismatchException
+      System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>InteropServices<span class="token punctuation">.</span>SafeArrayTypeMismatchException
+      System<span class="token punctuation">.</span>Security<span class="token punctuation">.</span>SecurityException
+      System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>SemaphoreFullException
+      System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>Serialization<span class="token punctuation">.</span>SerializationException
+      System<span class="token punctuation">.</span>StackOverflowException
+      System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>SynchronizationLockException
+      System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>ThreadAbortException
+      System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>ThreadInterruptedException
+      System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>ThreadStartException
+      System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>ThreadStateException
+      System<span class="token punctuation">.</span>TimeoutException
+      System<span class="token punctuation">.</span>TypeInitializationException
+      System<span class="token punctuation">.</span>TypeLoadException
+         System<span class="token punctuation">.</span>DllNotFoundException
+         System<span class="token punctuation">.</span>EntryPointNotFoundException
+         System<span class="token punctuation">.</span>TypeAccessException
+      System<span class="token punctuation">.</span>TypeUnloadedException
+      System<span class="token punctuation">.</span>UnauthorizedAccessException
+      System<span class="token punctuation">.</span>Security<span class="token punctuation">.</span>VerificationException
+   System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>Tasks<span class="token punctuation">.</span>TaskSchedulerException
+   System<span class="token punctuation">.</span>TimeZoneNotFoundException
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Microsoft本来是打算将<code>System.Exception</code>类型作为所有异常的基类型, 而另外两个类型<code>System.SystemException</code>和<code>System.ApplicationException</code>是唯一直接从Exception派生的类型.另外CLR抛出的所有异常都从<code>SystemException</code>派生,应用程序抛出的异常都从<code>ApplicationException</code>派生, 这样就可以写一个<code>catch块</code>来捕捉CLR抛出的所有异常或者应用程序抛出的所有异常.</p>
+<p>从上段代码中看出, 规则没有得到严格遵守. 有的异常直接从<code>System.Exception</code>派生, 有的CLR异常从<code>ApplicationException</code>中派生, 这根本就是一团糟, 所以上述2个类型现在没有特殊含义, 也不方便去改正,这会破坏现有的代码对这两个类型的引用.</p>
+<h1 id="抛出异常"><a href="#抛出异常" class="headerlink" title="抛出异常"></a>抛出异常</h1><p>实现自己的方法时, 如果方法无法完成方法名所指明的任务, 就应抛出一个异常. 要考虑两个问题:</p>
+<ol>
+<li>是抛出什么<code>Exception</code>派生类型. 应选择一个有意义的类型.<ol>
+<li>强烈建议定义<strong>浅而宽</strong>的异常类型层次结构, 以创建尽量少的基类.</li>
+<li>原因是基类的主要作用就是将大量错误当做一个错误,而这通常是危险的.</li>
+<li>基于这样的考虑永远不要抛出一个<code>Exception</code>对象,抛出其他任何基类异常类型时也要特别谨慎.</li>
+</ol>
+</li>
+</ol>
+<p><img src="/2019/09/06/000000目录-CLR读书笔记/20异常和状态管理/QQ截图20190908185958.png" alt=""></p>
+<blockquote>
+<p>事实上,System.Exception 类标记为 abstract 在编译时旧禁止代码试图抛出它.</p>
+</blockquote>
+<ol>
+<li>向异常类型的构造器传递什么字符串消息<ol>
+<li>抛出异常时应包含一条字符串消息,详细说明方法为什么无法完成任务. 在未处理的情况下通常会被写入日志.</li>
+</ol>
+</li>
+</ol>
+<h1 id="定义自己的异常类"><a href="#定义自己的异常类" class="headerlink" title="定义自己的异常类"></a>定义自己的异常类</h1><p>设计自己的异常不仅繁琐,还容易出错. 主要原因是从Exception派生的所有类型都应该是可序列化的(serializable), 使它们能穿越AppDomain边界或写入日志/数据库. 序列化设计很多问题.</p>
+<p>以下写了一个自己的泛型<code>Exception&lt;TExceptionArgs&gt;</code>类:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token operator">&lt;</span>DiskFullExceptionArgs<span class="token operator">></span><span class="token punctuation">(</span> <span class="token keyword">new</span> <span class="token class-name">DiskFullExceptionArgs</span><span class="token punctuation">(</span><span class="token string">@"C:\"), "</span>The disk <span class="token keyword">is</span> full<span class="token punctuation">.</span>"<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span><span class="token operator">&lt;</span>DiskFullExceptionArgs<span class="token operator">></span> e<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>Message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">/// &lt;summary>表示在应用程序执行期间发生的错误&lt;/summary></span>
+<span class="token comment" spellcheck="true">/// &lt;typeparam name="TExceptionArgs">异常的类型和与之关联的任何附加参数&lt;/typeparam></span>
+<span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Exception</span><span class="token operator">&lt;</span>TExceptionArgs<span class="token operator">></span> <span class="token punctuation">:</span> Exception<span class="token punctuation">,</span> ISerializable <span class="token keyword">where</span> TExceptionArgs <span class="token punctuation">:</span> ExceptionArgs
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">const</span>    String         c_args <span class="token operator">=</span> <span class="token string">"Args"</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 用于序列化和反序列化</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> TExceptionArgs m_args<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary>返回对此异常的附加参数的引用&lt;/summary></span>
+    <span class="token keyword">public</span> TExceptionArgs Args
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> m_args<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 使用指定的错误消息和对导致此异常的内部异常的引用初始化异常类的新实例。</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token comment" spellcheck="true">/// &lt;param name="message">解释异常原因的错误消息.&lt;/param></span>
+    <span class="token comment" spellcheck="true">/// &lt;param name="innerException">导致当前异常的异常,如果没有指定内部异常，则为空引用</span>
+    <span class="token keyword">public</span> <span class="token function">Exception</span><span class="token punctuation">(</span>String message <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span> Exception innerException <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> message<span class="token punctuation">,</span> innerException<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 第四个公共构造函数，因为有一个字段</span>
+    <span class="token keyword">public</span> <span class="token function">Exception</span><span class="token punctuation">(</span>TExceptionArgs args<span class="token punctuation">,</span> String message <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span> Exception innerException <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">:</span> <span class="token keyword">base</span><span class="token punctuation">(</span>message<span class="token punctuation">,</span> innerException<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_args <span class="token operator">=</span> args<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 这个构造器用于反序列化: 由于类是密封的,所以构造器是私有的</span>
+    <span class="token comment" spellcheck="true">// 如果这个类不是密封的,这个构造器就应该受保护的</span>
+    <span class="token punctuation">[</span><span class="token function">SecurityPermission</span><span class="token punctuation">(</span>SecurityAction<span class="token punctuation">.</span>LinkDemand<span class="token punctuation">,</span> Flags <span class="token operator">=</span> SecurityPermissionFlag<span class="token punctuation">.</span>SerializationFormatter<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token function">Exception</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+        <span class="token punctuation">:</span> <span class="token keyword">base</span><span class="token punctuation">(</span>info<span class="token punctuation">,</span> context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 让基类反序列化它的字段</span>
+        m_args <span class="token operator">=</span> <span class="token punctuation">(</span>TExceptionArgs<span class="token punctuation">)</span> info<span class="token punctuation">.</span><span class="token function">GetValue</span><span class="token punctuation">(</span>c_args<span class="token punctuation">,</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>TExceptionArgs<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 这个方法用于序列化,由于ISerializable接口,所以它是公共的</span>
+    <span class="token punctuation">[</span><span class="token function">SecurityPermission</span><span class="token punctuation">(</span>SecurityAction<span class="token punctuation">.</span>LinkDemand<span class="token punctuation">,</span> Flags <span class="token operator">=</span> SecurityPermissionFlag<span class="token punctuation">.</span>SerializationFormatter<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">void</span> <span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span>c_args<span class="token punctuation">,</span> m_args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">GetObjectData</span><span class="token punctuation">(</span>info<span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">override</span> String Message
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span>
+        <span class="token punctuation">{</span>
+            String baseMsg <span class="token operator">=</span> <span class="token keyword">base</span><span class="token punctuation">.</span>Message<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token punctuation">(</span>m_args <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token operator">?</span> baseMsg <span class="token punctuation">:</span> baseMsg <span class="token operator">+</span> <span class="token string">" ("</span> <span class="token operator">+</span> m_args<span class="token punctuation">.</span>Message <span class="token operator">+</span> <span class="token string">")"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">override</span> Boolean <span class="token function">Equals</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Exception<span class="token operator">&lt;</span>TExceptionArgs<span class="token operator">></span> other <span class="token operator">=</span> obj <span class="token keyword">as</span> Exception<span class="token operator">&lt;</span>TExceptionArgs<span class="token operator">></span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>other <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> Object<span class="token punctuation">.</span><span class="token function">Equals</span><span class="token punctuation">(</span>m_args<span class="token punctuation">,</span> other<span class="token punctuation">.</span>m_args<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">Equals</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">int</span> <span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">/// &lt;summary></span>
+<span class="token comment" spellcheck="true">/// 自定义异常派生的基类，以便添加自己的异常参数。</span>
+<span class="token comment" spellcheck="true">/// &lt;/summary></span>
+<span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">ExceptionArgs</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">/// &lt;summary>The string message associated with this exception.&lt;/summary></span>
+    <span class="token keyword">public</span> <span class="token keyword">virtual</span> String Message
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> String<span class="token punctuation">.</span>Empty<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">DiskFullExceptionArgs</span> <span class="token punctuation">:</span> ExceptionArgs
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> String m_diskpath<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 构造时设置私有字段</span>
+
+    <span class="token keyword">public</span> <span class="token function">DiskFullExceptionArgs</span><span class="token punctuation">(</span>String diskpath<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_diskpath <span class="token operator">=</span> diskpath<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 返回字段的公共只读属性</span>
+    <span class="token keyword">public</span> String DiskPath
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> m_diskpath<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 重写Message属性来包含我们的字段</span>
+    <span class="token keyword">public</span> <span class="token keyword">override</span> String Message
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token punctuation">(</span>m_diskpath <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token keyword">base</span><span class="token punctuation">.</span>Message <span class="token punctuation">:</span> <span class="token string">"DiskPath="</span> <span class="token operator">+</span> m_diskpath<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="用可靠性换取开发效率"><a href="#用可靠性换取开发效率" class="headerlink" title="用可靠性换取开发效率"></a>用可靠性换取开发效率</h1><p>编译器隐式地做下面这些事情:</p>
+<ul>
+<li>调用方法时插入可选参数</li>
+<li>对值类型的实例进行装箱</li>
+<li>构造/初始化参数数组</li>
+<li>绑定到dynamic变量/表达式的成员</li>
+<li>绑定到扩展方法</li>
+<li>绑定/调用重载的操作符(方法)</li>
+<li>构造委托对象</li>
+<li>在调用泛型,声明局部变量和使用lambda表达式时推断类型</li>
+<li>为lambda表达式和迭代器定义/构造<code>闭包类</code><ul>
+<li>闭包(closure)是由编译器生成的数据结构(一个C#类), 其中包含一个表达式以及对表达式进行求值所需的变量(C#的公共字段). 变量运行在不改变表达式签名的前提下,将数据从表达式的一次调用传递到下一次调用.</li>
+</ul>
+</li>
+<li>定义/构造/初始化匿名类型及其实例</li>
+<li>重写代码来支持LINQ查询表达式和表达式树</li>
+</ul>
+<p>CLR隐式做了下面这些事情:</p>
+<ul>
+<li>调用虚方法和接口方法</li>
+<li>加载程序集并对方法进行JIT编译,可能会抛出以下异常<ul>
+<li>FileLoadException</li>
+<li>BadImageFormatException</li>
+<li>InvalidProgramException</li>
+<li>FieldAccessException</li>
+<li>MethodAccessException</li>
+<li>MissingFieldException</li>
+<li>VerificationException</li>
+</ul>
+</li>
+<li>访问<code>MarshalByRefObject</code>派生类型的对象时穿越AppDomain边界<ul>
+<li>可能抛出AppDimainUnloadedException</li>
+</ul>
+</li>
+<li>穿越AppDomain边界时序列换和反序列化对象</li>
+<li>调用<code>Thread.Abort</code>或<code>AppDomain.Unload</code>时造成线程抛出ThreadAbortException</li>
+<li>垃圾回收之后,在回收对象的内存之前调用Finalize方法</li>
+<li>使用泛型类型时,在<code>Loader堆</code>中创建类型对象.<ul>
+<li>每个<code>AppDomain</code>都有一个自己的<code>托管堆</code>,这个<code>托管堆</code>内部又按照功能进行了不同的划分,其中最重要的就是<code>GC堆</code>和<code>Loader堆</code>,<code>Loader堆</code>负责存储类型的元数据,也就是所谓的<strong>类型对象</strong>, 在每个<strong>类型对象</strong>的末尾,都含有一个方法表.</li>
+</ul>
+</li>
+<li>调用类型的<code>静态构造器(类型构造器)</code><ul>
+<li>可能抛出TypeInitalizationException</li>
+</ul>
+</li>
+<li>抛出各种异常</li>
+</ul>
+<p><strong>异常的好处在于,未处理的异常会造成应用程序终止,再是但测试和部署之后不希望发生应用程序终止,就会插入System.Exception,也就是所有溢出的基类, 捕捉到异常并使程序能够继续运行.</strong></p>
+<p>例如前面的转账代码: 如果在扣钱后,添加给to钱之前发生异常,如果捕捉异常继续运行,就会发生安全性bug, 如果捕捉Exception,并将钱还给from账户,如果转账这个方法简单,这个方案确实可行. 但是Transfer方法还要生成关于取钱的审计记录,或者其他线程同时操作同一个账户,那么撤销undo操作本身就可能失败,造成抛出其他异常.</p>
+<p><img src="/2019/09/06/000000目录-CLR读书笔记/20异常和状态管理/QQ截图20190909102735.png" alt=""></p>
+<p>为了缓解对状态的破坏, 可以做下面几件事情.</p>
+<ul>
+<li>执行catch或Finally块中的代码时, CLR不允许线程终止. 所以可以像下面这样使Transfer方法变得更健壮<ul>
+<li>但绝对不建议将所有代码都放到<code>finally块</code>中,这个技术只适合修改<strong>极其敏感</strong>的状态.</li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">try</span><span class="token punctuation">{</span><span class="token comment" spellcheck="true">/* 什么都不做 */</span><span class="token punctuation">}</span>
+<span class="token keyword">finally</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">from</span> <span class="token operator">-</span><span class="token operator">=</span> amount<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 现在,这里不可能因为 Thread.Abort或AppDomain.Unload而发生线程终止</span>
+    to <span class="token operator">+</span><span class="token operator">=</span> amount<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>可以用<code>System.Diagnostics.Contracts.Contract</code>类向方法应用<strong>代码协定</strong>. 通过代码协定,在用实参和其他变量对状态进行修改之前, 可以先对这些实参和变量进行验证. 如果实参/变量遵守协定,状态被破坏的可能性将大幅降低(但不能完全消除). 如果不准守协定,则在修改任何状态前抛出异常.</li>
+<li>可以使用<code>约束执行区域(Constrained Execution Region,CER)</code>, 它能消除CLR的某些不确定性. 例如, 可让CLR在进入<code>try块</code>之前加载与这个<code>try块</code>关联的任何<code>catch</code>和<code>finally块</code>需要的程序集. 此外CLR会编译<code>catch``和finally块</code>中的所有代码, 包括从这些块中调用的所有方法. 这样尝试执行<code>catch块</code>的错误回复代码或者<code>finally块</code>中的清理代码时,可以消除众多潜在的异常(包括<code>FileLoad</code>,<code>MissingMember</code>等异常).</li>
+<li>取决于状态存在于何处, 可以利用<code>事务(transaction)</code>来确保状态要么都修改,要么都不修改.<ul>
+<li>例如, 如果数据在数据库中,事务能很好地工作. WINDOW现在还支持事务式的注册表和文件操作(仅限NTFS卷), 但是.NetFramework目前没有直接公开这个功能, 必须<code>P/Invoke</code>本机代码才行.<ul>
+<li><code>P/Invoke</code> 平台调用</li>
+<li>参考<code>TransactionScope</code>类了解细节.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>使自己的方法设计更明确.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">SomeType</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">private</span> <span class="token keyword">static</span> Object s_myLockObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token comment" spellcheck="true">// 不建议的做法</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">SomeMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 这个方法已经不建议使用,</span>
+      <span class="token comment" spellcheck="true">// 如果抛出异常,是否获取了锁? 如果已经获取了锁,它就得不到释放</span>
+      Monitor<span class="token punctuation">.</span><span class="token function">Enter</span><span class="token punctuation">(</span>s_myLockObject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">try</span>
+      <span class="token punctuation">{</span>
+         <span class="token comment" spellcheck="true">// 在这里执行线程安全的操作...</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">finally</span>
+      <span class="token punctuation">{</span>
+         Monitor<span class="token punctuation">.</span><span class="token function">Exit</span><span class="token punctuation">(</span>s_myLockObject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token comment" spellcheck="true">// 建议做法</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">SomeMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      Boolean lockTaken <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 假定没有获取锁</span>
+      <span class="token keyword">try</span>
+      <span class="token punctuation">{</span>
+         <span class="token comment" spellcheck="true">// 无论是否抛出异常, 以下代码都能正常工作!</span>
+         Monitor<span class="token punctuation">.</span><span class="token function">Enter</span><span class="token punctuation">(</span>s_myLockObject<span class="token punctuation">,</span> <span class="token keyword">ref</span> lockTaken<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token comment" spellcheck="true">// 在这里执行线程安全的操作...</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">finally</span>
+      <span class="token punctuation">{</span>
+         <span class="token comment" spellcheck="true">// 如果已获取锁,就释放它</span>
+         <span class="token keyword">if</span> <span class="token punctuation">(</span>lockTaken<span class="token punctuation">)</span>
+         <span class="token punctuation">{</span>
+            Monitor<span class="token punctuation">.</span><span class="token function">Exit</span><span class="token punctuation">(</span>s_myLockObject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token punctuation">}</span>
+
+      <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>虽然上述建议的写法使方法变得更明确,  但在线程同步锁的情况下, 现在的建议是根本不要随同异步处理使用它们.(参考30章混合线程同步构造).</strong></p>
+<h2 id="关于状态已损坏之后的处理"><a href="#关于状态已损坏之后的处理" class="headerlink" title="关于状态已损坏之后的处理"></a>关于状态已损坏之后的处理</h2><p>如果确定状态已经损坏到无法修复的成都,就应该销毁所有损坏的状态,防止它造成更多的伤害. 然后重启应用程序,将状态初始化到良好状态.</p>
+<ol>
+<li>因为托管的状态泄露不到AppDomain外部,所以为了销毁AppDomain中的所有损坏状态, 调用AppDomian.Unload方法来卸载整个AppDomain.</li>
+</ol>
+<p>如果觉得状态过于糟糕,以至于整个进程都应该终止,那么应该调用Enviroment的静态FailFast方法:</p>
+<ol>
+<li><code>public static void FailFast(String message);</code></li>
+<li><code>public static void FailFast(String message, Exception exception);</code></li>
+</ol>
+<p>这个方法终止进程时, 不会允许任何活动的<code>try/catch块</code>或者<code>Finalize方法(注意不是finally块)</code>. 之所以这样做, 是因为在状态已损坏的前提下执行更多的代码, 很容易使局面变得更坏. 不过<code>FailFast</code>为从<code>CriticalFinalizaerObject</code>派生的任何对象提供了进行清理的机会, 因为它们一般只是关闭<strong>本机资源</strong>; 而即使CLR或者你的应用程序的状态发生损坏.window状态可能是好的. <code>FailFast方法</code>将消息字符串和可选的异常(通常是<code>catch</code>捕捉到的异常)写入Windows Application事件日志,生成window错误报告,创建应用程序的<code>内存转储(dump)</code>,然后终止当前进程.</p>
+<p><img src="/2019/09/06/000000目录-CLR读书笔记/20异常和状态管理/QQ截图20190909112137.png" alt=""></p>
+<p><strong>以上讨论主要是为了让你意识到CLR异常处理机制存在的一些问题. 大多数应用程序都不能容忍状态受损而继续运行. 因为这样会造成不正确的数据,甚至可能造成安全漏洞.</strong></p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

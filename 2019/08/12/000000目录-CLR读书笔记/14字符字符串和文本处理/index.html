@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        14字符字符串和文本处理 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#字符-字符串和文本处理"><span class="toc-text">字符,字符串和文本处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符"><span class="toc-text">字符</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#System-String类型"><span class="toc-text">System.String类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#构造字符串"><span class="toc-text">构造字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逐字字符串声明-操作符"><span class="toc-text">逐字字符串声明(@ 操作符)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串是不可变的"><span class="toc-text">字符串是不可变的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#比较字符串"><span class="toc-text">比较字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#执行语言文化正确的比较"><span class="toc-text">执行语言文化正确的比较</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串留用"><span class="toc-text">字符串留用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串留用提升性能并减少内存消耗"><span class="toc-text">字符串留用提升性能并减少内存消耗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串池"><span class="toc-text">字符串池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#检查字符串中的字符和文本元素"><span class="toc-text">检查字符串中的字符和文本元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他字符串操作"><span class="toc-text">其他字符串操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#高效率构造字符串"><span class="toc-text">高效率构造字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#构造StringBuilder对象"><span class="toc-text">构造StringBuilder对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#StringBuilder成员"><span class="toc-text">StringBuilder成员</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        14字符字符串和文本处理
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-08-12 17:47:08</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="字符-字符串和文本处理"><a href="#字符-字符串和文本处理" class="headerlink" title="字符,字符串和文本处理"></a>字符,字符串和文本处理</h1><p>Micorsoft .Net Framework中处理字符和字符串的机制.</p>
+<ul>
+<li><code>System.Char</code>结构以及处理字符的多种方式.</li>
+<li><code>System.String</code> 处理不可变(immutable)字符串(一旦创建,字符串便不能以任何方式修改).</li>
+<li><code>System.Text.StringBuilder</code> 高效的动态构造字符串.</li>
+<li>如何将对象格式化成字符串, 以及如何使用各种编码方案高效率的持久化或传输字符串.</li>
+<li><code>System.Security.SecureString</code> 保护密码等敏感字符串.</li>
+</ul>
+<h1 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h1><p>在<code>.Net Framework</code>中字符总是表示成 <strong>16位的Unicode代码值</strong>.</p>
+<p>每个字符都是一个<code>System.Char</code>结构(值类型)的实例. 并提供了两个公共只读常量字段:</p>
+<ul>
+<li><code>MinValue</code> : <code>&#39;\0&#39;</code></li>
+<li><code>MaxValue</code> : <code>&#39;\ufff&#39;</code></li>
+</ul>
+<p>Unicode标准定义了控制字符,货币字符,小写字母,大写字母,标点符号,数学符号还有其他符号. <code>System.Globalization.UnicodeCateGory枚举</code>定义了这些枚举类型. <code>Char</code>的实例调用静态方法<code>GetUnicodeCategory</code>方法返回这些枚举中的一个值. 反应这个字符是什么种类的.</p>
+<p>Char类型其他几个静态方法,大多数都在内部调用<code>GetUnicodeCategory</code>方法,并简单的返回true/false.</p>
+<blockquote>
+<p>这些方法要么获取当字符作为参数,要么获取String以及目标字符在这个String中的索引作为参数.</p>
+<p>关于语言文化culture, 有些方法比如ToLowerInvariant会以忽略语言文化的方式将字符转换为小写.<br>比如土耳其语中,字母U+0069(小写拉丁字母i)转换成大写是U+0130(大写拉丁字母I上加一点).</p>
+</blockquote>
+<p>Char类型自己的实例方法:</p>
+<ol>
+<li><code>Equals</code>: 两个Char实例代表同一个16位Unicode码位的前提下返回true. (ASCII码包含128个码位)</li>
+<li><code>CompareTo</code>: 返回两个Char实例忽略语言文化的比较结果.</li>
+<li><code>ConvertFromUtf32</code>:  从UTF-32字符生成包含1个或2个UTF-16字符的字符串</li>
+<li><code>ConvertToUtf32</code>:  从字符串生成一个UTF-32字符</li>
+<li><code>ToString</code>: 返回单个字符的一个String, 相反的是<code>Parse/TryParse</code>,它们获取单字符的String,返回该字符的UTF-16码位.</li>
+<li><code>GetNumericValue</code>: 返回字符的数值形式.</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 返回字符的数值形式</span>
+Double d <span class="token operator">=</span> Char<span class="token punctuation">.</span><span class="token function">GetNumericValue</span><span class="token punctuation">(</span><span class="token string">'\u0033'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// \u0033 是数字3</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>d<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 输出: 3</span>
+d <span class="token operator">=</span> Char<span class="token punctuation">.</span><span class="token function">GetNumericValue</span><span class="token punctuation">(</span><span class="token string">'\u00bc'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// \u00bc 是普通分数的1/4</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>d<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 输出: 0.25</span>
+d <span class="token operator">=</span> Char<span class="token punctuation">.</span><span class="token function">GetNumericValue</span><span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>d<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 输出: -1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>三种技术实现<code>数值类型</code>与<code>Char实例</code>的互相转换. 按照优先顺序列出:</p>
+<ol>
+<li>转型(强制类型转换)<ol>
+<li>比如将Char转换成数值Int32最简单的办法就是强制转换. 这是三种技术中 <strong>效率最高的,因为编译器会生成中间语言IL指令执行转换,而且不必调用方法.</strong> 需要考虑转换时是否使用<code>checked</code>还是<code>unchecked</code>(对基元类型执行的许多算术运算符都可能造成溢出).</li>
+</ol>
+</li>
+<li>使用<code>Convert类型</code><ol>
+<li><code>System.Convert</code>类型提供了几个静态方法实现Char和数值类型的相互转换,所有这些转换都以<code>checked</code>方式执行,发现转换将造成数据丢失就抛出<code>OverflowException</code>异常.</li>
+</ol>
+</li>
+<li>使用<code>IConvertible接口</code><ol>
+<li><code>Char类型</code>和FCL中的<code>所有数值类型</code>都实现了<code>IConvertible</code>接口. 这个接口定义了像ToUInt16和ToChar这样的方法. 这种效率最差,因为值类型调用接口方法会产生装箱, <strong>Char和所有数值类型都是值类型.</strong> 所以许多类型(包括FCL的Char和数值类型)都将IConvertble的方法实现了 <strong>EIMI显式接口方法成员</strong>.  这就意味着为了调用接口的任何方法,都必须将实例显式转型为一个<code>IConvertible</code>接口变量, 转换时,大多数时候都可以忽略语言文化,为<code>IFormatProvider</code>这个参数传递null值.</li>
+</ol>
+</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Char  c<span class="token punctuation">;</span>
+    Int32 n<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 使用C#转型技术实现，强制类型转换</span>
+    <span class="token comment" spellcheck="true">// 效率最高,直接编译生成中间语言IL指令执行转换</span>
+    <span class="token comment" spellcheck="true">// 需要考虑是否会溢出,对基元类型执行的许多算术运算符都可能造成溢出</span>
+    <span class="token comment" spellcheck="true">// 转换时是否使用`checked`还是`unchecked`</span>
+    c <span class="token operator">=</span> <span class="token punctuation">(</span>Char<span class="token punctuation">)</span><span class="token number">65</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 显示 "A"</span>
+    n <span class="token operator">=</span> <span class="token punctuation">(</span>Int32<span class="token punctuation">)</span>c<span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 显示 "65"</span>
+    c <span class="token operator">=</span> <span class="token keyword">unchecked</span><span class="token punctuation">(</span><span class="token punctuation">(</span>Char<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">65536</span> <span class="token operator">+</span> <span class="token number">65</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 显示 "A"</span>
+
+
+    <span class="token comment" spellcheck="true">// 使用Convert进行转换</span>
+    <span class="token comment" spellcheck="true">// 这些转换方法都以checked方式执行</span>
+    <span class="token comment" spellcheck="true">// 转换出现数据丢失会抛出异常</span>
+    c <span class="token operator">=</span> Convert<span class="token punctuation">.</span><span class="token function">ToChar</span><span class="token punctuation">(</span><span class="token number">65</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 显示 "A"</span>
+    n <span class="token operator">=</span> Convert<span class="token punctuation">.</span><span class="token function">ToInt32</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Displays "65"</span>
+    <span class="token comment" spellcheck="true">// 显示Convert的范围检查</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 2^16 = 65535</span>
+        c <span class="token operator">=</span> Convert<span class="token punctuation">.</span><span class="token function">ToChar</span><span class="token punctuation">(</span><span class="token number">70000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 对 16-bits 来说过大,转换丢失精度</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment" spellcheck="true">// !!!不执行</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">OverflowException</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Can't convert 70000 to a Char."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token comment" spellcheck="true">// 使用IConvertible进行转换</span>
+    <span class="token comment" spellcheck="true">// 效率最差,因为值类型调用接口方法会产生装箱(Char和所有数值类型都是值类型)</span>
+    <span class="token comment" spellcheck="true">// IConvertble的方法实现了 EIMI显式接口方法成员,所以要转换成接口类型变量才能调用接口方法</span>
+    <span class="token comment" spellcheck="true">// 传递参数IFormatProvider为null 是忽略语言文化</span>
+    c <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>IConvertible<span class="token punctuation">)</span><span class="token number">65</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToChar</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 显示 "A"</span>
+    n <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>IConvertible<span class="token punctuation">)</span>c<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToInt32</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 显示 "65"</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="System-String类型"><a href="#System-String类型" class="headerlink" title="System.String类型"></a>System.String类型</h1><p>一个System.String代表一个不可变(immutable)的顺序字符集.</p>
+<p>String是引用类型, 对象总是存在于<code>堆</code>上,永远不会到线程<code>栈</code>.</p>
+<h2 id="构造字符串"><a href="#构造字符串" class="headerlink" title="构造字符串"></a>构造字符串</h2><p>C#将String视为基元类型, 编译器允许在源代码中直接使用字面值(literal)字符串, 编译器将这些字符串放到模块的元数据中,并在运行时加载和引用它们.</p>
+<ol>
+<li>不允许用new操作符从字面值字符串构造String对象.</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 不能使用 new + 字面值(literal)字符串 构造.</span>
+String s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">"Error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 错误</span>
+
+<span class="token comment" spellcheck="true">// 必须使用简化语法</span>
+String s <span class="token operator">=</span> <span class="token string">"Hi there."</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/08/12/000000目录-CLR读书笔记/14字符字符串和文本处理/StringIL代码.png" alt=""></p>
+<p>用于构造对象新实例的IL指令时<code>newobj</code>. 但是上述IL代码中并没出现这个指令, 出现的是<code>ldstr</code>(load string)指令, 它使用从元数据获得的字面值literal字符串构造String对象.这证明了CLR实际用一种特殊的方式构造字面值String对象.</p>
+<p>如果使用<code>不安全的unsafe代码</code>,可以从一个<code>Char*</code>或<code>Sbyte*</code>构造一个String. 这时要使用到new操作符,调用对应参数的构造器.</p>
+<p>C#提供了一些特殊语法来帮助开发人员在源代码中输入字面值字符串. 对于<code>换行符</code>,<code>回车符</code>和<code>退格符</code>这样的特殊字符,采用如下转义机制:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 这是硬编码了回车符和换行符,一般不建议这样做</span>
+<span class="token comment" spellcheck="true">// 不同底层平台使用的不一定相同</span>
+<span class="token comment" spellcheck="true">// \r 回车符 \n 换行符</span>
+String s <span class="token operator">=</span> <span class="token string">"Hi\r\nthere."</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 正确定义上述字符串的方式</span>
+<span class="token comment" spellcheck="true">// Environment.NewLines属性对平台敏感, 会根据平台返回恰当的字符串</span>
+String s <span class="token operator">=</span> <span class="token string">"Hi"</span> <span class="token operator">+</span> Environment<span class="token punctuation">.</span>NewLine <span class="token operator">+</span> <span class="token string">"there."</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用<code>+操作符</code>可以将几个字符串连接成一个, 如果都是字面值,C#编译器在编译时就能连接它们,最终将一整个字符串放到模块的元数据中, 如果存在非字面值,则会在运行时进行.</p>
+<p><strong>运行时连接不建议使用+操作符, 这样会在堆上创建多个字符串对象,而堆是需要垃圾回收的,对性能有影响. 应该使用StringBuilder类型.</strong></p>
+<h2 id="逐字字符串声明-操作符"><a href="#逐字字符串声明-操作符" class="headerlink" title="逐字字符串声明(@ 操作符)"></a>逐字字符串声明(@ 操作符)</h2><p>采用这种方法,引号之间的所有字符都会视为字符串的一部分, 也就是不转义<code>\</code>,视为字符串, 通常用于指定文件和目录的路径,或者与正则表达式配合使用.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 不使用@逐字字符串声明方式</span>
+String s <span class="token operator">=</span> <span class="token string">"C:\\Window\\System32\\Notepad.exe"</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 使用@方式</span>
+String s <span class="token operator">=</span> <span class="token string">@"C:\Window\System32\Notepad.exe"</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>两种写法在程序集的元数据中生成完全一样的字符串,但是后者可读性更好.</p>
+<h2 id="字符串是不可变的"><a href="#字符串是不可变的" class="headerlink" title="字符串是不可变的"></a>字符串是不可变的</h2><p>String对象最重要的一点就是不可变,并且只能是密封类. 一经创建便不能更改(变长,变短,修改任何字符).</p>
+<p>好处有:</p>
+<ol>
+<li>在字符串上执行各种操作,而不实际地更改字符串. 返回修改后的新建的字符串地址.</li>
+<li>在操作字符串时不会发生线程同步问题.<ol>
+<li><code>字符串留用</code>:CLR通过一个String对象共享多个完全一致的String内容,减少系统中的字符串数量,从而节省内存.</li>
+</ol>
+</li>
+</ol>
+<h2 id="比较字符串"><a href="#比较字符串" class="headerlink" title="比较字符串"></a>比较字符串</h2><p>判断相等性或者排序. 建议调用String类定义的一下方法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 建议使用以下版本, 不建议使用没有列出的重载版本</span>
+<span class="token keyword">bool</span> <span class="token function">Equals</span> <span class="token punctuation">(</span><span class="token keyword">string</span> <span class="token keyword">value</span><span class="token punctuation">,</span> StringComparison comparisonType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">static</span> <span class="token keyword">bool</span> <span class="token function">Equals</span> <span class="token punctuation">(</span><span class="token keyword">string</span> a<span class="token punctuation">,</span> <span class="token keyword">string</span> b<span class="token punctuation">,</span> StringComparison comparisonType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">Compare</span> <span class="token punctuation">(</span><span class="token keyword">string</span> strA<span class="token punctuation">,</span> <span class="token keyword">string</span> strB<span class="token punctuation">,</span> StringComparison comparisonType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">Compare</span> <span class="token punctuation">(</span>String strA<span class="token punctuation">,</span> String strB<span class="token punctuation">,</span> <span class="token keyword">bool</span> ignoreCase<span class="token punctuation">,</span> CultureInfo culture<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">Compare</span> <span class="token punctuation">(</span><span class="token keyword">string</span> strA<span class="token punctuation">,</span> <span class="token keyword">string</span> strB<span class="token punctuation">,</span> CultureInfo culture<span class="token punctuation">,</span> CompareOptions options<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">Compare</span> <span class="token punctuation">(</span><span class="token keyword">string</span> strA<span class="token punctuation">,</span> <span class="token keyword">int</span> indexA<span class="token punctuation">,</span> <span class="token keyword">string</span> strB<span class="token punctuation">,</span> <span class="token keyword">int</span> indexB<span class="token punctuation">,</span> <span class="token keyword">int</span> length<span class="token punctuation">,</span> StringComparison comparisonType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">Compare</span> <span class="token punctuation">(</span><span class="token keyword">string</span> strA<span class="token punctuation">,</span> <span class="token keyword">int</span> indexA<span class="token punctuation">,</span> <span class="token keyword">string</span> strB<span class="token punctuation">,</span> <span class="token keyword">int</span> indexB<span class="token punctuation">,</span> <span class="token keyword">int</span> length<span class="token punctuation">,</span> CultureInfo culture<span class="token punctuation">,</span> CompareOptions options<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">Compare</span> <span class="token punctuation">(</span>String strA<span class="token punctuation">,</span> <span class="token keyword">int</span> indexA<span class="token punctuation">,</span> String strB<span class="token punctuation">,</span> <span class="token keyword">int</span> indexB<span class="token punctuation">,</span> <span class="token keyword">int</span> length<span class="token punctuation">,</span> <span class="token keyword">bool</span> ignoreCase<span class="token punctuation">,</span> CultureInfo culture<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p> <strong>比较时应该区分大小写, 原因是两个大小写不同的字符串会被视为相等.</strong></p>
+<p><strong>建议避免使用</strong> String实现IComparable接口的<code>CompareTo方法</code>, <code>CompareOrdinal方法</code>, <code>==操作符</code>, <code>!=操作符</code>. 这是因为调用者不显式指出以什么方式执行字符串比较, 比如<code>CompareTo方法</code>默认执行语言文化敏感的比较, 而<code>Equals方法</code>执行 <strong>不考虑语言文化的序号(ordinal)比较</strong>.</p>
+<blockquote>
+<p>Ordinal: 序号比较, 就是不考虑语言文化信息, 只比较字符串中每个Char的Unicode码位.</p>
+</blockquote>
+<ul>
+<li><code>comparisonType</code>参数,要求获取<code>StringComparison</code>枚举定义的某个值:</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 要求传递显式传递语言文化</span>
+<span class="token keyword">public</span> <span class="token keyword">enum</span> StringComparison
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 为了向用户显式一些字符串,要以语言文化正确的方式,就应该使用如下两个,</span>
+    <span class="token comment" spellcheck="true">//使用区域敏感排序规则和当前区域比较字符串。</span>
+    CurrentCulture<span class="token punctuation">,</span>
+    <span class="token comment" spellcheck="true">//使用区域敏感排序规则、当前区域来比较字符串，同时忽略被比较字符串的大小写。</span>
+    CurrentCultureIgnoreCase<span class="token punctuation">,</span>
+    <span class="token comment" spellcheck="true">// ----------------------</span>
+
+    <span class="token comment" spellcheck="true">// 平时不建议使用,所花的时间远超Ordinal</span>
+    <span class="token comment" spellcheck="true">//使用区域敏感排序规则和固定区域比较字符串。</span>
+    InvariantCulture<span class="token punctuation">,</span><span class="token comment" spellcheck="true">//固定语言文化  --- 其实就是不使用任何具体的语言文化.</span>
+    <span class="token comment" spellcheck="true">//使用区域敏感排序规则、固定区域来比较字符串，同时忽略被比较字符串的大小写。</span>
+    InvariantCultureIgnoreCase<span class="token punctuation">,</span>
+    <span class="token comment" spellcheck="true">// ----------------------</span>
+
+
+    <span class="token comment" spellcheck="true">// 以下选项会忽略语言文化(常用)</span>
+    <span class="token comment" spellcheck="true">// 特别是在程序内部使用的字符串, 比如文件名,URL,注册表值,环境变量,反射,XML标记,特性等.</span>
+    <span class="token comment" spellcheck="true">// 忽略语言文化是字符串比较最快的方式</span>
+    <span class="token comment" spellcheck="true">//使用序号排序规则比较字符串。</span>
+    Ordinal<span class="token punctuation">,</span>
+    <span class="token comment" spellcheck="true">//使用序号排序规则并忽略被比较字符串的大小写，对字符串进行比较。</span>
+    OrdinalIgnoreCase
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>要在比较前更改字符串中的字符的大小写, 应该使用:</p>
+<ol>
+<li><code>String.ToUpperInvariant</code>, <strong>强烈建议使用此方法对字符串进行正规化(normalizing),不使用转小写</strong></li>
+<li><code>String.ToLowerInvariant</code>, 建议使用.</li>
+</ol>
+<p><strong>因为Microsoft对执行<code>大写比较</code>的代码进行了优化.</strong> , 事实上,执行不区分大小写的比较之前, FCL会自动将字符串<code>正规化为大写形式</code>.</p>
+<p>之所以使用<code>ToUpperInvariant</code>和<code>ToLowerInvariant</code>,是因为String类没有提供<code>ToUpperOrdinal</code>和<code>ToLowerDordinal</code>方法, 不使用以下2个方法是因为以下方法<code>对语言文化敏感</code>.</p>
+<ol>
+<li><code>String.ToUpper</code> (不建议使用,因为对语言文化敏感)</li>
+<li><code>String.ToLower</code> (不建议使用,因为对语言文化敏感)</li>
+</ol>
+<ul>
+<li><code>CompareOptions</code>参数。这个参数要获取有<code>CompareOptions</code>枚举类型定义的一个值：</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">enum</span> CompareOptions
+<span class="token punctuation">{</span>
+    None <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">//指示字符串比较必须忽略大小写。</span>
+    IgnoreCase <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">//指示字符串比较必须忽略不占空间的组合字符，比如音调符号。</span>
+    IgnoreNonSpace <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">//指示字符串比较必须忽略符号，如空白字符、标点符号、货币符号、百分号、数学符号、“&amp;”符等等</span>
+    IgnoreSymbols <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">//指示字符串比较必须忽略 Kana 类型</span>
+    IgnoreKanaType <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">//指示字符串比较必须忽略字符宽度</span>
+    IgnoreWidth <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">//指示字符串比较必须使用字符串排序算法。</span>
+    StringSort <span class="token operator">=</span> <span class="token number">0x20000000</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">//指示必须使用字符串的连续 Unicode UTF-16 编码值进行字符串比较（使用代码单元进行代码单元比较），这样可以提高比较速度，但不能区分区域性</span>
+    Ordinal <span class="token operator">=</span> <span class="token number">0x40000000</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">//字符串比较必须忽略大小写，然后执行序号比较。</span>
+    OrdinalIgnoreCase <span class="token operator">=</span> <span class="token number">0x10000000</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="执行语言文化正确的比较"><a href="#执行语言文化正确的比较" class="headerlink" title="执行语言文化正确的比较"></a>执行语言文化正确的比较</h2><p>.Net Framework 使用 System.Globalization.CultureInfo 类型表示一个”语言/国家”.</p>
+<ul>
+<li>en-US 美国英语</li>
+<li>en-AU 澳大利亚英语</li>
+<li>de-DE 德国德语</li>
+</ul>
+<p>在CLR中,每个线程都关联了两个特殊属性, 每个属性都应用一个CultureInfo对象:</p>
+<ul>
+<li><code>CurrentUICulture</code>: 该属性获取要向用户显示的资源. 在GUI或web窗体应用程序中特别有用.</li>
+<li><code>CurrentCulture</code>:不适合CurrentUICulture属性的场合就用该属性.通过控制面板的区域和语言对话框来修改这个值.</li>
+</ul>
+<p><img src="/2019/08/12/000000目录-CLR读书笔记/14字符字符串和文本处理/设置语言文化.png" alt=""></p>
+<p>如果不是序号比较(不考虑语言文化),就会进行<code>字符展开</code>,也就是将一个字符展开成忽视语言文化的多个字符. 这样比较字符串就</p>
+<p><img src="/2019/08/12/000000目录-CLR读书笔记/14字符字符串和文本处理/展开字符.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">String s1 <span class="token operator">=</span> <span class="token string">"Strasse"</span><span class="token punctuation">;</span>
+String s2 <span class="token operator">=</span> <span class="token string">"Straße"</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ß 等同于ss</span>
+
+<span class="token comment" spellcheck="true">// 忽略语言文化</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token function">Compare</span><span class="token punctuation">(</span>s1<span class="token punctuation">,</span>s2<span class="token punctuation">,</span>StringComparison<span class="token punctuation">.</span>Ordinal<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 两个字符串不同 输出 -108</span>
+
+CultureInfo ci <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CultureInfo</span><span class="token punctuation">(</span><span class="token string">"de-DE"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 设置德语文化</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token function">Compare</span><span class="token punctuation">(</span>s1<span class="token punctuation">,</span>s2<span class="token punctuation">,</span><span class="token keyword">true</span><span class="token punctuation">,</span>ci<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 两个字符串相同 输出 0</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>关于法语,日语,一些比较参考书中代码. P289页</p>
+<p>源代码不要用ANSI格式保存,否则日语字符会丢失,要保存的话选择另存为-并选择Unicode(UTF-8带签名)-代码页65001 , 这样C#编译器就能成功解析这个源文件代码了.</p>
+</blockquote>
+<h2 id="字符串留用"><a href="#字符串留用" class="headerlink" title="字符串留用"></a>字符串留用</h2><p>检查字符串相等性的操作,也可能是损害性能的操作,</p>
+<ul>
+<li>执行<code>序号(ordinal 语言文化不敏感)相等性检查</code>时<ul>
+<li>CLR快速检测两个字符串是否包含相同数量的字符<ul>
+<li>不相同则肯定不等.</li>
+<li>若相同,CLR必须比较每个单独的字符才能最终确认</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>执行<code>语言文化敏感的比较</code>时:<ul>
+<li>CLR必须比较所有单独的字符(因为两个字符串长度不同也可能相等)</li>
+</ul>
+</li>
+</ul>
+<p><strong>在内存中复制一个字符串的多个实例纯属浪费. 浪费内存,只需要保留一个实例,将引用字符串的所有变量执行单独一个字符串对象.</strong></p>
+<p>如果应用程序经常对字符串进行区分大小写的序号比较,或者事先知道许多字符串对象都有相同的值, 既可以用CLR的<code>字符串留用(intering)</code>机制来显著提升性能.</p>
+<ul>
+<li>CLR初始化会创建一个<code>内部哈希表</code>.key:字符串  value:堆中对String对象的引用</li>
+<li>String提供了两个方法,访问这个内部哈希表<ul>
+<li><code>pulic static String Intern(String str);</code>  <ul>
+<li>在内部哈希表中检查是否有匹配的,</li>
+<li>如果存在,就返回对现有String对象的引用</li>
+<li>如果不存在,<strong>就创建字符串副本,返回副本的引用</strong></li>
+</ul>
+</li>
+<li><code>pulic static String IsInterned(String str);</code><ul>
+<li>和上述方法一样,不同的是如果没有找到匹配的字符串</li>
+<li><strong>就会返回<code>null</code>,不会将字符串添加到哈希表中.</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>垃圾回收器不能回收被<code>内部哈希表</code>所引用的字符串. 除非卸载AppDomain或进程终止.否则内部哈希表引用的String对象不能被释放.</p>
+<p>(<strong>不要依赖这个行为</strong>)CLR在程序集加载时,默认留用程序集的元数据中描述的所有字面值字符串.</p>
+<ol>
+<li>CLR的4.5版本上,会忽略编译器的CompilationRelaxations和NoStirngInterning特性和标志.</li>
+<li>以至于CLR会对字面值字符创进行留用.(事实上用NGen.exe编译,CLR4.5版本确实会使用这些特性)</li>
+<li><strong>所以不要依赖这个行为.</strong></li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 不要以字符留用为前提来写代码</span>
+<span class="token comment" spellcheck="true">// 即使指定了特性和标志,也可能进行字段留用,</span>
+String s1 <span class="token operator">=</span> <span class="token string">"Hello"</span><span class="token punctuation">;</span>
+String s2 <span class="token operator">=</span> <span class="token string">"Hello"</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 没进行留用,则2个字符串是不同的堆对象</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>Object<span class="token punctuation">.</span><span class="token function">ReferenceEquals</span><span class="token punctuation">(</span>s1<span class="token punctuation">,</span>s2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 一些特定版本,不进行字段留用,这边就会返回false</span>
+
+s1 <span class="token operator">=</span> String<span class="token punctuation">.</span><span class="token function">Intern</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+s2 <span class="token operator">=</span> String<span class="token punctuation">.</span><span class="token function">Intern</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 显式调用字段留用之后, 以下输出就保证为true</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>Object<span class="token punctuation">.</span><span class="token function">ReferenceEquals</span><span class="token punctuation">(</span>s1<span class="token punctuation">,</span>s2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 显式留用此字符串</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="字符串留用提升性能并减少内存消耗"><a href="#字符串留用提升性能并减少内存消耗" class="headerlink" title="字符串留用提升性能并减少内存消耗"></a>字符串留用提升性能并减少内存消耗</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 方式一:</span>
+<span class="token comment" spellcheck="true">// 不利用字符串留用, 使用Equals忽略语言文化进行比较</span>
+<span class="token comment" spellcheck="true">// 将word和String数组中的字符串比较</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> Int32 <span class="token function">NumTimesWordApperasEquals</span><span class="token punctuation">(</span>String word<span class="token punctuation">,</span> String<span class="token punctuation">[</span><span class="token punctuation">]</span> wordlist<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> wordnum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> wordnum <span class="token operator">&lt;</span> wordlist<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> wordnum<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// Ordinal序号比较(忽略语言文化)</span>
+        <span class="token comment" spellcheck="true">// 比较字符串内的各个单独字符,这个比较可能很慢</span>
+        <span class="token comment" spellcheck="true">// wordlist可能含有多个元素引用了含有相同内容的不同String对象,并且不会被垃圾回收掉重复的</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>word<span class="token punctuation">.</span><span class="token function">Equals</span><span class="token punctuation">(</span>wordlist<span class="token punctuation">[</span>wordnum<span class="token punctuation">]</span><span class="token punctuation">,</span> StringComparison<span class="token punctuation">.</span>Ordinal<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            count<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> count<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 方式二:</span>
+<span class="token comment" spellcheck="true">// 利用字符串留用的机制,使用ReferenceEquals比较</span>
+<span class="token comment" spellcheck="true">// 这个方法假定wordlist中的所有数组元素都引用已留用的字符串</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> Int32 <span class="token function">NumTimesWordApperasIntern</span><span class="token punctuation">(</span>String word<span class="token punctuation">,</span> String<span class="token punctuation">[</span><span class="token punctuation">]</span> wordlist<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    word <span class="token operator">=</span> String<span class="token punctuation">.</span><span class="token function">Intern</span><span class="token punctuation">(</span>word<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Int32 count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> wordnum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> wordnum <span class="token operator">&lt;</span> wordlist<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> wordnum<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>Object<span class="token punctuation">.</span><span class="token function">ReferenceEquals</span><span class="token punctuation">(</span>word<span class="token punctuation">,</span>wordlist<span class="token punctuation">[</span>wordnum<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            count<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> count<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>方式二假定wordlist包含对已留用字符串的引用. 如果字符串出现多次,堆中只有一个String对象. 比较指针就能知道指定单词是否在数组中.</p>
+<p>方式二的前提,是对需要留用的字符串进行留用(花费一些时间性能),应用程序总体性能是可能变慢的. 在多次要调用比较wordlist的情况下, <strong>字符串留用是很有用的,但是使用需要谨慎. 这也是C#编译器默认不想启用字符串留用的原因.(虽然编译器应用特性并设置了不进行字符串留用的标志,但是CLR选择忽略这些设置你也没办法.)</strong></p>
+<h2 id="字符串池"><a href="#字符串池" class="headerlink" title="字符串池"></a>字符串池</h2><p>编译源代码时, 编译器会处理每个字面值字符串, 并在托管模块的元数据中嵌入.</p>
+<p>如果同一个字符串在源代码中多次出现,都嵌入元数据会使生成的文件无谓地增大.</p>
+<p>为了解决这个,C#编译器只在模块的元数据中只将字符串写入一次,引用该字符串的代码都被修改成引用元数据中的同一个字符串. <strong>编译器能将单个字符的多个实例合并成一个实例,能显著减少模块的大小.</strong></p>
+<h2 id="检查字符串中的字符和文本元素"><a href="#检查字符串中的字符和文本元素" class="headerlink" title="检查字符串中的字符和文本元素"></a>检查字符串中的字符和文本元素</h2><p>检查字符串中的字符,String类型为此提供了几个属性和方法, 包括Length,Chars(有参属性,C#索引器),IndexOf,Contains,LastIndexOf…</p>
+<p>文本元素(抽象字符): 有的抽象Unicode字符是两个码值的组合.</p>
+<p>有的Unicode文本元素要求用两个16位值表示,</p>
+<ul>
+<li>第一个称为<code>高位代理项(high surrogate)</code> U+D800到U+DBFF之间</li>
+<li>第二个称为<code>低位代理项(low surrogate)</code> U+DC00到U+DFFF之间</li>
+</ul>
+<p><strong>有了代理项,Unicode就能表示100万个以上不同的字符.</strong></p>
+<p>为了正确处理文本元素,应当使用<code>System.Globalization,StringInfo</code>类型,</p>
+<ul>
+<li>向此类的构造器传递一个字符串</li>
+<li>查询<code>StringInfo</code>的<code>LengthTextElements</code>属性来了解有多少个文本元素.</li>
+<li>接着使用<code>StringInfo</code>的<code>SubstringByTextElements</code>方法来提取所有的文本元素.</li>
+</ul>
+<p><code>StringInfo</code>的静态方法<code>GetTextElementEnumerator</code>返回<code>TextElementEnumerator</code>对象,允许枚举字符串中包含的所有抽象Unicode字符.</p>
+<p><code>StringInfo</code>的静态方法<code>ParseCombiningCharacers</code>来返回一个Int32数组.从数组长度就能知道字符串包含多少个文本元素,每个数组元素都是一个文本元素的起始码值索引.</p>
+<p><img src="/2019/08/12/000000目录-CLR读书笔记/14字符字符串和文本处理/StringInfo类的使用方式.png" alt=""></p>
+<p><img src="/2019/08/12/000000目录-CLR读书笔记/14字符字符串和文本处理/StringInfo类例子输出.png" alt=""></p>
+<h2 id="其他字符串操作"><a href="#其他字符串操作" class="headerlink" title="其他字符串操作"></a>其他字符串操作</h2><p><img src="/2019/08/12/000000目录-CLR读书笔记/14字符字符串和文本处理/复制字符串的方法.png" alt=""></p>
+<p>Clone返回同一个对象(this)的引用.</p>
+<p>Copy返回指定字符串的新副本.引用(指针不同).</p>
+<p>Substring返回代表原始字符串一部分的新字符串.</p>
+<p>ToString返回对同一个对象(this)的引用.</p>
+<p>因为字符串你是不可变的,所以返回的都是新字符串的引用.(除非使用不安全代码)</p>
+<h1 id="高效率构造字符串"><a href="#高效率构造字符串" class="headerlink" title="高效率构造字符串"></a>高效率构造字符串</h1><p>可将<code>StringBuilder</code>看成是创建String对象的特殊构造器.</p>
+<p>从逻辑上看, <code>StringBuilder对象</code>包含一个字段, 该字段引用了由<code>Char结构</code>构成的数组.可利用<code>StringBuilder</code>的各个成员来操纵该字符数组, 高效率地缩短字符串或更改字符串中的字符.</p>
+<p>如果字符串变大了,超过了事先分配的 <strong>数组大小</strong> , StringBuilder会自动分配一个新的,更大的数组, 复制字符,并开始使用新数组. 前一个数组被垃圾回收.</p>
+<p>用StringBuilder构造好字符串后, 调用ToString方法既可以将StringBuilder的 <strong>字符数组</strong> 转换成String. 这样会在堆上新建String对象,堆上还有StringBuilder中的字符数组,可以继续处理StringBuilder种的字符数组,再次调用ToString把它转换成另一个String对象.</p>
+<h2 id="构造StringBuilder对象"><a href="#构造StringBuilder对象" class="headerlink" title="构造StringBuilder对象"></a>构造StringBuilder对象</h2><p>大多数语言都不将StringBuilder视为基元类型. 要像构造其他任何非基元类型那样构造StringBuilder对象.</p>
+<p>StringBuilder提供了许多构造器. 一些关键概念如下:</p>
+<ol>
+<li><strong>最大容量</strong><ol>
+<li>一个Int32值,指定了能放到字符串中的最大字符数,默认是Int32.MaxValue(约20亿). 一般不用更改这个值. 有时需要指定较小的最大容量以确保不会创建超出特定长度的字符串,<strong>构造好之后就固定下来了,不能再变.</strong></li>
+</ol>
+</li>
+<li><strong>容量</strong><ol>
+<li>一个Int32值, 指定了StringBuilder维护的字符数组的长度,默认16, 如果事先知道要放入多少,则应该在构造StringBuilder对象时自己设置容量.</li>
+<li>在向字符数组追加字符时, StringBuilder会检测数组会不会超过设定的容量.如果会,StringBuilder会自动 <strong>倍增容量字段(翻倍).</strong>  旧的数组字符数组复制到新的数组中,随后<code>原始数组可以被垃圾回收</code>. <strong>数组动态扩展会损害性能,可以在构造时就设置一个合适的初始容量.</strong></li>
+</ol>
+</li>
+<li><strong>字符数组</strong><ol>
+<li>一个由Char结构构成的数组, 负责维护字符串的字符内容.</li>
+<li>可以用<code>StringBuilder的Length属性</code>来获取已经使用的字符数.</li>
+<li>在构造时传递一个String来初始化数组.</li>
+<li>不传递任何字符串,数组中就不包含任何字符,Length为0.</li>
+</ol>
+</li>
+</ol>
+<h2 id="StringBuilder成员"><a href="#StringBuilder成员" class="headerlink" title="StringBuilder成员"></a>StringBuilder成员</h2><p>StringBuilder代表可变字符串, 大多数成员都能更改字符数组的内容, 同时不会造成在托管堆上分配新对象.</p>
+<p><strong>分配新对象</strong> 只会在以下两种情况:</p>
+<ol>
+<li>动态构造字符串,其长度超过了设置的容量.</li>
+<li>调用StringBuilder的ToString方法.</li>
+</ol>
+<p><img src="/2019/08/12/000000目录-CLR读书笔记/14字符字符串和文本处理/StringBuilder成员1.png" alt=""></p>
+<p><img src="/2019/08/12/000000目录-CLR读书笔记/14字符字符串和文本处理/StringBuilder成员2.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 有参属性,索引器</span>
+<span class="token comment" spellcheck="true">// IL代码 StringBuilder::get_Chars(int32)</span>
+<span class="token punctuation">[</span><span class="token function">IndexerName</span><span class="token punctuation">(</span><span class="token string">"Chars"</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token comment" spellcheck="true">// 不加这个,默认是 get_Item</span>
+<span class="token keyword">public</span> <span class="token keyword">char</span> <span class="token keyword">this</span><span class="token punctuation">[</span><span class="token keyword">int</span> index<span class="token punctuation">]</span>
+
+<span class="token comment" spellcheck="true">// 用法如同使用数组</span>
+StringBuilder sb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token string">"1234567"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>sb<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>Length</code> 属性设为0等同于内容重置为空字符串, 还等同于Clear方法.</li>
+<li><code>Append</code> 在字符数组 <strong>后追加</strong> 一个对象,有必要会进行扩充.</li>
+<li><code>Insert</code> 在字符数组 <strong>中插入</strong> 一个对象,有必要会进行扩充.</li>
+<li><code>AppendFormat</code> 在字符数组末尾追加0个或多个对象.</li>
+<li><code>AppendLine</code> 追加一行中止符或者一个带有中止符的字符串.</li>
+</ul>
+<blockquote>
+<p> ’\0’字符在C#中意味着字符串结束, 后面的字符不显示. <code>string.Replace(&#39;\0&#39;,&#39;*&#39;)</code></p>
+</blockquote>
+<ul>
+<li><code>Equals</code> <strong>两个StringBuilder对象具有相同最大容量,字符数组容量和字符内存才返回true.</strong></li>
+</ul>
+<p>大多数方法返回的都是对同一个StringBuilder对象的引用.</p>
+<p>String类提供的一些方法,StringBuilder类并没有提供对应的方法.</p>
+<ul>
+<li>ToLower</li>
+<li>ToUpper</li>
+<li>EndsWith</li>
+<li>PadLeft</li>
+<li>PadRight</li>
+<li>Trim</li>
+</ul>
+<p>StringBuilder提供了更全面的Replace方法,允许替换一部分字符串而不是整个.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">
+<span class="token comment" spellcheck="true">// 因为StringBuilder提供转换大写的方法,需要用String的方法来中转一下</span>
+StringBuilder sb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+sb<span class="token punctuation">.</span><span class="token function">AppendFormat</span><span class="token punctuation">(</span><span class="token string">"Jeffrey Richter"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">,</span> <span class="token string">"-"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 推荐使用忽视语言文化的转换</span>
+<span class="token comment" spellcheck="true">// 将StringBuilder转成string以便将所有字符串转换成大写</span>
+String s <span class="token operator">=</span> sb<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToUpperInvariant</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 清空StringBuilder,分配新的char数组</span>
+sb<span class="token punctuation">.</span>Length <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 将全部大写的String加载到StringBuilder中执行其他操作</span>
+sb<span class="token punctuation">.</span><span class="token function">Append</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Insert</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token string">"Marc-"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 再转回String ,向用户显式</span>
+s <span class="token operator">=</span> sb<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 输出: JEFFREY-Marc-RICHTER</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>因为StringBuilder提供转换大写的方法,需要用String的方法来中转一下.</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

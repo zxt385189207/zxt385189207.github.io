@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        3CLR基础4 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#程序集种类和部署方式"><span class="toc-text">程序集种类和部署方式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要有强命名程序集"><span class="toc-text">为什么要有强命名程序集?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#私有部署-amp-全局部署"><span class="toc-text">私有部署 & 全局部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#强命名程序集-amp-弱命名程序集"><span class="toc-text">强命名程序集 & 弱命名程序集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在生成的程序集中引用强命名程序集"><span class="toc-text">在生成的程序集中引用强命名程序集</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#唯一性标识技术"><span class="toc-text">唯一性标识技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建强命名程序集"><span class="toc-text">创建强命名程序集</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#全局程序集缓存"><span class="toc-text">全局程序集缓存</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#“运行时”如何解析类型引用"><span class="toc-text">“运行时”如何解析类型引用</span></a></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        3CLR基础4
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-07-07 23:06:39</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="程序集种类和部署方式"><a href="#程序集种类和部署方式" class="headerlink" title="程序集种类和部署方式"></a>程序集种类和部署方式</h1><p>本章将解释 .Net Framework为了解决版本控制问题而建立的基础结构.</p>
+<h2 id="为什么要有强命名程序集"><a href="#为什么要有强命名程序集" class="headerlink" title="为什么要有强命名程序集?"></a>为什么要有强命名程序集?</h2><p>因为只根据文件名来区分程序集明显不够, CLR必须支持对程序集进行唯一性标识的机制. 这就需要<code>强命名程序集</code>.</p>
+<h2 id="私有部署-amp-全局部署"><a href="#私有部署-amp-全局部署" class="headerlink" title="私有部署 &amp; 全局部署"></a>私有部署 &amp; 全局部署</h2><ul>
+<li>私有部署:程序集部署到应用程序<code>基目录</code>或者<code>某个子目录</code>.</li>
+<li>全局部署:部署到<code>公认位置</code>的程序集.</li>
+</ul>
+<h2 id="强命名程序集-amp-弱命名程序集"><a href="#强命名程序集-amp-弱命名程序集" class="headerlink" title="强命名程序集 &amp; 弱命名程序集"></a>强命名程序集 &amp; 弱命名程序集</h2><ul>
+<li>强命名程序集<ul>
+<li>使用了发布者的公钥/私钥进行了<code>签名</code>.</li>
+<li>这对秘钥允许对程序集进行唯一性的标识.</li>
+<li>私有部署和全局部署都可以.</li>
+</ul>
+</li>
+<li>弱命名程序集<ul>
+<li>只能以私有方式部署.</li>
+</ul>
+</li>
+</ul>
+<h3 id="在生成的程序集中引用强命名程序集"><a href="#在生成的程序集中引用强命名程序集" class="headerlink" title="在生成的程序集中引用强命名程序集"></a>在生成的程序集中引用强命名程序集</h3><ol>
+<li>CSC.exe编译器 /r 开关引用,如果不指定目录,按照以下顺序查找<ul>
+<li>工作目录</li>
+<li>CSC所在目录</li>
+<li>使用/lib 编译器开关指定的目录</li>
+<li>使用LIB环境变量指定的任何目录</li>
+</ul>
+</li>
+</ol>
+<h2 id="唯一性标识技术"><a href="#唯一性标识技术" class="headerlink" title="唯一性标识技术"></a>唯一性标识技术</h2><ul>
+<li>GUID(Globally Unique Identifier) 全局唯一标识符</li>
+<li>URL(Uniform Resource Locator) 统一资源定位符</li>
+<li>URN(Uniform Resource Name)</li>
+</ul>
+<p>没有使用以上技术,使用了 <code>标准的公钥/私钥加密技术</code></p>
+<p><img src="/2019/07/07/000000目录-CLR读书笔记/3CLR基础4/公钥.png" alt=""></p>
+<p><code>PublicKeyToken</code>:公钥标记, 如果没null,则是弱命名程序集.</p>
+<h2 id="创建强命名程序集"><a href="#创建强命名程序集" class="headerlink" title="创建强命名程序集"></a>创建强命名程序集</h2><p>可以使用SN.exe(Strong Name)工具来生成公钥/私钥对。</p>
+<p>在VS中,新建<code>公钥/秘钥文件</code>,可显示项目属性,点击<code>签名</code>标签,勾选<code>为程序集签名</code>,然后从选择<code>强名称秘钥文件</code>中新建.</p>
+<h1 id="全局程序集缓存"><a href="#全局程序集缓存" class="headerlink" title="全局程序集缓存"></a>全局程序集缓存</h1><ol>
+<li>如果一个程序集要由多个应用程序访问，必须把它放到一个已知的目录中，而且clr在检测到对该程序集的一个引用时，必须知道自动检查该目录。这个已知的位置成为<code>全局程序集缓存(GAC,Global Assmbly Cache)</code>。</li>
+<li>GAC通常位于<code>%SystemRoot%\Microsoft\Assembly</code></li>
+<li>GAC目录是结构化的：其中包含许多子目录，并用一个算法来生成这些子目录的名称。不要手动复制.要用工具完成.</li>
+<li>可以使用GACUtil.exe在GAC中安装一个强命名程序集.</li>
+<li>无法将弱命名程序集安装到GAC.</li>
+</ol>
+<h1 id="“运行时”如何解析类型引用"><a href="#“运行时”如何解析类型引用" class="headerlink" title="“运行时”如何解析类型引用"></a>“运行时”如何解析类型引用</h1><ol>
+<li>运行应用程序,CLR会加载并初始化自身</li>
+<li>读取程序集的<code>CLR头</code>,查找标识了应用程序入口方法(Main)的<code>MethodDefToken</code></li>
+<li>检索<code>MethodDef元数据表</code>,找到方法的的IL代码在文件中的偏移量</li>
+<li>将IL代码JIT编译成本机代码.</li>
+<li>最后执行本机代码.</li>
+</ol>
+<p>解析引用的类型时候,CLR可以在三个地方找到类型：</p>
+<ul>
+<li>同一个文件（早期绑定）</li>
+<li>不同的文件但同一个程序集（当前程序集清单目录）</li>
+<li>不同的文件不同的程序集（其他程序集清单目录）。　　</li>
+</ul>
+<ul>
+<li><code>早期绑定early binding</code>: 编译时便能发现对相同文件中的类型的访问.</li>
+<li><code>晚期绑定late binding</code>: 在运行时通过反射机制绑定到类型并调用方法.</li>
+</ul>
+<ol>
+<li>对于CLR来说，所有程序集都是根据名称、版本、语言文化和公钥来标识的。</li>
+<li>GAC根据名称、版本、语言文化和<code>cpu架构</code>来标识程序集。</li>
+</ol>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        20异常和状态管理2 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#设计规范和最佳实践"><span class="toc-text">设计规范和最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#善用finally块"><span class="toc-text">善用finally块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不要什么都捕捉"><span class="toc-text">不要什么都捕捉</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#得体地从异常中恢复"><span class="toc-text">得体地从异常中恢复</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#发生不可恢复的异常时回滚部分完成的操作—-维持状态"><span class="toc-text">发生不可恢复的异常时回滚部分完成的操作—-维持状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#隐藏实现细节来维系协定"><span class="toc-text">隐藏实现细节来维系协定</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#未处理的异常"><span class="toc-text">未处理的异常</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#对异常进行调试"><span class="toc-text">对异常进行调试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异常处理的性能问题"><span class="toc-text">异常处理的性能问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#约束执行区域-CER"><span class="toc-text">约束执行区域(CER)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#如何使用这个特性"><span class="toc-text">如何使用这个特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RuntimeHelpers的另一个方法"><span class="toc-text">RuntimeHelpers的另一个方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码协定"><span class="toc-text">代码协定</span></a></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        20异常和状态管理2
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-09 11:23:02</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="设计规范和最佳实践"><a href="#设计规范和最佳实践" class="headerlink" title="设计规范和最佳实践"></a>设计规范和最佳实践</h1><p><img src="/2019/09/09/000000目录-CLR读书笔记/20异常和状态管理2/QQ截图20190909123857.png" alt=""></p>
+<h2 id="善用finally块"><a href="#善用finally块" class="headerlink" title="善用finally块"></a>善用finally块</h2><p><code>finally块</code>非常厉害, 无论线程抛出什么类型的异常,<code>finally块</code>中的代码都会执行. 经常利用<code>finally块</code>显式释放对象以避免资源泄露.</p>
+<p><strong>确保清理代码的执行时很重要的, 以至于许多语言提供了一些构造来简化这种代码</strong>. 例如:</p>
+<ul>
+<li><code>lock</code><ul>
+<li><strong>锁在<code>finally块</code>中释放</strong></li>
+</ul>
+</li>
+<li><code>using</code><ul>
+<li><strong>在<code>finally块</code>中调用对象的<code>Dispose</code>方法</strong></li>
+</ul>
+</li>
+<li><code>foreach</code><ul>
+<li><strong>在<code>finally块</code>中调用IEnumerator对象的Dispose方法.</strong></li>
+</ul>
+</li>
+<li>定义析构器方法(<code>Finalize方法</code>)时<ul>
+<li><strong>在<code>finally块</code>中调用基类的<code>Finalize方法</code></strong></li>
+</ul>
+</li>
+</ul>
+<p><strong>C#编译器会自动生成try/finally块.</strong> 重写类的析构器<code>Finalize方法</code>时, 也会生成try/finally块.使用这些构造时,编译器将你写的代码放到<code>try块</code>内部, 并将清理代码放到<code>finally块</code>中.</p>
+<h2 id="不要什么都捕捉"><a href="#不要什么都捕捉" class="headerlink" title="不要什么都捕捉"></a>不要什么都捕捉</h2><p>绝对不要写大小通吃的类型,悄悄地<strong>吞噬</strong>异常, 而是应该允许异常在调用栈中向上移动,让应用程序代码针对性地处理它.</p>
+<blockquote>
+<p>吞噬 swallow, 也有作者喜欢说bury, 有人也翻译为隐藏, 简单的说就是自己搞定异常,然后装作异常没有发生.</p>
+</blockquote>
+<p><img src="/2019/09/09/000000目录-CLR读书笔记/20异常和状态管理2/QQ截图20190909160010.png" alt=""></p>
+<p>确实可以在catch块中捕捉System.Exception并执行一些代码, 只要在这个catch块的末尾重新抛出异常. 千万不要捕捉System.Exception异常并悄悄吞噬它而不重新抛出, 否则应用程序不知道已经出错,还是会继续运行.</p>
+<p>可以在一个线程中捕捉异常, 在另一个线程中重新抛出异常. 为此提供支持的是异步编程模型.</p>
+<p>例如,假定在一个线程池线程执行的代码抛出了异常,CLR捕捉并吞噬这个异常, 并允许线程池返回线程池,稍后会有某个线程调用EndXXX方法来判断异步操作的结果, EndXXX方法将抛出与负责实际工作的那个线程池抛出的一样的异常.  所以, 异常虽然被第一个方法吞噬,但又被调用EndXXX的线程重新抛出,这样,该异常在应用程序面前就不是隐藏的了.</p>
+<h2 id="得体地从异常中恢复"><a href="#得体地从异常中恢复" class="headerlink" title="得体地从异常中恢复"></a>得体地从异常中恢复</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">try</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 计算电子表格单元格中的值</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">DivideByZeroException</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token string">"不能显示值, 除数为0"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">OverflowException</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token string">"不能显示值, 溢出"</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>捕捉具体异常时, 应充分掌握在什么时候会抛出异常, 并知道从捕捉的异常类型派生出了哪些类型, 不要捕捉System.Exception(除非你会重新抛出).</p>
+<h2 id="发生不可恢复的异常时回滚部分完成的操作—-维持状态"><a href="#发生不可恢复的异常时回滚部分完成的操作—-维持状态" class="headerlink" title="发生不可恢复的异常时回滚部分完成的操作—-维持状态"></a>发生不可恢复的异常时回滚部分完成的操作—-维持状态</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SerializeObjectGraph</span><span class="token punctuation">(</span>FileStream fs<span class="token punctuation">,</span> IFormatter formatter<span class="token punctuation">,</span> Object rootObj<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 保存文件的当前位置</span>
+   Int64 beforeSerialization <span class="token operator">=</span> fs<span class="token punctuation">.</span>Position<span class="token punctuation">;</span>
+
+   <span class="token keyword">try</span>
+   <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 尝试将对象图序列化到文件中</span>
+      formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>fs<span class="token punctuation">,</span> rootObj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">catch</span> <span class="token comment" spellcheck="true">// 捕捉所有异常</span>
+   <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 任何事情出错,就将文件恢复到一个有效状态</span>
+      fs<span class="token punctuation">.</span>Position <span class="token operator">=</span> beforeSerialization<span class="token punctuation">;</span>
+
+      <span class="token comment" spellcheck="true">// 截断文件</span>
+      fs<span class="token punctuation">.</span><span class="token function">SetLength</span><span class="token punctuation">(</span>fs<span class="token punctuation">.</span>Position<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment" spellcheck="true">// 注意: 上述代码没有放到finally块中, 因为只有在序列化失败时才对流进行重置</span>
+
+      <span class="token comment" spellcheck="true">// 重新抛出相同的异常,让调用者知道发生了什么</span>
+      thorw<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>为了正确回滚已部分完成的操作, 代码应捕捉所有异常. 是的,这里要捕捉所有异常, 因为你不关心发生了什么错误, 只关心如何将数据结构恢复为一致状态. <strong>捕捉并处理好异常后.不要把它吞噬(假装没发生), 想法,要让调用者知道发生了什么异常, 只需要单独使用C#的<code>关键字throw</code>, 不在<code>关键字throw</code>后指定任何东西.</strong></p>
+<h2 id="隐藏实现细节来维系协定"><a href="#隐藏实现细节来维系协定" class="headerlink" title="隐藏实现细节来维系协定"></a>隐藏实现细节来维系协定</h2><p>有时需要捕捉一个异常并重新抛出不同的异常. 这样做唯一的原因是维系方法的<strong>协定</strong>(contract). 另外,抛出的新异常类型应该是一个具体异常(不是其他异常的基类).</p>
+<p>例子(伪代码):</p>
+<p><img src="/2019/09/09/000000目录-CLR读书笔记/20异常和状态管理2/QQ截图20190909163814.png" alt=""></p>
+<p>文件由于任何原因未找到或者不能读取, 调用者将看到一个FileNotFoundException或者IOException异常, 因为这两个异常都不是调用者预期的, 因为<strong>文件存在与否</strong>以及<strong>能否读取</strong>不是方法的隐式协定的一部分, <strong>调用者根本猜不到(猜不到PhoneBook类的方法要从文件中读取数据)</strong>. 所以<code>GetPhoneNumber方法</code>会捕捉这两种异常,抛出一个新的<code>NameNotFoundException</code>异常.</p>
+<p><code>NameNotFoundException</code>异常为调用者提供了理解其中原因的一个抽象视图,<strong>将内部异常设为FileNotFoundException或者IOException异常</strong> 是非常重要的一环,这样才能保证不丢失造成异常的真正原因.</p>
+<p><img src="/2019/09/09/000000目录-CLR读书笔记/20异常和状态管理2/QQ截图20190909170409.png" alt=""></p>
+<p>这个技术会使调试变得困难,务必慎用. <strong>有时开发人员之所以捕捉一个异常并抛出一个新异常,目的是在异常中添加额外的数据或上下文.</strong> 如果只是这个目的,那么只需捕捉希望的异常类型,在异常对象的Data属性(一个键值对)中添加数据, 然后重新抛出相同的异常对象:</p>
+<p><code>catch(IOException e) { e.Data.Add(&quot;Filename&quot;,filename); throw; }</code></p>
+<p>将文件名添加到IOException对象中,这样重新抛出同一个异常对象,只是它现在包含额外的数据.</p>
+<p><img src="/2019/09/09/000000目录-CLR读书笔记/20异常和状态管理2/QQ截图20190909180415.png" alt=""></p>
+<h1 id="未处理的异常"><a href="#未处理的异常" class="headerlink" title="未处理的异常"></a>未处理的异常</h1><p>异常抛出时, CLR在调用栈中向上查找与抛出的异常对象的类型匹配的catch块. 没有任何catch块匹配抛出的异常类型. 就会发生一个<strong>未处理的异常</strong>. CLR检测到任何线程中的未处理异常都会终止进程.</p>
+<p>当应用程序的开发人员才需关心未处理的异常. 应用程序发生未处理的异常时, windows会向事件日志写一条记录. 查看该记录: 事件查看器-&gt; windows日志-&gt;应用程序节点</p>
+<p>系统托盘中的小旗-&gt;打开操作中心-&gt;展开维护-&gt;单击查看可靠性历史记录</p>
+<p>会在底部的窗格看到应用程序由于未处理的异常而终止.</p>
+<p><img src="/2019/09/09/000000目录-CLR读书笔记/20异常和状态管理2/QQ截图20190909181311.png" alt=""></p>
+<p><img src="/2019/09/09/000000目录-CLR读书笔记/20异常和状态管理2/QQ截图20190909181352.png" alt=""></p>
+<p><img src="/2019/09/09/000000目录-CLR读书笔记/20异常和状态管理2/QQ截图20190909182058.png" alt=""></p>
+<h1 id="对异常进行调试"><a href="#对异常进行调试" class="headerlink" title="对异常进行调试"></a>对异常进行调试</h1><p>针对VS. 具体看书.</p>
+<h1 id="异常处理的性能问题"><a href="#异常处理的性能问题" class="headerlink" title="异常处理的性能问题"></a>异常处理的性能问题</h1><p>个别时候会遇到频繁调用但频频失败的方法, 这时抛出异常所造成的性能损失可能令人无法接受. 例如: 在调用<code>Int32</code>的<code>Parse</code>方法时, 最终用户经常输入无法解析的数据, 由于频繁调用<code>Parse</code>方法, 抛出和捕捉异常对总体性能造成了很大影响. <strong>为了解决这个问题,Microsoft为Int32类型添加了新的TryParse方法</strong>.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> Boolean <span class="token function">TryParse</span><span class="token punctuation">(</span>String s<span class="token punctuation">,</span> <span class="token keyword">out</span> Int32 result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> Boolean <span class="token function">TryParse</span><span class="token punctuation">(</span>String s<span class="token punctuation">,</span> NumberStyle style<span class="token punctuation">,</span> IFrmatProvider provider<span class="token punctuation">,</span> <span class="token keyword">out</span> Int32 result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这些方法都返回一个<code>Boolean</code>,指明传给方法的<code>String</code>是否包含了能解析成<code>Int32</code>的字符. 它们同时返回一个名为<code>result</code>的输出参数.</p>
+<ul>
+<li>如果方法返回<code>true</code>,<code>result</code>将包含字符串解析成32位整数的结果</li>
+<li>返回<code>false</code>,<code>result</code>将包含0, 这时自然不应再执行任何代码去检查result.<ul>
+<li><strong>如果TryXX方法的Boolean返回值为false,那么代表的只是一种错误. 方法仍要为其他错误抛出异常.</strong></li>
+<li>例如: 为<code>style参数</code>传递的实参无效,<code>Int32</code>的<code>TryParse</code>方法会抛出一个<code>ArgumentException</code>异常,另外调用<code>TryParse</code>方法时仍有可能抛出一个<code>OutMemoryException</code>异常</li>
+</ul>
+</li>
+</ul>
+<p>定义类型成员时,应确保在一般使用情形中不会失败. 只有用户以后因为抛出异常而堆性能不满意时, 才应考虑添加以下<code>TryXxx</code>方法.</p>
+<h1 id="约束执行区域-CER"><a href="#约束执行区域-CER" class="headerlink" title="约束执行区域(CER)"></a>约束执行区域(CER)</h1><p>许多应用程序都不需要健壮到能从任何错误恢复的地步.</p>
+<p>CLR中, 我们有包含了状态的AppDomain. 卸载时,它的所有状态都会卸载. 所以,如果AppDomain中的一个线程遭遇未处理的异常,可以在不终止整个进程的情况下卸载AppDDomain(销毁它的所有状态).</p>
+<blockquote>
+<p>线程的整个生命周期都在一个AppDomain的内部. 这个说法是成立的.</p>
+</blockquote>
+<p>根据定义, CER是必须对错误有所适应的代码块. 一般用CER处理多个AppDomain或进程共享的状态, 称这些异常为异步异常. CER就非常有用.</p>
+<p>例如, 调用方法时,CLR必须加载程序集,在<code>AppDomain</code>的<code>Loader堆</code>中创建<code>类型对象</code>, 调用类型的<code>静态构造器</code>,并将<code>IL</code>代码JIT编译成本机代码. 这些操作都可能失败,CLR通过抛出异常来报告失败.</p>
+<p>如果任何这些操作再一个catch或finally块中失败, 你的错误恢复或资源清理代码就不会完整的执行.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"In Demo1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"In try"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">finally</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 隐式调用Type1的静态构造器</span>
+        Type1<span class="token punctuation">.</span><span class="token function">M</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Type1</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token function">Type1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 如果这里抛出异常,M就得不到调用</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Type1's static ctor called"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">M</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码存在一个问题,如果在静态构造器中发生异常,M就得不到调用, M就得不到调用.</p>
+<p>想要达到的目的是,除非 <strong>保证(大致保证)</strong> 关联的<code>catch</code>和<code>finally</code>块中的代码得到执行, 否则上述<code>try块</code>的代码根本不要开始执行.为了这个目的,修改成下面这样:</p>
+<blockquote>
+<p>保证和大致保证分别对应后文所说的<code>WillNotCorrupState</code>和<code>MayCorrupInstance</code>两个枚举成员</p>
+</blockquote>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"In Demo2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// JIT编译器如果发现一个`try块`之前调用了这个方法,就会提前编译与`try块`关联的`catch`和`finally块`中的代码.</span>
+    <span class="token comment" spellcheck="true">// 强迫finally块中的代码提前准备好</span>
+    RuntimeHelpers<span class="token punctuation">.</span><span class="token function">PrepareConstrainedRegions</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//在 System.Runtime.CompilerServices命名空间</span>
+    <span class="token keyword">try</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"In try"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">finally</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 隐式调用Type2的静态构造器</span>
+        Type2<span class="token punctuation">.</span><span class="token function">M</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Type2</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token function">Type2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Type2's static ctor called"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span><span class="token function">ReliabilityContract</span><span class="token punctuation">(</span>Consistency<span class="token punctuation">.</span>WillNotCorruptState<span class="token punctuation">,</span> Cer<span class="token punctuation">.</span>Success<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">M</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>PrepareConstrainedRegions</code>是一个很特别的方法, <strong>JIT编译器如果发现一个<code>try块</code>之前调用了这个方法,就会提前编译与<code>try块</code>关联的<code>catch</code>和<code>finally块</code>中的代码.</strong> JIT编译器会加载任何程序集, 创建任何类型对象,调用任何静态构造器,并对任何方法进行编译. 如果其中任何操作造成了异常, 这个异常会在线程进入<code>try块</code><strong>之前</strong> 发生.</p>
+<p>JIT编译器提前准备方法时, 还会遍历整个调用图, 提前准备被调用的方法, 前提是这些方法应用了<code>[ReliabilityContract]</code>特性. 向这个特性实例的构造器传递的是<code>WillNotCorrupState</code>或者<code>MayCorrupInstance</code>枚举成员.</p>
+<p>这是由于加入方法会损坏AppDomain或进程的状态,CLR便无法对一致性做出任何保证. 在通过一个<code>PrepareConstrainedRegions</code>调用来保护的一个<code>catch或finally块</code>中, 请确保只条用根据刚才的描述设置了<code>[ReliabilityContract]</code>的方法.</p>
+<p>此特性允许开发者向方法的潜在调用者申明方法的可靠性协定.</p>
+<h2 id="如何使用这个特性"><a href="#如何使用这个特性" class="headerlink" title="如何使用这个特性"></a>如何使用这个特性</h2><p><img src="/2019/09/09/000000目录-CLR读书笔记/20异常和状态管理2/QQ截图20190909193218.png" alt=""></p>
+<h2 id="RuntimeHelpers的另一个方法"><a href="#RuntimeHelpers的另一个方法" class="headerlink" title="RuntimeHelpers的另一个方法"></a>RuntimeHelpers的另一个方法</h2><p><img src="/2019/09/09/000000目录-CLR读书笔记/20异常和状态管理2/QQ截图20190909193444.png" alt=""></p>
+<p><img src="/2019/09/09/000000目录-CLR读书笔记/20异常和状态管理2/QQ截图20190909193450.png" alt=""></p>
+<h1 id="代码协定"><a href="#代码协定" class="headerlink" title="代码协定"></a>代码协定</h1><p> <strong>协定默认只作为文档使用</strong>, 为了发掘协定的附加价值,必须下载额外的工具和一个VS属性窗格.</p>
+<p>以下选看:</p>
+<p><strong>代码协定</strong> 提供了直接在代码中声明代码设计决策的一种方式. 这些协定采取以下的形式:</p>
+<ul>
+<li><strong>前条件</strong><ul>
+<li>一般用于对实参进行验证</li>
+</ul>
+</li>
+<li><strong>后条件</strong><ul>
+<li>方法因为一次普通的返回或者抛出异常而终止时,对状态进行验证</li>
+</ul>
+</li>
+<li><strong>对象不变性</strong><ul>
+<li>在对象的整个生命期内,确保对象的字段的良好状态</li>
+</ul>
+</li>
+</ul>
+<p>可将上述想象成方法签名的一部分.</p>
+<p>代码协定的核心是静态类 <code>System.Diagnostics.Contracts.Contract</code></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 源码</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Contract</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 前条件方法: [Conditional("CONTRACTS_FULL")]</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Requires</span><span class="token punctuation">(</span>Boolean condition<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">EndContractBlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token comment" spellcheck="true">// 前条件: Always</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token generic-method function">Requires<span class="token punctuation">&lt;</span>TException<span class="token punctuation">></span></span><span class="token punctuation">(</span>Boolean condition<span class="token punctuation">)</span>
+       <span class="token keyword">where</span> TException <span class="token punctuation">:</span> Exception<span class="token punctuation">;</span>
+
+
+   <span class="token comment" spellcheck="true">// 后条件方法: [Conditional("CONTRACTS_FULL")]</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Ensures</span><span class="token punctuation">(</span>Boolean condition<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token generic-method function">EnsureOnThrow<span class="token punctuation">&lt;</span>TException<span class="token punctuation">></span></span><span class="token punctuation">(</span>Boolean condition<span class="token punctuation">)</span>
+        <span class="token keyword">where</span> TException <span class="token punctuation">:</span> Exception<span class="token punctuation">;</span>
+
+   <span class="token comment" spellcheck="true">// 特殊后条件方法 Always</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> T <span class="token generic-method function">Result<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> T <span class="token generic-method function">OldValue<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span>T <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> T <span class="token generic-method function">ValueAtReturn<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">out</span> T <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token comment" spellcheck="true">// 对象不变性方法 [Conditional("CONTRACTS_FULL")]</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Invariant</span><span class="token punctuation">(</span>Boolean condition<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token comment" spellcheck="true">//限定符方法,辅助方法,基础结构事件 请查看源码</span>
+
+
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>[Conditional(&quot;CONTRACTS_FULL&quot;)]</code>或<code>[Conditional(&quot;DEBUG&quot;)]</code>除非定义了恰当的符号,否则编译器会忽略调用这些方法的任何代码. <strong>协定默认只作为文档使用</strong>, 因为生成项目没有定义<code>CONTRACTS_FULL</code>符号</p>
+<p>标记<code>Always</code>的任何方法意味着编译器总是生成调用方法的代码.</p>
+<p><code>Requires</code>,<code>Requires&lt;TException&gt;</code>,<code>Ensures</code>,<code>EnsureOnThrow&lt;TException&gt;</code>,<code>Invariant</code>,<code>Assert</code>,<code>Assume</code>方法有一个额外的重载版本这里没有列出, 它获取一个<code>String实参</code>,用于显式指定违反协定时显示的字符串消息.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">CodeContracts</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> shoppingCart <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ShoppingCart</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        shoppingCart<span class="token punctuation">.</span><span class="token function">AddItem</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Item</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Item</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">/* ... */</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">ShoppingCart</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Item<span class="token operator">></span> m_cart      <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Item<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">private</span> Decimal    m_totalCost <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">public</span> <span class="token function">ShoppingCart</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">AddItem</span><span class="token punctuation">(</span>Item item<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">AddItemHelper</span><span class="token punctuation">(</span>m_cart<span class="token punctuation">,</span> item<span class="token punctuation">,</span> <span class="token keyword">ref</span> m_totalCost<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">AddItemHelper</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>Item<span class="token operator">></span> m_cart<span class="token punctuation">,</span> Item newItem<span class="token punctuation">,</span> <span class="token keyword">ref</span> Decimal totalCost<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 前条件</span>
+            <span class="token comment" spellcheck="true">// 1. 前条件指出newItem不能为null</span>
+            <span class="token comment" spellcheck="true">// 2. 而且要添加的商铺不在购物车中</span>
+            Contract<span class="token punctuation">.</span><span class="token function">Requires</span><span class="token punctuation">(</span>newItem <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Contract<span class="token punctuation">.</span><span class="token function">Requires</span><span class="token punctuation">(</span>Contract<span class="token punctuation">.</span><span class="token function">ForAll</span><span class="token punctuation">(</span>m_cart<span class="token punctuation">,</span> s <span class="token operator">=</span><span class="token operator">></span> s <span class="token operator">!=</span> newItem<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 后条件</span>
+            <span class="token comment" spellcheck="true">// 1. 新商品必须在购物车中</span>
+            <span class="token comment" spellcheck="true">// 2. 而且总价格至少要与将商铺添加到购物车之前一样多</span>
+            <span class="token comment" spellcheck="true">// 3. 因为某个原因抛异常,那么totalCost不发生变化</span>
+            Contract<span class="token punctuation">.</span><span class="token function">Ensures</span><span class="token punctuation">(</span>Contract<span class="token punctuation">.</span><span class="token function">Exists</span><span class="token punctuation">(</span>m_cart<span class="token punctuation">,</span> s <span class="token operator">=</span><span class="token operator">></span> s <span class="token operator">==</span> newItem<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Contract<span class="token punctuation">.</span><span class="token function">Ensures</span><span class="token punctuation">(</span>totalCost <span class="token operator">>=</span> Contract<span class="token punctuation">.</span><span class="token function">OldValue</span><span class="token punctuation">(</span>totalCost<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Contract<span class="token punctuation">.</span><span class="token generic-method function">EnsuresOnThrow<span class="token punctuation">&lt;</span>IOException<span class="token punctuation">></span></span><span class="token punctuation">(</span>totalCost <span class="token operator">==</span> Contract<span class="token punctuation">.</span><span class="token function">OldValue</span><span class="token punctuation">(</span>totalCost<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 做一些事情,可能抛出IOException</span>
+            m_cart<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>newItem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            totalCost <span class="token operator">+</span><span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">.</span>00M<span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//throw new IOException(); // 证明违反协定</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 对象不变性</span>
+        <span class="token punctuation">[</span>ContractInvariantMethod<span class="token punctuation">]</span>
+        <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">ObjectInvariant</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 确保对象的m_totalCost永远不包含负值</span>
+            Contract<span class="token punctuation">.</span><span class="token function">Invariant</span><span class="token punctuation">(</span>m_totalCost <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>后续不知道在讲啥玩意… 工作原理..</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

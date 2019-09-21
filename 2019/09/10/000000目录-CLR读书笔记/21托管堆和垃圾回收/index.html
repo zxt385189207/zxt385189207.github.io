@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        21托管堆和垃圾回收 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#托管堆和垃圾回收"><span class="toc-text">托管堆和垃圾回收</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#托管堆基础"><span class="toc-text">托管堆基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#从托管堆分配资源"><span class="toc-text">从托管堆分配资源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#垃圾回收算法"><span class="toc-text">垃圾回收算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#垃圾回收和调试"><span class="toc-text">垃圾回收和调试</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代-提升性能"><span class="toc-text">代:提升性能</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#垃圾回收触发条件"><span class="toc-text">垃圾回收触发条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#大对象"><span class="toc-text">大对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#垃圾回收模式"><span class="toc-text">垃圾回收模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#强制垃圾回收"><span class="toc-text">强制垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#处理大量对象的服务器应用程序"><span class="toc-text">处理大量对象的服务器应用程序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#监视应用程序的内存使用"><span class="toc-text">监视应用程序的内存使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用需要特殊清理的类型"><span class="toc-text">使用需要特殊清理的类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用了包装本机资源的类型"><span class="toc-text">使用了包装本机资源的类型</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        21托管堆和垃圾回收
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-10 11:20:04</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="托管堆和垃圾回收"><a href="#托管堆和垃圾回收" class="headerlink" title="托管堆和垃圾回收"></a>托管堆和垃圾回收</h1><p>托管应用程序如何构造新对象,如何控制这些对象的生存期, 以及如何回收这些对象的内存.</p>
+<h1 id="托管堆基础"><a href="#托管堆基础" class="headerlink" title="托管堆基础"></a>托管堆基础</h1><p>每个程序都要使用这样或那样的资源，包括文件、内存缓冲区、屏幕空间、网络连接、数据库资源等。事实上，在面向对象的环境中，每个类型都代表可提供程序使用的一种资源。要使用这些资源，必须为代表资源的类型分配内存。以下是访问一个资源所需的步骤</p>
+<ol>
+<li>调用<code>IL指令newobj</code>，为代表资源的类型分配内存（一般使用c# <code>new</code>操作符来完成）</li>
+<li>初始化内存，设置资源的初始状态并使资源可用。类型的实参构造器负责设置初始状态。</li>
+<li>访问类型成员来使用资源。</li>
+<li>摧毁资源的状态以进行清理</li>
+<li>释放内存。垃圾回收器独自负责这一步。</li>
+</ol>
+<p>现在，只要写的是可验证的、类型安全的代码(不要用<code>unsafe</code>关键字)，应用程序就不可能会出现内存被破坏的情况。内存仍有可能泄漏，但不像以前那样是默认行为。</p>
+<p>现在<strong>内存泄漏</strong>一般是因为在集合中存储了对象，但不需要对象的时候一直不去删除。</p>
+<p>为了简化编程,开发人员经常使用的<strong>大多数类型</strong>都不需要<code>步骤4摧毁资源的状态以进行清理</code>, 靠垃圾回收器自动释放内存.</p>
+<p>使用需要<strong>特殊清理的类型</strong>时，编程模型还是像刚才描述的那样。只是有时需要尽快清理资源，而不是非要等<code>GC</code>介入。可在这些类中调用一个额外的方法（<code>Dispose</code>），按照自己的节奏清理资源。另一方面，实现这样的类需要考虑到较多问题。<strong>一般只有包装了本机资源（文件、套接字和数据库连接等）的类型才需要特殊清理。</strong></p>
+<h2 id="从托管堆分配资源"><a href="#从托管堆分配资源" class="headerlink" title="从托管堆分配资源"></a>从托管堆分配资源</h2><p><strong>CLR要求所有对象都从托管堆分配</strong>。进程初始化时，CLR划出一个地址空间区域作为托管堆。CLR还要维护一个指针，我把它称作<code>NextObjPtr</code>。该指针指向下一个对象在堆中的分配位置。刚开始的时候，<code>NextObjPtr</code>设为地址空间区域的基地址。</p>
+<p>一个区域被非垃圾对象填满后，CLR会分配更多的区域。这个过程一直重复，直至整个进程地址空间都被填满。所以，你的应用程序的内存受进程的虚拟地址空间的限制。32位进程最多能分配1.5Gb，64位进程最多能分配8Tb。</p>
+<p>C#的<code>new</code>操作符导致CLR执行以下步骤。</p>
+<ol>
+<li>计算类型的字段（以及从基类型继承的字段）所需的字节数。</li>
+<li>加上对象的开销所需的字节数。每个对象都有两个开销字段：<code>类型对象指针</code>和<code>同步块索引</code>。对于32位应用程序，这两个字段各自需要32位，所以每个对象要增加8字节。对于64位应用程序，这两个字段各自需要64位，所以每个对象要增加16字节。</li>
+<li>CLR检查区域中是否有分配对象所需的字节数。如果托管堆有足够的可用空间，就在<code>NextObjPtr指针</code>指向的地址处放入对象，为对象分配的字节会被清零。接着调用类型的构造器（为this参数传递NextObjPtr），new操作符返回对象引用。就在返回这个引用之前，<code>NextObjPtr指针</code>的值会加上对象占用的字节数来得到一个新值，即下个对象放入托管堆时的地址。</li>
+</ol>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910114941.png" alt=""></p>
+<p>对于托管堆，分配对象只需要在指针上加一个值——速度相当快。<strong>由于托管堆在内存中连续分配这些对象</strong>，所以会因为引用的“局部化”（locality）而获得性能上的提示。具体地说，这意味着进程的工作集会非常小，应用程序只需要使用很少的内存，从而提高了速度。还意味着代码使用的对象可以全部驻留在cpu的缓存中。结果是应用程序能以惊人的速度访问这些对象，因为cpu在执行大多数操作时，不会因为<code>缓存未命中</code>而被迫访问较慢的RAM。</p>
+<blockquote>
+<p>随机存取存储器（英语：Random Access Memory，缩写：RAM）也叫主存，是与CPU直接交换数据的内部存储器。</p>
+</blockquote>
+<p>根据前面的描述，似乎托管堆的性能天下无敌。但先别激动，刚才说的有一个大前提——<strong>内存无限</strong>，CLR总是能分配新对象。但内存不可能无限，所以CLR通过称为<code>垃圾回收</code>的技术删除堆中你的应用程序不再需要的对象。</p>
+<h2 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h2><p>应用程序调用new操作符创建对象时，可能没有足够地址空间来分配该对象。发现空间不够，CLR就执行垃圾回收。</p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910115624.png" alt=""></p>
+<p>至于对象生存期管理，有的系统采用的是某种<code>引用计数算法</code>, Microsoft自己的组件对象模型（component Object Model，COM）用的就是<code>引用计数</code>.</p>
+<p>这种系统中，堆上的每个对象都维护着一个内存字段来统计程序中多少“部分”正在使用对象。随着每一部分到达代码中某个不再需要对象的地方，就递减对象的计数字段。计数字段变成0，对象就可以从内存中删除了。</p>
+<p><strong>许多引用计数系统最大的问题是处理不好循环引用</strong>。例如在GUI应用程序中，窗口将容纳对子ui元素的引用，而子ui元素将容纳对父窗口的引用。这种引用会<strong>阻止</strong>两个对象的计数器达到0，所以两个对象永远不会删除，即使应用程序本身不再需要窗口了。</p>
+<p>鉴于<code>引用计数</code>垃圾回收期算法存在的问题，CLR改为使用一种<code>引用跟踪算法</code>。<strong>引用跟踪算法只关心引用类型的变量</strong>，因为只有这种变量才能引用托管堆上的对象；值类型变量直接包含值类型实例。引用类型变量可在许多场合使用，包括类的静态和实例字段，或者方法的参数和局部变量。<strong>我们将所有引用类型的变量都称为<code>根</code>。</strong></p>
+<p>CLR开始GC时，首先暂停进程中的所有线程。这样可以防止线程在CLR检查期间访问对象并更改其状态。然后，CLR进行gc的<code>标记</code>阶段。在这个阶段，CLR遍历堆中所有对象，将<code>同步块索引字段</code>中的一位设为0。这表明所有对象都应删除。然后，CLR检查所有活动<code>根</code>，查看他们引用了哪些对象。这正是CLR的gc称为引用跟踪gc的原因。如果一个跟包含null，CLRr忽略这个根并继续检查下个<code>根</code>。</p>
+<p>任何<code>根</code>如果引用了堆上的对象，CLR都会标记那个对象，也就是将该对象的<code>同步块索引</code>中的位设为1.一个对象被标记后，CLR会检查那个对象中的<code>根</code>，标记它们引用的对象。<strong>如果发现对象已经标记，就不重新检查对象的字段。这就避免了因为循环引用而产生的死循环</strong>。</p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910120558.png" alt=""></p>
+<p>上图展示了一个堆, 其中包含几个对象, 应用程序的根(变量)直接引用了对象<code>A</code>,<code>C</code>,<code>D</code>,<code>F</code>. 这4个对象都以及被<code>标记</code>,<code>标记``D</code>时, 垃圾回收期发现这个对象含有一个引用<code>H</code>的字段,造成<code>H</code>也被<code>标记</code>. <code>标记过程</code>会持续到所有<code>根(变量)</code>检查完毕.</p>
+<p>检查完毕后，堆中的对象要么<strong>已标记</strong>，要么<strong>未标记</strong>。已标记的对象不能被垃圾回收，因为至少有一个跟在引用它。我们说这种对象是可达的，因为应用程序代码可通过仍在引用它的变量抵达它。<strong>未标记的对象是不可达的</strong>，因为应用程序中不存在使对象能被再次访问的根。</p>
+<p>CLR知道哪些对象可以幸存，哪些可以删除后，就进入GC的<code>压缩阶段(碎片整理,变的更紧凑)</code>。在这个阶段，CLR对堆中已标记的对象进行“乾坤大挪移”，压缩所有幸存下来的对象，<strong>使他们占用连续的内存空间</strong>。这样做有许多好处。首先，所有幸存对象在内存中紧挨在一起，<strong>恢复了引用的“局部化”</strong>，减小了应用程序的工作集，从而提升了将来访问这些对象时的性能。其实，可用空间也全部是连续的，所以这个地址空间区段得到了解放，允许其他东西进驻。最后，<strong>“压缩”意味着托管堆解决了本机(原生)堆的空间<code>碎片化</code>问题</strong>。</p>
+<blockquote>
+<p>大对象堆不会压缩, 大对象堆还是可能发生地址空间碎片化的.</p>
+</blockquote>
+<p>在内存中移动了对象之后有一个问题亟待解决。引用幸存对象的<code>根</code>现在<strong>引用的还是对象最初在内存中的位置，而非移动后的位置</strong>，被暂停的线程恢复执行时，将访问旧的内存位置，会造成内存损害。这显然不能容忍的，所以作为压缩阶段的一部分，CLR还要从每个<code>根</code>减去所引用的对象在内存中偏移的字节数。这样就能保证每个根还是引用和之前一样的对象：只是对象在内存中变换了位置。</p>
+<p>压缩好内存后，托管堆的<code>NextObjPtr指针</code>指向最后一个幸存对象之后的位置。下一个分配的对象将放到这个位置。</p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910124714.png" alt=""></p>
+<p>压缩阶段完成后, CLR恢复应用程序的所有线程, 这些线程继续访问对象.</p>
+<p>如果CLR在一次gc之后回收不了内存，而且进程中没有空间来分配新的gc区域，就说明该进程的内存已耗尽。此时，视图分配更多内存的<code>new</code>操作符会抛出<code>OutOfMemoryException</code>。应用程序可捕捉该异常并从中恢复。但大多数应用程序都不会这么做：相反，异常会成为未处理异常,Windows将终止进程并回收进程使用的全部内存.</p>
+<p><strong><code>静态字段</code>引用的对象一直存在，直到用于加载类型的AppDomain卸载为止。内存泄漏的一个常见原因就是让静态字段引用某个集合对象，然后不停地向集合添加数据项。静态字段使集合一直存活,而集合对象使所有数据项一直存活.</strong></p>
+<h2 id="垃圾回收和调试"><a href="#垃圾回收和调试" class="headerlink" title="垃圾回收和调试"></a>垃圾回收和调试</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 创建每2000毫秒就调用一次TimerCallback方法的Timer对象</span>
+    <span class="token keyword">var</span> t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>Timer</span><span class="token punctuation">(</span>TimerCallback<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 等待用户按Enter键</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">TimerCallback</span><span class="token punctuation">(</span>Object o<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 当调用该方法时,显示日期和时间</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"In TimerCallback: "</span> <span class="token operator">+</span> DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 出于演示目的, 强制执行一次垃圾回收</span>
+    GC<span class="token punctuation">.</span><span class="token function">Collect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 在debug下运行,   可以一直输出</span>
+<span class="token comment" spellcheck="true">// 在release下运行, 只会输出一次</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>观察代码可能以为<code>TimerCallback</code>方法每隔2000毫秒调用一次, 毕竟代码创建了一个Timer对象, 而且有一个<code>变量t</code>引用该对象, 计时器对象存在,计时器就应该一直能触发. 但实际上不是这样的.</p>
+<p>运行代码，会发现<code>TimerCallback</code>方法只被调用一次，因为方法调用了<code>GC.Collect()</code>强制执行了一次垃圾回收。</p>
+<p>回收开始时, 垃圾回收器首先假定堆中的所有对象都是不可达的(垃圾); 这自然也包括Timer对象,然后垃圾回收器检查应用程序的<code>根(引用变量)</code>,发现初始化<code>t</code>之后,Main方法再也没有用过<code>变量t</code>, <strong>应用程序没有任何变量引用Timer对象, 所以被回收了.</strong></p>
+<p>大多数开发人员没有料到这个结果,认为不合常理,所以Microsoft提出了一个解决方案:</p>
+<p>使用C#编译器/debug开关编译程序集时, 编译器会应用<code>System.Diagnostics.DebuggableAttribute</code>特性, 并未结果程序集设置<code>DebuggingModes</code>的<code>DisableOptimizations</code>标志. <strong>运行时编译方法时, JIT编译器看到这个标志,会将所有<code>根(引用变量)</code>的生存期延长至方法结束.</strong> 在例子中, JIT编译器认为Main的t变量必须存活至方法结束. 所以垃圾回收时GC认为t仍然是一个<code>根</code>, t引用的Timer对象仍然可达, TimerCallback方法会被反复调用,直至Main退出.</p>
+<p>从这个例子看来Debug生成中正常工作的应用程序,但它在Release生成中是不正常的. 没人喜欢只有调试时才正常的程序,所以讨论以下修改:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 不正确修改方式</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 创建每2000毫秒就调用一次TimerCallback方法的Timer对象</span>
+    <span class="token keyword">var</span> t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>Timer</span><span class="token punctuation">(</span>TimerCallback<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 等待用户按Enter键</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 在ReadLine之后引用t , 但是会被JIT优化掉</span>
+    <span class="token comment" spellcheck="true">// 将局部变量或参数设为null等价于根本不引用该变量</span>
+    <span class="token comment" spellcheck="true">// JIT编译器会将这行代码删除(优化掉)</span>
+    t <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 正确修改方式</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 创建每2000毫秒就调用一次TimerCallback方法的Timer对象</span>
+    <span class="token keyword">var</span> t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">System<span class="token punctuation">.</span>Threading<span class="token punctuation">.</span>Timer</span><span class="token punctuation">(</span>TimerCallback<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 等待用户按Enter键</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 在ReadLine之后引用t ,</span>
+    <span class="token comment" spellcheck="true">// 在Dispose方法返回前,t会在GC中存活.</span>
+    t<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>t.Dispose();</code> 要求t对象必须存活才能去调用<code>Dispose</code>实例方法(<strong>t中的值要作为this实参传给Dispose</strong>). 显式释放计时器才能活到被释放那一刻.</p>
+<p><strong>注意：不用担心对象被过早回收这个问题. 这里讨论的是特殊情况. 所有非timer对象都会根据应用程序的的需要而自动存货。timer是一个比较特殊行为。</strong></p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910153416.png" alt=""></p>
+<h1 id="代-提升性能"><a href="#代-提升性能" class="headerlink" title="代:提升性能"></a>代:提升性能</h1><p>CLR的gc是基于<code>代</code>的垃圾回收器，他对你的代码做出做出了以下几点假设</p>
+<ol>
+<li>对象越新，生存期越短。</li>
+<li>对象越老，生存期越长。</li>
+<li>回收堆的一部分，速度快于回收整个堆。</li>
+</ol>
+<p>大量研究证明，这些假设对于现今大多数应用程序都是成立的，它们影响了垃圾回收器的实现方式。</p>
+<p>托管堆在初始化时不包含对象。添加到堆的对象称为第0代对象。简单地说，第0代对象就是那些<strong>新构造的对象</strong>，垃圾回收期从未检查过它们。</p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910153726.png" alt=""></p>
+<p>一个新启动的应用程序,分配了5个对象,ABCDE, 一会之后,CE变不可达.</p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910153821.png" alt=""></p>
+<p>CLR初始化时为<code>第0代对象</code>选择一个预算容量（以kb为单位）。如果分配一个新对象造成<code>第0代</code>超过预算，就必须启动一次垃圾回收。假设对象A到E刚好用完<code>第0代</code>的空间,那么分配F对象就会启动一次垃圾回收.</p>
+<p>垃圾回收判断CE是垃圾,就会压缩D对象,使之与B相邻. 垃圾回收之后，未被引用的对象将会被回收，<strong>ABD对象称为<code>第1代对象</code></strong>。一次垃圾回收之后，<code>第0代</code>就不包含任何对象了。然后会重复上面的逻辑。</p>
+<blockquote>
+<p>经历过几次垃圾回收器的检查就可以称为第几代.</p>
+</blockquote>
+<p>假如继续运行, 新对象会被分配到<code>第0代</code>中,分配了FGHIJK对象,之后BHJ变得不可达.</p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910160753.png" alt=""></p>
+<p>现在,再分配新对象L的时候,会造成<code>第0代</code>超出预算, 必须启动垃圾回收. 开始垃圾回收时必须决定检查哪些<code>代</code>.  垃圾回收器开始回收时, 会检查<code>第1代</code>占了多少内存, 由于第一代占的内存远少于预算, 所以垃圾回收器值检查<code>第0代</code>中的对象.  <strong>对象越新，生存期越短。</strong> 因此<code>第0代</code>包含垃圾的可能性越大,能回收更多的内存.</p>
+<p>显然，忽略第一代对象能提升垃圾回收器的性能。对性能有更大提振作用的是现在不必遍历托管堆中的每个对象。如果<code>根</code>或<code>对象引用</code>了<code>老一代</code>的某个对象，垃圾回收期可以忽略老对象内部的所有引用，能在更短的时间内构造好可达对象图。当然，老对象的字段也有可能引用新对象。为了确保对老对象的已更新字段进行检查，垃圾回收期利用了JIT编译器内部的一个机制。这个机制在对象的<strong>引用字段发生变化时</strong>，会设置一个对应的<code>位标志</code>。这样，<strong>只有字段发生变化的老对象才需检查是否引用了<code>第0代</code>新对象。</strong></p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910162140.png" alt=""></p>
+<p>注意：Microsoft的性能测试表明，对第0代执行一次垃圾回收，所花的时间不超过1毫秒。</p>
+<p><code>对象越老，生存期越长。</code> 基于<code>代</code>的垃圾回收器还假设老的对象活得越长, 第1代对象在应用程序中有可能是继续可达的,很有可能找不到多少垃圾. 因此对<code>第1代</code>进行垃圾回收很可能是浪费时间,如果真的有,它将留在那里.</p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910162408.png" alt=""></p>
+<p>经过这轮垃圾回收之后幸存下来的<code>第0代</code>对象都成了<code>第1代</code>的一部分. 由于垃圾回收没有检查<code>第1代</code>所以B对象没有被回收.</p>
+<p>经过几次垃圾回收,<code>第1代</code>会慢慢增长, 假定<code>第1代</code>的增长超出了预算,这时继续运行,因为垃圾回收刚刚完成, 等到<code>第0代</code>超出预算时, 垃圾回收器将检查<code>第0代</code>和<code>第1代</code>(之前因为之前第1代占据的内存小于预算), 两代都被垃圾回收之后,如图所示:</p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910163219.png" alt=""></p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910163142.png" alt=""></p>
+<p><strong>托管堆只支持三代: 第0代,第1代,第2代.</strong> 没有第3代.(System.GC.MaxGeneration方法返回2). CLR初始化时, 会为每一代选择预算. 然而, CLR的垃圾回收器时自调节的.</p>
+<p><strong>最终结果就是, 垃圾回收器会根据应用程序要求的内存负载来自动优化.</strong></p>
+<h2 id="垃圾回收触发条件"><a href="#垃圾回收触发条件" class="headerlink" title="垃圾回收触发条件"></a>垃圾回收触发条件</h2><ol>
+<li>CLR在检测<code>第0代</code>超过预算时触发一次GC。这是GC最常见的触发条件</li>
+<li>代码显式调用<code>System.GC</code>的静态<code>Collect</code>方法<ul>
+<li>代码可显式请求CLR执行回收,虽然Microsoft强烈反对这种请求，但有时情势比人强。</li>
+</ul>
+</li>
+<li>windows报告低内存情况<ul>
+<li>CLR内部使用WIN32函数监视总体内存使用情况,在低内存情况下,强制垃圾回收以释放死对象.</li>
+</ul>
+</li>
+<li>CLR正在卸载AppDomain<ul>
+<li>一个AppDomain卸载时，CLR认为其中一切都不是根，所以执行涵盖<code>所有代</code>的垃圾回收。</li>
+</ul>
+</li>
+<li>CLR正在关闭<ul>
+<li>CLR在进程正常终止时关闭(相反的是外部终止,例如任务管理器). 关闭期间,CLR认为进程中的一切都不是<code>根</code>, CLR不会试图压缩或释放内存, window将回收进程的全部内存.</li>
+</ul>
+</li>
+</ol>
+<h2 id="大对象"><a href="#大对象" class="headerlink" title="大对象"></a>大对象</h2><p>还有另一个性能提升值得注意。CLR将对象分为<code>大对象</code>和<code>小对象</code>。本章到目前为止说的都是<code>小对象</code>。目前认为<strong>85000字节以上</strong>的对象是<code>大对象</code>。CLR以不同方式对待<code>大小对象</code>。</p>
+<ol>
+<li><strong><code>大对象</code>不是在<code>小对象</code>的地址空间分配，而是在进程地址空间的其他地方分配。</strong></li>
+<li>目前版本的GC不压缩大对象，因为在内存中移动他们代价过高。</li>
+<li><strong>大对象总是第二代，绝不可能是0代或1代</strong>。所以只能为需要长时间存活的资源创建大对象。分配短时间存货的大对象会导致第二代被更频繁的回收，会损害性能。大对象一般是大字符串（比如XML或Json）或用于<code>I\O</code>操作的字节数组。</li>
+</ol>
+<p>在很大程度上视大对象若无物, 可以忽略它们的存在. 仅在出现解释不了的情况时(比如地址空间碎片化)才对它进行特殊处理.</p>
+<h2 id="垃圾回收模式"><a href="#垃圾回收模式" class="headerlink" title="垃圾回收模式"></a>垃圾回收模式</h2><p>CLR启动时会选择一个GC模式，进程终止前该模式不会改变。有两个基本GC模式</p>
+<ol>
+<li>工作站</li>
+</ol>
+<p>该模式针对客户端应用程序优化gc。gc造成的延时很低，应用程序线程挂起时间很短，避免使用户感到焦虑。该模式中，gc假定机器上运行的其他应用程序都不会消耗太多的cpu资源。</p>
+<ol>
+<li>服务器</li>
+</ol>
+<p>该模式针对服务器端应用程序优化gc。<strong>被优化的主要是吞吐量和资源里利用。GC假定机器上没有运行其他应用程序，并假定机器的所有cpu都可用来辅助完成gc</strong>。该模式造成托管堆被拆分成几个区域（section），每个cpu一个。开始垃圾回收时，垃圾回收期在每个cpu上都运行一个特殊线程；每个线程和其他线程并发回收它自己的区域。对于工作者线程行为一致的服务器应用程序，并发回收能很好地进行。</p>
+<p><strong>应用程序默认以工作站GC模式运行</strong>。寄宿了CLR的服务器应用程序可请求CLR加载服务器GC。但如果服务器应用程序在单处理器计算机上运行，CLR将总是使用工作站gc模式。</p>
+<pre><code>&lt;configuration&gt;
+  &lt;runtime&gt;
+    &lt;gcServer enabled=&quot;true&quot;/&gt;
+  &lt;/runtime&gt;
+&lt;/configuration&gt;
+</code></pre><p>独立应用程序可创建一个配置文件告诉CLR使用服务器回收器。应用程序运行时，可查询<code>GCSettings类</code>的只读<code>bool</code>属性<code>IsServerGc</code>来询问CLR它是否正在服务器GC模式中运行。</p>
+<p>除了这两种主要模式，GC还支持两种子模式：<code>并发（默认）</code>或<code>非并发</code>。在并发方式中，垃圾回收器有一个额外的后台线程，它能在应用程序运行时并发标记对象.</p>
+<pre><code>&lt;configuration&gt;
+  &lt;runtime&gt;
+    &lt;gcConcurrent enabled=&quot;false&quot;/&gt;
+  &lt;/runtime&gt;
+&lt;/configuration&gt;
+</code></pre><p>GC模式是针对进程配置的, 进程运行期间不能更改. 但是可以使用<code>GCSetting</code>类的<code>GCLatencyMode</code>属性对垃圾回收进行某种程度的控制.</p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910175234.png" alt=""></p>
+<p><code>LatencyMode</code>,一般用它执行一次短期的,时间敏感的操作,再将模式设回普通的<code>Batch</code>或<code>Interactive</code>, 在模式设为LowLatency期间,垃圾回收器会全力避免任何第2代回收, 因为那样花费的时间较多. 当然调用GC.Collect()仍会回收第2代. 如果Windows告诉CLR内存低,也会回收第2代.</p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910175945.png" alt=""></p>
+<h2 id="强制垃圾回收"><a href="#强制垃圾回收" class="headerlink" title="强制垃圾回收"></a>强制垃圾回收</h2><p><code>System.GC</code>类型允许应用程序对垃圾回收器进行一些直接控制.</p>
+<p>还可调用<code>GC类</code>的<code>Collect方法</code>强制垃圾回收, 可以像方法传递一个代表最多回收几代的整数.</p>
+<p><code>public static void Collect(int generation, GCCollectionMode mode, bool blocking, bool compacting);</code></p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910180446.png" alt=""></p>
+<p><strong>大多时候都要避免调用任何collect方法：最好让垃圾回收期自行斟酌执行，让他根据应用程序行为跳转各个代的预算。</strong>（调用Collect会导致代的预算发生调整）但如果写一个CUI(控制台应用程序)或GUI(图图形用户界面)应用程序，应用程序代码将拥有进程和那个进程中的CLR。对于这种应用程序，你可能希望建议垃圾回收的时间；为此，请将<code>GCCollectionMode</code>设为<code>Optimized</code>并调用<code>Collect()</code>。<code>Default</code>和<code>Forced模式</code>一般用于调试、测试和查找内存泄漏。</p>
+<p>例如，加入刚才发生了某个非重复性的事件，并导致大量旧对象死亡，就可考虑手动调用一次collect方法。由于是非重复性的，垃圾回收期基于历史的预测可能变得不准吃，所以这时调用Collect时合适的。由于调用Collect会导致代的预算发生调整，所以调用它不是为了改善应用程序的响应时间，而是为了减小进程工作集。</p>
+<h3 id="处理大量对象的服务器应用程序"><a href="#处理大量对象的服务器应用程序" class="headerlink" title="处理大量对象的服务器应用程序"></a>处理大量对象的服务器应用程序</h3><p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910181115.png" alt=""></p>
+<h2 id="监视应用程序的内存使用"><a href="#监视应用程序的内存使用" class="headerlink" title="监视应用程序的内存使用"></a>监视应用程序的内存使用</h2><p>可在进程中调用几个方法来监视垃圾回收期。具体地说，gc类提供了一下静态方法，可调用它们查看某一代发生了多少次垃圾回收，或者托管堆中的对象当前使用了多少内存。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"> int32 <span class="token function">CollectionCount</span><span class="token punctuation">(</span><span class="token keyword">int</span> generation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ int64 <span class="token function">GetTotalMemory</span><span class="token punctuation">(</span>Boolean ForceFullCollection<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>为了评估特定代码块的性能，我经常在代码块前后写代码调用这些方法，并计算差异。这使我能很好地把握代码块对进程工作集的影响，并了解执行代码块时发生了多少次垃圾回收。数字太大，就知道应该花更多的时间调整代码块中的算法。</p>
+<p>还可了解大度的AppDomain使用了多少内存。安装.NET时会自动安装一组性能计数器，为clr的操作提供大量实时统计数据。这些统计数据可通过windows自带的perfmon.exe工具或者系统监视器activeX控件来查看。</p>
+<h1 id="使用需要特殊清理的类型"><a href="#使用需要特殊清理的类型" class="headerlink" title="使用需要特殊清理的类型"></a>使用需要特殊清理的类型</h1><p>大多数类型有内存就能正常工作，但有的类型除了内存还需要本机资源。</p>
+<p>例如，<code>System.IO.FileStream</code>类型需要打开一个文件（本机资源）并保存文件的句柄。然后，类型的<code>Read</code>和<code>Write</code>方法用句柄操作文件。</p>
+<p><strong>包含本机资源的类型被GC时，GC会回收对象在托管堆中使用的内存。但这样会造成本机资源的泄漏(因为GC对此一无所知)</strong>，这当然是不允许的。所以，CLR提供了称为<code>终结（finalization）</code>的机制，允许对象在被判定为垃圾之后，但在对象回收之前执行一些代码。任何包装了本机资源（文件、网络连接、套接字）的类型都支持<code>终结</code>。CLR判定一个对象不可达时，<strong>对象将终结它自己，释放它包装的本机资源。之后，gc会从托管堆回收对象。</strong></p>
+<p>终极基类<code>System.Object</code>定义了<code>受保护的虚方法Finalize</code>。垃圾回收期判定判定对象是垃圾后，会调用对象的<code>Finalize</code>方法（如果重写）。C#团队认为<code>Finalize</code>在编程语言中需要特殊语法。因此，c#要求在类名前添加<code>~符号</code>来定义<code>Finalize方法</code>.</p>
+<blockquote>
+<p>C++有析构器. C#早期称此为析构器, 但是后来Finalize方法的工作方式与C++析构器完全不同, 会产生混淆. 所以称为终结方法.</p>
+</blockquote>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SomeType</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 这是一个Finalize方法</span>
+   <span class="token operator">~</span><span class="token function">SomeType</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 这里代码会进入Finalize</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>用ILDasm.exe查看得到的程序集,c#编译器实际是在模块的元数据中生成了名为<code>Finalize</code>的<code>protected override方法</code>。查看Finalize的IL，会发现方法主体的代码被放到一个<code>try块</code>中，在<code>finally块</code>中则放入了一个<code>base.Finalize</code>调用.</p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910182557.png" alt=""></p>
+<p><strong>被视为垃圾的对象在垃圾回收完毕后才调用<code>Finalize方法</code>.</strong> 所以这些对象的内存不是马上被回收的, 因为Finalize方法可能要执行访问字段的代码. <strong>可终结对象在回收时必须存活,</strong> 造成它被提升到另一代. 使对象活得比正常时间长. 这增大了内存耗用, 应尽可能避免终结. 更糟的是,可终结对象被提升时, 其字段引用的所有对象也会被提升, 因为它们必须继续存活. 所有, 要尽量避免为引用类型的字段定义可终结对象.</p>
+<p>注意: <code>Finalize方法</code>的执行时间是控制不了的. 应用程序请求更多内存时才可能发生GC, <strong>而GC完之后才运行<code>Finalize</code></strong>. CLR不保证<code>Finalize方法</code>的调用顺序, 在<code>Finalize方法</code>中不要访问定义了<code>Finalize方法</code>的其他类型的对象, 那些对象可能已经终结. 但可以访问安全地访问值类型的实例, 或者访问没有定义<code>Finalize方法</code>的引用类型的对象.</p>
+<p>CLR用一个特殊的、高优先级的专用线程调用<code>Finalize方法</code>来避免死锁。如果Finalize方法阻塞，该特殊线程就调用不了任何更多的Finalize方法。 这是非常坏的情况,永远回收不了可终结对象占用的内存,就会一直泄露内存. 抛出未处理异常则进程终止,没办法捕捉该异常.</p>
+<p>综上所述，<code>Finalize方法</code>问题较多，使用需谨慎。记住他们是为了<strong>释放本机资源</strong>而设计的。强烈建议不要重写<code>Object</code>的<code>Finalize方法</code>。相反，使用Microsoft在FCL中提供的辅助类。这些辅助类重写了Finalize方法并添加了一些特殊的CLR“魔法”(之后提到)。你从这些辅助类派生自己的类，从而继承CLR的“魔法”。</p>
+<p>创建封装了<code>本机资源</code>的托管类型时，应该先从System.runtime.interopServices.SafeHandle这个特殊基类派生出一个类。</p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910232426.png" alt=""></p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910232450.png" alt=""></p>
+<p>CLR以特殊方式对待这个类及其派生类，具体地说，CLR赋予这个类一下三个很酷的功能</p>
+<ol>
+<li><p>首次构造任何<code>CriticalFinalizerObject</code>派生类型的对象时，CLR立即对继承层次结构中所有的<code>Finalize方法</code>进行JIT编译。这样确保对象被确定为垃圾之后，资源肯定会得到释放。不提前编译的话,无法保证释放（内存紧张时，CLR可能找不到足够的内存来编译<code>Finalize方法</code>，这会阻止Finalize方法执行，造成本机资源泄漏）。</p>
+</li>
+<li><p>CLR是在调用了<code>非CriticalFinalizerObject</code>派生类型的<code>Finalize方法</code>之后，才调用<code>CriticalFinalizerObject</code>派生类型的<code>Finalize</code>。这样，托管资源类就可以在他们<code>Finalize方法</code>中成功地访问<code>CriticalFinalizerObject</code>派生类型的对象，例如fileStream类的<code>Finalize方法</code>可以放心地将数据从内存缓冲区flush(<code>冲洗</code>到别处)到磁盘，它知道此时磁盘文件还没有关闭。</p>
+</li>
+<li><p>如果appdomain被一个宿主应用程序强行中断，CLR将调用<code>CriticalFinalizerObject</code>派生类型的<code>Finalize</code>方法。宿主应用程序不再信任它内部运行的托管代码时，也利用也利用好这个功能确保本机资源得到释放。</p>
+</li>
+</ol>
+<p>具体看书…. 云里雾里…</p>
+<h2 id="使用了包装本机资源的类型"><a href="#使用了包装本机资源的类型" class="headerlink" title="使用了包装本机资源的类型"></a>使用了包装本机资源的类型</h2><p>你现在知道了如何定义包装了本机资源的<code>SafeHandle派生类</code>，接着说说如何使用它。</p>
+<p>以常用的<code>System.IO.FileStream</code>类为例，可利用它打开一个文件，从文件中读取字节，向文件写入字节，然后关闭文件。</p>
+<p><code>FileStream对象</code>在构造时会调用Win32 <code>CreateFile</code>函数，函数返回的句柄保存到<code>SafeFileHandle</code>对象中，然后通过<code>FileStream</code>对象的一个私有字段来维护对该对象的引用。<code>FileStream</code>还提供几个额外属性（例如length，position，canread）和方法（read，write，flush）。</p>
+<p> 假定要写代码来创建一个临时文件，向其中写入一些字节，然后删除文件。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 大多数时候都不能正常工作,以下代码</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+     <span class="token comment" spellcheck="true">//创建要写入临时文件的字节</span>
+     Byte<span class="token punctuation">[</span><span class="token punctuation">]</span> bytesToWrite<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+     <span class="token comment" spellcheck="true">//创建临时文件</span>
+     FileStream fs<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">FileStream</span><span class="token punctuation">(</span><span class="token string">"temp.dat"</span><span class="token punctuation">,</span>FileMode<span class="token punctuation">.</span>Create<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token comment" spellcheck="true">//将字节写入临时文件</span>
+     fs<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span>bytesToWrite<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>bytesToWrite<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token comment" spellcheck="true">// 此方法要求windows删除一个仍然打开的文件,所以会抛出IO异常</span>
+     File<span class="token punctuation">.</span><span class="token function">Delete</span><span class="token punctuation">(</span><span class="token string">"temp.dat"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//抛出Io异常</span>
+ <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但某些情况下, 文件可能误打误撞地被删除! 如果另一线程不知怎么造成了一次垃圾回收, 而且这次垃圾回收刚好在调用Write之后, 调用Delete之前发生, 那么<code>FileStream对象</code>的<code>SafeFileHandle字段</code>的<code>Finalize方法</code>就会被调用. 这会关闭文件, 随后Delete操作也可以正常运行,但这种情况发生概率很小, 无法运行的可能性99%.</p>
+<p><strong>类如果想允许使用者控制类包装的本机资源的生存期,就必须实现如下所示的IDispose接口.</strong></p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910233916.png" alt=""></p>
+<p>幸好，FileStrram类实现了<code>IDisposable接口</code>。在实现中,会在FileStream对象的私有<code>SafeFileHandle</code>字段上调用<code>Dispose</code>, 现在就能修改代码来显式关闭文件,而不是等着未来某个GC的发生.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 一般的写法</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//创建要写入临时文件的字节</span>
+    Byte<span class="token punctuation">[</span><span class="token punctuation">]</span> bytesToWrite<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//创建临时文件</span>
+    FileStream fs<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">FileStream</span><span class="token punctuation">(</span><span class="token string">"temp.dat"</span><span class="token punctuation">,</span>FileMode<span class="token punctuation">.</span>Create<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//将字节写入临时文件</span>
+    fs<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span>bytesToWrite<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>bytesToWrite<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//写入结束后显示关闭文件</span>
+    fs<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 以下代码能正常工作</span>
+    File<span class="token punctuation">.</span><span class="token function">Delete</span><span class="token punctuation">(</span><span class="token string">"temp.dat"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>并非一定要调用Dispose才能保证本机资源得以清理. <strong>本机资源的清理最终总会发生,调用Dispose只是控制这个清理动作的发生时间.</strong> 另外,调用<code>Dispose</code>不会将托管对象从托管堆删除，<strong>只有在垃圾回收后，托管堆中的内存才会得以回收</strong>。 这意味你即使<code>Dispose</code>了托管对象过去用过的任何本机资源,也能在托管对象上调用方法, 只是不会成功而已,会抛出异常. 不会对造成对内存的破坏.</p>
+<p>但是当你显式调用<code>Dispose</code>后，<strong>再调用它的方法并不会执行成功</strong>，<strong>比如再操作对象写入更多数据，会提示无法访问已关闭文件。</strong> 会抛出<code>ObjectDisposeedException</code>.</p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190910235005.png" alt=""></p>
+<p>如果决定显示调用Dispose，强烈建议将调用放到一个finally块中。这样可以保证清理代码得以执行。也可以使用using语句，简化编码。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 更好的写法</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//创建要写入临时文件的字节</span>
+    Byte<span class="token punctuation">[</span><span class="token punctuation">]</span> bytesToWrite<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//创建临时文件</span>
+    FileStream fs<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">FileStream</span><span class="token punctuation">(</span><span class="token string">"temp.dat"</span><span class="token punctuation">,</span>FileMode<span class="token punctuation">.</span>Create<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">try</span>
+    <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">//将字节写入临时文件</span>
+      fs<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span>bytesToWrite<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>bytesToWrite<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">finally</span>
+    <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>fs<span class="token operator">!=</span><span class="token keyword">null</span><span class="token punctuation">)</span>
+        fs<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 写入结束后显示关闭文件</span>
+    <span class="token comment" spellcheck="true">// 总以下代码能正常工作</span>
+    File<span class="token punctuation">.</span><span class="token function">Delete</span><span class="token punctuation">(</span><span class="token string">"temp.dat"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>垃圾回收系统有许多好处: <strong>无内存泄露</strong>, <strong>无内存损坏</strong>, <strong>无地址空间碎片化</strong>以及<strong>缩小的工作集</strong>. 还有<strong>同步</strong>,GC确实能作为线程同步机制使用,因为GC会终结对象.</p>
+</blockquote>
+<p>C#语言提供一个<code>using</code>语句,允许用简化的语法来获得和上述代码相同的结果.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 使用using的写法,最简洁的写法</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//创建要写入临时文件的字节</span>
+    Byte<span class="token punctuation">[</span><span class="token punctuation">]</span> bytesToWrite<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//创建临时文件</span>
+    <span class="token keyword">using</span><span class="token punctuation">(</span>FileStream fs<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">FileStream</span><span class="token punctuation">(</span><span class="token string">"temp.dat"</span><span class="token punctuation">,</span>FileMode<span class="token punctuation">.</span>Create<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">//将字节写入临时文件</span>
+       fs<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span>bytesToWrite<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>bytesToWrite<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 写入结束后显示关闭文件</span>
+    <span class="token comment" spellcheck="true">// 总以下代码能正常工作</span>
+    File<span class="token punctuation">.</span><span class="token function">Delete</span><span class="token punctuation">(</span><span class="token string">"temp.dat"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>using语句</code>初始化一个对象, 并将它的引用保存到一个变量中,然后在<code>using语句</code>的大括号内访问该变量.  编译这段代码时, 编译器自动生成<code>try块</code>和<code>finally块</code>. 在<code>finally块</code>中, 编译器生成代码将变量转型为一个<code>IDisposable</code>并调用<code>Dispose方法</code>,  显而易见, <strong><code>using语句</code>只能用于那些实现了IDisposable接口的类型.</strong></p>
+<p><img src="/2019/09/10/000000目录-CLR读书笔记/21托管堆和垃圾回收/QQ截图20190911000011.png" alt=""></p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
