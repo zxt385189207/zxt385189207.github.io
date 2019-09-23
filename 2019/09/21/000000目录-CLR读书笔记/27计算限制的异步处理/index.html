@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#计算限制的异步操作"><span class="toc-text">计算限制的异步操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR线程池基础"><span class="toc-text">CLR线程池基础</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#执行简单的计算限制操作"><span class="toc-text">执行简单的计算限制操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#执行上下文"><span class="toc-text">执行上下文</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#协作式取消和超时"><span class="toc-text">协作式取消和超时</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#任务"><span class="toc-text">任务</span></a></li></ol>
 </div>
 
     
@@ -127,13 +127,304 @@
     <div class="post-meta">
         <span class="attr">发布于：<span>2019-09-21 19:19:18</span></span>
         
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
         </span>
         <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
 </span>
 </span>
     </div>
     <div class="post-content no-indent">
-        
+        <h1 id="计算限制的异步操作"><a href="#计算限制的异步操作" class="headerlink" title="计算限制的异步操作"></a>计算限制的异步操作</h1><p>本章将讨论以异步方式执行操作的各种方式. 异步的<strong>计算限制操作</strong>要用其他线程执行. 例如: 编译代码,检查拼写,语法检查, 音频视频数据转码以及生产图像的略缩图.</p>
+<h1 id="CLR线程池基础"><a href="#CLR线程池基础" class="headerlink" title="CLR线程池基础"></a>CLR线程池基础</h1><p>前面说过，创建和销毁线程是一个比较昂贵的操作，太多的线程也会浪费内存资源。由于操作系统必须调度可运行的线程并执行上下文切换，所以太多的线程还有损于性能。为了改善这个情况，<strong>CLR使用了代码来管理它自己的<code>线程池(thread pool)</code></strong>。线程池是你的应用程序能使用的线程集合。<strong>每个CLR都有一个线程池，这个线程池由CLR控制的所有AppDomain共享</strong>.</p>
+<p>CLR初始化时，线程池是没有线程的。在内部，线程池维护了一个操作请求队列。应用程序想执行一个异步操作时，就调用某个方法，将一个记录项(entry)追加到线程池的队列中。线程池的代码从这个队列中提取记录项，将这个记录项派遣(dispatch)给一个线程池线程。如果线程池中没有线程，就创建新的线程。创建线程要产生一定的性能损失。然而，当线程池完成任务后，线程不会被销毁。相反，线程会返回线程池，在那里进入空闲状态，等待响应另一个请求。由于线程不销毁自身，所以不再产生额外的性能损失。</p>
+<p>如果你的应用程序向线程池发出许多请求，线程池会尝试只用一个线程来服务所有的请求。然而，如果你的应用程序发出请求的速度超过了线程池处理它们的速度，就会创建额外的线程。最终，你的应用程序所有请求都可能有少量的线程处理，所有线程池不必创建大量的线程。</p>
+<p>如果你的应用程序停止向线程池发出请求，池中含有大量空闲的线程。这是对内存资源的一种浪费。所以，当一个线程池线程空闲一段时间以后，线程会自己醒来终止自己以释放资源。</p>
+<p>当线程闲着没事一段时间后, 线程会自己醒来终止自己以释放资源, 会产生一定的性能损失。 这个性能损失关系不大.</p>
+<p>在内部，线程池将自己的线程划分为<code>工作者(Worker)线程</code>和<code>I/O线程</code>。应用程序要求线程池执行一个异步的计算限制操作时(这个操作可能发起一个I/O限制的操作)，使用的就是工作者线程。I/O线程用于通知你的代码一个异步I/O限制操作已经完成，具体的说，这意味着使用”异步编程模型”发出I/O请求，比如访问文件、网络服务器、数据库等等。</p>
+<h1 id="执行简单的计算限制操作"><a href="#执行简单的计算限制操作" class="headerlink" title="执行简单的计算限制操作"></a>执行简单的计算限制操作</h1><p>将一个异步的、计算限制的操作放到一个线程池的队列中，通常可以调用<code>ThreadPool类</code>定义的以下方法之一：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//将方法排入队列以便执行。此方法在有线程池线程变得可用时执行。</span>
+<span class="token keyword">static</span> Boolean <span class="token function">QueueUserWorkItem</span><span class="token punctuation">(</span>WaitCallback callBack<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//将方法排入队列以便执行，并指定包含该方法所用数据的对象。此方法在有线程池线程变得可用时执行。</span>
+<span class="token keyword">static</span> Boolean <span class="token function">QueueUserWorkItem</span><span class="token punctuation">(</span>WaitCallback callBack<span class="token punctuation">,</span> Object state<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这些方法向线程池的队列中添加一个<code>&quot;工作项&quot;(work item)</code>以及可选的<code>状态数据</code>， 如果此方法成功排队，则为 true；如果无法将该工作项排队，则引发 <code>OutOfMemoryException</code>。</p>
+<p><code>工作项</code>其实就是由<code>callBack参数标识的一个方法</code>，<strong>该方法将由线程池线程调用</strong>。可通过<code>state实参(状态数据)</code>向方法传递一个参数。无state参数的那个版本的<code>QueueUserWorkItem</code>则向回调方法传递<code>null</code>。最终，池中的某个线程会处理<code>工作项</code>，造成你指定的方法被调用。你写的回调方法必须匹配<code>System.Threading.WaitCallBack委托类型</code>，它的定义如下：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">delegate</span> <span class="token keyword">void</span> <span class="token function">WaitCallback</span><span class="token punctuation">(</span>Object state<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<p><code>WaitCallback委托</code>, <code>TimerCallback委托</code>, <code>ParameterizedThreadStart委托</code>签名完全一致, 使用<code>ThreadPool.QueueUserWorkItem</code>, <code>System.Threading.Timer</code>和<code>System.Threading.Thread</code>对象都可以调用该方法.</p>
+</blockquote>
+<p>以下演示了如何让一个线程池线程以异步方式调用一个方法：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">    <span class="token keyword">class</span> <span class="token class-name">Program</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Main thread: queuing an asynchronous operation"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ThreadPool<span class="token punctuation">.</span><span class="token function">QueueUserWorkItem</span><span class="token punctuation">(</span>ComputeBoundOp<span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Main thread: Doing other work here..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 模拟其它工作 (10 秒钟)</span>
+            <span class="token comment" spellcheck="true">//Console.ReadLine();</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 这是一个回调方法，必须和WaitCallBack委托签名一致</span>
+        <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">ComputeBoundOp</span><span class="token punctuation">(</span>Object state<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 这个方法通过线程池中线程执行</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"In ComputeBoundOp: state={0}"</span><span class="token punctuation">,</span> state<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 模拟其它工作 (1 秒钟)</span>
+
+            <span class="token comment" spellcheck="true">// 这个方法返回后，线程回到线程池，等待其他任务</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 可以输出以下结果</span>
+<span class="token comment" spellcheck="true">// Main thread: queuing an asynchronous operation</span>
+<span class="token comment" spellcheck="true">// Main thread: Doing other work here...</span>
+<span class="token comment" spellcheck="true">// In ComputeBoundOp: state=5</span>
+<span class="token comment" spellcheck="true">// 但有时也会得到一下输出：</span>
+<span class="token comment" spellcheck="true">// Main thread: queuing an asynchronous operation</span>
+<span class="token comment" spellcheck="true">// In ComputeBoundOp: state=5</span>
+<span class="token comment" spellcheck="true">// Main thread: Doing other work here...</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>之所以有两种输出结果，是因为这两个方法相互之间是异步运行的。由Windows调度器决定先调度哪一个线程。</p>
+<h1 id="执行上下文"><a href="#执行上下文" class="headerlink" title="执行上下文"></a>执行上下文</h1><p>每个线程都关联了一个<strong>执行上下文数据结构</strong>。</p>
+<p><code>执行上下文(execution context)</code>包括的东西有:</p>
+<ul>
+<li>安全设置(压缩栈、<code>Thread的Principal属性[指示线程的调度优先级]</code>和Windows身份)、</li>
+<li>宿主设置(参见<code>System.Threading.HostExecutionContextManager[提供使公共语言运行时宿主可以参与执行上下文的流动（或移植）的功能]</code>)</li>
+<li>逻辑调用上下文数据 (参见<code>System.Runtime.Remoting.Messaging.CallContext[提供与执行代码路径一起传送的属性集]</code>的<code>LogicalSetData[将一个给定对象存储在逻辑调用上下文中并将该对象与指定名称相关联]</code>和<code>LogicalGetData[从逻辑调用上下文中检索具有指定名称的对象]</code>方法).</li>
+</ul>
+<p>线程执行代码时，有的操作会受到<strong>线程</strong>的<code>执行上下文设置</code>(尤其是安全设置)的影响。理想情况下，每当一个线程(初始线程)使用另一个线程(辅助线程)执行任务时，前者的<strong>执行上下文应该”流向”(复制到)辅助线程</strong>。这就确保辅助线程执行的任何操作使用的都是相同的安全设置和宿主设置。还确保了初始线程的逻辑调用上下文可以在辅助线程中使用。</p>
+<p>默认情况下，<strong>CLR自动造成初始线程的<code>执行上下文</code>会”流向”(复制到)任何辅助线程</strong>。这就是将上下文信息传输到辅助线程，但这对损失性能，因为<code>执行上下文</code>中包含大量信息，而收集这些信息，再将这些信息复制到辅助线程，要耗费不少时间。如果辅助线程又采用更多的辅助线程，还必须创建和初始化更多的执行上下文数据结构。</p>
+<p><code>System.Threading</code>命名空间中有一个<code>ExecutionContext类[管理当前线程的执行上下文]</code>，它允许你控制线程的执行上下文如何从一个线程”流向”(复制到)另一个线程。下面展示了这个类的样子：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">ExecutionContext</span> <span class="token punctuation">:</span> IDisposable<span class="token punctuation">,</span> ISerializable
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span>SecurityCritical<span class="token punctuation">]</span>
+    <span class="token comment" spellcheck="true">//取消执行上下文在异步线程之间的流动</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> AsyncFlowControl <span class="token function">SuppressFlow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//恢复执行上下文在异步线程之间的流动</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">RestoreFlow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//指示当前是否取消了执行上下文的流动。</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">bool</span> <span class="token function">IsFlowSuppressed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//不常用方法没有列出</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可用这个类<strong>阻止一个执行上下文的流动</strong>，从而提升应用程序的性能。对于服务器应用程序，性能的提升可能非常显著。但是，客户端应用程序的性能提升不了多少。另外，由于<code>SuppressFlow方法</code>用<code>[SecurityCritical]attribute]</code>进行了标识，所以在某些客户端应用程序(比如Silverlight)中是无法调用的。当然，只有在辅助线程不需要或者不防问上下文信息时，才应该阻止执行上下文的流动。<strong>如果初始线程的执行上下文不流向辅助线程，辅助线程会使用和它关联起来的任何执行上下文</strong>。在这种情况下，辅助线程<strong>不应该执行要依赖于执行上下文状态</strong>(比如用户的Windows身份)的代码。</p>
+<blockquote>
+<p>注意：添加到<code>逻辑调用上下文</code>的项必须是可序列化的。对于包含了逻辑调用上下文数据线的一个执行上下文，如果让它流动，可能严重损害性能，因为为了捕捉执行上下文，需对所有数据项进行序列化和反序列化。</p>
+</blockquote>
+<p>下例展示了向CLR的<code>线程池队列</code>添加一个<code>工作项</code>的时候，如何通过<strong>阻止执行上下文的流动</strong>来影响线程逻辑调用上下文中的数据：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+        <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 将一些数据放到Main线程的逻辑调用上下文中</span>
+            CallContext<span class="token punctuation">.</span><span class="token function">LogicalSetData</span><span class="token punctuation">(</span><span class="token string">"Name"</span><span class="token punctuation">,</span> <span class="token string">"Jeffrey"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 线程池能访问到逻辑调用上下文数据，加入到程序池队列中</span>
+            ThreadPool<span class="token punctuation">.</span><span class="token function">QueueUserWorkItem</span><span class="token punctuation">(</span>
+               state <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Name={0}"</span><span class="token punctuation">,</span> CallContext<span class="token punctuation">.</span><span class="token function">LogicalGetData</span><span class="token punctuation">(</span><span class="token string">"Name"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+            <span class="token comment" spellcheck="true">// 现在阻止Main线程的执行上下文流动</span>
+            ExecutionContext<span class="token punctuation">.</span><span class="token function">SuppressFlow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">//再次访问逻辑调用上下文的数据</span>
+            ThreadPool<span class="token punctuation">.</span><span class="token function">QueueUserWorkItem</span><span class="token punctuation">(</span>
+               state <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Name={0}"</span><span class="token punctuation">,</span> CallContext<span class="token punctuation">.</span><span class="token function">LogicalGetData</span><span class="token punctuation">(</span><span class="token string">"Name"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">//恢复Main线程的执行上下文流动</span>
+            ExecutionContext<span class="token punctuation">.</span><span class="token function">RestoreFlow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">//再次访问逻辑调用上下文的数据</span>
+            ThreadPool<span class="token punctuation">.</span><span class="token function">QueueUserWorkItem</span><span class="token punctuation">(</span>
+               state <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Name={0}"</span><span class="token punctuation">,</span> CallContext<span class="token punctuation">.</span><span class="token function">LogicalGetData</span><span class="token punctuation">(</span><span class="token string">"Name"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">Read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// Name=Jeffrey</span>
+<span class="token comment" spellcheck="true">// Name=</span>
+<span class="token comment" spellcheck="true">// Name=Jeffrey</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>虽然现在我们讨论的是调用<code>ThreadPool.QueueUserWorkItem</code>时<code>阻止执行上下文的流动</code>，但在使用<code>Task对象</code>(以后会提到),以及在发起异步I/O操作(以后会提到)时也会用到</p>
+<h1 id="协作式取消和超时"><a href="#协作式取消和超时" class="headerlink" title="协作式取消和超时"></a>协作式取消和超时</h1><p>Microsoft .NET Framework提供了一个标准的<strong>取消操作</strong>模式。这个模式是<strong>协作式</strong>的，<strong>意味着你想取消的操作必须显式的支持取消</strong>。换言之，无论执行操作的代码，还是试图取消操作的代码，都必须使用本节提到的类型。对于长时间运行的计算限制操作来说，支持取消是一件非常”棒”的事。所以，你应该考虑为自己的计算限制操作添加取消能力。首先，先解释一下FCL提供的两个主要类型，它们是标准协作式取消模式的一部分。</p>
+<p>为了取消一个操作，首先必须创建一个<code>System.Thread.CancellationTokenSource[通知 CancellationToken，告知其应被取消]</code>对象。这个类如下所示：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CancellationTokenSource</span> <span class="token punctuation">:</span> IDisposable
+<span class="token punctuation">{</span>
+         <span class="token comment" spellcheck="true">//构造函数</span>
+         <span class="token keyword">public</span> <span class="token function">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token comment" spellcheck="true">//获取是否已请求取消此 System.Threading.CancellationTokenSource</span>
+         <span class="token keyword">public</span> <span class="token keyword">bool</span> IsCancellationRequested <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+         <span class="token comment" spellcheck="true">//获取与此 System.Threading.CancellationTokenSource 关联的 System.Threading.CancellationToken</span>
+         <span class="token keyword">public</span> CancellationToken Token<span class="token punctuation">;</span>
+         <span class="token comment" spellcheck="true">//传达取消请求。</span>
+         <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token comment" spellcheck="true">//传达对取消的请求，并指定是否应处理其余回调和可取消操作。</span>
+         <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token keyword">bool</span> throwOnFirstException<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+ <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个对象包含了管理取消有关的所有状态。构造好一个<code>CancellationTokenSource</code>(引用类型)之后，可以从它的<code>Token属性</code>获得一个或多个<code>CancellationToken(值类型)实例</code>，并传给你的操作，使那些操作可以取消。以下是<code>CancellationToken值类型</code>最有用的一些成员：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">struct</span> CancellationToken  <span class="token comment" spellcheck="true">//一个值类型</span>
+<span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">// 获取此标记是否能处于已取消状态，</span>
+       <span class="token comment" spellcheck="true">// 由非通过Task来调用(invoke)的一个操作调用(call)</span>
+       <span class="token keyword">public</span> <span class="token keyword">bool</span> IsCancellationRequested <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+       <span class="token comment" spellcheck="true">// 如果已请求取消此标记，则引发 System.OperationCanceledException，</span>
+       <span class="token comment" spellcheck="true">// 由通过Task来调用的操作调用</span>
+       <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">ThrowIfCancellationRequested</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token comment" spellcheck="true">// 获取在取消标记时处于有信号状态的</span>
+       <span class="token comment" spellcheck="true">// CancellationTokenSource 取消时，WaitHandle会收到信号</span>
+       <span class="token keyword">public</span> WaitHandle WaitHandle <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+       <span class="token comment" spellcheck="true">//返回空 CancellationToken 值。</span>
+       <span class="token keyword">public</span> <span class="token keyword">static</span> CancellationToken None<span class="token punctuation">;</span>
+       <span class="token comment" spellcheck="true">// 判断此CancellationToken是否是特殊的None实例, 特殊的是不允许取消操作</span>
+       <span class="token keyword">public</span> <span class="token keyword">bool</span> CanBeCanceled<span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+       <span class="token comment" spellcheck="true">//注册一个将在取消此 System.Threading.CancellationToken 时调用的委托。省略了简单重载版本</span>
+       <span class="token keyword">public</span> CancellationTokenRegistration <span class="token function">Register</span><span class="token punctuation">(</span>Action<span class="token operator">&lt;</span><span class="token keyword">object</span><span class="token operator">></span> callback<span class="token punctuation">,</span> <span class="token keyword">object</span> state<span class="token punctuation">,</span> <span class="token keyword">bool</span> useSynchronizationContext<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+       <span class="token comment" spellcheck="true">//省略了GetHashCode、Equals成员</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>CancellationToken实例</code>是一个轻量级的<code>值类型</code>，它包含单个私有字段：对它的<code>CancellationTokenSource对象</code>的一个引用。在一个计算限制操作的循环中，可以定时调用<code>CancellationToken</code>的<code>IsCancellationRequested属性</code>，<strong>了解循环是否应该提前终止，进而终止计算限制的操作</strong>。当然，提前终止的好处在于，CPU不再需要把时间浪费在你对其结果已经不感兴趣的一个操作上。现在，用一些示例代码演示一下：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+        <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            CancellationTokenSource cts <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 将CancellationToken和"要循环到的目标数"传入操作中</span>
+            ThreadPool<span class="token punctuation">.</span><span class="token function">QueueUserWorkItem</span><span class="token punctuation">(</span>o <span class="token operator">=</span><span class="token operator">></span> <span class="token function">Count</span><span class="token punctuation">(</span>cts<span class="token punctuation">.</span>Token<span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Press &lt;Enter> to cancel the operation."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            cts<span class="token punctuation">.</span><span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 如果Count方法已返回，Cancel没有任何效果</span>
+            <span class="token comment" spellcheck="true">// Cancel立即返回，方法从这里继续运行</span>
+
+            Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Count</span><span class="token punctuation">(</span>CancellationToken token<span class="token punctuation">,</span> Int32 countTo<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> count <span class="token operator">&lt;</span> countTo<span class="token punctuation">;</span> count<span class="token operator">++</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">//判断是否接收到了取消任务的信号</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>token<span class="token punctuation">.</span>IsCancellationRequested<span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Count is cancelled"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 退出循环以停止操作</span>
+                <span class="token punctuation">}</span>
+
+                Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// 出于演示浪费一点时间</span>
+            <span class="token punctuation">}</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Count is done"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意：如果要执行一个不允许被取消的操作，可以向该操作传递通过调用<code>CancellationToken</code>的静态<code>None属性</code>返回的<code>CancellationToken(特殊的实例, 它不与任何CancellationTokenSource关联,实例的私有字段为null)</code>。 由于没有<code>CancellationTokenSource</code>, 所以没有代码能调用<code>Cancel</code>.如果查询<code>token.IsCancellationRequested</code>则总是返回<code>false</code>.</p>
+<p>此时, 查询<code>CancellationToken</code>的<code>CanBeCanceled</code>属性,会返回false, 相反, 查询正常实例对象的此属性,都会返回true.</p>
+<p><strong>如果愿意，可以调用<code>Register方法</code>登记一个或多个在取消一个<code>CancellationTokenSource</code>时调用的方法。每个回调方法都用<code>CancellactionToken</code>的<code>Register</code>方法来登记的。要向这个方法传递一个<code>Action&lt;Object&gt;委托</code>；一个要通过委托传给回调的状态；以及一个Boolean值(名为<code>useSynchronizationContext</code>)，该值指定了是否要使用调用线程的<code>SynchronizationContext(同步上下文)</code>来调用委托。</strong></p>
+<ul>
+<li><p>如果为<code>useSynchronizationContext</code>参数传递的是<code>false</code>，那么调用<code>Cancel</code>的线程会顺序调用已登记的所有方法(post)。</p>
+</li>
+<li><p>如果为<code>useSynchronizationContext</code>参数传递的是<code>true</code>，那么回调(方法)会被<strong>send(而不是post)</strong> 给已捕捉的<code>SynchronizationContext</code>对象，由<code>同步上下文对象</code>决定由哪个线程调用回调方法。</p>
+</li>
+</ul>
+<blockquote>
+<p>说明：如果执行send操作，要等到目标线程那里处理完毕之后才会返回。再次期间，调用线程会被阻塞。这相当于同步调用。而如果执行post操作，是指将东西post到一个队列中便完事，调用线程可以立即返回。相当于异步调用。</p>
+</blockquote>
+<p>注意: 向被取消的<code>CancellationTokenSource</code>登记一个回调方法, 将由调用<code>Register</code>的线程调用回调方法. 如果为<code>useSynchronizationContext</code>参数传递了<code>true</code>值, 就可能要通过调用线程的<code>SynchronizationContext(同步上下文进行)</code>.</p>
+<p>如果多次调用<code>Regiser</code>，那么多个回调方法都会调用。这些回调方法可能抛出未处理的异常。如果调用<code>CancellationTokenSource</code>的<code>Cancel</code>方法，</p>
+<ul>
+<li><p>向它传递<code>true</code>，那么抛出了未处理异常的第一个回调方法会阻止其他回调方法的执行，抛出的异常也会从Cancel中抛出。</p>
+</li>
+<li><p>如果调用<code>Cancel</code>并向它传递<code>false</code>，那么登记的所有回调方法都会调用。所有未处理的异常都会添加到一个集合中。所有回调方法都执行后，如果其中任何一个抛出一个未处理的异常，Cancel就会抛出一个<code>AggregateException</code>，该异常实例的<code>InnerException</code>属性会被设为已抛出的所有异常对象的一个集合。如果以登记的所有回调方法都没有抛出异常，那么<code>Cancel</code>直接返回，不抛出任何异常。</p>
+</li>
+</ul>
+<blockquote>
+<p>没有办法将<code>AggregateException</code>的<code>InnerException</code>集合中的一个异常对象和特定操作对应起来; 你只知道某个操作出错, 并通过异常类型知道出了什么错. 要跟踪错误的具体位置, 需要检查异常对象的<code>StackTrace</code>属性, 并手动扫描你的源代码.</p>
+</blockquote>
+<p><code>CancellactionToken</code>的<code>Register方法</code>返回一个<code>CancellationTokenRegistration</code>，如下所示：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">struct</span> CancellationTokenRegistration <span class="token punctuation">:</span> IEquatable<span class="token operator">&lt;</span>CancellationTokenRegistration<span class="token operator">></span><span class="token punctuation">,</span> IDisposable
+<span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可调用<code>Dispose</code>从关联的<code>CancellationTokenSource</code>中删除一个已登记的回调方法；这样一来，在调用<code>Cancel</code>时，便不会再调用这个回调。以下代码演示了如何向一个<code>CancellationTokenSource</code>登记两个回调：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Register</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+       <span class="token keyword">var</span> cts <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token comment" spellcheck="true">// 向CancellationTokenSource注册 取消时的回调方法</span>
+       cts<span class="token punctuation">.</span>Token<span class="token punctuation">.</span><span class="token function">Register</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Canceled 1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       cts<span class="token punctuation">.</span>Token<span class="token punctuation">.</span><span class="token function">Register</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Canceled 2"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+       <span class="token comment" spellcheck="true">// 出于测试目的，让我们取消它，以便执行两个回调</span>
+       cts<span class="token punctuation">.</span><span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//输出:</span>
+<span class="token comment" spellcheck="true">// Canceled 2</span>
+<span class="token comment" spellcheck="true">// Canceled 1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p> 最后，可通过链接(<code>CreateLinkedTokenSource</code>)另一组的<code>CancellationTokenSource</code>来新建一个<code>CancellationTokenSource</code>对象。任何一个链接的<code>CancellationTokenSource</code>被取消，这个<code>CancellationTokenSource对象</code>就会被取消。以下代码对此进行的演示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"> <span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+        <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 创建一个 CancellationTokenSource</span>
+            <span class="token keyword">var</span> cts1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            cts1<span class="token punctuation">.</span>Token<span class="token punctuation">.</span><span class="token function">Register</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"cts1 canceled"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 创建另一个 CancellationTokenSource</span>
+            <span class="token keyword">var</span> cts2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            cts2<span class="token punctuation">.</span>Token<span class="token punctuation">.</span><span class="token function">Register</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"cts2 canceled"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 创建新的CancellationTokenSource，它在 cts1 o或 ct2 is 取消时取消</span>
+            <span class="token keyword">var</span> ctsLinked <span class="token operator">=</span> CancellationTokenSource<span class="token punctuation">.</span><span class="token function">CreateLinkedTokenSource</span><span class="token punctuation">(</span>cts1<span class="token punctuation">.</span>Token<span class="token punctuation">,</span> cts2<span class="token punctuation">.</span>Token<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ctsLinked<span class="token punctuation">.</span>Token<span class="token punctuation">.</span><span class="token function">Register</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"linkedCts canceled"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 取消其中一个 CancellationTokenSource objects (这里选择了 cts2)</span>
+            cts2<span class="token punctuation">.</span><span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 显示哪个 CancellationTokenSource objects 被取消 了</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"cts1 canceled={0}, cts2 canceled={1}, ctsLinked canceled ={2}"</span><span class="token punctuation">,</span>
+               cts1<span class="token punctuation">.</span>IsCancellationRequested<span class="token punctuation">,</span> cts2<span class="token punctuation">.</span>IsCancellationRequested<span class="token punctuation">,</span> ctsLinked<span class="token punctuation">.</span>IsCancellationRequested<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 输出结果:</span>
+<span class="token comment" spellcheck="true">// linkedCts canceled</span>
+<span class="token comment" spellcheck="true">// cts2 canceled</span>
+<span class="token comment" spellcheck="true">// cts1 canceled=False, cts2 canceled=True, ctsLinked canceled =True</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在很多情况下,我们需要在过一段时间之后才取消操作. 例如, 服务器应用程序会根据客户端的请求而开始请求计算. 但必须在2秒钟之内有响应, 无论此时工作是否已经完成. 有的时候, 与其等待漫长时间获得一个完整的结果, 还不如在短时间内报错, 或者用部分计算好的结果进行响应.</p>
+<p>幸好, <code>CancellationTokenSource</code> 提供了在指定时间后自动取消的机制, 为了利用这个机制,</p>
+<ul>
+<li>要么用接收延时参数的构造器构造一个<code>CancellationTokenSource</code>对象</li>
+<li>要么调用<code>CancellationTokenSource</code>的<code>CancelAfter</code>方法.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">CancellationTokenSource</span> <span class="token punctuation">:</span> IDisposable  <span class="token comment" spellcheck="true">// 一个引用类型</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token function">CancellationToken</span><span class="token punctuation">(</span>Int32 millisecondsDelay<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token function">CancellationToken</span><span class="token punctuation">(</span>TimeSpan delay<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">CancelAfter</span><span class="token punctuation">(</span>Int32 millisecondsDelay<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">CancelAfter</span><span class="token punctuation">(</span>TimeSpan delay<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h1><p>调用<code>ThreadPool</code>的<code>QueueUserWorkItem</code>方法来发起一次异步的受计算限制的操作是非常简单的。然而。这个技术存在许多限制。<strong>最大的问题是没有一个内建的机制让你知道操作在什么时候完成，也没有一个机制在操作完成时获得一个返回值</strong>。为了克服这些限制并解决一些其它问题，Microsoft引入了任务(Task)的概念。我们通过System.Treading.Tasks命名空间中的类型来使用它们。</p>
+
         
             <div class="donate-container">
     <div class="donate-button">
