@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#计算限制的异步操作"><span class="toc-text">计算限制的异步操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR线程池基础"><span class="toc-text">CLR线程池基础</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#执行简单的计算限制操作"><span class="toc-text">执行简单的计算限制操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#执行上下文"><span class="toc-text">执行上下文</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#协作式取消和超时"><span class="toc-text">协作式取消和超时</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#任务"><span class="toc-text">任务</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#计算限制的异步操作"><span class="toc-text">计算限制的异步操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR线程池基础"><span class="toc-text">CLR线程池基础</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#执行简单的计算限制操作"><span class="toc-text">执行简单的计算限制操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#执行上下文"><span class="toc-text">执行上下文</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#协作式取消和超时"><span class="toc-text">协作式取消和超时</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#任务"><span class="toc-text">任务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#等待任务完成并获取结果"><span class="toc-text">等待任务完成并获取结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#取消任务"><span class="toc-text">取消任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务完成时自动启动新任务"><span class="toc-text">任务完成时自动启动新任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务可以启动子任务"><span class="toc-text">任务可以启动子任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务内部揭秘"><span class="toc-text">任务内部揭秘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务工厂"><span class="toc-text">任务工厂</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务调度器"><span class="toc-text">任务调度器</span></a></li></ol></li></ol>
 </div>
 
     
@@ -423,7 +423,522 @@
    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h1><p>调用<code>ThreadPool</code>的<code>QueueUserWorkItem</code>方法来发起一次异步的受计算限制的操作是非常简单的。然而。这个技术存在许多限制。<strong>最大的问题是没有一个内建的机制让你知道操作在什么时候完成，也没有一个机制在操作完成时获得一个返回值</strong>。为了克服这些限制并解决一些其它问题，Microsoft引入了任务(Task)的概念。我们通过System.Treading.Tasks命名空间中的类型来使用它们。</p>
+<h1 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h1><p>调用<code>ThreadPool</code>的<code>QueueUserWorkItem</code>方法来发起一次异步的受计算限制的操作是非常简单的。然而。这个技术存在许多限制。<strong>最大的问题是没有一个内建的机制让你知道操作在什么时候完成，也没有一个机制在操作完成时获得一个返回值</strong>。为了克服这些限制并解决一些其它问题，Microsoft引入了<strong>任务(Task)</strong> 的概念。我们通过<code>System.Treading.Tasks</code>命名空间中的类型来使用它们。</p>
+<p>所以, 不是调用<code>ThreadPool.QueueUserWorkItem</code>方法, 而是用<strong>任务</strong>来做相同的事情.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 旧的方式</span>
+ThreadPool<span class="token punctuation">.</span><span class="token function">QueueUserWorkItem</span><span class="token punctuation">(</span>ComputeBoundOp<span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 调用QueueUserWorkItem</span>
+<span class="token comment" spellcheck="true">// 任务概念, 新的方式</span>
+<span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span>ComputeBoundOp<span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 用Task来做相同的事情</span>
+
+<span class="token comment" spellcheck="true">// 等价写法</span>
+Task<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token operator">></span> <span class="token function">ComputeBoundOp</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在上述代码中，创建了<code>Task对象</code>，并立即调用<code>Start方法</code>来<strong>调度该任务</strong>方法。当然，也可以先创建好<code>Task对象</code>，以后在调用<code>Start方法</code>。</p>
+<p>创建一个<code>Task</code>的方式<strong>总是调用构造器</strong>，传递一个<code>Action</code>或者<code>Action&lt;Object&gt;委托</code>。<strong>这个委托就是你想执行的操作</strong>。如果传递期待一个Object的方法，还必须向Task的构造器传递最终想传给操作的实参。还<strong>可以选择向Task的构造器传递一个<code>CancellationToken</code></strong> ，这便允许Task在调度之前取消。</p>
+<p>还可以选择向构造器传递一些<code>TaskCreationOptions标志</code>来控制<code>Task</code>的执行方式。<code>TaskCreationOptions</code>是一个枚举类型，定义了一组可按<code>位OR</code>到一起的标志。它的定义如下：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>FlagsAttribute<span class="token punctuation">,</span> SerializableAttribute<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">enum</span> TaskCreationOptions
+<span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 指定应使用默认行为</span>
+        None             <span class="token operator">=</span> <span class="token number">0x0</span><span class="token punctuation">,</span>
+
+        <span class="token comment" spellcheck="true">// [提议] TaskScheduler(任务调度器) 以一种尽可能公平的方式安排任务，这意味着较早安排的任务将更可能较早运行，而较晚安排运行的任务将更可能较晚运行。</span>
+        <span class="token comment" spellcheck="true">// 造成默认的TaskScheduler(任务调度器) 将线程池中的任务放到全局队列中，而不是放到一个工作者线程的本地队列中</span>
+        PreferFairness   <span class="token operator">=</span> <span class="token number">0x1</span><span class="token punctuation">,</span>
+
+        <span class="token comment" spellcheck="true">// [提议] TaskScheduler(任务调度器)应尽可能地创建线程池线程</span>
+        <span class="token comment" spellcheck="true">// 指定某个任务将是长时间运行、粗粒度的操作(最好是创建线程池线程)。</span>
+        LongRunning      <span class="token operator">=</span> <span class="token number">0x2</span><span class="token punctuation">,</span>
+
+        <span class="token comment" spellcheck="true">// [提议总是被采纳]: 将一个任务和它的父Task关联。</span>
+        AttachedToParent <span class="token operator">=</span> <span class="token number">0x4</span><span class="token punctuation">,</span>
+
+        <span class="token comment" spellcheck="true">// [提议总是被采纳]: 如果一个任务试图和这个父任务连接, 它就是一个普通任务,而不是子任务</span>
+        DenyChildAttach  <span class="token operator">=</span> <span class="token number">0x8</span><span class="token punctuation">,</span>
+
+        <span class="token comment" spellcheck="true">// [提议总是被采纳]: 强迫子任务使用默认调度器而不是父任务的调度器</span>
+        HideScheduler    <span class="token operator">=</span> <span class="token number">0x10</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>大多是标志只是一些提议而已，<code>TaskScheduler</code>在调度一个<code>Task</code>时，<strong>可能会也可能不会采纳这些提议</strong>。不过，<code>AttacedToParent标志</code>总是得到采纳，因为它和<code>TaskScheduler</code>本身无关。</p>
+<h2 id="等待任务完成并获取结果"><a href="#等待任务完成并获取结果" class="headerlink" title="等待任务完成并获取结果"></a>等待任务完成并获取结果</h2><p>对于任务，可以等待它完成，然后获取它们的结果。假定有一个Sum方法，在n值很大的时候，它要执行较长的时间：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> Int32 <span class="token function">Sum</span><span class="token punctuation">(</span>Int32 n<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> n <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span> n<span class="token operator">--</span><span class="token punctuation">)</span>
+      <span class="token keyword">checked</span> <span class="token punctuation">{</span> sum <span class="token operator">+</span><span class="token operator">=</span> n<span class="token punctuation">;</span> <span class="token punctuation">}</span>    <span class="token comment" spellcheck="true">//如果n太大，这一行代码会抛出异常</span>
+    <span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>现在可以构造一个<code>Task&lt;TResult&gt;对象</code>(派生自<code>Task</code>)，并为<code>泛型TResult参数</code>传递计算限制操作的返回类型。在开始任务后，可以等待它完成并获取结果，如以下代码所示：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+        <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+           <span class="token comment" spellcheck="true">// 创建 Task, 现在还没开始运行</span>
+            Task<span class="token operator">&lt;</span>Int32<span class="token operator">></span> t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token operator">&lt;</span>Int32<span class="token operator">></span><span class="token punctuation">(</span>n <span class="token operator">=</span><span class="token operator">></span> <span class="token function">Sum</span><span class="token punctuation">(</span><span class="token punctuation">(</span>Int32<span class="token punctuation">)</span>n<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 启动任务</span>
+            t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 可以选择显式的等待任务完成</span>
+            t<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 可获得结果(Result属性内部会调用Wait)</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"The sum is: "</span> <span class="token operator">+</span> t<span class="token punctuation">.</span>Result<span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">//一个Int32的值</span>
+            Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">private</span> <span class="token keyword">static</span> Int32 <span class="token function">Sum</span><span class="token punctuation">(</span>Int32 n<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Int32 sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> n <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span> n<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token keyword">checked</span> <span class="token punctuation">{</span> sum <span class="token operator">+</span><span class="token operator">=</span> n<span class="token punctuation">;</span> <span class="token punctuation">}</span>    <span class="token comment" spellcheck="true">//如果n太大，这一行代码会抛出异常</span>
+            <span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Result属性内部会调用Wait</strong>. 如果计算限制的任务抛出一个未处理的异常，异常会被”吞噬”并存储到一个集合中，而线程池线程允许返回到线程池中。<strong>调用<code>Wait方法</code>或者<code>Result属性</code>时，这些成员会抛出一个<code>System.AggregateException</code>对象。</strong></p>
+<p>一个线程调用<code>Wait方法</code>时，<strong>系统会检查系统要等待的Task是否已开始执行</strong>。</p>
+<ul>
+<li>如果是，<strong>调用Wait的线程会阻塞</strong>，直到Task运行结束为止。</li>
+<li>如果<code>Task</code>还没有开始执行，系统可能(取决于<code>TaskSecheduler</code>)使用调用<code>Wait</code>的线程来执行<code>Task</code>。如果发生这种情况，<strong>那么调用Wait的线程不会阻塞；它会执行Task并立即返回</strong>。这样做的好处在于，<ul>
+<li>没有线程会被阻塞，所以减少了资源的使用(因为不需要创建一个线程来替代被阻塞的线程)，</li>
+<li>并提升了性能(因为不需要花时间创建一个线程，也没有上下文切换)。</li>
+<li><strong>但是不好的地方在于，假如线程在调用<code>Wait</code>前已经获得了一个线程同步锁，而<code>Task</code>试图获取同一个锁，就会造成一个死锁的线程。</strong></li>
+</ul>
+</li>
+</ul>
+<p><code>AggregateException类型</code>封装了异常对象的一个集合(如果父任务生成了多个子任务，而多个子任务都抛出异常，这个集合便有可能包含多个异常)。该类型有一个<code>InnerExceptions属性</code>，它返回一个<code>ReadOnlyCollection&lt;Excepyion&gt;</code>对象。不要混淆<code>InnerExceptions</code>(有s)和<code>InnerException</code>(没有s)属性，后者是<code>AggregateException类</code>从<code>System.Exception</code>基类继承来的。对于上例来说，<code>AggregateException</code>的<code>InnerExceptions</code>属性的<code>元素0</code>将引用由计算限制方法(Sum)抛出的实际<code>System.OverflowException</code>对象。</p>
+<p>为方便编码，<code>AggregateException</code>重写了<code>Exception</code>的<code>GetBaseException</code>方法。<code>AggregateException</code>的这个实现会返回作为问题根源的最内层的<code>AggregateException</code>。<code>AggregateException</code>还提供了一个<code>Flatten</code>方法，它创建一个新的<code>AggregateException</code>，其<code>InnerExceptions</code>属性包含一个<strong>异常列表</strong>，其中的异常是通过遍历原始<code>AggregateException</code>的内层异常层次结构而生成的。最后，<code>AggregateException</code>还提供了一个<code>Handle</code>方法，它为<code>AggregateException</code>中包含的每个异常都调用一个回调方法，然后，回调方法可以为每个在调用<code>Handle</code>之后，如果至少有一个异常没有处理，就创建一个新的<code>AggregateException</code>对象，其中只包含未处理的异常，并抛出这个新的<code>AggregateException</code>对象。</p>
+<p><img src="/2019/09/21/000000目录-CLR读书笔记/27计算限制的异步处理/QQ截图20190924130053.png" alt=""></p>
+<p>除了等待单个任务, <code>Task类</code>还提供了两个静态方法, 允许线程等待一个<strong>Task对象数组</strong>.</p>
+<p><strong>其中Task的静态<code>WaitAny方法</code>会阻塞调用线程</strong>, 直到数组中的<strong>任何一个</strong>Task对象完成. 方法<strong>返回Int32数组索引值</strong>, 指明完成的是哪个<code>Task</code>对象. 方法返回后, 线程被唤醒并继续运行, 如果发生超时, 方法返回<code>-1</code>. 如果WaitAny通过<code>CancellationToken</code>取消, 会抛出一个<code>OpreationCanceledException</code>异常.</p>
+<p>类似的，<strong>Task类还提供了静态<code>WaitAll方法</code>，它阻塞调用线程</strong>，直到数组中<strong>所有</strong>的Task对象都完成。如果Task对象都完成，<code>WaitAll方法</code>返回<code>true</code>。如果​发生超时，就返回<code>false</code>。如果<code>WaitAll</code>通过一个<code>CancellationToken</code>而取消，会抛出一个<code>OpreationCanceledException</code>。</p>
+<h2 id="取消任务"><a href="#取消任务" class="headerlink" title="取消任务"></a>取消任务</h2><p>  可以用一个<code>CancellationTokenSource</code>取消一个<code>Task</code>。首先，我们必须修订前面的Sum方法，让它接受一个<code>CancellationToken</code>参数:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> Int32 <span class="token function">Sum</span><span class="token punctuation">(</span>CancellationToken ct<span class="token punctuation">,</span> Int32 n<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> n <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span> n<span class="token operator">--</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 定时检查操作是否已取消</span>
+        <span class="token comment" spellcheck="true">// 在取消标志引用的CancellationTokenSource上如果调用Cancel，</span>
+        <span class="token comment" spellcheck="true">// 下面这一行就抛出OpreationCanceledException</span>
+        ct<span class="token punctuation">.</span><span class="token function">ThrowIfCancellationRequested</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">checked</span> <span class="token punctuation">{</span> sum <span class="token operator">+</span><span class="token operator">=</span> n<span class="token punctuation">;</span> <span class="token punctuation">}</span>  <span class="token comment" spellcheck="true">//如果n太大，这一行代码会抛出异常</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在上述代码中，在计算限制的循环中，我们通过调用<code>CancellationToken</code>的<code>ThrowIfCancellationRequested</code>方法来<strong>定时检查操作是否已取消</strong>。这个方法和<code>CancellationToken</code>的<code>IsCancellationRequested属性</code>相似。如果<code>CancellationTokenSource</code>已经取消，<code>ThrowIfCancellationRequested</code>会抛出一个<code>OpreationCanceledException</code>。之所以选择抛出一个异常，是因为和<code>ThreadPool</code>的<code>QueueUserWorkItem</code>方法初始化的工作项(work item)不同，任务有办法表示完成，甚至还有一个返回值。所以，需要采取一种方式将已完成的任务和出错的任务区分开。而让任务抛出一个异常，就可以知道任务没有一直运行到结束。</p>
+<p>现在，我们向下面这样创建<code>CancellationTokenSource</code>和<code>Task对象</code>：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    CancellationTokenSource cts <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Task<span class="token operator">&lt;</span>Int32<span class="token operator">></span> t   <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token operator">&lt;</span>Int32<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">Sum</span><span class="token punctuation">(</span>cts<span class="token punctuation">.</span>Token<span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">,</span> cts<span class="token punctuation">.</span>Token<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 在之后的某个时间，取消CancellationTokenSource以取消Task</span>
+    cts<span class="token punctuation">.</span><span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">try</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 如果任务已经取消，Result会抛出一个AggregateException</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"The sum is: "</span> <span class="token operator">+</span> t<span class="token punctuation">.</span>Result<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// An Int32 value</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">AggregateException</span> ae<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 将任何OperationCanceledException对象都视为已处理</span>
+        <span class="token comment" spellcheck="true">// 其他任何异常都造成抛出一个新的AggregateException，其中</span>
+        <span class="token comment" spellcheck="true">// 只包含未处理的异常      </span>
+        ae<span class="token punctuation">.</span><span class="token function">Handle</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> e <span class="token keyword">is</span> OperationCanceledException<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 所有的异常都处理好之后，执行下面这一行</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Sum was canceled"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> Int32 <span class="token function">Sum</span><span class="token punctuation">(</span>CancellationToken ct<span class="token punctuation">,</span> Int32 n<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> n <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span> n<span class="token operator">--</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 定时检查操作是否已取消</span>
+        <span class="token comment" spellcheck="true">// 在取消标志引用的CancellationTokenSource上如果调用Cancel，</span>
+        <span class="token comment" spellcheck="true">// 下面这一行就抛出OpreationCanceledException</span>
+        ct<span class="token punctuation">.</span><span class="token function">ThrowIfCancellationRequested</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">checked</span>
+        <span class="token punctuation">{</span>
+            sum <span class="token operator">+</span><span class="token operator">=</span> n<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token comment" spellcheck="true">//如果n太大，这一行代码会抛出异常</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>创建一个<code>Task</code>时，可以将一个<code>CancellationToken</code>传给<code>Task</code>的构造器，从而将这个<code>CancellationToken</code>和该<code>Task</code>关联起来</strong>。</p>
+<ul>
+<li>如果<code>CancellationToken</code>在<code>Task</code>调度前取消，Task会被取消，永远不会执行。<ul>
+<li>一个任务还没开始就试图取消它,会抛出<code>InvalidOperationException</code></li>
+</ul>
+</li>
+<li>如果<code>Task</code>已经调度(通过调用<code>Start</code>方法)，那么<code>Task</code>为了允许它的操作在执行期间取消，<code>Task</code>的代码必须<strong>显式支持取消</strong>。<ul>
+<li>调用静态的<code>Run方法</code>会自动创建<code>Task对象</code>并立即调用<code>Start</code></li>
+</ul>
+</li>
+</ul>
+<p>遗憾的是，虽然<code>Task对象</code>关联了一个<code>CancellationToken</code>，但没有办法访问它。因此，必须通过某种方式，在<code>Task</code>的代码本身中获得用于创建<code>Task</code>对象的同一个<code>CancellationToken</code>。为了写这样的代码，<strong>最简单的方法就是使用一个lambda表达式，并将<code>CancellationToken</code>作为一个闭包变量”传递”(就像上例所示)。</strong></p>
+<h2 id="任务完成时自动启动新任务"><a href="#任务完成时自动启动新任务" class="headerlink" title="任务完成时自动启动新任务"></a>任务完成时自动启动新任务</h2><p>要写可伸缩的软件，一定不能使你的线程阻塞。这意味着如果调用<code>Wait</code>，或者在任何尚未完成时查询任务的<code>Result属性</code>，<strong>极有可能</strong> 造成线程池创建一个新线程，这增大了资源的消耗，并损害了伸缩性。幸好，<strong>有更好的方式知道一个任务在什么时候结束运行。一个任务完成时，它可以启动另一个任务</strong>。下面重写了前面的代码，它不会阻塞线程:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 创建 Task, 推迟启动它, 继续另一个任务</span>
+Task<span class="token operator">&lt;</span>Int32<span class="token operator">></span> t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token operator">&lt;</span>Int32<span class="token operator">></span><span class="token punctuation">(</span>n <span class="token operator">=</span><span class="token operator">></span> <span class="token function">Sum</span><span class="token punctuation">(</span><span class="token punctuation">(</span>Int32<span class="token punctuation">)</span> n<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// ContinueWith 返回一个 Task 但一般不再关心这个对象</span>
+Task cwt <span class="token operator">=</span> t<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>task <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"The sum is: "</span> <span class="token operator">+</span> task<span class="token punctuation">.</span>Result<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>现在，当执行Sum的任务完成后，<strong>这个任务会启动另一个任务(也在某个线程池线程上)以显示结果。执行上述代码的线程不会进入阻塞状态并等待这个两个任务中的任何一个完成</strong>。相反，线程可以执行其它代码。如果线程本身就是线程池线程，它可以返回到池中，以执行其他操作。注意，执行Sum的任务可能在调用<code>ContinueWith</code>之前完成。但这不是一个问题，因为<code>ContinueWith</code>方法会看到Sum任务已经完成，会立即启动显示结果的任务。</p>
+<p>另外，注意<code>ContinueWith</code>会返回<code>新的Task对象</code>的一个引用(在上述代码中, 放入了cwt变量中)。当然，可以用这个<code>Task</code>对象调用各种成员(比如<code>Wait</code>，<code>Result</code>，甚至<code>ContinueWith</code>)，<strong>但你一般都是忽略这个Task对象，不把它的引用保存到一个变量中</strong>。</p>
+<p><code>Task</code>对象内部包含了<code>ContinueWith任务</code>的一个<strong>集合</strong>。所以，实际上可以用一个<code>Task</code>对象来多次调用<code>ContinueWith</code>。任务完成时，所有<code>ContinueWith任务</code>都会进入线程池的队列中。此外，调用<code>ContinueWith</code>时，可以传递对一组<code>TaskContinuationOptions枚举值</code>进行按<strong>位OR</strong>运行的结果。前4个标志(<code>None</code>，<code>PreferFairness</code>，<code>LongRunning</code>和<code>AttachToParent</code>)与早先描述的<code>TaskCreationOptions</code>枚举类型提供的标志完全一致，下面是<code>TaskContinuationOptions</code>类型的定义：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>System<span class="token punctuation">.</span>FlagsAttribute<span class="token punctuation">,</span> System<span class="token punctuation">.</span>SerializableAttribute<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">enum</span> TaskContinuationOptions
+<span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// [默认]</span>
+        None                  <span class="token operator">=</span> <span class="token number">0x00000</span><span class="token punctuation">,</span>
+        <span class="token comment" spellcheck="true">// [提议] 希望任务尽快运行</span>
+        PreferFairness        <span class="token operator">=</span> <span class="token number">0x00001</span><span class="token punctuation">,</span>
+        <span class="token comment" spellcheck="true">// [提议] 应尽可能地创建线程池线程</span>
+        LongRunning           <span class="token operator">=</span> <span class="token number">0x00002</span><span class="token punctuation">,</span>
+        <span class="token comment" spellcheck="true">// [提议总是被采纳] 将一个任务和它的父Task关联</span>
+        AttachedToParent      <span class="token operator">=</span> <span class="token number">0x00004</span><span class="token punctuation">,</span>
+        <span class="token comment" spellcheck="true">// 任务和这个父任务链接将抛出异常</span>
+        DenyChildAttach       <span class="token operator">=</span> <span class="token number">0x00008</span><span class="token punctuation">,</span>
+        <span class="token comment" spellcheck="true">// 强迫子任务使用默认调度器而不是父任务的调度器</span>
+        HideScheduler         <span class="token operator">=</span> <span class="token number">0x00010</span><span class="token punctuation">,</span>
+        <span class="token comment" spellcheck="true">// 除非前置任务完成,否则禁止延续任务完成(取消)</span>
+        LazyCancellation      <span class="token operator">=</span> <span class="token number">0x00020</span><span class="token punctuation">,</span>
+
+
+        <span class="token comment" spellcheck="true">// 这些标志指出在什么情况下运行ContinueWith任务</span>
+        <span class="token comment" spellcheck="true">// 指定不应在延续任务前面的任务已完成运行的情况下安排延续任务。 此选项对多任务延续无效。</span>
+        NotOnRanToCompletion  <span class="token operator">=</span> <span class="token number">0x10000</span><span class="token punctuation">,</span>
+        <span class="token comment" spellcheck="true">//指定不应在延续任务前面的任务引发了未处理异常的情况下安排延续任务。 此选项对多任务延续无效。</span>
+        NotOnFaulted          <span class="token operator">=</span> <span class="token number">0x20000</span><span class="token punctuation">,</span>
+        <span class="token comment" spellcheck="true">//指定不应在延续任务前面的任务已取消的情况下安排延续任务。 此选项对多任务延续无效。</span>
+        NotOnCanceled         <span class="token operator">=</span> <span class="token number">0x40000</span><span class="token punctuation">,</span>
+
+        <span class="token comment" spellcheck="true">// 这些标志是以上三种标志的便利组合</span>
+        <span class="token comment" spellcheck="true">//指定只应在延续任务前面的任务已完成运行的情况下才安排延续任务。 此选项对多任务延续无效。</span>
+        OnlyOnRanToCompletion <span class="token operator">=</span> <span class="token number">0x60000</span><span class="token punctuation">,</span>
+        <span class="token comment" spellcheck="true">//指定只有在延续任务前面的任务引发了未处理异常的情况下才应安排延续任务。 此选项对多任务延续无效。</span>
+        OnlyOnFaulted         <span class="token operator">=</span> <span class="token number">0x50000</span><span class="token punctuation">,</span>
+        <span class="token comment" spellcheck="true">//指定只应在延续任务前面的任务已取消的情况下安排延续任务。此选项对多任务延续无效。</span>
+        OnlyOnCanceled        <span class="token operator">=</span> <span class="token number">0x30000</span><span class="token punctuation">,</span>
+
+        <span class="token comment" spellcheck="true">//指定应同步执行延续任务。</span>
+        <span class="token comment" spellcheck="true">// 指定此选项后，延续任务将在导致前面的任务转换为其最终状态的相同线程上运行。 如果在创建延续任务时已经完成前面的任务，则延续任务将在创建此延续任务的线程上运行。 只应同步执行运行时间非常短的延续任务。</span>
+        <span class="token comment" spellcheck="true">//-------------------------------------------</span>
+        <span class="token comment" spellcheck="true">// 这个标志指出你希望由执行第一个任务的线程执行ContinueWith任务,</span>
+        <span class="token comment" spellcheck="true">// 第一个任务完成后调用</span>
+        <span class="token comment" spellcheck="true">// ContinueWith的线程接着执行ContinueWith任务</span>
+        <span class="token comment" spellcheck="true">// 这里是指同步执行, 两个任务在使用同一个线程一前一后的执行</span>
+        ExecuteSynchronously  <span class="token operator">=</span> <span class="token number">0x80000</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>调用<code>ContinueWith</code>时，可以指定你希望新任务只有在第一个任务被取消时才运行，这是使用<code>TaskContinuationOptions.OnlyOnCanceled</code>标志来实现。</p>
+<p>类似的<code>TaskContinuationOptions.OnlyOnFaulted</code>标志指定新任务只有在第一个任务抛出未处理的异常时才执行.</p>
+<p>当然还可使用<code>TaskContinuationOptions.OnlyOnRanToCompletion</code>标志指定新任务只有在第一个任务顺利完成(中途没有取消,也没有抛出未处理异常)时才执行.</p>
+<p><strong>默认情况下，如果没有指定上述任何标志，新任务无论如何都会执行下去，不管第一个任务是如何完成的。一个Task完成时，它的所有未运行(不满足前面说的各种条件)的延续任务都会自动取消</strong>。下面用一个例子演示所有这些概念。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">CancellationTokenSource cts <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Task<span class="token operator">&lt;</span>Int32<span class="token operator">></span>  t   <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token operator">&lt;</span>Int32<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">Sum</span><span class="token punctuation">(</span>cts<span class="token punctuation">.</span>Token<span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">,</span> cts<span class="token punctuation">.</span>Token<span class="token punctuation">)</span><span class="token punctuation">;</span>
+t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 每个 ContinueWith 都返回一个 Task，但你不必关心这些Task对象</span>
+t<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>task <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"The sum is: "</span> <span class="token operator">+</span> task<span class="token punctuation">.</span>Result<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    TaskContinuationOptions<span class="token punctuation">.</span>OnlyOnRanToCompletion<span class="token punctuation">)</span><span class="token punctuation">;</span>
+t<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>task <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Sum threw: "</span> <span class="token operator">+</span> task<span class="token punctuation">.</span>Exception<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    TaskContinuationOptions<span class="token punctuation">.</span>OnlyOnFaulted<span class="token punctuation">)</span><span class="token punctuation">;</span>
+t<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>task <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Sum was canceled"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    TaskContinuationOptions<span class="token punctuation">.</span>OnlyOnCanceled<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 如果注释这行代码, 则只输出 The sum is: 50005000</span>
+<span class="token comment" spellcheck="true">// 否则只输出: Sum was canceled</span>
+cts<span class="token punctuation">.</span><span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="任务可以启动子任务"><a href="#任务可以启动子任务" class="headerlink" title="任务可以启动子任务"></a>任务可以启动子任务</h2><p>最后，任务支持父/子关系，如下代码所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Task<span class="token operator">&lt;</span>Int32<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span> parent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token operator">&lt;</span>Int32<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> results <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Int32</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 创建数组来存储结果</span>
+
+        <span class="token comment" spellcheck="true">// 这个任务创建并启用了3个子任务</span>
+        <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> results<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">Sum</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">,</span> TaskCreationOptions<span class="token punctuation">.</span>AttachedToParent<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> results<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">Sum</span><span class="token punctuation">(</span><span class="token number">20000</span><span class="token punctuation">)</span><span class="token punctuation">,</span> TaskCreationOptions<span class="token punctuation">.</span>AttachedToParent<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> results<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">Sum</span><span class="token punctuation">(</span><span class="token number">30000</span><span class="token punctuation">)</span><span class="token punctuation">,</span> TaskCreationOptions<span class="token punctuation">.</span>AttachedToParent<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 返回对数组的一个引用(即使数组元素可能还没有初始化)</span>
+        <span class="token keyword">return</span> results<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 父任务及其子任务运行完成后, 用一个延续任务显示结果</span>
+    <span class="token keyword">var</span> cwt <span class="token operator">=</span> parent<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>parentTask <span class="token operator">=</span><span class="token operator">></span> Array<span class="token punctuation">.</span><span class="token function">ForEach</span><span class="token punctuation">(</span>parentTask<span class="token punctuation">.</span>Result<span class="token punctuation">,</span> Console<span class="token punctuation">.</span>WriteLine<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 启动父任务, 便于启动它的子任务</span>
+    parent<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在本例子中，<code>父任务</code>创建并启用3个<code>Task对象</code>。默认情况下，一个任务创建的Task对象是顶级任务，这些任务与创建它们的那个任务无关。然而，<strong><code>TaskContinuationOptions.AttachedToParent</code> 标志将一个Task和创建它的那个Task关联起来</strong>，<strong>结果是除非所有子任务结束运行，否则父任务不会认为已经结束</strong>。调用<code>ContinueWith</code>方法创建一个<code>Task</code>时，可以指定<code>TaskContinuationOptions. AttachedToParent</code> 标志将延续任务指定的一个<code>子任务</code>, 用于控制台循环输出结果。</p>
+<h2 id="任务内部揭秘"><a href="#任务内部揭秘" class="headerlink" title="任务内部揭秘"></a>任务内部揭秘</h2><p>每个<code>Task对象</code>都有一组构成<strong>任务状态</strong>的字段。</p>
+<ul>
+<li>有一个<code>Int32 ID(Task的只读Id属性)</code>、</li>
+<li>代表<code>Task</code>执行状态的一个<code>Int32</code>、</li>
+<li>对父任务的一个引用、</li>
+<li>对<code>Task</code>创建时指定的<code>TaskScheduler</code>的一个引用、</li>
+<li>对<code>回调方法</code>的一个引用、</li>
+<li>对要传给回调方法的<code>对象</code>的一个引用(可通过<code>Task</code>的只读<code>AsynState</code>属性查询)、</li>
+<li>对一个<code>ExecutionContext(执行上下文)</code>的引用</li>
+<li>以及对一个<code>ManualResetEventSlim</code>对象的引用。</li>
+<li>除此之外，每个Task对象都有对根据需要创建的补充状态的一个引用。<ul>
+<li>包含一个<code>CancellationToken</code></li>
+<li>一个<code>ContinueWithTask</code>对象集合</li>
+<li>为抛出未处理异常的子任务而准备的一个Task对象集合等.</li>
+</ul>
+</li>
+</ul>
+<p><strong>如果不需要任务提供的附加功能，那么使用<code>ThreadPool.QueueUserWorkItem</code>，资源的使用效率上会更高一些。</strong></p>
+<p><code>Task</code>和<code>Task&lt;TResult&gt;</code>类实现了<code>IDisposable</code>接口，允许你在用完<code>Task</code>对象后调用<code>Dispose</code>。如今，所有<code>Dispose方法</code>所做的都是关闭<code>ManuaResetEventSlim对象</code>。</p>
+<p>然而，可以定义从<code>Task</code>和<code>Task&lt;Result&gt;</code>派生的类，在这些类中分配它们自己的资源，并在它们重写的<code>Dispose</code>方法中释放这些资源。当然，大多数开发人员都不会在自己的代码中显式的为一个<code>Task</code>对象调用<code>Dispose</code>；他们只让垃圾回收器回收任何不再需要的资源。</p>
+<p>在每个<code>Task</code>对象中，都包含代表<code>Task</code>唯一ID的一个Int32字段。创建一个Task对象时，字段会被初始化为零。第一次查询Task的只读ID属性，属性将一个唯一Int32值分配给该字段，并从属性中返回它。TaskID从1开始，每分配一个ID都会递增1. 在Visual Studio调试器中查看一个Task对象，会造成调试器显示Task的ID，从而造成为Task分配一个ID。</p>
+<p>这个ID的意义在于，每个Task都可以用一个唯一的值来标识。事实上，Visual Studio会在它的”并行任务”和”并行堆栈”窗口中会显示这个任务ID。但是，由于不在自己的代码中分配ID，所以几乎不可能将这个ID和代码正在做的事联系起来。<strong>运行一个任务的代码时，可以查询<code>Task</code>的<code>静态CurrenId</code>属性，它返回一个可空的<code>Int32(Int32?)</code></strong>。还可以在调式期间，在Vasul Studio的”监视”或”即时”窗口中调用它，以便获得当前正在调试的代码的ID。然后，可以在”并行任务”和”并行堆栈”窗口中找到自己的任务。<strong>如果当前没有任务正在执行，查询<code>CurrenId</code>属性会返回null</strong>。</p>
+<p><strong>一个<code>Task</code>对象存在期间，可查询<code>Task</code>的只读<code>Status</code>属性了解它在其生存期的什么位置</strong>。这个属性返回一个<code>TaskStatus</code>值，定义如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">enum</span> TaskStatus
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//这些标志指出了一个Task在其生命周期内的状态</span>
+    <span class="token comment" spellcheck="true">// 任务已显式创建，可以手动Start()这个任务</span>
+    Created<span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// 任务已隐式创建，会自动开始</span>
+    WaitingForActivation<span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// 任务已调度，但尚未运行</span>
+    WaitingToRun<span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// 任务正在运行</span>
+    Running<span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// 任务正在等待它的子任务完成，子任务完成后它才完成</span>
+    WaitingForChildrenToComplete<span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// 一个任务的最终状态是以下三种之一</span>
+    <span class="token comment" spellcheck="true">// 已成功完成执行的任务</span>
+    RanToCompletion<span class="token punctuation">,</span>
+    <span class="token comment" spellcheck="true">// 该任务已通过对其自身的 CancellationToken引发 OperationCanceledException</span>
+    <span class="token comment" spellcheck="true">// 对取消进行了确认，此时该标记处于已发送信号状态；</span>
+    <span class="token comment" spellcheck="true">// 或者在该任务开始执行之前，已向该任务的 CancellationToken 发出了信号</span>
+    Canceled<span class="token punctuation">,</span>
+    <span class="token comment" spellcheck="true">// 由于未处理异常的原因而完成的任务</span>
+    Faulted
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>首先构造一个Task对象时，它的状态是<code>Created</code>。</li>
+<li>以后，任务启动时，它的状态变为<code>WaitngToRun</code>。</li>
+<li>Task在一个线程上运行时，它的状态就变成了<code>Running</code>。</li>
+<li>任务停止运行，并等待它的任何子任务时，状态变成<code>WaitingForChildrenToComplete</code>。</li>
+<li><p>任务完全结束时，它会进入以下三种状态的一种：<code>RanToCompletion</code>(运行完成)、<code>Canceled</code>(取消)或<code>Faulted</code>(出错)。</p>
+</li>
+<li><p>一个Task<result>运行完成时，可通过<code>Task&lt;TResult&gt;</code>的<code>Result</code>属性来查询任务的结果。</result></p>
+</li>
+<li>一个Task或者Task<tresult>出错时，可以查询<code>Task</code>的<code>Exception</code>属性来获得任务抛出的未处理的异常：该属性总是返回一个<code>AggregateException</code>对象，对象的<code>InnerExceptions</code>集合包含了所有未处理的异常。</tresult></li>
+</ul>
+<p>为简化编码，<code>Task</code>提供了几个只读的Boolean属性：<code>IsCanceled</code>，<code>IsFaulted</code>和<code>IsCompleted</code>。<strong>注意，当Task处于<code>RanToCompleted</code>，<code>Canceled</code>或者<code>Faulted</code>状态时，<code>IsCompleted</code>返回<code>true</code></strong>。为了判断一个Task是否成功完成，最简单的办法就是使用如下所示的代码：</p>
+<p><code>if (task.Status == TaskStatus.RanToCompleted )</code></p>
+<p>如果Task是通过调用以下某个函数来创建的，这个Task对象就处于<code>WaitingForActivation</code>状态:</p>
+<ul>
+<li><code>ContinueWith</code></li>
+<li><code>ContinueWithAll</code></li>
+<li><code>ContinueWithAny</code>或者<code>FromAsync</code>等方法来创建。</li>
+</ul>
+<p>如果通过构造一个<code>TaskCompletionSource&lt;TResult&gt;</code>(任务基础结构)对象<code>[表示未绑定到委托的 Task&lt;TResult&gt; 的制造者方，并通过 Task 属性提供对使用者方的访问]</code>创建一个Task，该Task在创建时也处于<code>WaitingForActivation</code>状态。<strong>这个状态意味着该<code>Task</code>的调度由<code>任务基础结构</code>控制</strong>。</p>
+<p>例如，不能显式启动一个通过<code>ContinueWith</code>创建的对象。这个<code>Task</code>会在它的<strong>前置任务(antecedent task)</strong> 执行完毕后自动开始。</p>
+<h2 id="任务工厂"><a href="#任务工厂" class="headerlink" title="任务工厂"></a>任务工厂</h2><p>有的时候需要创建一组共享相同配置的<code>Task</code>对象。为了避免机械地将相同的参数传给每一个Task的构造器，可以创建一个任务工厂来封装通用的配置，<code>System.Threding.Tasks</code>命名空间定义了一个<code>TaskFactory</code>类型和一个<code>TaskFactory&lt;TResult&gt;</code>类型。两个类型都派生自<code>System.Object</code>；也就是说，它们是平级的。</p>
+<p>如果要创建的是一组没有返回值的任务，那么要构造一个<code>TaskFactory</code>；如果要创建的是一组有一个特定返回值的任务，那么要构造一个<code>TaskFactory&lt;TResult&gt;</code>，并通过泛型<code>TResult实参</code>来传递任务的返回类型。创建任何任务工厂类时，要向它的构造器传递一些默认值。工厂创建的任务都将具有这些默认值。具体的说，要向<code>任务工厂</code>传递你希望希望任务具有的<code>CancellationToken</code>,<code>TaskScheduler</code>,<code>TaskCreationOptions</code>和<code>TaskContinuationOptions</code>设置。</p>
+<p>以下实例代码演示了如何使用一个TaskFatory:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">    <span class="token keyword">class</span> <span class="token class-name">Program</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 创建一个父Task</span>
+            Task parent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">var</span> cts <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">var</span> tf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TaskFactory</span><span class="token operator">&lt;</span>Int32<span class="token operator">></span> <span class="token comment" spellcheck="true">// 创建一个任务工厂, 通用设置如下</span>
+                    <span class="token punctuation">(</span>
+                    cts<span class="token punctuation">.</span>Token<span class="token punctuation">,</span>  <span class="token comment" spellcheck="true">// 传入CancellationTokenSource任务基础结构控制的CancellationToken对象</span>
+                    TaskCreationOptions<span class="token punctuation">.</span>AttachedToParent<span class="token punctuation">,</span>         <span class="token comment" spellcheck="true">// 由TaskFactory创建的任务都视为其 子任务</span>
+                    TaskContinuationOptions<span class="token punctuation">.</span>ExecuteSynchronously<span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 指定由TaskFactory创建的任务都以同步方式执行</span>
+                    TaskScheduler<span class="token punctuation">.</span>Default <span class="token comment" spellcheck="true">// 都使用默认调度器</span>
+                    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment" spellcheck="true">// 创建并启动3个子任务</span>
+                <span class="token comment" spellcheck="true">// 每个Task对象都共享相同的CancellationTokenSource标记</span>
+                <span class="token comment" spellcheck="true">// 任务都被视为parent的子任务</span>
+                <span class="token keyword">var</span> childTasks <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">[</span><span class="token punctuation">]</span>
+                <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">// 通过任务工厂的StartNew方法创建任务并启动</span>
+                    tf<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">Sum</span><span class="token punctuation">(</span>cts<span class="token punctuation">.</span>Token<span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    tf<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">Sum</span><span class="token punctuation">(</span>cts<span class="token punctuation">.</span>Token<span class="token punctuation">,</span> <span class="token number">20000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    tf<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">Sum</span><span class="token punctuation">(</span>cts<span class="token punctuation">.</span>Token<span class="token punctuation">,</span> Int32<span class="token punctuation">.</span>MaxValue<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 将最大值传入,计算之后会超出,抛异常</span>
+                <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+                <span class="token comment" spellcheck="true">// 通过循环告诉每个子任务, 如果抛出未处理异常,</span>
+                <span class="token comment" spellcheck="true">// 就取消其他仍在运行的所有子任务</span>
+                <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 task <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> task <span class="token operator">&lt;</span> childTasks<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> task<span class="token operator">++</span><span class="token punctuation">)</span>
+                    childTasks<span class="token punctuation">[</span>task<span class="token punctuation">]</span><span class="token punctuation">.</span>ContinueWith <span class="token comment" spellcheck="true">// 完成指定任务并达到OnlyOnFaulted条件之后, 进行后续的特定任务</span>
+                        <span class="token punctuation">(</span>
+                        t <span class="token operator">=</span><span class="token operator">></span> cts<span class="token punctuation">.</span><span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 特定任务: 取消其他仍在运行的所有子任务</span>
+                        TaskContinuationOptions<span class="token punctuation">.</span>OnlyOnFaulted   <span class="token comment" spellcheck="true">// 条件: 指定任务完成失败</span>
+                        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment" spellcheck="true">// ContinueWhenAll当所有子任务完成后,启动一个特定任务,</span>
+                <span class="token comment" spellcheck="true">// 由于是通过任务工厂创建的, 需要覆盖CancellationToken.None来覆盖它的父子任务设定</span>
+                <span class="token comment" spellcheck="true">// 使该任务在取消父任务时, 不作为子任务一起取消.</span>
+                <span class="token comment" spellcheck="true">// 当处理所有结果的任务完成后, 创建另一个后续任务来显示从所有子任务中返回的最大值</span>
+                tf<span class="token punctuation">.</span><span class="token function">ContinueWhenAll</span><span class="token punctuation">(</span>  
+                        childTasks<span class="token punctuation">,</span>  <span class="token comment" spellcheck="true">// 传入子任务数组</span>
+                        completedTasks <span class="token operator">=</span><span class="token operator">></span>
+                            completedTasks<span class="token punctuation">.</span><span class="token function">Where</span><span class="token punctuation">(</span>t <span class="token operator">=</span><span class="token operator">></span> t<span class="token punctuation">.</span>Status <span class="token operator">==</span> TaskStatus<span class="token punctuation">.</span>RanToCompletion<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Max</span><span class="token punctuation">(</span>t <span class="token operator">=</span><span class="token operator">></span> t<span class="token punctuation">.</span>Result<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                        CancellationToken<span class="token punctuation">.</span>None<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 子任务都完成(没有异常和取消)后, 获取返回最大值</span>
+                    <span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>
+                        t <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"最大的是: "</span> <span class="token operator">+</span> t<span class="token punctuation">.</span>Result<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 将最大值输出的后续任务</span>
+                        TaskContinuationOptions<span class="token punctuation">.</span>ExecuteSynchronously  <span class="token comment" spellcheck="true">// 设定为同步执行延续任务</span>
+                        <span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 等待只是为了测试</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 子任务完成后, 也显示任何未处理的异常</span>
+            parent<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>p <span class="token operator">=</span><span class="token operator">></span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 我将所有文本放到一个StringBuilder中, 并只调用Console.WriteLine一次</span>
+                <span class="token comment" spellcheck="true">// 因为这个任务可能和上面的任务并行执行, 而我不希望任务的输出变的不连续</span>
+                StringBuilder sb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token string">"发生了以下异常:"</span> <span class="token operator">+</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> e <span class="token keyword">in</span> p<span class="token punctuation">.</span>Exception<span class="token punctuation">.</span><span class="token function">Flatten</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>InnerExceptions<span class="token punctuation">)</span>
+                    sb<span class="token punctuation">.</span><span class="token function">AppendLine</span><span class="token punctuation">(</span><span class="token string">"   "</span> <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>sb<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span> TaskContinuationOptions<span class="token punctuation">.</span>OnlyOnFaulted<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 启动父任务, 使它能启动子任务</span>
+            parent<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">try</span>
+            <span class="token punctuation">{</span>
+                parent<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 出于测试目的</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">AggregateException</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+            <span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//            最大的是: 200010000</span>
+<span class="token comment" spellcheck="true">//            发生了以下异常:</span>
+<span class="token comment" spellcheck="true">//            System.OverflowException</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后创建一个数组，其中包含了3个子<code>Task</code>对象，所有都是通过<code>TaskFactory</code>的<code>StartNew</code>方法来创建的。使用这个方法，可以方便的创建并启动每个子任务。在一个循环中，告诉每个子任务，如果抛出一个未处理的异常，就会取消其它仍在运行的所有子任务。最后，在<code>TaskFacroty</code>上调用<code>ContinueWithAll</code>，<strong>它创建一个在所有子任务都结束后运行的一个<code>Task</code>。由于这个任务是用<code>TaskFactory</code>创建的，所以它仍然被视为父任务的一个子任务，会使用默认的<code>TaskScheduler同步执行</code>。然而，希望即使其他子任务被取消，也要运行这个任务。因此，我传递<code>CancellationToken.None</code>来覆盖<code>TaskFactory</code>的<code>CancellationToken</code>。这会造成该任务完全不能取消。</strong> 最后，当处理所有结果的任务完成后，创建另一个任务来显示从所有子任务中返回的最大值。</p>
+<p>注意: 调用<code>TaskFactory</code>或<code>TaskFactory&lt;TResult&gt;</code>的静态<code>ContinueWhenAll</code>和<code>ContinueWhenAny</code>方法时,  以下<code>TaskContinuationOption</code>标志是不允许的:</p>
+<ul>
+<li><code>NotOnRanToCompletion</code></li>
+<li><code>NotOnFaulted</code></li>
+<li><code>NotOnCanceled</code></li>
+<li><code>OnlyOnFaulted</code></li>
+<li><code>OnlyOnCanceled</code></li>
+<li><code>OnlyOnRanToCompletion</code></li>
+</ul>
+<p><strong>也就是说, 无论前置任务是如何完成的, <code>ContinueWhenAll</code>和<code>ContinueWhenAny</code>方法都会执行延续任务.</strong></p>
+<h2 id="任务调度器"><a href="#任务调度器" class="headerlink" title="任务调度器"></a>任务调度器</h2><p><code>任务基础结构</code>是很灵活的，其中<code>TaskScheduler</code>对象功不可没。<code>TaskScheduler</code>对象负责执行调度的任务，同时向Visual Studio 调试器公开任务信息。FCL提供了两个派生自<code>TaskScheduler</code>的类型：</p>
+<ul>
+<li><strong>线程池任务调度器(thread pool task scheduler)</strong></li>
+<li><strong>同步上下文任务调度器(synchronization context task scheduler)</strong></li>
+</ul>
+<p>默认情况下，所有应用程序使用的都是<code>线程池任务调度器</code>。这个任务调度器将任务调度给线程池的工作者线程，将在后面进行更详细的讨论。可以查询<code>TaskScheduler</code>的静态<code>Default属性</code>来获得对<strong>默认任务调度器的一个引用</strong>。</p>
+<p><code>同步上下文任务调度器</code>通常用于Windows窗体、WPF和Silverlight应用程序。<strong>这个任务调度器将所有任务都调度给应用程序的GUI线程</strong>，使所有任务代码都能成功更新UI，比如按钮。菜单项等。<strong>同步上下文任务调度器不使用线程池</strong>。可以查询<code>TaskScheduler</code>的<code>FromCurrentSynchronizationContext</code>方法来获取对一个<code>同步上下文任务调度器的引用</code>。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">MyForm</span> <span class="token punctuation">:</span> System<span class="token punctuation">.</span>Windows<span class="token punctuation">.</span>Forms<span class="token punctuation">.</span>Form
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> <span class="token keyword">readonly</span> TaskScheduler m_syncContextTaskScheduler<span class="token punctuation">;</span>
+
+        <span class="token keyword">public</span> <span class="token function">MyForm</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 获得一个堆上下文任务调度器的引用</span>
+            m_syncContextTaskScheduler <span class="token operator">=</span> TaskScheduler<span class="token punctuation">.</span><span class="token function">FromCurrentSynchronizationContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            Text    <span class="token operator">=</span> <span class="token string">"Synchronization Context Task Scheduler Demo"</span><span class="token punctuation">;</span>
+            Visible <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+            Width   <span class="token operator">=</span> <span class="token number">400</span><span class="token punctuation">;</span>
+            Height  <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">private</span> CancellationTokenSource m_cts<span class="token punctuation">;</span>
+
+        <span class="token keyword">protected</span> <span class="token keyword">override</span> <span class="token keyword">void</span> <span class="token function">OnMouseClick</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>Windows<span class="token punctuation">.</span>Forms<span class="token punctuation">.</span>MouseEventArgs e<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>m_cts <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 如果有操作正在进行, 取消它</span>
+            <span class="token punctuation">{</span>
+                m_cts<span class="token punctuation">.</span><span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                m_cts <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">else</span> <span class="token comment" spellcheck="true">// 操作还没开始,启动它</span>
+            <span class="token punctuation">{</span>
+
+                Text  <span class="token operator">=</span> <span class="token string">"Operation running"</span><span class="token punctuation">;</span>
+                m_cts <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment" spellcheck="true">// 这个任务使用默认任务调度器, 在一个线程池上执行</span>
+                Task<span class="token operator">&lt;</span>Int32<span class="token operator">></span> t <span class="token operator">=</span> Task<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">Sum</span><span class="token punctuation">(</span>m_cts<span class="token punctuation">.</span>Token<span class="token punctuation">,</span> <span class="token number">20000</span><span class="token punctuation">)</span><span class="token punctuation">,</span> m_cts<span class="token punctuation">.</span>Token<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment" spellcheck="true">// 这些任务使用同步上下文任务调度器, 在GUI线程上执行</span>
+                t<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>task <span class="token operator">=</span><span class="token operator">></span> Text <span class="token operator">=</span> <span class="token string">"Result: "</span> <span class="token operator">+</span> task<span class="token punctuation">.</span>Result<span class="token punctuation">,</span>
+                    CancellationToken<span class="token punctuation">.</span>None<span class="token punctuation">,</span> TaskContinuationOptions<span class="token punctuation">.</span>OnlyOnRanToCompletion<span class="token punctuation">,</span>
+                    m_syncContextTaskScheduler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                t<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>task <span class="token operator">=</span><span class="token operator">></span> Text <span class="token operator">=</span> <span class="token string">"Operation canceled"</span><span class="token punctuation">,</span>
+                    CancellationToken<span class="token punctuation">.</span>None<span class="token punctuation">,</span> TaskContinuationOptions<span class="token punctuation">.</span>OnlyOnCanceled<span class="token punctuation">,</span>
+                    m_syncContextTaskScheduler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                t<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>task <span class="token operator">=</span><span class="token operator">></span> Text <span class="token operator">=</span> <span class="token string">"Operation faulted"</span><span class="token punctuation">,</span>
+                    CancellationToken<span class="token punctuation">.</span>None<span class="token punctuation">,</span> TaskContinuationOptions<span class="token punctuation">.</span>OnlyOnFaulted<span class="token punctuation">,</span>
+                    m_syncContextTaskScheduler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">OnMouseClick</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>获得一个对<code>同步上下文任务调度器</code>的引用, 然后在调用<code>ContinueWith</code>延续任务时, 使用此调度器.</p>
+<p><code>m_syncContextTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();</code></p>
+<p><strong>使用线程池很好, 因为GUI线程在此期间不会被阻塞, 能响应其他UI操作, 但线程池线程执行的代码不应尝试更新UI组件, 否则会抛出<code>InvalidOperationException</code>.</strong></p>
+<p><strong>计算限制的任务完成后,执行3个延续任务, 它们由GUI线程对应的同步上下文任务器来调度, 任务调度器将任务放到GUI线程的队列中</strong>, 使它们的代码能成功更新UI组件, 所有任务都通过继承的Text属性来更新窗体的标题.</p>
+<p><strong>由于计算限制的工作(Sum)在线程池上运行, 所以用户可以和UI交互来取消操作</strong>. 在这个简单的例子中, 我允许用户在操作进行期间单击窗体的客户端区域来取消操作.</p>
+<p>当然, 如果有特殊的任务调度需求, 完全可以定义自己的<code>TaskScheduler</code>派生类. Microsoft在Parallel Extensions Extras包中提供了大量和任务有关的示例代码.</p>
+<p><img src="/2019/09/21/000000目录-CLR读书笔记/27计算限制的异步处理/QQ截图20190925002754.png" alt=""></p>
+<p>例如: <code>ThreadPerTaskScheduler</code></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">ThreadPerTaskScheduler</span> <span class="token punctuation">:</span> TaskScheduler
+<span class="token punctuation">{</span>
+    <span class="token keyword">protected</span> <span class="token keyword">override</span> IEnumerable<span class="token operator">&lt;</span>Task<span class="token operator">></span> <span class="token function">GetScheduledTasks</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> Enumerable<span class="token punctuation">.</span><span class="token generic-method function">Empty<span class="token punctuation">&lt;</span>Task<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">protected</span> <span class="token keyword">override</span> <span class="token keyword">void</span> <span class="token function">QueueTask</span><span class="token punctuation">(</span>Task task<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">TryExecuteTask</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>IsBackground <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">}</span><span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">protected</span> <span class="token keyword">override</span> Boolean <span class="token function">TryExecuteTaskInline</span><span class="token punctuation">(</span>Task task<span class="token punctuation">,</span> Boolean taskWasPreviouslyQueued<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">TryExecuteTask</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
         
             <div class="donate-container">
