@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#回顾总结"><span class="toc-text">回顾总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型"><span class="toc-text">引用类型和值类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查看文档区分引用类型和值类型"><span class="toc-text">查看文档区分引用类型和值类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#结构-amp-枚举"><span class="toc-text">结构&枚举</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型的区别"><span class="toc-text">引用类型和值类型的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计类型时-满足什么条件才声明为值类型"><span class="toc-text">设计类型时,满足什么条件才声明为值类型?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的主要优势以及自身的局限"><span class="toc-text">值类型的主要优势以及自身的局限</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR如何控制类型中的字段布局"><span class="toc-text">CLR如何控制类型中的字段布局?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#如何告诉CLR怎么排列"><span class="toc-text">如何告诉CLR怎么排列?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LayoutKind-Explicit说明"><span class="toc-text">LayoutKind.Explicit说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的装箱和拆箱"><span class="toc-text">值类型的装箱和拆箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList中究竟存储了什么-是Point结构还是Point结构的地址"><span class="toc-text">ArrayList中究竟存储了什么? 是Point结构还是Point结构的地址?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#装箱机制发生的事情"><span class="toc-text">装箱机制发生的事情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拆箱机制"><span class="toc-text">拆箱机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#已装箱值类型在拆箱时的过程"><span class="toc-text">已装箱值类型在拆箱时的过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#拆箱和复制例子"><span class="toc-text">拆箱和复制例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从IL代码查看编译器隐式生成的装箱代码"><span class="toc-text">从IL代码查看编译器隐式生成的装箱代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例子一"><span class="toc-text">例子一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#例子二"><span class="toc-text">例子二</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FCL重载了很多常用值类型的方法-减少常用值类型的装箱次数"><span class="toc-text">FCL重载了很多常用值类型的方法,减少常用值类型的装箱次数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例子三-如果要反复对一个值类型装箱-请改为手动方式"><span class="toc-text">例子三(如果要反复对一个值类型装箱,请改为手动方式)</span></a></li></ol></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#回顾总结"><span class="toc-text">回顾总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型"><span class="toc-text">引用类型和值类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查看文档区分引用类型和值类型"><span class="toc-text">查看文档区分引用类型和值类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#结构-amp-枚举"><span class="toc-text">结构&枚举</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用类型和值类型的区别"><span class="toc-text">引用类型和值类型的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计类型时-满足什么条件才声明为值类型"><span class="toc-text">设计类型时,满足什么条件才声明为值类型?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的主要优势以及自身的局限"><span class="toc-text">值类型的主要优势以及自身的局限</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CLR如何控制类型中的字段布局"><span class="toc-text">CLR如何控制类型中的字段布局?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#如何告诉CLR怎么排列"><span class="toc-text">如何告诉CLR怎么排列?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LayoutKind-Explicit说明"><span class="toc-text">LayoutKind.Explicit说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#值类型的装箱和拆箱"><span class="toc-text">值类型的装箱和拆箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList中究竟存储了什么-是Point结构还是Point结构的地址"><span class="toc-text">ArrayList中究竟存储了什么? 是Point结构还是Point结构的地址?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#装箱机制发生的事情"><span class="toc-text">装箱机制发生的事情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拆箱机制"><span class="toc-text">拆箱机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#已装箱值类型在拆箱时的过程"><span class="toc-text">已装箱值类型在拆箱时的过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#拆箱和复制例子"><span class="toc-text">拆箱和复制例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从IL代码查看编译器隐式生成的装箱代码"><span class="toc-text">从IL代码查看编译器隐式生成的装箱代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例子一"><span class="toc-text">例子一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#例子二"><span class="toc-text">例子二</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FCL重载了很多常用值类型的方法-减少常用值类型的装箱次数"><span class="toc-text">FCL重载了很多常用值类型的方法,减少常用值类型的装箱次数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例子三-如果要反复对一个值类型装箱-请改为手动方式"><span class="toc-text">例子三(如果要反复对一个值类型装箱,请改为手动方式)</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#附加一个主题-C-值类型与引用类型相互嵌套"><span class="toc-text">附加一个主题: C#值类型与引用类型相互嵌套</span></a></li></ol>
 </div>
 
     
@@ -182,6 +182,19 @@
 <ul>
 <li>可以将方法定义为泛型,通过约束限制为值类型,这样获取任何值类型而不必装箱.</li>
 <li>如果要对一个值类型反复装箱, 建议手动写代码装箱<code>Object o = v;</code> 减少装箱次数</li>
+</ul>
+</li>
+</ol>
+<p>2019年9月25日</p>
+<ol>
+<li><p>值类型里包含引用类型，如：<code>struct</code>包含<code>class</code>对象。</p>
+<ul>
+<li>该引用类型将作为值类型的成员变量，堆栈上将保存该成员的引用，而成员的实际数据还是保存在托管堆中.</li>
+</ul>
+</li>
+<li><p>引用类型包含值类型，如：<code>class</code>包含<code>int</code>。</p>
+<ul>
+<li>如果是<code>成员变量</code>，做为引用类型的一部分将分配在托管堆上。如果是方法里的<code>局部变量</code>，则分配在该段代码的线程栈上。</li>
 </ul>
 </li>
 </ol>
@@ -567,6 +580,45 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
     Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"{o}+{o}+{o}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="附加一个主题-C-值类型与引用类型相互嵌套"><a href="#附加一个主题-C-值类型与引用类型相互嵌套" class="headerlink" title="附加一个主题: C#值类型与引用类型相互嵌套"></a>附加一个主题: C#值类型与引用类型相互嵌套</h1><ol>
+<li><strong>值类型里包含引用类型</strong>，如：<code>struct</code>包含<code>class</code>对象。</li>
+</ol>
+<p>该引用类型将作为值类型的成员变量，<strong>堆栈上将保存该成员的引用，而成员的实际数据还是保存在托管堆中</strong>.</p>
+<ol>
+<li>引用类型包含值类型，如：<code>class</code>包含<code>int</code>。</li>
+</ol>
+<p>如果是<code>成员变量</code>，<strong>做为引用类型的一部分将分配在托管堆上</strong>。如果是<code>方法里的局部变量</code>，<strong>则分配在该段代码的线程栈上</strong>。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ReceiveTest</span> <span class="token punctuation">:</span> MonoBehaviour
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">Awake</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//对于引用类型new才会有新的内存存在，不new而赋值不会有新的内存存在。</span>
+        <span class="token comment" spellcheck="true">//对于值类型在使用“=”赋值时，会自动调用隐式的构造函数，会new一次。</span>
+        FruitStruct tf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FruitStruct</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        FruitStruct tf2 <span class="token operator">=</span> tf<span class="token punctuation">;</span>
+        tf2<span class="token punctuation">.</span>fruit<span class="token punctuation">.</span>apple <span class="token operator">=</span> <span class="token number">200</span><span class="token punctuation">;</span>
+        tf2<span class="token punctuation">.</span>num <span class="token operator">=</span> <span class="token number">200</span><span class="token punctuation">;</span>
+        <span class="token function">print</span><span class="token punctuation">(</span>tf<span class="token punctuation">.</span>fruit<span class="token punctuation">.</span>apple<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//打印200 说明共用托管堆中同一个FruitClass类实例</span>
+        <span class="token function">print</span><span class="token punctuation">(</span>tf<span class="token punctuation">.</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//打印100 说明堆栈上存在各自的num</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FruitClass</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> apple<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">struct</span> FruitStruct
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> num<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> FruitClass fruit<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">FruitStruct</span><span class="token punctuation">(</span><span class="token keyword">int</span> num<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>num <span class="token operator">=</span> num<span class="token punctuation">;</span>
+        fruit <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FruitClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        fruit<span class="token punctuation">.</span>apple <span class="token operator">=</span> num<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
         
             <div class="donate-container">

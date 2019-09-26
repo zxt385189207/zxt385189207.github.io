@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        28I/O限制的异步操作 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#I-O限制的异步操作"><span class="toc-text">I/O限制的异步操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows如何执行I-O操作"><span class="toc-text">Windows如何执行I/O操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-的异步函数"><span class="toc-text">C#的异步函数</span></a></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        28I/O限制的异步操作
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-26 13:46:54</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="I-O限制的异步操作"><a href="#I-O限制的异步操作" class="headerlink" title="I/O限制的异步操作"></a>I/O限制的异步操作</h1><p>27章讲的是如何异步执行<strong>计算限制的操作</strong>, 允许线程池在多个CPU内核上调度任务,使多个线程能并发工作. 本章重点讲如何异步进行<strong>I/O限制的操作</strong>, 允许将任务交给由硬件设备处理, <strong>期间完全不占用线程和CPU资源</strong>. 然而, 线程池仍然扮演了一个重要的角色, 各种I/O操作的结果还是要由线程池线程来处理.</p>
+<h1 id="Windows如何执行I-O操作"><a href="#Windows如何执行I-O操作" class="headerlink" title="Windows如何执行I/O操作"></a>Windows如何执行I/O操作</h1><p><img src="/2019/09/26/000000目录-CLR读书笔记/28I-O限制的异步操作/QQ截图20190926143904.png" alt=""></p>
+<p>上图是连接了几个硬件设备的计算机系统.</p>
+<ul>
+<li>程序通过构造<code>FileStream对象</code>来打开磁盘文件</li>
+<li>调用<code>Read方法</code>从文件中读取数据<ul>
+<li>调用<code>Read方法</code>时,你的线程从<code>托管代码</code>转变为<code>本机/用户模式代码</code></li>
+<li><code>Read</code>内部调用Win32 <code>ReadFile</code>函数<strong>①</strong><ul>
+<li><code>ReadFile</code>分配一个小的数据结构,称为<code>I/O请求包(I/O Request Packet,IRP)</code><strong>②</strong></li>
+<li><code>IRP结构</code>初始化后包含的内容有: 文件句柄,文件中的偏移量(从这个位置开始读取字符),一个Byte[]数组的地址(数组用读取的字节来填充),要传输的字节数以及其他常规性内容.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>ReadFile</code>将你的线程从<code>本机/用户模式</code>代码转变成<code>本机/内核模式</code>代码, 并传递<code>IRP</code>数据结构,从而调用Window内核<strong>③</strong></li>
+<li>根据IRP中的设备句柄,Windows内核知道<strong>I/O操作</strong>要传送给哪个硬件设备.<ul>
+<li>Windows将<code>IRP</code>传送给对应的设备驱动程序的<code>IRP队列</code><strong>④</strong></li>
+<li>每个设备都维护自己的<code>IRP队列</code>, 其中包含了机器上运行的所有进程发出的<code>I/O请求</code></li>
+</ul>
+</li>
+<li><code>IRP数据包</code>到达时, 设备驱动程序将<code>IRP信息</code>传给<code>物理硬件设备</code>, 硬件设备执行请求的I/O操作<strong>⑤</strong></li>
+</ul>
+<p>注意一个重要问题, 在硬件设备执行I/O操作期间,发出了I/O请求的线程将无事可做, 所以Windows将线程变为睡眠状态,防止它浪费CPU时间<strong>⑥</strong>. 虽然线程不浪费时间，但其仍然浪费空间（内存）,因为它的用户模式栈,内核模式栈,线程环境块,其他数据结构都还在内存中,完全没有谁去访问这些东西.</p>
+<ul>
+<li>最终,硬件设备完成I/O操作,然后Windows会唤醒你的线程,把它调度给一个CPU,使它从内核模式返回用户模式, 再返回至托管代码<strong>⑥⑦⑧</strong><ul>
+<li><code>FileStream对象</code>的<code>Read方法</code>现在返回一个Int32,指明从文件中<strong>读取的实际字节数</strong>, 使你知道在传给Read的<code>Byte[]</code>中, 实际能检索到多少个字节.</li>
+</ul>
+</li>
+</ul>
+<p>上面的步骤看起来很不错，但是依旧存在两个问题：</p>
+<ul>
+<li>请求的数量越来越多，创建的线程就越来越多，那么被阻塞的线程就会越来越多，这样会更浪费内存。</li>
+<li>用执行结果来响应请求，如果请求的数量非常多，那么解锁的阻塞线程也就很多，而且机器上的线程数都会远远大于CPU数，所以在阻塞线程被集中解锁期间CPU很有可能会频繁地发生上下文切换，损害性能。</li>
+</ul>
+<p><img src="/2019/09/26/000000目录-CLR读书笔记/28I-O限制的异步操作/QQ截图20190926163643.png" alt=""></p>
+<p>上图展示Windows如何<strong>异步读取I/O操作</strong>，仍然使用FileStream来构建对象，但是需要传递<code>FileOptions.Asynchronous标志</code>，告诉Windows希望文件的读/写以<strong>异步</strong>的方式进行, 上图删除了除硬盘外的硬件设备, 引入了CLR的线程池, 稍微修改了代码. 传递了<code>FileOptions.Asynchronous</code>标志.</p>
+<ul>
+<li>现在调用<code>ReadAsync</code>而不是<code>Read</code>从文件中读取数据.<code>ReadAsync</code>. 在<code>ReadAsync</code>内部分配一个<code>Task&lt;Int32&gt;</code>对象来代表用于完成的读取操作的代码。然后<code>ReadAsync</code>调用Win32 <code>ReadFile</code>函数<strong>①</strong></li>
+<li><code>ReadFile</code>分配IRP数据包<strong>②</strong></li>
+<li>然后将其传递给Windows内核<strong>③</strong></li>
+<li>Windows内核把IRP数据包添加到IRP队列中<strong>④</strong></li>
+<li>此时线程不会再阻塞，而是可以直接运行返回至你的代码。所以线程能够立即从<code>ReadAsync调用</code>中返回. <strong>⑤⑥⑦</strong></li>
+</ul>
+<p>当然, <strong>此时IRP可能尚未处理好, 所以不能够在ReadAsync之后的代码中访问传递的Byte[]中的字节</strong>.</p>
+<p>那么, 什么时候以及用什么方式处理最终读取的数据呢? 在调用<code>ReadAsync</code>后返回一个<code>Task&lt;Int32&gt;对象</code>，可以在该对象上调用<code>ContinueWith</code>来登记任务完成时执行的回调方法，然后在回调方法中处理数据。当硬件设备处理好IRP后（<strong>步骤a</strong>）。硬件设备会把IRP放到CLR的线程池中队列中（<strong>步骤b</strong>）。将来某个时候，一个线程池会提取完成的IRP并执行任务的代码，最终要么设置异常（如果发生异常），要么返回结果（<strong>步骤c</strong>）。在知道这些之后，就知道使用异步I/O可以尽量的减少同步I/O访问存在的那些问题。</p>
+<h1 id="C-的异步函数"><a href="#C-的异步函数" class="headerlink" title="C#的异步函数"></a>C#的异步函数</h1><p>异步操作允许利用机器中的所有CPU, Microsoft意识到其中的巨大潜力,设计了一个编程模型来帮助开发者利用这种能力. 用到了<code>Task</code>和称为<code>异步函数</code>的C#语言功能.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">async</span> Task<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">IssueClientRequestAsync</span><span class="token punctuation">(</span>String serverName<span class="token punctuation">,</span> String message<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">using</span> <span class="token punctuation">(</span><span class="token keyword">var</span> pipe <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NamedPipeClientStream</span><span class="token punctuation">(</span>serverName<span class="token punctuation">,</span> <span class="token string">"PipeName"</span><span class="token punctuation">,</span> PipeDirection<span class="token punctuation">.</span>InOut<span class="token punctuation">,</span>
+        PipeOptions<span class="token punctuation">.</span>Asynchronous <span class="token operator">|</span> PipeOptions<span class="token punctuation">.</span>WriteThrough<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        pipe<span class="token punctuation">.</span><span class="token function">Connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 必须在设置ReadMode之前连接</span>
+        pipe<span class="token punctuation">.</span>ReadMode <span class="token operator">=</span> PipeTransmissionMode<span class="token punctuation">.</span>Message<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 将数据异步发送给服务器</span>
+        Byte<span class="token punctuation">[</span><span class="token punctuation">]</span> request <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">await</span> pipe<span class="token punctuation">.</span><span class="token function">WriteAsync</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> request<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 异步读取服务器的响应</span>
+        Byte<span class="token punctuation">[</span><span class="token punctuation">]</span> response  <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Byte</span><span class="token punctuation">[</span><span class="token number">1000</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        Int32  bytesRead <span class="token operator">=</span> <span class="token keyword">await</span> pipe<span class="token punctuation">.</span><span class="token function">ReadAsync</span><span class="token punctuation">(</span>response<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> response<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>response<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> bytesRead<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// 关闭管道</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
