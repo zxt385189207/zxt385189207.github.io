@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#I-O限制的异步操作"><span class="toc-text">I/O限制的异步操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows如何执行I-O操作"><span class="toc-text">Windows如何执行I/O操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-的异步函数"><span class="toc-text">C#的异步函数</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#I-O限制的异步操作"><span class="toc-text">I/O限制的异步操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows如何执行I-O操作"><span class="toc-text">Windows如何执行I/O操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-的异步函数"><span class="toc-text">C#的异步函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#编译器如何将异步函数转换成状态机"><span class="toc-text">编译器如何将异步函数转换成状态机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异步函数的扩展性"><span class="toc-text">异步函数的扩展性</span></a></li></ol>
 </div>
 
     
@@ -191,10 +191,15 @@
         PipeOptions<span class="token punctuation">.</span>Asynchronous <span class="token operator">|</span> PipeOptions<span class="token punctuation">.</span>WriteThrough<span class="token punctuation">)</span><span class="token punctuation">)</span>
     <span class="token punctuation">{</span>
         pipe<span class="token punctuation">.</span><span class="token function">Connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 必须在设置ReadMode之前连接</span>
+        <span class="token comment" spellcheck="true">// 将传入的消息转换成一个Byte[]</span>
         pipe<span class="token punctuation">.</span>ReadMode <span class="token operator">=</span> PipeTransmissionMode<span class="token punctuation">.</span>Message<span class="token punctuation">;</span>
 
         <span class="token comment" spellcheck="true">// 将数据异步发送给服务器</span>
         Byte<span class="token punctuation">[</span><span class="token punctuation">]</span> request <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// WriteAsync内部分配一个Task对象, 返回给此方法</span>
+        <span class="token comment" spellcheck="true">// 此时await操作符实际会在Task对象上调用ContinueWith</span>
+        <span class="token comment" spellcheck="true">// 向它传递用于恢复状态机的方法</span>
+        <span class="token comment" spellcheck="true">// 然后线程从IssueClientRequestAsync返回至调用处</span>
         <span class="token keyword">await</span> pipe<span class="token punctuation">.</span><span class="token function">WriteAsync</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> request<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
         <span class="token comment" spellcheck="true">// 异步读取服务器的响应</span>
@@ -203,7 +208,476 @@
         <span class="token keyword">return</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>response<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> bytesRead<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// 关闭管道</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一旦将方法标记为<code>async</code>, 编译器就会将方法的代码转换成实现了状态机的一个类型. 这就允许线程执行状态机中的一些代码并返回, 方法不需要一直执行到结束.</p>
+<p><code>WriteAsync</code>内部分配一个<code>Task对象</code>, 返回给此方法,此时<code>await操作符</code>实际会在<code>Task</code>对象上调用<code>ContinueWith</code>,向它传递用于<strong>恢复状态机的方法</strong>,然后<strong>线程</strong>从<code>IssueClientRequestAsync</code>返回至调用处.</p>
+<p>将来某个时候,设备驱动程序会结束向管道的写入, 一个线程池线程会通知Task对象, 后来激活<code>ContinueWith</code>回调方法, 造成一个线程恢复状态机. 具体地说, 一个线程会重新进入<code>IssueClientRequestAsync</code>方法, 但这次是从<code>await操作符</code>的位置开始. 方法现在执行编译器生成的,用于查询Task对象状态的代码. 如果操作成功完成,await操作符会返回结果, 如果操作失败,会设置代表错误的一个异常. 在本例中,<code>WriteAsync</code>返回一个<code>Task</code>而不是<code>Task&lt;TResult&gt;</code>,所以无返回值.</p>
+<p>现在方法继续执行, 分配一个Byte[]并调用<code>NamedPipeClientStream</code>的<code>异步ReadAsync</code>方法. 方法内部创建一个<code>Task&lt;Int32&gt;</code>对象并返回它, 同样的, <code>await操作符</code>实际会在<code>Task&lt;Int32&gt;</code>对象上调用<code>ContinueWith</code>向它传递用于<strong>恢复状态机的方法</strong>,然后<strong>线程</strong>从<code>IssueClientRequestAsync</code>返回至调用处.</p>
+<p>将来某个时候, 服务器向客户机发送一个响应, 网络设备驱动程序获得这个响应, 一个线程池线程通知<code>Task&lt;Int32&gt;</code>对象, 恢复状态机.<code>await操作符</code>造成编译器生成代码来查询<code>Task对象</code>的<code>Result属性(含有一个Int32)</code>并将结果赋给局部变量<code>bytesRead</code>; 如果操作失败则抛出异常. 然后执行<code>IssueClientRequestAsync</code>剩余的代码, 返回结果字符串并关闭管道.</p>
+<p>由于异步函数在状态机执行完毕之前返回, 所有在<code>IssueClientRequestAsync</code>执行它的第一个<code>await操作符</code>之后, 调用<code>IssueClientRequestAsync</code>的方法会继续执行, <strong>但是调用者如何知道<code>IssueClientRequestAsync</code>已经执行完毕它的状态机呢?</strong> 一旦将方法标记了<code>async</code>,编译器会自动生成代码, 在状态机开始执行时创建一个<code>Task对象</code>. <strong>该Task对象在状态机执行完毕时自动完成</strong>. 在<code>IssueClientRequestAsync</code>方法靠近尾部的地方, 我返回了一个字符串, 这造成编译器生成的代码完成它创建的<code>Task&lt;String&gt;</code>对象, 把对象的<code>Result属性</code>设为返回的字符串.</p>
+<p><strong>异步函数存在以下限制:</strong></p>
+<ol>
+<li>不能将应用程序的<code>Main方法</code>转变成异步函数. <code>构造器</code>,<code>属性访问器方法</code>和<code>事件访问器方法</code>也不能转变成异步函数.</li>
+<li>异步函数不能使用任何<code>out</code>或<code>ref</code>参数</li>
+<li>不能在<code>catch</code>,<code>finally</code>,<code>unsafe</code>块中使用<code>await操作符</code></li>
+<li>不能在await操作符前获得一个支持线程所有权或递归的锁,并在await之后释放它. 这是<strong>因为await操作符之前的代码由一个线程执行, 之后的代码则可能由另一个线程执行</strong>. 在lock语句中使用await会报错, 如果显式调用Monitor的Enter和Exit方法,虽然能编译,但是运行时会抛出一个<code>SynchronzizationLockException</code></li>
+<li>在查询表达式中, await操作符只能在初始from子句的第一个集合表达式中使用,或者join子句的集合表达式中使用.</li>
+</ol>
+<p>以上限制会在你违反时,编译器会提醒你.</p>
+<blockquote>
+<p>不要让线程等待一个线程同步构造从而造成线程的阻塞. 相反可以等待await从SemaphoreSlim的WaitAsync方法或者我自己的OneManyLock的AcquireAsync方法所返回的任务,从而避免线程被阻塞.</p>
+</blockquote>
+<h1 id="编译器如何将异步函数转换成状态机"><a href="#编译器如何将异步函数转换成状态机" class="headerlink" title="编译器如何将异步函数转换成状态机"></a>编译器如何将异步函数转换成状态机</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Type1</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">private</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Type2</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> Task<span class="token operator">&lt;</span>Type1<span class="token operator">></span> <span class="token function">Method1Async</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 以异步方式执行一些操作, 最后返回一个Type1对象</span>
+    <span class="token keyword">return</span> Task<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">/*Task.Yield(); */</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Type1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> Task<span class="token operator">&lt;</span>Type2<span class="token operator">></span> <span class="token function">Method2Async</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 以异步方式执行一些操作, 最后返回一个Type2对象</span>
+    <span class="token keyword">return</span> Task<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">/*Task.Yield(); */</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Type2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 通过异步函数来使用这些简单的类型和方法</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">async</span> Task<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">MyMethodAsync</span><span class="token punctuation">(</span>Int32 argument<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 local <span class="token operator">=</span> argument<span class="token punctuation">;</span>
+    <span class="token keyword">try</span>
+    <span class="token punctuation">{</span>
+        Type1 result1 <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">Method1Async</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> x <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Type2 result2 <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">Method2Async</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Catch"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">finally</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Finally"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token string">"Done"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后对IL代码进行逆向工程转换回C#源代码. 简化了一些代码,并添加了大量注释.</p>
+<p>编译为IL代码后，再利用ILSPY把IL代码反编译为C#代码,在返编译IL代码的时候，需要注意，不能勾选“decompile async methods(async/await)”</p>
+<p><img src="/2019/09/26/000000目录-CLR读书笔记/28I-O限制的异步操作/1070689-20181109003743510-266966892.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// AsyncStateMachine 特性指出这是一个异步方法(对反射的工具有用)</span>
+<span class="token comment" spellcheck="true">// 类型指出实现状态机的是哪个结构</span>
+<span class="token punctuation">[</span>DebuggerStepThrough<span class="token punctuation">,</span> <span class="token function">AsyncStateMachine</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>StateMachine<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> Task<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">MyMethodAsync_ActualImplementation</span><span class="token punctuation">(</span>Int32 argument<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 创建状态机实例并初始化它</span>
+    StateMachine stateMachine <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StateMachine</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 创建builder,这个存根方法返回Task&lt;String></span>
+        <span class="token comment" spellcheck="true">// Statemachine(状态机)实例访问builder来设置Task 完成/异常</span>
+        m_builder <span class="token operator">=</span> AsyncTaskMethodBuilder<span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">.</span><span class="token function">Create</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+
+        m_state    <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>      <span class="token comment" spellcheck="true">// 初始化状态机</span>
+        m_argument <span class="token operator">=</span> argument <span class="token comment" spellcheck="true">// 将实参拷贝到状态机字段</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 开始执行状态机</span>
+    stateMachine<span class="token punctuation">.</span>m_builder<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token keyword">ref</span> stateMachine<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 返回状态机的Task</span>
+    <span class="token keyword">return</span> stateMachine<span class="token punctuation">.</span>m_builder<span class="token punctuation">.</span>Task<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token comment" spellcheck="true">// 这是状态机结构</span>
+<span class="token punctuation">[</span>CompilerGenerated<span class="token punctuation">,</span> <span class="token function">StructLayout</span><span class="token punctuation">(</span>LayoutKind<span class="token punctuation">.</span>Auto<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">private</span> <span class="token keyword">struct</span> StateMachine <span class="token punctuation">:</span> IAsyncStateMachine
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 代表状态机builder(Task)及其位置的字段</span>
+    <span class="token keyword">public</span> AsyncTaskMethodBuilder<span class="token operator">&lt;</span>String<span class="token operator">></span> m_builder<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> Int32                          m_state<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 实参和局部变量现在成了字段</span>
+    <span class="token keyword">public</span> Int32 m_argument<span class="token punctuation">,</span> m_local<span class="token punctuation">,</span> m_x<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> Type1 m_resultType1<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> Type2 m_resultType2<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 每个awaiter类型只有一个字段</span>
+    <span class="token comment" spellcheck="true">// 任何时候这些字段只有一个是重要的, 那个字段引用最近执行的,以异步方式完成的await</span>
+    <span class="token keyword">private</span> TaskAwaiter<span class="token operator">&lt;</span>Type1<span class="token operator">></span> m_awaiterType1<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> TaskAwaiter<span class="token operator">&lt;</span>Type2<span class="token operator">></span> m_awaiterType2<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 状态机方法本身</span>
+    <span class="token keyword">void</span> IAsyncStateMachine<span class="token punctuation">.</span><span class="token function">MoveNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// Task的结果值</span>
+        String result <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 编译器插入try块来确保状态机的任务完成</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 先假定逻辑上离开try块</span>
+            Boolean executeFinally <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>m_state <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 如果第一次在状态机方法中</span>
+                <span class="token comment" spellcheck="true">// 原始方法就从头开始执行</span>
+                m_local <span class="token operator">=</span> m_argument<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment" spellcheck="true">// 原始代码中的try块</span>
+            <span class="token keyword">try</span>
+            <span class="token punctuation">{</span>
+                TaskAwaiter<span class="token operator">&lt;</span>Type1<span class="token operator">></span> awaiterType1<span class="token punctuation">;</span>
+                TaskAwaiter<span class="token operator">&lt;</span>Type2<span class="token operator">></span> awaiterType2<span class="token punctuation">;</span>
+
+                <span class="token keyword">switch</span> <span class="token punctuation">(</span>m_state<span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    <span class="token keyword">case</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// 开始执行try块中的代码</span>
+                        <span class="token comment" spellcheck="true">// 调用'Method1Async'并获得它的awaiter</span>
+                        awaiterType1 <span class="token operator">=</span> <span class="token function">Method1Async</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetAwaiter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>awaiterType1<span class="token punctuation">.</span>IsCompleted<span class="token punctuation">)</span>
+                        <span class="token punctuation">{</span>
+                            <span class="token comment" spellcheck="true">// 'Method1Async'要以异步方式完成</span>
+                            m_state        <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                            <span class="token comment" spellcheck="true">//保存 awaiter 以便将来返回</span>
+                            m_awaiterType1 <span class="token operator">=</span> awaiterType1<span class="token punctuation">;</span>
+
+                            <span class="token comment" spellcheck="true">// 告诉awaiter在操作完成时调用MoveNext</span>
+                            <span class="token comment" spellcheck="true">// 引用状态机的MoveNext方法</span>
+                            m_builder<span class="token punctuation">.</span><span class="token function">AwaitUnsafeOnCompleted</span><span class="token punctuation">(</span><span class="token keyword">ref</span> awaiterType1<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                            <span class="token comment" spellcheck="true">// 上述代码调用awaiterType1的OnCompleted, 它会在被等待的任务上</span>
+                            <span class="token comment" spellcheck="true">// 调用ContinueWith(t => MoveNext())</span>
+                            <span class="token comment" spellcheck="true">// 任务完成后, ContinueWith任务调用MovedNext</span>
+
+                            executeFinally <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 逻辑上不离开try块</span>
+                            <span class="token keyword">return</span><span class="token punctuation">;</span>                 <span class="token comment" spellcheck="true">// 线程返回至调用者</span>
+                        <span class="token punctuation">}</span>
+
+                        <span class="token comment" spellcheck="true">// 'Method1Async' 以同步方式完成了</span>
+                        <span class="token keyword">break</span><span class="token punctuation">;</span>
+
+                    <span class="token keyword">case</span> <span class="token number">0</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// 'Method1Async' 以异步方式完成了</span>
+                        awaiterType1 <span class="token operator">=</span> m_awaiterType1<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 恢复最新的awaiter</span>
+                        <span class="token keyword">break</span><span class="token punctuation">;</span>
+
+                    <span class="token keyword">case</span> <span class="token number">1</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// 'Method2Async' 以异步方式完成了</span>
+                        awaiterType2 <span class="token operator">=</span> m_awaiterType2<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 恢复最新的awaiter</span>
+                        <span class="token keyword">goto</span> ForLoopEpilog<span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+
+                <span class="token comment" spellcheck="true">// 在第一个await后, 我们捕捉结果并启动for循环</span>
+                m_resultType1 <span class="token operator">=</span> awaiterType1<span class="token punctuation">.</span><span class="token function">GetResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 获取awaiter的结果</span>
+
+                <span class="token comment" spellcheck="true">// for循环开场</span>
+                ForLoopPrologue<span class="token punctuation">:</span>
+                m_x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>          <span class="token comment" spellcheck="true">// for循环初始化</span>
+                <span class="token keyword">goto</span> ForLoopBody<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 跳到for循环主体ForLoopBody</span>
+
+                <span class="token comment" spellcheck="true">// for循环尾声</span>
+                ForLoopEpilog<span class="token punctuation">:</span>
+                m_resultType2 <span class="token operator">=</span> awaiterType2<span class="token punctuation">.</span><span class="token function">GetResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                m_x<span class="token operator">++</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 每次循环迭代都递增</span>
+                <span class="token comment" spellcheck="true">// 直通到for循环主体</span>
+
+                <span class="token comment" spellcheck="true">// for循环主体</span>
+                ForLoopBody<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>m_x <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">// for循环测试</span>
+                    <span class="token comment" spellcheck="true">// 调用Method2Async并获取它的awaiter</span>
+                    awaiterType2 <span class="token operator">=</span> <span class="token function">Method2Async</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetAwaiter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>awaiterType2<span class="token punctuation">.</span>IsCompleted<span class="token punctuation">)</span>
+                    <span class="token punctuation">{</span>
+                        m_state        <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 'Method2Async' 以异步方式完成</span>
+                        m_awaiterType2 <span class="token operator">=</span> awaiterType2<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 保存awaiter以便将来返回</span>
+
+                        <span class="token comment" spellcheck="true">// 告诉awaiter在操作完成时调用MoveNext</span>
+                        m_builder<span class="token punctuation">.</span><span class="token function">AwaitUnsafeOnCompleted</span><span class="token punctuation">(</span><span class="token keyword">ref</span> awaiterType2<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        executeFinally <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 逻辑上不离开try块</span>
+                        <span class="token keyword">return</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 线程返回至调用者</span>
+                    <span class="token punctuation">}</span>
+
+                    <span class="token comment" spellcheck="true">// 'Method2Async' 以同步方式完成了</span>
+                    <span class="token keyword">goto</span> ForLoopEpilog<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 以同步方式完成就再次循环</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Catch"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">finally</span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 只要线程物理上离开try就会执行finally</span>
+                <span class="token comment" spellcheck="true">// 我们希望在线程逻辑上离开try时才执行这些代码</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>executeFinally<span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Finally"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+            <span class="token comment" spellcheck="true">// 这是最终从异步函数返回的东西</span>
+            result <span class="token operator">=</span> <span class="token string">"Done"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> exception<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 从未处理的异常: 通过设置异常来完成状态机的Task</span>
+            m_builder<span class="token punctuation">.</span><span class="token function">SetException</span><span class="token punctuation">(</span>exception<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 无异常,通过返回结果来完成状态机的Task</span>
+        m_builder<span class="token punctuation">.</span><span class="token function">SetResult</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span>DebuggerHidden<span class="token punctuation">]</span>
+    <span class="token keyword">void</span> IAsyncStateMachine<span class="token punctuation">.</span><span class="token function">SetStateMachine</span><span class="token punctuation">(</span>IAsyncStateMachine param0<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_builder<span class="token punctuation">.</span><span class="token function">SetStateMachine</span><span class="token punctuation">(</span>param0<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如何将<strong>被等待的对象</strong>与<strong>状态机</strong>粘合起来, 任何时候需要使用await操作符,编译器都会获取操作数, 并尝试在它上面调用GetAwaiter方法. 这可能是实例方法或者扩展方法. 调用<code>GetAwaiter方法</code>所返回的对象称为<code>awaiter(等待者)</code>, 正是它将<code>被等待的对象</code>与<code>状态机</code>粘合起来.</p>
+<p>状态机获得<code>awaiter</code>后, 会查询其<code>IsCompleted</code>属性.</p>
+<ul>
+<li>如果操作已经以同步方式完成了, 属性将返回<code>true</code>, 而作为一项优化措施, 状态机将继续执行并调用<code>awaiter</code>的<code>GetResult方法</code>. 该方法要么抛出异常, 要么返回结果. 状态机继续执行以处理结果.</li>
+<li>如果操作以异步方式完成, <code>IsCompleted</code>属性将返回<code>false</code>. 状态机调用<code>awaiter</code>的<code>OnCompleted</code>方法, 并向它传递一个委托(引用状态机的<code>MoveNext方法</code>). 现在状态机允许它的线程回到原地以执行其他代码. 将来某个时候, 封装了底层任务的<code>awaiter</code>会在完成时调用委托以执行<code>MoveNext</code>. 可根据状态机中的字段知道如何到达代码中的正确位置. 使方法能从它当初离开的位置继续. 这时, 代码调用<code>awaiter</code>的<code>GetResult</code>方法, 执行将从这里继续, 以便对结果进行处理.</li>
+</ul>
+<p>这就是异步函数的工作原理.</p>
+<p><img src="/2019/09/26/000000目录-CLR读书笔记/28I-O限制的异步操作/1070689-20181109003820378-103290947.png" alt=""></p>
+<p>但任务未完成时，<code>isCompleted</code>返回<code>false</code>，所以会在<code>onCompleted</code>登记任务完成时会调用的<code>action</code>动作，<code>action</code>动作执行完成后，会再一次调用<code>MoveNext</code>，然后<code>isCompleted</code>就返回<code>true</code>,此时就可以通过<code>GetResult</code>获得结果。</p>
+<h1 id="异步函数的扩展性"><a href="#异步函数的扩展性" class="headerlink" title="异步函数的扩展性"></a>异步函数的扩展性</h1><p>在扩展性方面, 能用<code>Task对象</code>包装一个将来完成的操作, 就可以用<code>await操作符</code>来等待该操作. 用一个类型Task来表示各种异步操作. 可以实现组合操作(<code>WhenAll</code>和<code>WhenAny</code>)和其他有用的操作. 之后会演示用<code>Task</code>包装一个<code>CancellationToken</code>,在等待异步操作的同事利用超时和取消功能.</p>
+<p>分享一个<code>TaskLogger类</code>, 用它显示尚未完成的异步操作. 这在调试时特别有用, 尤其是当应用程序因为错误的请求或者未响应的服务器而挂起的时候.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">TaskLogger</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">async</span> Task <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+<span class="token preprocessor property">#<span class="token directive keyword">if</span> DEBUG</span>
+            <span class="token comment" spellcheck="true">// 使用TaskLogger会影响内存和性能, 所以只在调试生成中启用它</span>
+            TaskLogger<span class="token punctuation">.</span>LogLevel <span class="token operator">=</span> TaskLogger<span class="token punctuation">.</span>TaskLogLevel<span class="token punctuation">.</span>Pending<span class="token punctuation">;</span>
+<span class="token preprocessor property">#<span class="token directive keyword">endif</span></span>
+
+            <span class="token comment" spellcheck="true">// 初始化3个任务, 为了测试TaskLogger,我们显式控制其持续时间</span>
+            <span class="token keyword">var</span> tasks <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Task<span class="token operator">></span>
+            <span class="token punctuation">{</span>
+                Task<span class="token punctuation">.</span><span class="token function">Delay</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"2s op"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                Task<span class="token punctuation">.</span><span class="token function">Delay</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"5s op"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                Task<span class="token punctuation">.</span><span class="token function">Delay</span><span class="token punctuation">(</span><span class="token number">6000</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"6s op"</span><span class="token punctuation">)</span>
+            <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">try</span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 等待全部任务, 但在3秒后取消; 只有一个任务能按时完成</span>
+                <span class="token comment" spellcheck="true">// 注意: WithCancellation扩展方法将在本章之后进行讲述</span>
+                <span class="token keyword">await</span> Task<span class="token punctuation">.</span><span class="token function">WhenAll</span><span class="token punctuation">(</span>tasks<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">WithCancellation</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Token<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">OperationCanceledException</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment" spellcheck="true">// 查询logger哪些任务尚未完成, 按照从等待时间最长到最短的顺序排序</span>
+            <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> op <span class="token keyword">in</span> TaskLogger<span class="token punctuation">.</span><span class="token function">GetLogEntries</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">OrderBy</span><span class="token punctuation">(</span>tle <span class="token operator">=</span><span class="token operator">></span> tle<span class="token punctuation">.</span>LogTime<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>op<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">enum</span> TaskLogLevel
+        <span class="token punctuation">{</span>
+            None<span class="token punctuation">,</span>
+            Pending
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">static</span> TaskLogLevel LogLevel <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">TaskLogEntry</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">public</span> Task     Task             <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">internal</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+            <span class="token keyword">public</span> String   Tag              <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">internal</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+            <span class="token keyword">public</span> DateTime LogTime          <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">internal</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+            <span class="token keyword">public</span> String   CallerMemberName <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">internal</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+            <span class="token keyword">public</span> String   CallerFilePath   <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">internal</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+            <span class="token keyword">public</span> Int32    CallerLineNumber <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">internal</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+            <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> String<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"LogTime={0}, Tag={1}, Member={2}, File={3}({4})"</span><span class="token punctuation">,</span>
+                    LogTime<span class="token punctuation">,</span> Tag <span class="token operator">?</span><span class="token operator">?</span> <span class="token string">"(none)"</span><span class="token punctuation">,</span> CallerMemberName<span class="token punctuation">,</span> CallerFilePath<span class="token punctuation">,</span> CallerLineNumber<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> ConcurrentDictionary<span class="token operator">&lt;</span>Task<span class="token punctuation">,</span> TaskLogEntry<span class="token operator">></span> s_log <span class="token operator">=</span>
+            <span class="token keyword">new</span> <span class="token class-name">ConcurrentDictionary</span><span class="token operator">&lt;</span>Task<span class="token punctuation">,</span> TaskLogEntry<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">static</span> IEnumerable<span class="token operator">&lt;</span>TaskLogEntry<span class="token operator">></span> <span class="token function">GetLogEntries</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> s_log<span class="token punctuation">.</span>Values<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">static</span> Task<span class="token operator">&lt;</span>TResult<span class="token operator">></span> <span class="token generic-method function">Log<span class="token punctuation">&lt;</span>TResult<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">this</span> Task<span class="token operator">&lt;</span>TResult<span class="token operator">></span> task<span class="token punctuation">,</span> String tag <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+            <span class="token punctuation">[</span>CallerMemberName<span class="token punctuation">]</span>                        String        callerMemberName <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+            <span class="token punctuation">[</span>CallerFilePath<span class="token punctuation">]</span>                          String        callerFilePath   <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+            <span class="token punctuation">[</span>CallerLineNumber<span class="token punctuation">]</span>                        Int32         callerLineNumber <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token punctuation">(</span>Task<span class="token operator">&lt;</span>TResult<span class="token operator">></span><span class="token punctuation">)</span> <span class="token function">Log</span><span class="token punctuation">(</span><span class="token punctuation">(</span>Task<span class="token punctuation">)</span> task<span class="token punctuation">,</span> tag<span class="token punctuation">,</span> callerMemberName<span class="token punctuation">,</span> callerFilePath<span class="token punctuation">,</span> callerLineNumber<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">static</span> Task <span class="token function">Log</span><span class="token punctuation">(</span><span class="token keyword">this</span> Task   task<span class="token punctuation">,</span> String tag <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+            <span class="token punctuation">[</span>CallerMemberName<span class="token punctuation">]</span>      String callerMemberName <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+            <span class="token punctuation">[</span>CallerFilePath<span class="token punctuation">]</span>        String callerFilePath   <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+            <span class="token punctuation">[</span>CallerLineNumber<span class="token punctuation">]</span>      Int32  callerLineNumber <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>LogLevel <span class="token operator">==</span> TaskLogLevel<span class="token punctuation">.</span>None<span class="token punctuation">)</span> <span class="token keyword">return</span> task<span class="token punctuation">;</span>
+            <span class="token keyword">var</span> logEntry <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TaskLogEntry</span>
+            <span class="token punctuation">{</span>
+                Task             <span class="token operator">=</span> task<span class="token punctuation">,</span>
+                LogTime          <span class="token operator">=</span> DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">,</span>
+                Tag              <span class="token operator">=</span> tag<span class="token punctuation">,</span>
+                CallerMemberName <span class="token operator">=</span> callerMemberName<span class="token punctuation">,</span>
+                CallerFilePath   <span class="token operator">=</span> callerFilePath<span class="token punctuation">,</span>
+                CallerLineNumber <span class="token operator">=</span> callerLineNumber
+            <span class="token punctuation">}</span><span class="token punctuation">;</span>
+            s_log<span class="token punctuation">[</span>task<span class="token punctuation">]</span> <span class="token operator">=</span> logEntry<span class="token punctuation">;</span>
+            task<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>t <span class="token operator">=</span><span class="token operator">></span>
+                <span class="token punctuation">{</span>
+                    TaskLogEntry entry<span class="token punctuation">;</span>
+                    s_log<span class="token punctuation">.</span><span class="token function">TryRemove</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> <span class="token keyword">out</span> entry<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                TaskContinuationOptions<span class="token punctuation">.</span>ExecuteSynchronously<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> task<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 输出以下结果:</span>
+<span class="token comment" spellcheck="true">// LogTime=2019/9/27 13:30:46, Tag=6s op, Member=Go, File=D:\TD_ET\ConsoleApp1\ConsoleApp1\Program.cs(41)</span>
+<span class="token comment" spellcheck="true">// LogTime=2019/9/27 13:30:46, Tag=5s op, Member=Go, File=D:\TD_ET\ConsoleApp1\ConsoleApp1\Program.cs(40)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Callation类，用于取消正在执行的异步操作:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Cancellation</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">struct</span> Void <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">async</span> Task <span class="token function">WithCancellation</span><span class="token punctuation">(</span><span class="token keyword">this</span> Task originalTask<span class="token punctuation">,</span> CancellationToken ct<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//创建在Cancellation被取消时完成的一个Task</span>
+        <span class="token keyword">var</span> cancelTask <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TaskCompletionSource</span><span class="token operator">&lt;</span>Void<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">using</span> <span class="token punctuation">(</span>ct<span class="token punctuation">.</span><span class="token function">Register</span><span class="token punctuation">(</span>t <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">(</span>TaskCompletionSource<span class="token operator">&lt;</span>Void<span class="token operator">></span><span class="token punctuation">)</span>t<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">TrySetResult</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Void</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> cancelTask<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+            <span class="token comment" spellcheck="true">//创建在原始Task或CancellationToken Task完成时都完成的一个Task</span>
+            Task any <span class="token operator">=</span> <span class="token keyword">await</span> Task<span class="token punctuation">.</span><span class="token function">WhenAny</span><span class="token punctuation">(</span>originalTask<span class="token punctuation">,</span>cancelTask<span class="token punctuation">.</span>Task<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">//任务Task因为CancellationToken而完成，就抛出OperationCanceledException</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>any <span class="token operator">==</span> cancelTask<span class="token punctuation">.</span>Task<span class="token punctuation">)</span>
+                ct<span class="token punctuation">.</span><span class="token function">ThrowIfCancellationRequested</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//等待原始任务；若任务失败，它将抛出一个异常</span>
+        <span class="token keyword">await</span> originalTask<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>除了增强使用<code>Task</code>时的灵活性, 异步函数另一个对扩展性有力的地方在于编译器可以在<code>await</code>的任何操作数上调用<code>GetAwaiter</code>. 所以操作数不一定是<code>Task对象</code>. 可以是任意类型, 只要提供一个可以调用一个可以调用的<code>GetAwaiter方法</code>. 下例展示我自己的<code>awaiter</code>,在异步方法的状态机和被引发的事件之间, 它扮演粘合剂的角色.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">EventAwaiterDemo</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 演示这一切是如何工作的</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">ShowExceptions</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>Int32 x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> x <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">try</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">switch</span> <span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    <span class="token keyword">case</span> <span class="token number">0</span><span class="token punctuation">:</span> <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidOperationException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">case</span> <span class="token number">1</span><span class="token punctuation">:</span> <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ObjectDisposedException</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">case</span> <span class="token number">2</span><span class="token punctuation">:</span> <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentOutOfRangeException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">catch</span>
+            <span class="token punctuation">{</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 以下方法使用我的EventAwaiter类在事件发生时候从await操作符返回,</span>
+    <span class="token comment" spellcheck="true">// 在本例中, 一旦AppDomain中的任何线程抛出异常, 状态机就会继续</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">async</span> <span class="token keyword">void</span> <span class="token function">ShowExceptions</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> eventAwaiter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventAwaiter</span><span class="token operator">&lt;</span>FirstChanceExceptionEventArgs<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        AppDomain<span class="token punctuation">.</span>CurrentDomain<span class="token punctuation">.</span>FirstChanceException <span class="token operator">+</span><span class="token operator">=</span> eventAwaiter<span class="token punctuation">.</span>EventRaised<span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"AppDomain exception: {0}"</span><span class="token punctuation">,</span>
+                <span class="token punctuation">(</span><span class="token keyword">await</span> eventAwaiter<span class="token punctuation">)</span><span class="token punctuation">.</span>Exception<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">EventAwaiter</span><span class="token operator">&lt;</span>TEventArgs<span class="token operator">></span> <span class="token punctuation">:</span> INotifyCompletion
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> ConcurrentQueue<span class="token operator">&lt;</span>TEventArgs<span class="token operator">></span> m_events <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcurrentQueue</span><span class="token operator">&lt;</span>TEventArgs<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">private</span> Action                      m_continuation<span class="token punctuation">;</span>
+
+        <span class="token preprocessor property">#<span class="token directive keyword">region</span> 状态机调用的成员</span>
+
+        <span class="token comment" spellcheck="true">// 状态机先调用这个来获得awaiter:我们自己返回自己</span>
+        <span class="token keyword">public</span> EventAwaiter<span class="token operator">&lt;</span>TEventArgs<span class="token operator">></span> <span class="token function">GetAwaiter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 告诉状态机是否发生了任何事件</span>
+        <span class="token keyword">public</span> Boolean IsCompleted
+        <span class="token punctuation">{</span>
+            <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> m_events<span class="token punctuation">.</span>Count <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 状态机告诉我们最后要调用什么方法, 我们把它保存起来</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">OnCompleted</span><span class="token punctuation">(</span>Action continuation<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Volatile<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token keyword">ref</span> m_continuation<span class="token punctuation">,</span> continuation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 状态机查询结果; 这是await操作符的结果</span>
+        <span class="token keyword">public</span> TEventArgs <span class="token function">GetResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            TEventArgs e<span class="token punctuation">;</span>
+            m_events<span class="token punctuation">.</span><span class="token function">TryDequeue</span><span class="token punctuation">(</span><span class="token keyword">out</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> e<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+
+        <span class="token comment" spellcheck="true">//如果引发了事件, 多个线程可能同时调用</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">EventRaised</span><span class="token punctuation">(</span>Object sender<span class="token punctuation">,</span> TEventArgs eventArgs<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            m_events<span class="token punctuation">.</span><span class="token function">Enqueue</span><span class="token punctuation">(</span>eventArgs<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 保存EventArgs以便从GetResult/await返回</span>
+
+            <span class="token comment" spellcheck="true">// 如果有一个等待进行的延续任务, 该线程会运行它</span>
+            Action continuation <span class="token operator">=</span> Interlocked<span class="token punctuation">.</span><span class="token function">Exchange</span><span class="token punctuation">(</span><span class="token keyword">ref</span> m_continuation<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>continuation <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token function">continuation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 恢复状态机</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>笔者自定义的<code>EventAwaiter&lt;TEventArgs&gt;</code>提供了<code>GetAwaiter()</code>、<code>isCompleted()</code>、<code>onCompleted(Action continuation)</code>、<code>GetResult()</code>几个重要的方法，其实这几个方法恰好对应了第3.1中“异步函数如何转化为状态机”中状态机需要操作的各个方法，在3.1中笔者给出一张状态机执行的流程图</p>
+<p><img src="/2019/09/26/000000目录-CLR读书笔记/28I-O限制的异步操作/1070689-20181109003820378-103290947.png" alt=""></p>
+<p>笔者接下来结合这个案例，说一说本例的流程：</p>
+<ol>
+<li>当执行到<code>await eventAwaiter</code>时，会去调用<code>eventAwaiter</code>的<code>GetAwaiter()</code>方法，然后得到<code>Awaiter</code>对象。</li>
+<li>查询<code>Awaiter</code>对象和<code>IsCompleted()</code>方法，判断当前<code>Awaiter</code>是否发生了事件。</li>
+<li>若<code>Awaiter</code>还没有发生事件，就调用<code>OnCompleted(Action)</code>方法，并且传递一个<code>Action</code>委托给<code>OnCompleted()</code>方法，其中的<code>Action</code>委托里就包含了恢复状态机的逻辑。</li>
+<li>此时还没有线程执行恢复状态机的代码，<code>await eventWaiter</code> 的线程将会被阻塞。</li>
+<li>当结合本例的程序逻辑，当出现异常时<code>EventRaised</code>会被调用，然后在<code>EventRaised</code>中会恢复状态机，唤醒<code>await eventWaiter</code>阻塞的线程。</li>
+<li>状态机然后会再次调用<code>IsCompleted方法</code>判断是否有事件，这时m_events 已经有一个事件了，所以<code>IsCompleted</code>会返回<code>true</code>。</li>
+<li>状态机接着调用<code>GetResult</code>，并且将结果值赋值给await关键字的表达式。</li>
+</ol>
 
         
             <div class="donate-container">

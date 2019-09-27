@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        28I/O限制的异步操作2 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#异步函数和事件处理程序"><span class="toc-text">异步函数和事件处理程序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#FCL的异步函数"><span class="toc-text">FCL的异步函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异步函数和异常处理"><span class="toc-text">异步函数和异常处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异步函数的其他功能-调试功能"><span class="toc-text">异步函数的其他功能(调试功能)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#应用程序及其线程处理模型"><span class="toc-text">应用程序及其线程处理模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#以异步方法实现服务器"><span class="toc-text">以异步方法实现服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#取消I-O操作"><span class="toc-text">取消I/O操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#有的I-O操作必须同步进行"><span class="toc-text">有的I/O操作必须同步进行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#FileSteam特有的问题"><span class="toc-text">FileSteam特有的问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#I-O请求优先级"><span class="toc-text">I/O请求优先级</span></a></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        28I/O限制的异步操作2
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-27 13:45:33</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="异步函数和事件处理程序"><a href="#异步函数和事件处理程序" class="headerlink" title="异步函数和事件处理程序"></a>异步函数和事件处理程序</h1><p>异步函数的返回类型一般是<code>Task</code>或<code>Task&lt;TResult&gt;</code>, 它们代表函数的状态机完成. 但异步函数是可以返回void的. 实现<code>异步事件处理程序</code>时, C#编译器允许你利用这个特殊情况简化编码. 几乎<code>所有事件处理程序</code>都遵循以下方法签名:</p>
+<p><code>void EventHandlerCallback(Object sender, EventArgs e);</code></p>
+<p>但经常需要在事件处理方法中执行I/O操作. 比如在用户点击UI元素来打开并读取文件时. 为了保持UI的可响应性, 这个I/O应该以异步方式执行. 而要在返回<code>void</code>的事件处理方法中写这样的代码, C#编译器就要允许异步函数<code>返回void</code>,这样才能利用<code>await</code>操作符执行不阻塞的I/O操作. 编译器仍然为返回<code>void</code>的异步函数创建状态机, <strong>但不再创建Task对象</strong>, 因为创建了也没法使用. 所以没办法知道返回void的异步函数的状态机在什么时候运行完毕.</p>
+<blockquote>
+<p>正是这个原因, 不能将入口方法Main标记为async修饰符. 进程的主线会在遇到第一个await之后立即从Main返回, 由于调用Main的代码无法获得一个可以进行监视并等待完成的Task, 所以进程终止, 因此编译器认为这是一个错误.</p>
+</blockquote>
+<h1 id="FCL的异步函数"><a href="#FCL的异步函数" class="headerlink" title="FCL的异步函数"></a>FCL的异步函数</h1><p>规范要求为方法名附加Async后缀.</p>
+<p>其他基于异步的编程模型已经过时, 使用Task的新模型才是你的首要选择.</p>
+<h1 id="异步函数和异常处理"><a href="#异步函数和异常处理" class="headerlink" title="异步函数和异常处理"></a>异步函数和异常处理</h1><p>Windows设备驱动程序处理异步I/O请求时可能出错, Windows需要向应用程序通知这个情况.</p>
+<p>例如: 通过网络收发字节时可能超时, 如果数据没有及时到达, 设备驱动程序希望告诉应用程序异步虽然完成, 但存在一个错误. 为此,设备驱动程序会向CLR的线程池post已完成的IRP. 一个线程池线程会完成Task对象并设置异常. 你的状态机方法恢复时, await操作符发现操作失败并引发该异常.</p>
+<p><code>Task对象</code>通常抛出一个<code>AggregateExcetpiton</code>可查询该异常的<code>InnerExceptions属性</code>来查看正在发生了什么异常. <strong>但是, 将await用于Task时, 抛出的是第一个内部异常而不是AggregateExcetpiton</strong>. 是<code>TaskAwaiter</code>的<code>GetResult</code>方法抛出的第一个内部异常.</p>
+<p><strong>如果状态机出现未处理的异常, 那么代表异步函数的Task对象会因为未处理的异常而完成</strong>. 然后正在等待该Task的代码会看到异常, 但<strong>异步函数也可能使用了void返回类型, 这时调用者就没有办法发现未处理异常</strong>. 所以当返回void的异步函数抛出未处理的异常时,编译器生成的代码将捕捉它, 并使用调用者的同步上下文重新抛出它. 重新抛出这种异常通常造成整个进程终止.</p>
+<h1 id="异步函数的其他功能-调试功能"><a href="#异步函数的其他功能-调试功能" class="headerlink" title="异步函数的其他功能(调试功能)"></a>异步函数的其他功能(调试功能)</h1><p>如果调试器在await操作符上停止,</p>
+<ul>
+<li><strong>F10(逐过程)</strong> 会在异步操作完成后,在抵达下一个语句时重新由调试器接管.<ul>
+<li>在这个时候,执行代码可能已经不是当初发起异步操作的线程</li>
+</ul>
+</li>
+<li><strong>F11(逐语句)</strong> 进入异步函数后, 可以按<strong>跳出(Shift+F11)</strong> 函数并返回至调用者<ul>
+<li>但是必须在位于异步函数的起始大括号的时候执行这个操作, 一旦越过大括号, 除非异步函数执行完成,否则跳出操作无法中断异步函数.</li>
+</ul>
+</li>
+<li>要在状态机运行完毕前对调用方法进行调试,在调用方法中插入断点并<strong>运行至断点(F5)</strong> 即可.</li>
+</ul>
+<p><strong>有的异步操作执行速度很快, 几乎瞬间就能完成, 在这种情况下,挂起状态机并让另一个线程理解恢复状态机就显得不太划算, 更有效的做法是让状态机继续执行, 幸好, 编译器为await操作符生成的代码能检测到这个问题, 如果异步操作再线程返回前完成,就阻止线程返回,直接由它执行下一行代码.</strong></p>
+<p>可以利用<code>Task</code>的<code>静态Run方法</code>从<strong>非调用线程的其他线程</strong>中执行异步函数.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// Task.Run在GUI线程上调用</span>
+Task<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 这里的代码在一个线程池线程上运行</span>
+
+  <span class="token comment" spellcheck="true">// 发起异步操作</span>
+  <span class="token keyword">await</span> <span class="token function">XxxAsync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 在这里执行更多处理...</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码演示了C#的异步lambda表达式. 可以看出, <strong>不能只在普通的lambda表达式主体中添加await操作符就完事, 是因为编译器不知道如何将方法转换成状态机, 但同时在lambda表达式前面添加async</strong>,编译器就能将lambda表达式转换成<strong>状态机方法</strong>来返回一个<code>Task</code>或<code>Task&lt;TResult&gt;</code>的任何<code>Func委托</code>变量.</p>
+<p>如果在异步函数(async)中没有使用<code>await操作符</code>, <strong>C#编译器会显示警告, 为了去掉警告, 可以为异步方法返回的Task赋给一个变量</strong>. 然后忽略这个变量. 还可以定义一个扩展方法.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 会发出警告</span>
+<span class="token function">InnerAsyncFunc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 此处没有添加await操作符, 会发出警告</span>
+
+<span class="token comment" spellcheck="true">// 不会发出警告, 需要定义一个忽略的变量</span>
+<span class="token keyword">var</span> noWarning <span class="token operator">=</span> <span class="token function">InnerAsyncFunc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//为异步方法返回的Task赋给一个变量. 然后忽略这个变量.</span>
+<span class="token comment" spellcheck="true">// 后续方法也会继续执行</span>
+
+
+<span class="token comment" spellcheck="true">// 更好的方法</span>
+<span class="token punctuation">[</span><span class="token function">MethodImpl</span><span class="token punctuation">(</span>MethodImplOptions<span class="token punctuation">.</span>AggressiveInlining<span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token comment" spellcheck="true">// 造成编译器优化调用</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">NoWarning</span><span class="token punctuation">(</span><span class="token keyword">this</span> Task task<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 这样使用</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">async</span> Task <span class="token function">OuterAsyncFunction</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 这里故意不添加await操作符,</span>
+    <span class="token function">InnerAsyncFunction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">NoWarning</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 在InnerAsyncFunction执行期间, 这里代码也继续执行</span>
+    <span class="token keyword">await</span> Task<span class="token punctuation">.</span><span class="token function">Delay</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>异步I/O操作最好的一个地方是可以同时发起许多这样的操作, 让它们并发执行, 从而显著提升应用程序的性能.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 这会等待所有的request都完成后,才能处理responses</span>
+<span class="token comment" spellcheck="true">// 这样处理并不好</span>
+String<span class="token punctuation">[</span><span class="token punctuation">]</span> responses <span class="token operator">=</span> <span class="token keyword">await</span> Task<span class="token punctuation">.</span><span class="token function">WhenAll</span><span class="token punctuation">(</span>requests<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+<span class="token comment" spellcheck="true">// 使用以下方法\</span>
+<span class="token comment" spellcheck="true">// 使用while去判断是否有任务完成,</span>
+<span class="token keyword">while</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span>Count <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 顺序处理每个完成的响应, 完成一个处理一个</span>
+   Task<span class="token operator">&lt;</span>String<span class="token operator">></span> response <span class="token operator">=</span> <span class="token keyword">await</span> Task<span class="token punctuation">.</span><span class="token function">WhenAny</span><span class="token punctuation">(</span>requests<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   requests<span class="token punctuation">.</span><span class="token function">Remove</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 从集合中删除已完成的任务</span>
+   <span class="token comment" spellcheck="true">// 处理响应</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>根据需求用<code>WhenAny</code>方法还是<code>WhenAll</code>.</p>
+<h1 id="应用程序及其线程处理模型"><a href="#应用程序及其线程处理模型" class="headerlink" title="应用程序及其线程处理模型"></a>应用程序及其线程处理模型</h1><p>.Net Framework支持几种不同的应用程序模型, 而<strong>每种模型都可能引入它自己的线程处理模型</strong>.</p>
+<ul>
+<li><code>控制台应用程序</code>和<code>Window服务</code>(实际也是控制台应用程序,只是看不见控制台而已) <strong>没有引入任何线程处理模型</strong>.<ul>
+<li>也就是任何线程可在任何时候做它想做的任何事情.</li>
+</ul>
+</li>
+<li>但是<code>GUI应用程序</code>(windows窗体,WPF,Silverlight,WindowStore应用程序) <strong>引入了一个线程处理模型</strong>.<ul>
+<li>在这个模型中, UI元素只能由创建它的线程更新. 在GUI线程中,经常都需要生成一个异步操作,使GUI线程不至于阻塞并停止用户输入. 当异步操作完成时, 是由一个线程池线程完成Task对象并恢复状态机.</li>
+</ul>
+</li>
+</ul>
+<p>对于某些应用程序模型,这样做没什么问题, 因为非常高效, <strong>但是对于另一些应用程序模型(比如GUI应用程序), 这个做法会造成问题, 因为一旦通过<code>线程池线程</code>更新UI元素就会抛出异常. 线程池线程必须以某种方式告诉<code>GUI线程</code>更新UI元素.</strong></p>
+<p>ASP.NET应用程序允许任何线程做它想做的任何事情, 线程池线程开始处理一个客户端的请求时, 可以对客户端的语言文化做出假定, 从而允许Web服务器对返回的数字,日期,时间进行该语言的特有格式化处理. 此外, Web服务器还可对客户端的身份标识做出假定, 确保只能访问客户端有权访问的资源.</p>
+<p><strong>线程池生成一个异步操作后, 它可能由另一个线程池线程完成, 该线程将处理异步操作的结果</strong>. 代表原始客户端工作时, <strong>语言文化和身份标识信息需要”流向”新的线程池线程</strong>. 这样一来,代表客户端执行的任何额外的工作才能使用客户端的语言文化和身份标识信息.</p>
+<p><strong>幸好,FCL定义了一个名为<code>System.Threading.SynchronizationContext</code>的基类</strong>. 它解决了所有这些问题. 简单的说,<strong><code>SynchronizationContext</code>派生对象将应用程序模型连接到它的线程处理模型</strong>. FCL定义了几个<code>SynchronizationContext派生类</code>, 但你一般不直接和这些类打交道: 事实上, 它们中的许多都没有公开或记录到文档.</p>
+<p>等待一个<code>Task</code>时会获取调用线程的<code>SynchronizationContext</code>对象, 线程池线程完成Task后, 会使该<code>SynchronizationContext对象</code>, 确保为应用程序模型使用正确的线程处理模型. 所以,当一个<code>GUI线程</code>等待一个<code>Task</code>时, <code>await操作符</code>后面的代码<strong>保证在GUI线程上</strong>执行, 使代码能更新UI元素.</p>
+<p>让状态机使用应用程序模型的线程处理模型来恢复, 这在多数时候都很有用, 也很方便. 但偶尔也会带来问题. 下面是WPF应用程序死锁的一个例子:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">protected</span> <span class="token keyword">override</span> <span class="token keyword">void</span> <span class="token function">OnActivated</span><span class="token punctuation">(</span>EventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 发出HTTP请求, 让线程从GetHttp3线程返回</span>
+    <span class="token comment" spellcheck="true">// 查询Result属性会阻止GUI线程返回;</span>
+    <span class="token comment" spellcheck="true">// 线程阻塞等待结果</span>
+    String http <span class="token operator">=</span> <span class="token function">GetHttp1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Result<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 以同步方式获取字符串!</span>
+    <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">OnActivated</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">async</span> Task<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">GetHttp1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 发出HTTP请求, 让线程从GetHttp返回</span>
+    HttpResponseMessage msg <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">new</span> <span class="token class-name">HttpClient</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetAsync</span><span class="token punctuation">(</span><span class="token string">"http://Wintellect.com/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 这里永远执行不到, GUI线程在等待这个方法结束.</span>
+    <span class="token comment" spellcheck="true">// 等待执行, 但是永远执行不到，因为 需要同一个主线程执行，但是主线程在等待该方法执行结束， 死锁！！！     </span>
+    <span class="token keyword">return</span> <span class="token keyword">await</span> msg<span class="token punctuation">.</span>Content<span class="token punctuation">.</span><span class="token function">ReadAsStringAsync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>尤其要注意<code>SynchronizationContext</code>类, 由于许多类库代码都要求不依赖特定的应用程序模型, 所以要避免因为使用<code>SynchronizationContext</code>对象而产生的额外开销. 防止死锁, 为了解决这两方面的问题, <code>Task</code>和<code>Task&lt;TResult&gt;</code>类提供了一个<code>ConfigureAwait</code>方法, 签名如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 定义这个方法的Task</span>
+<span class="token keyword">public</span> ConfiguredAwaitable <span class="token function">ConfigureAwait</span><span class="token punctuation">(</span>Boolean continueOnCapturedContext<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//定义这个方法的Task&lt;TResult></span>
+<span class="token keyword">public</span> ConfiguredAwaitable <span class="token generic-method function">ConfigureAwait<span class="token punctuation">&lt;</span>TResult<span class="token punctuation">></span></span><span class="token punctuation">(</span>Boolean continueOnCapturedContext<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>向方法传递<code>true</code>相当于根本没有调用方法, 但是如果传递<code>false</code>, <code>await</code>操作符就不查询调用线程的<code>SynchronizationContext</code>对象, 当线程池线程结束<code>Task</code>时会直接完成它, <code>await操作符</code>后面的代码通过线程池线程执行.</p>
+<p>通过<code>ConfigureAwait</code>方法解决死锁问题:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">async</span> Task<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">GetHttp2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 发出HTTP请求, 让线程从GetHttp返回</span>
+    <span class="token comment" spellcheck="true">// 必须将ConfigureAwait(false)应用于等待的每个Task对象</span>
+    <span class="token comment" spellcheck="true">// ConfigureAwait(false) 不依赖 线程处理模型，可用线程池线程唤醒状态机</span>
+    HttpResponseMessage msg <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">new</span> <span class="token class-name">HttpClient</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetAsync</span><span class="token punctuation">(</span><span class="token string">"http://Wintellect.com/"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ConfigureAwait</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 这里能执行到了,可用线程池线程唤醒状态机,线程池线程可以执行这里的代码,</span>
+    <span class="token comment" spellcheck="true">// 而非被迫由GUI线程执行 ,</span>
+    <span class="token keyword">return</span> <span class="token keyword">await</span> msg<span class="token punctuation">.</span>Content<span class="token punctuation">.</span><span class="token function">ReadAsStringAsync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ConfigureAwait</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>必须将<code>ConfigureAwait(false)</code>应用于等待的每个<code>Task</code>对象. 这是由于异步操作可能同步完成,而且在发生这个情况时, 调用线程直接继续执行, 不会返回至它的调用者; 你根本不知道哪个操作要求忽略<code>SynchronizationContext</code>对象, 所以只能要求所有操作都忽略它. 这还以为着类库代码不能依赖于任何特定的应用程序模型. 也可以用一个线程池线程执行所有操作:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> Task<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">GetHttp3</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> Task<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 运行一个无SynchronizationContext的线程池线程</span>
+        HttpResponseMessage msg <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">new</span> <span class="token class-name">HttpClient</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetAsync</span><span class="token punctuation">(</span><span class="token string">"http://Wintellect.com/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 这里的代码真的能执行, 因为某个线程池线程能执行这里的代码</span>
+
+        <span class="token keyword">return</span> <span class="token keyword">await</span> msg<span class="token punctuation">.</span>Content<span class="token punctuation">.</span><span class="token function">ReadAsStringAsync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个版本中GetHttp方法不再是异步函数, 从方法签名中删除了<code>async关键字</code>,因为方法中没有了<code>await操作符</code>.</p>
+<h1 id="以异步方法实现服务器"><a href="#以异步方法实现服务器" class="headerlink" title="以异步方法实现服务器"></a>以异步方法实现服务器</h1><p>FCL内建了对伸缩性很好的一些异步服务器的支持。下面列举中MSDN文档中值的参考的地方。</p>
+<ol>
+<li>要构建异步ASP.NET Web窗体，在<code>.aspx</code>文件中添加<code>Async=&quot;true&quot;</code>的网页指令，并参考<code>System.Web.UI.Page</code>的<code>RegisterAsyncTask</code>方法。</li>
+<li>要构建异步ASP.NET MVC控制器，使你的控制器类从<code>System.Web.Mvc.AsyncController</code>派生，让操作方法返回一个<code>Task&lt;ActionResult&gt;</code>即可。</li>
+<li>要构建异步ASP.NET 处理程序，使你的类从<code>System.Web.HttpTaskAsyncHandler</code>派生，重写其<code>ProcessRequestAsync</code>方法。</li>
+<li>要构建异步WCF服务，将服务作为异步函数来实现，让它返回<code>Task</code>或<code>Task&lt;TResult&gt;</code>。</li>
+</ol>
+<h1 id="取消I-O操作"><a href="#取消I-O操作" class="headerlink" title="取消I/O操作"></a>取消I/O操作</h1><p>Windows一般没有提供取消未完成I/O操作的途径，这是许多开发人员都想要的功能，实现起来却很困难。毕竟，如果向服务器请求了1000个字节，然后决定不再需要这些字节，那么其实没有办法告诉服务器忘掉你的请求。在这种情况下，只能让字节照常返回，再将他们丢弃。此外，<strong>这里还发生竞态条件-取消请求的请求可能正在服务器发送响应的时候到来，要在代码中处理这种潜在的竞态条件，决定是丢弃还是使用数据</strong>。</p>
+<blockquote>
+<p>官方的定义是如果程序运行顺序的改变会影响最终结果，这就是一个竞态条件（race condition）.如果一段程序运行多次的结果不一致（排除生成随机数的情况），那这就可能是竞态条件的体现。导致竞态条件发生的代码区称作临界区。在临界区中使用适当的同步就可以避免竞态条件。临界区实现方法有两种，一种是用synchronized，一种是用Lock显式锁实现。</p>
+</blockquote>
+<p>建议实现一<code>个WithCancellation</code><strong>扩展方法</strong><code>Task&lt;TResult&gt;</code>：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Cancellation</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">async</span> Task <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 创建一个CancellationTokenSource，它在3秒之后将自己取消</span>
+        <span class="token keyword">var</span> cts <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 提前取消需要调用 cts.Cancel()</span>
+        <span class="token keyword">var</span> ct  <span class="token operator">=</span> cts<span class="token punctuation">.</span>Token<span class="token punctuation">;</span>
+
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 可能需要6秒后完成任务, 但是ct最多允许进行3秒,然后取消</span>
+            <span class="token keyword">await</span> Task<span class="token punctuation">.</span><span class="token function">Delay</span><span class="token punctuation">(</span><span class="token number">6000</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">WithCancellation</span><span class="token punctuation">(</span>ct<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Task completed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">OperationCanceledException</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Task cancelled"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 因此完成不了任务, 会抛出OperationCanceledException异常</span>
+        <span class="token comment" spellcheck="true">// 输出 Task cancelled</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 因为没有非泛型的TaskCompletionSource类</span>
+    <span class="token keyword">private</span> <span class="token keyword">struct</span> Void <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 扩展Task&lt;TResult> 方法</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token comment" spellcheck="true">/// &lt;param name="orignalTask"> 原始Task对象 &lt;/param></span>
+    <span class="token comment" spellcheck="true">/// &lt;param name="ct"> CancellationToken中的Task对象 &lt;/param></span>
+    <span class="token comment" spellcheck="true">/// &lt;typeparam name="TResult"> 返回类型 &lt;/typeparam></span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">async</span> Task<span class="token operator">&lt;</span>TResult<span class="token operator">></span> <span class="token generic-method function">WithCancellation<span class="token punctuation">&lt;</span>TResult<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">this</span> Task<span class="token operator">&lt;</span>TResult<span class="token operator">></span> orignalTask<span class="token punctuation">,</span> CancellationToken ct<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 创建在CancellationToken被取消时完成的一个Task</span>
+        <span class="token keyword">var</span> cancelTask <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TaskCompletionSource</span><span class="token operator">&lt;</span>Void<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 当CancellationToken取消时, 使cancelTask的Task完成</span>
+        <span class="token comment" spellcheck="true">// cancelTask对象会传入回调方法</span>
+        <span class="token keyword">using</span> <span class="token punctuation">(</span>ct<span class="token punctuation">.</span><span class="token function">Register</span><span class="token punctuation">(</span>t <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">(</span>TaskCompletionSource<span class="token operator">&lt;</span>Void<span class="token operator">></span><span class="token punctuation">)</span> t<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">TrySetResult</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Void</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> cancelTask<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 创造在原始Task或CancellationToken里的Task完全时都完成一个Task</span>
+            <span class="token comment" spellcheck="true">// 哪个先完成any就引用哪个</span>
+            Task any <span class="token operator">=</span> <span class="token keyword">await</span> Task<span class="token punctuation">.</span><span class="token function">WhenAny</span><span class="token punctuation">(</span>orignalTask<span class="token punctuation">,</span> cancelTask<span class="token punctuation">.</span>Task<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 如果any是cancelTask, 则说明是取消了任务, 抛出OperationCanceledException</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>any <span class="token operator">==</span> cancelTask<span class="token punctuation">.</span>Task<span class="token punctuation">)</span> ct<span class="token punctuation">.</span><span class="token function">ThrowIfCancellationRequested</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 等待原始任务(以同步的方式); 若任务失败,等待它抛出第一个内部异常</span>
+        <span class="token comment" spellcheck="true">//而不是抛出AggregateException</span>
+        <span class="token keyword">return</span> <span class="token keyword">await</span> orignalTask<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">async</span> Task <span class="token function">WithCancellation</span><span class="token punctuation">(</span><span class="token keyword">this</span> Task task<span class="token punctuation">,</span> CancellationToken ct<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> tcs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TaskCompletionSource</span><span class="token operator">&lt;</span>Void<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">using</span> <span class="token punctuation">(</span>ct<span class="token punctuation">.</span><span class="token function">Register</span><span class="token punctuation">(</span>t <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">(</span>TaskCompletionSource<span class="token operator">&lt;</span>Void<span class="token operator">></span><span class="token punctuation">)</span> t<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">TrySetResult</span><span class="token punctuation">(</span><span class="token keyword">default</span><span class="token punctuation">(</span>Void<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> tcs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">await</span> Task<span class="token punctuation">.</span><span class="token function">WhenAny</span><span class="token punctuation">(</span>task<span class="token punctuation">,</span> tcs<span class="token punctuation">.</span>Task<span class="token punctuation">)</span> <span class="token operator">==</span> tcs<span class="token punctuation">.</span>Task<span class="token punctuation">)</span> ct<span class="token punctuation">.</span><span class="token function">ThrowIfCancellationRequested</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 等待原始任务(以同步的方式); 若任务失败,等待它抛出第一个内部异常</span>
+        <span class="token comment" spellcheck="true">//而不是抛出AggregateException</span>
+        <span class="token keyword">await</span> task<span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="有的I-O操作必须同步进行"><a href="#有的I-O操作必须同步进行" class="headerlink" title="有的I/O操作必须同步进行"></a>有的I/O操作必须同步进行</h1><p>有的方<strong>法不允许异步方式执行</strong>I/O, 例如Win32 <code>CreateFile</code>方法总是以同步方式执行. 因此FCL不能以异步方式高效地打开文件. Windos也没有提供函数以异步方式访问注册表,访问事件日志,获取目录的文件/子目录或者更改文件/目录的属性等.</p>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/28I-O限制的异步操作2/QQ截图20190927221049.png" alt=""></p>
+<h2 id="FileSteam特有的问题"><a href="#FileSteam特有的问题" class="headerlink" title="FileSteam特有的问题"></a>FileSteam特有的问题</h2><p>创建<code>FileStream</code>对象时，可通过<code>FileOptions.AsyncChronous</code>标志指定以同步方式还是异步方式进行通信。如果不指定该标志，Windows将以同步方式执行所有文件操作。当然，仍然可以调用<code>FileStream</code>的<code>ReadAsync</code>方法，对于你的应用程序，表面上是异步执行，但FileStream类在内部用另一个线程模拟异步行为。这个额外的线程纯属是浪费, 而且会影响到性能.</p>
+<p>如果创建<code>FileStream</code>对象时指定<code>FileOptions.AsyncChronous</code>标志。然后，可以调用<code>FileStream</code>的<code>Read</code>方法执行一个同步操作。在内部，<code>FileStream</code>类会开始一个异步操作，然后立即调用线程进入睡眠状态，直到操作完成才唤醒，从而模拟同步行为，这样依然效率低下。</p>
+<p>总之，使用<code>FileStream</code>时应该想好是以同步方式还是以异步方式执行I/O操作，并指定<code>FileOptions.Asynchronous</code>标志来指明自己的选择。<strong>如果指定了该标志，就总是调用<code>ReadAsync</code>。如果没有使用这个标志，就总是调用<code>Read</code></strong>。这样能够获得最佳性能。</p>
+<p>如果想先对<code>FileStream</code>执行一些同步操作，再执行一些异步操作，那么更高效的做法是使用<code>FileOptions.Asynchronous</code>标志来构造它。另外也可针对同一个文件，创建两个FileStream对象，一个FileStream进行同步操作，另一个FileStream执行异步操作。</p>
+<p>FileStream的辅助方法（<code>Create</code>,<code>Open</code>和<code>OpenWrite</code>）创建并返回<code>FileStream</code>对象，<strong>这些方法都没有指定FileOptions.Asynchronous标志</strong>，所以为了实现响应灵敏的、可伸缩性的应用程序，应<strong>避免使用这些方法</strong>.</p>
+<h1 id="I-O请求优先级"><a href="#I-O请求优先级" class="headerlink" title="I/O请求优先级"></a>I/O请求优先级</h1><p>线程还要执行I/O请求以便从各种硬件设备中读写数据.</p>
+<p>如果一个低优先级线程获得了CPU事件, 它可以在非常短的时间里轻易地将成百上千的I/O请求放入队列, 由于I/O请求需要时间来执行, 所以一个低优先级线程可能挂起高优先级线程, 使后者不能快速完成工作. 因此, 当系统执行一些耗时的低优先级服务(磁盘碎片整理程序, 病毒扫描程序,内容索引程序)时, 机器的响应能力可能会变得非常差.</p>
+<p>Windows允许线程在发出I/O请求时指定优先级. 但是FCL还没有包含这个功能. 如果想用,可以采取<code>P/Invoke</code><strong>本机Win32函数</strong> 的方式:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ThreadIO</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">using</span> <span class="token punctuation">(</span>ThreadIO<span class="token punctuation">.</span><span class="token function">BeginBackgroundProcessing</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 在这里执行低优先级I/O请求, 例如WirteAsync/ReadAsync</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> BackgroundProcessingDisposer <span class="token function">BeginBackgroundProcessing</span><span class="token punctuation">(</span>Boolean process <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">ChangeBackgroundProcessing</span><span class="token punctuation">(</span>process<span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">BackgroundProcessingDisposer</span><span class="token punctuation">(</span>process<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">EndBackgroundProcessing</span><span class="token punctuation">(</span>Boolean process <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">ChangeBackgroundProcessing</span><span class="token punctuation">(</span>process<span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">ChangeBackgroundProcessing</span><span class="token punctuation">(</span>Boolean process<span class="token punctuation">,</span> Boolean start<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Boolean ok <span class="token operator">=</span> process
+            <span class="token operator">?</span> <span class="token function">SetPriorityClass</span><span class="token punctuation">(</span><span class="token function">GetCurrentWin32ProcessHandle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                start <span class="token operator">?</span> ProcessBackgroundMode<span class="token punctuation">.</span>Start <span class="token punctuation">:</span> ProcessBackgroundMode<span class="token punctuation">.</span>End<span class="token punctuation">)</span>
+            <span class="token punctuation">:</span> <span class="token function">SetThreadPriority</span><span class="token punctuation">(</span><span class="token function">GetCurrentWin32ThreadHandle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                start <span class="token operator">?</span> ThreadBackgroundgMode<span class="token punctuation">.</span>Start <span class="token punctuation">:</span> ThreadBackgroundgMode<span class="token punctuation">.</span>End<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>ok<span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Win32Exception</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 这个结构使C#的using语句能终止后台处理模式</span>
+    <span class="token keyword">public</span> <span class="token keyword">struct</span> BackgroundProcessingDisposer <span class="token punctuation">:</span> IDisposable
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> <span class="token keyword">readonly</span> Boolean m_process<span class="token punctuation">;</span>
+
+        <span class="token keyword">public</span> <span class="token function">BackgroundProcessingDisposer</span><span class="token punctuation">(</span>Boolean process<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            m_process <span class="token operator">=</span> process<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">EndBackgroundProcessing</span><span class="token punctuation">(</span>m_process<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token comment" spellcheck="true">// See Win32’s THREAD_MODE_BACKGROUND_BEGIN and THREAD_MODE_BACKGROUND_END</span>
+    <span class="token keyword">private</span> <span class="token keyword">enum</span> ThreadBackgroundgMode
+    <span class="token punctuation">{</span>
+        Start <span class="token operator">=</span> <span class="token number">0x10000</span><span class="token punctuation">,</span>
+        End   <span class="token operator">=</span> <span class="token number">0x20000</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// See Win32’s PROCESS_MODE_BACKGROUND_BEGIN and PROCESS_MODE_BACKGROUND_END   </span>
+    <span class="token keyword">private</span> <span class="token keyword">enum</span> ProcessBackgroundMode
+    <span class="token punctuation">{</span>
+        Start <span class="token operator">=</span> <span class="token number">0x100000</span><span class="token punctuation">,</span>
+        End   <span class="token operator">=</span> <span class="token number">0x200000</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span><span class="token function">DllImport</span><span class="token punctuation">(</span><span class="token string">"Kernel32"</span><span class="token punctuation">,</span> EntryPoint <span class="token operator">=</span> <span class="token string">"GetCurrentProcess"</span><span class="token punctuation">,</span> ExactSpelling <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">extern</span> SafeWaitHandle <span class="token function">GetCurrentWin32ProcessHandle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">[</span><span class="token function">DllImport</span><span class="token punctuation">(</span><span class="token string">"Kernel32"</span><span class="token punctuation">,</span> ExactSpelling <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">,</span> SetLastError <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token punctuation">[</span><span class="token keyword">return</span><span class="token punctuation">:</span> <span class="token function">MarshalAs</span><span class="token punctuation">(</span>UnmanagedType<span class="token punctuation">.</span>Bool<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">extern</span> Boolean <span class="token function">SetPriorityClass</span><span class="token punctuation">(</span>SafeWaitHandle hprocess<span class="token punctuation">,</span> ProcessBackgroundMode mode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+    <span class="token punctuation">[</span><span class="token function">DllImport</span><span class="token punctuation">(</span><span class="token string">"Kernel32"</span><span class="token punctuation">,</span> EntryPoint <span class="token operator">=</span> <span class="token string">"GetCurrentThread"</span><span class="token punctuation">,</span> ExactSpelling <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">extern</span> SafeWaitHandle <span class="token function">GetCurrentWin32ThreadHandle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">[</span><span class="token function">DllImport</span><span class="token punctuation">(</span><span class="token string">"Kernel32"</span><span class="token punctuation">,</span> ExactSpelling <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">,</span> SetLastError <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token punctuation">[</span><span class="token keyword">return</span><span class="token punctuation">:</span> <span class="token function">MarshalAs</span><span class="token punctuation">(</span>UnmanagedType<span class="token punctuation">.</span>Bool<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">extern</span> Boolean <span class="token function">SetThreadPriority</span><span class="token punctuation">(</span>SafeWaitHandle hthread<span class="token punctuation">,</span> ThreadBackgroundgMode mode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// http://msdn.microsoft.com/en-us/library/aa480216.aspx</span>
+    <span class="token punctuation">[</span><span class="token function">DllImport</span><span class="token punctuation">(</span><span class="token string">"Kernel32"</span><span class="token punctuation">,</span> SetLastError <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">,</span> EntryPoint <span class="token operator">=</span> <span class="token string">"CancelSynchronousIo"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token punctuation">[</span><span class="token keyword">return</span><span class="token punctuation">:</span> <span class="token function">MarshalAs</span><span class="token punctuation">(</span>UnmanagedType<span class="token punctuation">.</span>Bool<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">extern</span> Boolean <span class="token function">CancelSynchronousIO</span><span class="token punctuation">(</span>SafeWaitHandle hThread<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>要调用<code>ThreadIO</code>的<code>BeginBackgroundProcessing</code>方法, 告诉windows你的线程要发出低优先级I/O请求, 注意, 这同时会降低线程的CPU调度优先级. 可以调用<code>BeginBackgroundProcessing</code>或者<code>EndBackgroundProcessing</code>返回的值上调用<code>Dispose</code>(上述代码用了<code>using</code>), 使线程恢复为发出普通优先级的I/O请求(以及普通CPU的调度优先级). </p>
+<p>如果希望一个进程中的所有线程都发出低优先级I/O请求和进行低优先级的CPU调度, 可以调用<code>BeginBackgroundProcessing</code>,为它的<code>process参数</code>传<code>递true</code>值.</p>
+<p><strong>线程只能影响它自己的后台处理模式. 不允许更改另一个线程的后台处理模式.</strong></p>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/28I-O限制的异步操作2/QQ截图20190927223003.png" alt=""></p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
