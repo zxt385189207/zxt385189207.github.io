@@ -367,7 +367,7 @@ String<span class="token punctuation">[</span><span class="token punctuation">]<
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="有的I-O操作必须同步进行"><a href="#有的I-O操作必须同步进行" class="headerlink" title="有的I/O操作必须同步进行"></a>有的I/O操作必须同步进行</h1><p>有的方<strong>法不允许异步方式执行</strong>I/O, 例如Win32 <code>CreateFile</code>方法总是以同步方式执行. 因此FCL不能以异步方式高效地打开文件. Windos也没有提供函数以异步方式访问注册表,访问事件日志,获取目录的文件/子目录或者更改文件/目录的属性等.</p>
-<p><img src="/28I-O限制的异步操作2/QQ截图20190927221049.png" alt=""></p>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/28I-O限制的异步操作2/QQ截图20190927221049.png" alt=""></p>
 <h2 id="FileSteam特有的问题"><a href="#FileSteam特有的问题" class="headerlink" title="FileSteam特有的问题"></a>FileSteam特有的问题</h2><p>创建<code>FileStream</code>对象时，可通过<code>FileOptions.AsyncChronous</code>标志指定以同步方式还是异步方式进行通信。如果不指定该标志，Windows将以同步方式执行所有文件操作。当然，仍然可以调用<code>FileStream</code>的<code>ReadAsync</code>方法，对于你的应用程序，表面上是异步执行，但FileStream类在内部用另一个线程模拟异步行为。这个额外的线程纯属是浪费, 而且会影响到性能.</p>
 <p>如果创建<code>FileStream</code>对象时指定<code>FileOptions.AsyncChronous</code>标志。然后，可以调用<code>FileStream</code>的<code>Read</code>方法执行一个同步操作。在内部，<code>FileStream</code>类会开始一个异步操作，然后立即调用线程进入睡眠状态，直到操作完成才唤醒，从而模拟同步行为，这样依然效率低下。</p>
 <p>总之，使用<code>FileStream</code>时应该想好是以同步方式还是以异步方式执行I/O操作，并指定<code>FileOptions.Asynchronous</code>标志来指明自己的选择。<strong>如果指定了该标志，就总是调用<code>ReadAsync</code>。如果没有使用这个标志，就总是调用<code>Read</code></strong>。这样能够获得最佳性能。</p>
@@ -462,7 +462,7 @@ String<span class="token punctuation">[</span><span class="token punctuation">]<
 <p>要调用<code>ThreadIO</code>的<code>BeginBackgroundProcessing</code>方法, 告诉windows你的线程要发出低优先级I/O请求, 注意, 这同时会降低线程的CPU调度优先级. 可以调用<code>BeginBackgroundProcessing</code>或者<code>EndBackgroundProcessing</code>返回的值上调用<code>Dispose</code>(上述代码用了<code>using</code>), 使线程恢复为发出普通优先级的I/O请求(以及普通CPU的调度优先级).</p>
 <p>如果希望一个进程中的所有线程都发出低优先级I/O请求和进行低优先级的CPU调度, 可以调用<code>BeginBackgroundProcessing</code>,为它的<code>process参数</code>传<code>递true</code>值.</p>
 <p><strong>线程只能影响它自己的后台处理模式. 不允许更改另一个线程的后台处理模式.</strong></p>
-<p><img src="/28I-O限制的异步操作2/QQ截图20190927223003.png" alt=""></p>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/28I-O限制的异步操作2/QQ截图20190927223003.png" alt=""></p>
 
         
             <div class="donate-container">
