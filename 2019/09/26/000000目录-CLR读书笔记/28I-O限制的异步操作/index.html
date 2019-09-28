@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#I-O限制的异步操作"><span class="toc-text">I/O限制的异步操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows如何执行I-O操作"><span class="toc-text">Windows如何执行I/O操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-的异步函数"><span class="toc-text">C#的异步函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#编译器如何将异步函数转换成状态机"><span class="toc-text">编译器如何将异步函数转换成状态机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异步函数的扩展性"><span class="toc-text">异步函数的扩展性</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#I-O限制的异步操作"><span class="toc-text">I/O限制的异步操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows如何执行I-O操作"><span class="toc-text">Windows如何执行I/O操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-的异步函数"><span class="toc-text">C#的异步函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#编译器如何将异步函数转换成状态机"><span class="toc-text">编译器如何将异步函数转换成状态机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#状态机总结"><span class="toc-text">状态机总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异步函数的扩展性"><span class="toc-text">异步函数的扩展性</span></a></li></ol>
 </div>
 
     
@@ -140,7 +140,7 @@
     </div>
     <div class="post-content no-indent">
         <h1 id="I-O限制的异步操作"><a href="#I-O限制的异步操作" class="headerlink" title="I/O限制的异步操作"></a>I/O限制的异步操作</h1><p>27章讲的是如何异步执行<strong>计算限制的操作</strong>, 允许线程池在多个CPU内核上调度任务,使多个线程能并发工作. 本章重点讲如何异步进行<strong>I/O限制的操作</strong>, 允许将任务交给由硬件设备处理, <strong>期间完全不占用线程和CPU资源</strong>. 然而, 线程池仍然扮演了一个重要的角色, 各种I/O操作的结果还是要由线程池线程来处理.</p>
-<h1 id="Windows如何执行I-O操作"><a href="#Windows如何执行I-O操作" class="headerlink" title="Windows如何执行I/O操作"></a>Windows如何执行I/O操作</h1><p><img src="/2019/09/26/000000目录-CLR读书笔记/28I-O限制的异步操作/QQ截图20190926143904.png" alt=""></p>
+<h1 id="Windows如何执行I-O操作"><a href="#Windows如何执行I-O操作" class="headerlink" title="Windows如何执行I/O操作"></a>Windows如何执行I/O操作</h1><p><img src="/28I-O限制的异步操作/QQ截图20190926143904.png" alt=""></p>
 <p>上图是连接了几个硬件设备的计算机系统.</p>
 <ul>
 <li>程序通过构造<code>FileStream对象</code>来打开磁盘文件</li>
@@ -173,7 +173,7 @@
 <li>请求的数量越来越多，创建的线程就越来越多，那么被阻塞的线程就会越来越多，这样会更浪费内存。</li>
 <li>用执行结果来响应请求，如果请求的数量非常多，那么解锁的阻塞线程也就很多，而且机器上的线程数都会远远大于CPU数，所以在阻塞线程被集中解锁期间CPU很有可能会频繁地发生上下文切换，损害性能。</li>
 </ul>
-<p><img src="/2019/09/26/000000目录-CLR读书笔记/28I-O限制的异步操作/QQ截图20190926163643.png" alt=""></p>
+<p><img src="/28I-O限制的异步操作/QQ截图20190926163643.png" alt=""></p>
 <p>上图展示Windows如何<strong>异步读取I/O操作</strong>，仍然使用FileStream来构建对象，但是需要传递<code>FileOptions.Asynchronous标志</code>，告诉Windows希望文件的读/写以<strong>异步</strong>的方式进行, 上图删除了除硬盘外的硬件设备, 引入了CLR的线程池, 稍微修改了代码. 传递了<code>FileOptions.Asynchronous</code>标志.</p>
 <ul>
 <li>现在调用<code>ReadAsync</code>而不是<code>Read</code>从文件中读取数据.<code>ReadAsync</code>. 在<code>ReadAsync</code>内部分配一个<code>Task&lt;Int32&gt;</code>对象来代表用于完成的读取操作的代码。然后<code>ReadAsync</code>调用Win32 <code>ReadFile</code>函数<strong>①</strong></li>
@@ -272,7 +272,7 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>然后对IL代码进行逆向工程转换回C#源代码. 简化了一些代码,并添加了大量注释.</p>
 <p>编译为IL代码后，再利用ILSPY把IL代码反编译为C#代码,在返编译IL代码的时候，需要注意，不能勾选“decompile async methods(async/await)”</p>
-<p><img src="/2019/09/26/000000目录-CLR读书笔记/28I-O限制的异步操作/1070689-20181109003743510-266966892.png" alt=""></p>
+<p><img src="/28I-O限制的异步操作/1070689-20181109003743510-266966892.png" alt=""></p>
 <pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// AsyncStateMachine 特性指出这是一个异步方法(对反射的工具有用)</span>
 <span class="token comment" spellcheck="true">// 类型指出实现状态机的是哪个结构</span>
 <span class="token punctuation">[</span>DebuggerStepThrough<span class="token punctuation">,</span> <span class="token function">AsyncStateMachine</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>StateMachine<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
@@ -309,7 +309,7 @@
     <span class="token keyword">public</span> Type1 m_resultType1<span class="token punctuation">;</span>
     <span class="token keyword">public</span> Type2 m_resultType2<span class="token punctuation">;</span>
 
-    <span class="token comment" spellcheck="true">// 每个awaiter类型只有一个字段</span>
+    <span class="token comment" spellcheck="true">// 每个awaiter类型一个字段</span>
     <span class="token comment" spellcheck="true">// 任何时候这些字段只有一个是重要的, 那个字段引用最近执行的,以异步方式完成的await</span>
     <span class="token keyword">private</span> TaskAwaiter<span class="token operator">&lt;</span>Type1<span class="token operator">></span> m_awaiterType1<span class="token punctuation">;</span>
     <span class="token keyword">private</span> TaskAwaiter<span class="token operator">&lt;</span>Type2<span class="token operator">></span> m_awaiterType2<span class="token punctuation">;</span>
@@ -329,7 +329,7 @@
             <span class="token punctuation">{</span>
                 <span class="token comment" spellcheck="true">// 如果第一次在状态机方法中</span>
                 <span class="token comment" spellcheck="true">// 原始方法就从头开始执行</span>
-                m_local <span class="token operator">=</span> m_argument<span class="token punctuation">;</span>
+                m_local <span class="token operator">=</span> m_argument<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 异步方法里的第一句代码</span>
             <span class="token punctuation">}</span>
 
             <span class="token comment" spellcheck="true">// 原始代码中的try块</span>
@@ -450,8 +450,23 @@
 <li>如果操作以异步方式完成, <code>IsCompleted</code>属性将返回<code>false</code>. 状态机调用<code>awaiter</code>的<code>OnCompleted</code>方法, 并向它传递一个委托(引用状态机的<code>MoveNext方法</code>). 现在状态机允许它的线程回到原地以执行其他代码. 将来某个时候, 封装了底层任务的<code>awaiter</code>会在完成时调用委托以执行<code>MoveNext</code>. 可根据状态机中的字段知道如何到达代码中的正确位置. 使方法能从它当初离开的位置继续. 这时, 代码调用<code>awaiter</code>的<code>GetResult</code>方法, 执行将从这里继续, 以便对结果进行处理.</li>
 </ul>
 <p>这就是异步函数的工作原理.</p>
-<p><img src="/2019/09/26/000000目录-CLR读书笔记/28I-O限制的异步操作/1070689-20181109003820378-103290947.png" alt=""></p>
+<p><img src="/28I-O限制的异步操作/1070689-20181109003820378-103290947.png" alt=""></p>
+<p><img src="/28I-O限制的异步操作/QQ截图20190928174802.png" alt=""></p>
 <p>但任务未完成时，<code>isCompleted</code>返回<code>false</code>，所以会在<code>onCompleted</code>登记任务完成时会调用的<code>action</code>动作，<code>action</code>动作执行完成后，会再一次调用<code>MoveNext</code>，然后<code>isCompleted</code>就返回<code>true</code>,此时就可以通过<code>GetResult</code>获得结果。</p>
+<h1 id="状态机总结"><a href="#状态机总结" class="headerlink" title="状态机总结"></a>状态机总结</h1><ol>
+<li>生成的状态机，包含了所有原始的异步方法的逻辑，就像是一个异步方法的堆栈帧（stack frame）。</li>
+<li>包含着完成的任务的<code>AsyncTaskMethodBuilder</code>（十分类似于 <code>TaskCompletionSource&lt;T&gt;</code>），它管理状态机的状态转换。</li>
+<li>装饰（wrap）着一个任务的TaskAwaiter，它在必要时会给任务添加continuation。</li>
+<li><code>MoveNextRunner</code>，它会在正确的执行上下文（execution context）中调用<code>IAsyncStateMachine.MoveNext</code>。</li>
+</ol>
+<p>生成的状态机在debug模式下是class，在release模式下是struct。所有其他的类型（除了MoveNextRunner）都在BCL中被定义为struct。</p>
+<p>简单总结以下状态机的几个工作要点：</p>
+<ul>
+<li>安排好 awaiter 之后就 返回原调用线程避免阻塞</li>
+<li>在安排时 更新状态机恢复之后需要执行的位置（ m_state ）</li>
+<li>安排后在 awaiter 的任务上调用 ContinueWith(t=&gt; MoveNext()) 来以便返回状态机</li>
+</ul>
+<p>可以简单理解为你的 async 方法中有几个 await ，以上三步就要在状态机中重复几次。</p>
 <h1 id="异步函数的扩展性"><a href="#异步函数的扩展性" class="headerlink" title="异步函数的扩展性"></a>异步函数的扩展性</h1><p>在扩展性方面, 能用<code>Task对象</code>包装一个将来完成的操作, 就可以用<code>await操作符</code>来等待该操作. 用一个类型Task来表示各种异步操作. 可以实现组合操作(<code>WhenAll</code>和<code>WhenAny</code>)和其他有用的操作. 之后会演示用<code>Task</code>包装一个<code>CancellationToken</code>,在等待异步操作的同事利用超时和取消功能.</p>
 <p>分享一个<code>TaskLogger类</code>, 用它显示尚未完成的异步操作. 这在调试时特别有用, 尤其是当应用程序因为错误的请求或者未响应的服务器而挂起的时候.</p>
 <pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">TaskLogger</span>
@@ -667,7 +682,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>笔者自定义的<code>EventAwaiter&lt;TEventArgs&gt;</code>提供了<code>GetAwaiter()</code>、<code>isCompleted()</code>、<code>onCompleted(Action continuation)</code>、<code>GetResult()</code>几个重要的方法，其实这几个方法恰好对应了第3.1中“异步函数如何转化为状态机”中状态机需要操作的各个方法，在3.1中笔者给出一张状态机执行的流程图</p>
-<p><img src="/2019/09/26/000000目录-CLR读书笔记/28I-O限制的异步操作/1070689-20181109003820378-103290947.png" alt=""></p>
+<p><img src="/28I-O限制的异步操作/1070689-20181109003820378-103290947.png" alt=""></p>
 <p>笔者接下来结合这个案例，说一说本例的流程：</p>
 <ol>
 <li>当执行到<code>await eventAwaiter</code>时，会去调用<code>eventAwaiter</code>的<code>GetAwaiter()</code>方法，然后得到<code>Awaiter</code>对象。</li>
