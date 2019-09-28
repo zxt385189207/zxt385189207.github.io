@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#I-O限制的异步操作"><span class="toc-text">I/O限制的异步操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows如何执行I-O操作"><span class="toc-text">Windows如何执行I/O操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-的异步函数"><span class="toc-text">C#的异步函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#编译器如何将异步函数转换成状态机"><span class="toc-text">编译器如何将异步函数转换成状态机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异步函数转换成状态机详细流程"><span class="toc-text">异步函数转换成状态机详细流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异步函数的扩展性"><span class="toc-text">异步函数的扩展性</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#I-O限制的异步操作"><span class="toc-text">I/O限制的异步操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows如何执行I-O操作"><span class="toc-text">Windows如何执行I/O操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-的异步函数"><span class="toc-text">C#的异步函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#编译器如何将异步函数转换成状态机"><span class="toc-text">编译器如何将异步函数转换成状态机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异步函数转换成状态机详细流程"><span class="toc-text">异步函数转换成状态机详细流程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#执行上下文（Execution-Context）"><span class="toc-text">执行上下文（Execution Context）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结论"><span class="toc-text">结论</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异步函数的扩展性"><span class="toc-text">异步函数的扩展性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#扩展C-中的异步方法-网络摘要"><span class="toc-text">扩展C#中的异步方法(网络摘要)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#“类任务”（Task-like）类型"><span class="toc-text">“类任务”（Task-like）类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#相关异步的文档"><span class="toc-text">相关异步的文档</span></a></li></ol></li></ol>
 </div>
 
     
@@ -447,7 +447,7 @@
 <p>状态机获得<code>awaiter</code>后, 会查询其<code>IsCompleted</code>属性.</p>
 <ul>
 <li>如果操作已经以同步方式完成了, 属性将返回<code>true</code>, 而作为一项优化措施, 状态机将继续执行并调用<code>awaiter</code>的<code>GetResult方法</code>. 该方法要么抛出异常, 要么返回结果. 状态机继续执行以处理结果.</li>
-<li>如果操作以异步方式完成, <code>IsCompleted</code>属性将返回<code>false</code>. 状态机调用<code>awaiter</code>的<code>OnCompleted</code>方法, 并向它传递一个委托(引用状态机的<code>MoveNext方法</code>). 现在状态机允许它的线程回到原地以执行其他代码. 将来某个时候, 封装了底层任务的<code>awaiter</code>会在完成时调用委托以执行<code>MoveNext</code>. 可根据状态机中的字段知道如何到达代码中的正确位置. 使方法能从它当初离开的位置继续. 这时, 代码调用<code>awaiter</code>的<code>GetResult</code>方法, 执行将从这里继续, 以便对结果进行处理.</li>
+<li>如果操作以异步方式完成, <code>IsCompleted</code>属性将返回<code>false</code>. 状态机调用<code>awaiter</code>的<code>OnCompleted</code>方法, 并向它传递一个委托(引用状态机的<code>MoveNext方法</code>). <strong>现在状态机允许它的线程回到原地以执行其他代码</strong>. 将来某个时候, <strong>封装了底层任务的<code>awaiter</code>会在完成时调用委托以执行<code>MoveNext</code></strong>. <strong>可根据状态机中的字段知道如何到达代码中的正确位置</strong>. 使方法能从它当初离开的位置继续. 这时, 代码调用<code>awaiter</code>的<code>GetResult</code>方法, 执行将从这里继续, 以便对结果进行处理.</li>
 </ul>
 <p>这就是异步函数的工作原理.</p>
 <p><img src="/2019/09/26/000000目录-CLR读书笔记/28I-O限制的异步操作/1070689-20181109003820378-103290947.png" alt=""></p>
@@ -461,12 +461,76 @@
 </ul>
 </li>
 </ul>
+<blockquote>
+<p>continuation : 延续</p>
+</blockquote>
 <ol>
 <li>生成的状态机，包含了所有原始的异步方法的逻辑，就像是一个异步方法的堆栈帧（stack frame）。</li>
 <li>包含着完成的任务的<code>AsyncTaskMethodBuilder</code>（十分类似于 <code>TaskCompletionSource&lt;T&gt;</code>），它管理状态机的状态转换。</li>
-<li>装饰（wrap）着一个任务的TaskAwaiter，它在必要时会给任务添加continuation。</li>
-<li><code>MoveNextRunner</code>，它会在正确的执行上下文（execution context）中调用<code>IAsyncStateMachine.MoveNext</code>。</li>
+<li>装饰（wrap）着一个任务的<code>TaskAwaiter</code>，它在必要时会给任务添加<code>continuation</code>。</li>
+<li><code>MoveNextRunner</code>，它会在正确的<code>执行上下文（ExecutionContext）</code>中调用<code>IAsyncStateMachine.MoveNext</code>。</li>
 </ol>
+<h2 id="执行上下文（Execution-Context）"><a href="#执行上下文（Execution-Context）" class="headerlink" title="执行上下文（Execution Context）"></a>执行上下文（Execution Context）</h2><p>在同步的世界里，每个线程都将<code>上下文信息</code>保存在线程本地（thread-local）的存储中。可以是安全相关的信息，特定文化的数据，或其他东西。当在一个线程中按顺序调用三个方法时，这些信息会自然地在这些方法中传递。但对于异步方法来说，这已经不再适用了。<strong>异步方法的每个“部分”都可以在不同的线程中执行，这使得线程本地的信息无法使用</strong>。</p>
+<p>执行上下文保存了逻辑上的控制流的信息，即使它跨越多个线程。</p>
+<p>像<code>Task.Run</code>或<code>ThreadPool.QueueUserWorkItem</code>这样的方法会自<strong>动捕获上下文</strong>。<code>Task.Run方法</code>从调用线程中捕获<code>ExecutionContext</code>，并将其存储在Task实例中。当与此<code>Task实例</code>相关联的<code>TaskScheduler</code>执行一个给定的委托时，它会在存储的上下文中执行<code>ExecutionContext.Run</code>。</p>
+<p>我们可以用<code>AsyncLocal</code>来实际演示一下这个概念：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> Task <span class="token function">ExecutionContextInAction</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">var</span> li <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AsyncLocal</span><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    li<span class="token punctuation">.</span>Value <span class="token operator">=</span> <span class="token number">42</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> Task<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// Task.Run会恢复执行上下文</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"In Task.Run: "</span> <span class="token operator">+</span> li<span class="token punctuation">.</span>Value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 任务的continuation也会恢复执行上下文</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"In Task.ContinueWith: "</span> <span class="token operator">+</span> li<span class="token punctuation">.</span>Value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 在这些情况下，执行上下文被传递到Task.Run，然后又被传递到Task.ContinueWith. 所以如果你运行此方法你会看到：</span>
+
+<span class="token comment" spellcheck="true">// In Task.Run: 42</span>
+<span class="token comment" spellcheck="true">// In Task.ContinueWith: 42</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但并不是所有BCL中的方法都会<strong>自动捕获</strong>和<strong>恢复执行上下文</strong>。有两个例外分别是<code>TaskAwaiter&lt;T&gt;.UnsafeOnComplete</code>和<code>AsyncMethodBuilder&lt;T&gt;.AwaitUnsafeOnComplete</code>。语言的设计者们决定添加一些“不安全的”方法，使用<code>AsyncMethodBuilder&lt;T&gt;</code>和<code>MoveNextRunner</code>而不是依靠如<code>AwaitTaskContinuation</code>的内置设施，来<strong>手动地传递执行上下文</strong>。我怀疑在现有的实现中有一些性能上的原因或是其他限制。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">async</span> Task <span class="token function">ExecutionContextInAsyncMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">var</span> li <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AsyncLocal</span><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    li<span class="token punctuation">.</span>Value <span class="token operator">=</span> <span class="token number">42</span><span class="token punctuation">;</span>
+    <span class="token keyword">await</span> Task<span class="token punctuation">.</span><span class="token function">Delay</span><span class="token punctuation">(</span><span class="token number">42</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 上下文被隐式地捕获。li.Value为42</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"After first await: "</span> <span class="token operator">+</span> li<span class="token punctuation">.</span>Value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">var</span> tsk2 <span class="token operator">=</span> Task<span class="token punctuation">.</span><span class="token function">Yield</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    tsk2<span class="token punctuation">.</span><span class="token function">GetAwaiter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">UnsafeOnCompleted</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 上下文没有被捕获：li.Value为0</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Inside UnsafeOnCompleted: "</span> <span class="token operator">+</span> li<span class="token punctuation">.</span>Value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">await</span> tsk2<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 上下文被捕获。li.Value为42</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"After second await: "</span> <span class="token operator">+</span> li<span class="token punctuation">.</span>Value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// After first await: 42</span>
+<span class="token comment" spellcheck="true">// Inside UnsafeOnCompleted: 0</span>
+<span class="token comment" spellcheck="true">// After second await: 42</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ul>
+<li>异步方法与同步方法有很大的不同。</li>
+<li><strong>编译器为每个异步方法都生成一个状态机</strong>，并将原来方法中所有的逻辑移到状态机中。</li>
+<li>生成的代码对同步场景进行了高度优化：如果所有被等待的任务都完成了，那么异步方法的额外开销是很小的。</li>
+<li>如果被等待的任务还没有完成，则依赖于许多帮助类来完成工作，以保持原方法的逻辑不变。</li>
+</ul>
+<p><a href="https://www.cnblogs.com/raytheweak/p/8735141.html" target="_blank" rel="external">这一部分内容参考的博客 </a></p>
+<p>如果你想学习更多与执行上下文相关的内容，我强烈推荐以下两篇博文：</p>
+<p><a href="https://blogs.msdn.microsoft.com/pfxteam/2012/06/15/executioncontext-vs-synchronizationcontext/" target="_blank" rel="external">ExecutionContext vs SynchronizationContext 作者Stephen Toub</a></p>
+<p><a href="https://blog.stephencleary.com/2013/04/implicit-async-context-asynclocal.html" target="_blank" rel="external">Implicit Async Context (“AsyncLocal”) 作者Stephen Cleary</a></p>
 <h1 id="异步函数的扩展性"><a href="#异步函数的扩展性" class="headerlink" title="异步函数的扩展性"></a>异步函数的扩展性</h1><p>在扩展性方面, 能用<code>Task对象</code>包装一个将来完成的操作, 就可以用<code>await操作符</code>来等待该操作. 用一个类型Task来表示各种异步操作. 可以实现组合操作(<code>WhenAll</code>和<code>WhenAny</code>)和其他有用的操作. 之后会演示用<code>Task</code>包装一个<code>CancellationToken</code>,在等待异步操作的同事利用超时和取消功能.</p>
 <p>分享一个<code>TaskLogger类</code>, 用它显示尚未完成的异步操作. 这在调试时特别有用, 尤其是当应用程序因为错误的请求或者未响应的服务器而挂起的时候.</p>
 <pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">TaskLogger</span>
@@ -693,6 +757,19 @@
 <li>状态机然后会再次调用<code>IsCompleted方法</code>判断是否有事件，这时m_events 已经有一个事件了，所以<code>IsCompleted</code>会返回<code>true</code>。</li>
 <li>状态机接着调用<code>GetResult</code>，并且将结果值赋值给await关键字的表达式。</li>
 </ol>
+<h1 id="扩展C-中的异步方法-网络摘要"><a href="#扩展C-中的异步方法-网络摘要" class="headerlink" title="扩展C#中的异步方法(网络摘要)"></a>扩展C#中的异步方法(网络摘要)</h1><p><a href="https://www.cnblogs.com/raytheweak/p/9130594.html" target="_blank" rel="external">翻译文章的地址</a></p>
+<p>关于如何控制异步方法机制有3种方法：</p>
+<ul>
+<li>在<code>System.Runtime.CompilerServices</code>命名空间中提供你自己的<code>async method builder</code>。</li>
+<li>使用自定义的<code>task awaiter</code>。</li>
+<li>定义你自己的<strong>“类任务”（task-like）</strong> 类型</li>
+</ul>
+<p>异步方法被C#编译器转换从而生成的状态机是依靠于某些预定义的类型的。但是C#编译器却并不一定要求这些众所周知的类型来自于某个特定的程序集。例如，你可以在你的项目中提供自己对<code>AsyncVoidMethodBuilder</code>的实现，然后C#编译器就会把异步机制“绑定”到你的自定义类型。</p>
+<h2 id="“类任务”（Task-like）类型"><a href="#“类任务”（Task-like）类型" class="headerlink" title="“类任务”（Task-like）类型"></a>“类任务”（Task-like）类型</h2><p><a href="https://www.cnblogs.com/raytheweak/p/9130594.html" target="_blank" rel="external">翻译文章的地址</a></p>
+<p>从支持<code>async/await</code>的编译器的第一个版本（即C# 5）开始，就可以自定义awaiter了。这个可扩展性十分有用但是却是有限的，因为所有的异步方法都必须返回<code>void</code>,<code>Task</code>或<code>Task&lt;T&gt;</code>。从C# 7.2开始，编译器支持“类任务”类型。</p>
+<p>“类任务”类型是一个class或者struct，它与一个通过<code>AsyncMethodBuilderAttribute标识</code>的<code>builder类型</code>相关联。要使“类任务”类型有用，它应该像我们前面描述的awaiter那样是可等待的。基本上，“类任务”类型结合了前面描述的两种可扩展性的方法，并且使第一种方法得到了正式支持。</p>
+<p>现在你还必须自己定义这个attribute，<a href="https://github.com/SergeyTeplyakov/EduAsync/tree/master/src/07_CustomTaskLikeTypes" target="_blank" rel="external">例子：github</a>。</p>
+<h2 id="相关异步的文档"><a href="#相关异步的文档" class="headerlink" title="相关异步的文档"></a>相关异步的文档</h2><p><a href="https://github.com/dotnet/roslyn/blob/master/docs/features/task-types.md" target="_blank" rel="external">C#中的异步任务类型</a></p>
 
         
             <div class="donate-container">
