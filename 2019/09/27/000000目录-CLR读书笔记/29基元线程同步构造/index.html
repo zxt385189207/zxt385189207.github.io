@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#基元线程同步构造"><span class="toc-text">基元线程同步构造</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#类库和线程安全"><span class="toc-text">类库和线程安全</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#基元用户模式和内核模式构造"><span class="toc-text">基元用户模式和内核模式构造</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用户模式构造"><span class="toc-text">用户模式构造</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#易变构造"><span class="toc-text">易变构造</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-对易变字段的支持"><span class="toc-text">C#对易变字段的支持</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#互锁构造"><span class="toc-text">互锁构造</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#实现简单的自旋锁"><span class="toc-text">实现简单的自旋锁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在线程处理种引入延迟"><span class="toc-text">在线程处理种引入延迟</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Interlocked-Anything模式"><span class="toc-text">Interlocked Anything模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核模式构造"><span class="toc-text">内核模式构造</span></a></li></ol>
 </div>
 
     
@@ -139,7 +139,311 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        
+        <h1 id="基元线程同步构造"><a href="#基元线程同步构造" class="headerlink" title="基元线程同步构造"></a>基元线程同步构造</h1><p>28章展示了如何通过<strong>不同的线程</strong>执行异步函数的不同部分, 可能有两个不同的线程访问相同的变量和数据, 但根据异步函数的实现方式, 不可能有两个线程同时访问相同的数据. 所以在代码访问异步函数中包含的数据时不需要线程同步.</p>
+<p>线程同步存在许多问题, 第一个问题是比较繁琐,容易写错. 必须标识出所有可能由多个线程同时访问的数据,必须用额外的代码将其包围起来, 并获取和释放一个线程同步锁. 没办法检查是否正确添加了所有锁定代码, 只能在CPU数量尽量多的电脑上进行大量压力测试, 被检测出来的几率越大.</p>
+<p>锁的作用: 确保一次只有一个线程访问资源.  但这也是一个问题. 阻塞一个线程会造成更多的线程被创建.</p>
+<p>第二个问题是会损害性能. 锁的获取和释放.</p>
+<p>可以试着用值类型,因为它们总被复制. 每个线程操作的都是它自己的副本.</p>
+<h1 id="类库和线程安全"><a href="#类库和线程安全" class="headerlink" title="类库和线程安全"></a>类库和线程安全</h1><p>FCL保证所有静态方法都是线程安全的. 不保证实例方法是线程安全的.</p>
+<p><strong>使一个方法线程安全, 并不是说它一定要在内部获取一个线程同步锁. 线程安全的方法意味着在两个不同线程试图同时访问数据时, 数据不会被破坏.</strong></p>
+<p>假如每个实例方法都需要获取和释放一个锁, 事实上会造成最终在任何给定的时间, 你的应用程序只有一个线程在运行, 这对性能的影响是显而易见的. 线程构造对象时, 只有这个线程拥有对象的引用, 其他线程都不能访问那个对象, 所以在调用实例方法时无需线程同步.</p>
+<p>然而, <strong>如果线程公开这个对象的引用, 也就是把它放到一个静态字段中, 把它作为状态实参传给一个<code>ThreadPool.QueueUserWorkItem</code>或<code>Task</code></strong>, 那么在多个线程可能同时进行非只读访问的前提下, 就需要线程同步.</p>
+<p>如果实例方法的目的是协调线程, 则实例方法应该是线程安全的. 例如, 一个线程可能调用<code>CancellationToken的Cancel方法</code>取消一个操作, 另一个线程通过查询对应的<code>CancellationToken</code>的<code>IsCancellationRequested</code>属性, 检测到它应该停止正在做的事情, 这两个实例成员内部通过一些特殊的线程同步代码来协调两个线程. (两个成员访问的字段被标记为<code>volatile</code>).</p>
+<h1 id="基元用户模式和内核模式构造"><a href="#基元用户模式和内核模式构造" class="headerlink" title="基元用户模式和内核模式构造"></a>基元用户模式和内核模式构造</h1><p><strong>基元primitive</strong> 是指可以在代码中使用的最简单的构造. 有两种基元构造: <strong>用户模式(user-mode)</strong> 和<strong>内核模式(kernel-mode)</strong> .</p>
+<p>应尽量使用基元用户模式构造, 它们的速度显著快于内核模式构造. 因为它们使用了特殊的CPU指令来协调线程(协调是在硬件中发生的,所以才这么快).</p>
+<p>在用户模式下运行的线程可能被系统抢占。所以也可以用内核模式构造，因为线程通过内核模式的构造获取其它线程拥有的资源时，Windows会阻塞线程以避免它浪费CPU时间。当资源变得可用时，Windows会恢复线程，允许它访问资源。然而线程从用户模式切换到内核模式（或相反）会招致巨大的性能损失。</p>
+<p>对于在一个构造上等待的线程，如果占有构造的这个线程不释放它，前者就可能一直阻塞。构造是用户模式的构造情况下，线程会一直在一个CPU上运行，称为“<strong>活锁</strong>”。如果是内核模式的构造，线程会一直阻塞，称为“<strong>死锁</strong>”。死锁优于活锁，因为活锁既浪费CPU时间，又浪费内存，而死锁只浪费内存。</p>
+<p>我理想的构造应兼具两者的长处, 也就是说, 在没什么竞争的情况下, 这个构造应该快而且不会阻塞(就像用户模式的构造). 但是如果存在堆构造的竞争, 我希望它被操作系统内核阻塞. 像这样的构造确实存在, 称为<strong>混合构造</strong>. 将在第30章讲解.</p>
+<p>CLR的许多线程同步构造实际只是<strong>Win32线程同步构造</strong>的一些面向对象的类包装器.</p>
+<p>毕竟CLR线程就是Window线程.</p>
+<h1 id="用户模式构造"><a href="#用户模式构造" class="headerlink" title="用户模式构造"></a>用户模式构造</h1><p>CLR保证对以下数据类型的变量的<strong>读写是原子性</strong>的：<code>Boolean</code>，<code>Char</code>，<code>S(Byte)</code>,<code>U(Int16)</code>,<code>U(Int32)</code>,<code>U(IntPtr)</code>,<code>Single</code>以及<code>引用类型</code>。</p>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/29基元线程同步构造/QQ截图20190929112817.png" alt=""></p>
+<blockquote>
+<p>torn read : 一次读取不能读完, 在机器级别上,要分两个MOV指令才能读完</p>
+</blockquote>
+<p><strong>基元用户模式构造</strong> 就在于规划好这些原子性数据的读取/写入操作的时间。 这些构造还可强子对(U)Int64和Double类型的变量进行原子性的,规划好了时间的访问.</p>
+<p>两种基元用户模式线程同步构造:</p>
+<ul>
+<li><strong>易变构造(volatile construct)</strong><ul>
+<li>在特定的时间, 它在包含一个简单数据类型的变量上执行原子性的读<strong>或</strong>写操作.</li>
+</ul>
+</li>
+<li><strong>互锁构造(interlocked construct)</strong><ul>
+<li>在特定的时间, 它在包含一个简单数据类型的变量上执行原子性的读<strong>和</strong>写操作.</li>
+</ul>
+</li>
+</ul>
+<p>所有易变和互锁构造都要求传递对包含简单数据类型的一个变量的引用(内存地址).</p>
+<h2 id="易变构造"><a href="#易变构造" class="headerlink" title="易变构造"></a>易变构造</h2><p>在讲易变构造之前，得先讲一个问题，就是代码优化的问题。</p>
+<p>之前我们讲过C#编译器，JIT编译器，CPU都可能会优化代码，从多线程的角度看, 我们的意图并不一定能得到保留. 下例演示了优化之后,程序的工作方式和我们预想的有出入:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">StrangeBehavior</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 将这个字段标记成volatile可修正问题</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Boolean s_stopWorker <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Go</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Main: letting worker run for 5 seconds"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Thread t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span>Worker<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s_stopWorker <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Main: waiting for worker to stop"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        t<span class="token punctuation">.</span><span class="token function">Join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Environment<span class="token punctuation">.</span><span class="token function">Exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Worker</span><span class="token punctuation">(</span>Object o<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Int32 x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span>s_stopWorker<span class="token punctuation">)</span> x<span class="token operator">++</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Worker: stopped when x={0}"</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/29基元线程同步构造/QQ截图20190929121313.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> Int32 m_flag  <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">private</span> Int32 m_value <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 这个方法由一个线程执行</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Thread1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 注意: 以下代码可以按相反的顺序执行</span>
+    m_value <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    m_flag  <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 这个方法由另一个线程执行</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Thread2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 注意: m_value可能先于m_flag读取</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>m_flag <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>m_value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/29基元线程同步构造/QQ截图20190929122308.png" alt=""></p>
+<p>静态System.Threading.Volatile类提供了两个静态方法, 如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> Volatile
+<span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Write</span><span class="token punctuation">(</span><span class="token keyword">ref</span> Int32 locatin<span class="token punctuation">,</span> Int32 <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> Int32 <span class="token function">Read</span><span class="token punctuation">(</span><span class="token keyword">ref</span> Int32 location<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这两个方法比较特殊，它们会禁止C#编译器，JIT编译器和CPU平常执行的一些优化。</p>
+<ul>
+<li><code>Volatile.Wirte</code>方法强迫<code>location</code>中的值在调用时写入. 此外, 按照编码顺序, 之前的加载和存储操作必须在调用Volatile.Wirte之前发生.</li>
+<li><code>Volatile.Read</code>方法强迫<code>location</code>中的值在调用时读取. 此外, 按照编码顺序, 之后的加载和存储操作必须在调用Volatile.Read之后发生.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// This method is executed by one thread</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Thread1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//在将1写入m_flag之前, 必须先将5写入m_value</span>
+    m_value <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    Volatile<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token keyword">ref</span> m_flag<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// This method is executed by another thread</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Thread2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// m_value必然在读取m_flag之后读取</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>Volatile<span class="token punctuation">.</span><span class="token function">Read</span><span class="token punctuation">(</span><span class="token keyword">ref</span> m_flag<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>m_value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>规则: <strong>当线程通过共享内存相互通信时, 调用<code>Volatile.Wirte</code>来写入最后一个值, 调用<code>Volatile.Read</code>来读取第一个值.</strong></p>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/29基元线程同步构造/QQ截图20190929123647.png" alt=""></p>
+<h2 id="C-对易变字段的支持"><a href="#C-对易变字段的支持" class="headerlink" title="C#对易变字段的支持"></a>C#对易变字段的支持</h2><p>如何正确调用上述两个方法是程序员头疼的问题之一, 为了简化编程, C#提供了<code>volatile</code>关键字. 可以用于以下任何类型的静态或实例字段: <code>Boolean</code>，<code>Char</code>，<code>S(Byte)</code>,<code>U(Int16)</code>,<code>U(Int32)</code>,<code>U(IntPtr)</code>,<code>Single</code>, 还可以应用于引用类型的字段, 以及基础类型为<code>S(Byte)</code>,<code>U(Int16)</code>,<code>U(Int32)</code>的任何枚举字段.</p>
+<p>JIT编译器确保对易变字段的所有访问都是以易变读取或写入的方式执行. 不需要显式调用<code>Volatile.Read</code>和<code>Volatile.Write</code>方法, 并且此关键字告诉C#和JIT编译器不将字段缓存到CPU的寄存器中,确保字段的所有读写操作都在RAM中进行.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">ThreadsSharingDataV3</span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">private</span> <span class="token keyword">volatile</span> Int32 m_flag  <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+       <span class="token keyword">private</span>          Int32 m_value <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+       <span class="token comment" spellcheck="true">// This method is executed by one thread</span>
+       <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Thread1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+           <span class="token comment" spellcheck="true">// Note: 5 must be written to m_value before 1 is written to m_flag</span>
+           m_value <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+           m_flag  <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+
+       <span class="token comment" spellcheck="true">// This method is executed by another thread</span>
+       <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Thread2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+           <span class="token comment" spellcheck="true">// Note: m_value must be read after m_flag is read</span>
+           <span class="token keyword">if</span> <span class="token punctuation">(</span>m_flag <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>
+               Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>m_value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然而作者却表示并不喜欢<code>volatile</code>关键字，因为出现上述所说的情况的概率很低，并且volatile禁止优化后对性能会有影响。且C#不支持以传引用的方式传递volatile变量给某个函数。</p>
+<h1 id="互锁构造"><a href="#互锁构造" class="headerlink" title="互锁构造"></a>互锁构造</h1><p><code>Volatile</code>的读写方法是执行一次原子性的读/写操作.</p>
+<p><code>System.Threading.Interlocked</code>类提供的方法。 Interlocked类中的每个方法都执行一次原子读/写操作. 这个类中的所有方法都建立了完整的内存栅栏，也就是说调用某个<code>Interlocked</code>方法之前的任何变量写入都在这个<code>Interlocked</code>方法调用之前执行，而这个调用之后的任何变量读取都在这个调用之后读取。它的作用就等于之前的Volilate的<code>Read</code>和<code>Write</code>的作用加在一起。</p>
+<p>作者推荐使用<code>Interlocked</code>的方法，它们不仅快，而且也能做不少事情，比简单的加（Add），自增（Increment），自减（Decrement），互换（Exchange）. <code>Interlocked</code>的方法虽然好用，但主要用于操作Int类型。</p>
+<p>… 看不懂, 过段时间再来回顾.</p>
+<h2 id="实现简单的自旋锁"><a href="#实现简单的自旋锁" class="headerlink" title="实现简单的自旋锁"></a>实现简单的自旋锁</h2><p><code>Interlocked.Exchange</code>方法将<strong>一个存储位置设为指定值, 并返回该存储位置的原始值</strong>.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">struct</span> SimpleSpinLock
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Int32 m_ResourceInUse<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 0=false (默认), 1=true</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Enter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 总是将资源设为"正在使用"</span>
+            <span class="token comment" spellcheck="true">// 只有从未使用->正在使用( 从0到1 ) 才会 return</span>
+            <span class="token comment" spellcheck="true">// 从1-1不会返回, 继续自旋</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>Interlocked<span class="token punctuation">.</span><span class="token function">Exchange</span><span class="token punctuation">(</span><span class="token keyword">ref</span> m_ResourceInUse<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// "黑科技"</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Leave</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 一次只有一个线程才能进入这里访问资源</span>
+        Volatile<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token keyword">ref</span> m_ResourceInUse<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>SimpleSpinLock实现很简单, 如果两个线程同时调用Enter,那么<code>Interlocked.Exchange</code>会确保一个线程将<code>m_ResourceInUse</code>从<strong>0变为1</strong>, <code>Exchange</code>并返回原始值, 如果是0, 这个线程返回继续执行, 否则不会返回一直while判断.  造成自旋.</p>
+<p>第一个线程完成对<code>SomeResource</code>对象的字段的处理之后会调用<code>Leave</code>, <code>Leave</code>内部调用<code>Volatile.Write</code>将<code>m_ResourceInUse</code>改为0. 这就使正在<strong>自旋</strong>的线程能够将<code>m_ResourceInUse</code>从0设为1, 终于能返回.</p>
+<p>这就是线程同步锁的一个简单实现, <strong>这种锁最大的问题在于, 在存在对锁竞争的前提下,会造成线程自旋</strong>. 这个自旋会浪费CPU时间, 阻止CPU做其他更有用的工作, 因此, <strong>自选锁只应用于保护哪些执行非常快的代码区域.</strong></p>
+<p>自选锁一般不再单CPU上使用. 占有锁的线程不能快速释放锁, <strong>如果占有锁的线程的优先级低于想要获取锁的线程(自旋线程),  占有锁的线程可能根本没办法运行, 造成活锁,一直浪费CPU和内存</strong>. 因此对于正在使用自选锁的线程, 应该禁止像这样的优先级提升.</p>
+<p>为了解决这些问题, 许多自选锁内部都有一些额外的逻辑. 我将这称为黑科技. FCL提供了一个名为<code>System.Threading.SpinWait</code>的结构, 它封装了人们关于这种黑科技的最新研究成果.</p>
+<p>FCL还包含一个<code>System.Threading.SpinLock</code>结构, 和前面代码中的<code>SimpleSpinLock</code>自选锁类相似, 只是使用了<code>SpinWait</code>结构来增强性能. <code>SpinLock</code>还提供了超时支持. 而且都是值类型.意味着他们都是轻量级的,内存友好的对象.</p>
+<p>例如: 如果需要将一个锁同集合中的每一项关联, <code>SpinLock</code>就是很好的选择, 但一定不要传递<code>SpinLock</code>实例, 否则会被复制, 而你会失去所有同步, 虽然可以定义实例的<code>SpinLock</code>字段, 但不要将字段标记为<code>readonly</code>, 因为在操作锁的过程中,它的内部状态必须改变.</p>
+<h3 id="在线程处理种引入延迟"><a href="#在线程处理种引入延迟" class="headerlink" title="在线程处理种引入延迟"></a>在线程处理种引入延迟</h3><p><strong>黑科技</strong> 旨在希望获得资源的线程暂停执行, 使当前拥有资源的线程能执行它的代码并让出资源. 为此, <code>SpinWait</code>结构内部调用<code>Thread</code>的静态<code>Sleep</code>,<code>Yield</code>和<code>SpinWait</code>方法.</p>
+<p>线程可以告诉系统它在指定的时间内不想被调度, 这是调用<code>Thread</code>的静态<code>Sleep</code>方法来实现的. 这个方导致线程在指定时间内挂起. 调用Sleep允许线程自愿放弃它的时间片的剩余部分, 指定的时间里不被调度. 但如果你希望一个线程睡100毫秒, 那么会睡眠大致那么长时间, 但也有可能会多睡眠几秒,甚至几分钟的时间, 因为Window不是实时操作系统,你的线程可能在正确的时间唤醒, 取决于系统中正在发生的别的事情.</p>
+<p><code>Sleep</code>的<code>millisecondsTimeout参数</code>传递<code>Infinite</code> 也就是<code>-1</code>,<strong>这告诉系统永远不调度线程, 这没什么意义, 更好的做法是让线程退出</strong>. 回收它的栈和内核对象.</p>
+<p><code>Sleep</code>的<code>millisecondsTimeout参数</code>传递<code>0</code>, <strong>告诉系统放弃当前时间片的剩余部分, 强迫系统调度另一个线程</strong>. 但系统可能重新调度刚才调用了Sleep的线程(如果<strong>没有相同或者更高优先级</strong>的其他可调度线程就会发生这样的情况).</p>
+<p>线程可以要求window在当前CPU上调度另一个线程, 这是通过<code>Thread</code>的<code>Yield</code>方法来实现的. <strong>如果Windows发现有另一个线程准备好在当前处理器上运行, Yield就会返回true, 调用Yield的线程会提前结束它的时间片.</strong> 所选线程得以运行一个时间片. 然后调用Yield的线程被再次调度, 开始用一个全新的时间片运行. <strong>如果Windows发现没有其他线程准备在当前处理器上运行, Yield就会返回false,调用Yield的线程继续运行它的时间片.</strong></p>
+<blockquote>
+<p>Yiled : 放弃, 叫停  但是, C#的yiled关键字确实有生成的意思.</p>
+</blockquote>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/29基元线程同步构造/QQ截图20190929150307.png" alt=""></p>
+<p><strong><code>Yiled</code>方法旨在使”饥饿”状态的,具有相等或更低优先级的线程有机会运行.  调用<code>Yiled</code>的效果介于调用<code>Thread.Sleep(0)</code>和<code>Thread.Sleep(1)</code>之间. <code>Thread.Sleep(0)</code>不允许较低优先级的线程运行, 而<code>Thread.Sleep(1)</code>总是强迫进行上下文切换</strong>. 并且总是强迫线程睡眠超过1毫秒的时间(因为内部系统的计时器的解析度的问题).</p>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/29基元线程同步构造/QQ截图20190929150953.png" alt=""></p>
+<h2 id="Interlocked-Anything模式"><a href="#Interlocked-Anything模式" class="headerlink" title="Interlocked Anything模式"></a>Interlocked Anything模式</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Interlocked</span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// return (++location)</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> Int32 <span class="token function">Increment</span><span class="token punctuation">(</span><span class="token keyword">ref</span> Int32 location<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">// return (--location)</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> Int32 <span class="token function">Decrement</span><span class="token punctuation">(</span><span class="token keyword">ref</span> Int32 location<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">// return (location1 += value)</span>
+  <span class="token comment" spellcheck="true">// 注意value可能是一个负数, 从而实现减法运算</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> Int32 <span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">ref</span> Int32 location1<span class="token punctuation">,</span> Int32 <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">// Int32 old = location1; location1 = value; return old;</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> Int32 <span class="token function">Exchange</span><span class="token punctuation">(</span><span class="token keyword">ref</span> Int32 location1<span class="token punctuation">,</span> Int32 <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">// Int32 old = location1</span>
+  <span class="token comment" spellcheck="true">// if(location1 == comparand) location1 = value;</span>
+  <span class="token comment" spellcheck="true">// return old;</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> Int32 <span class="token function">CompareExchange</span><span class="token punctuation">(</span><span class="token keyword">ref</span> Int32 location1<span class="token punctuation">,</span> Int32 <span class="token keyword">value</span><span class="token punctuation">,</span> Int32 comparand<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>许多人在查看<code>Interlocked</code>方法时, 都好奇为什么不创建一组更丰富的<code>Interlocked</code>方法, 使它们适用于更广泛的情形. 例如提供Multiple, Divide, Minium,Maximum,And,Or,Xor等.</p>
+<p>虽然<code>Interlocked</code>没有提供这些方法, 但一个已知的模式<strong>允许使用<code>Interlocked.CompareExchange</code>方法以原子方式在一个Int32上执行任何操作</strong>, 事实上, 由于<code>Interlocked.CompareExchange</code>提供了其他重载版本, 能操作Int64,Single,Double,Objcet和泛型引用类型. 所以该模式适合所有这些类型.</p>
+<p>该模式类似于在修改数据库记录时使用的乐观并发模式:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 传入两个值, 判断哪个值大</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> Int32 <span class="token function">Maximum</span><span class="token punctuation">(</span><span class="token keyword">ref</span> Int32 target<span class="token punctuation">,</span> Int32 <span class="token keyword">value</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Int32 currenVal <span class="token operator">=</span> target<span class="token punctuation">,</span> startVal<span class="token punctuation">,</span> desiredVal<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 不要在循环中访问目标(target), 除非是想改变它时另一个线程也在动它</span>
+    <span class="token keyword">do</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 记录这一次循环迭代的起始值</span>
+        startVal <span class="token operator">=</span> currenVal<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 基于startVal和value计算desiredVal</span>
+        desiredVal <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">Max</span><span class="token punctuation">(</span>startVal<span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 注意, 这里线程可能被抢占, 所以以下代码不是原子性的</span>
+        <span class="token comment" spellcheck="true">// if(target == startVal) target = desiredVal;</span>
+
+        <span class="token comment" spellcheck="true">// 应该使用原子性的CompareExchange方法</span>
+        <span class="token comment" spellcheck="true">// 它返回在target在(可能)被方法修改之前的值</span>
+        <span class="token comment" spellcheck="true">// 判断target和startVal(target旧值)是否相等,  </span>
+        <span class="token comment" spellcheck="true">// 如果相等返回desiredVal(说明值没有被其他线程改变),</span>
+        <span class="token comment" spellcheck="true">// 不相等返回target(新值) (说明值被其他线程改变),</span>
+        currenVal <span class="token operator">=</span> Interlocked<span class="token punctuation">.</span><span class="token function">CompareExchange</span><span class="token punctuation">(</span><span class="token keyword">ref</span> target<span class="token punctuation">,</span> desiredVal<span class="token punctuation">,</span> startVal<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 如果target的值在这一次循环迭代中被其他线程改变,就重复  </span>
+    <span class="token punctuation">}</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>startVal <span class="token operator">!=</span> currenVal<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 返回最大值</span>
+    <span class="token keyword">return</span> desiredVal<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>进入方法后, <code>currenVal</code>被初始化为开始执行前的target值.</li>
+<li>然后,循环内部, <code>startVal</code>被初始化为同一个值. 可以用<code>startVal</code>执行你希望的任何操作.</li>
+<li>最终得到一个结果, 放入<code>desiredVal</code>中<ul>
+<li>当这个操作进行时, 其他线程可能改变<code>target</code>, 虽然几率很小, 但仍有可能发生.</li>
+<li>如果真的发生, <code>desiredVal</code>是旧的<code>startVal</code>值所计算得出的,而不是新值<code>target</code>.</li>
+<li>这时旧不应该更改<code>target</code>.</li>
+</ul>
+</li>
+<li>我们用<code>Interlocked.CompareExchange</code>方法确保在没有其他线程更改<code>target</code>的值的前提下将<code>target</code>的值更改为<code>desiredVal</code><ul>
+<li>该方法验证<code>target</code>值和<code>startVal</code>是否匹配.<ul>
+<li>如果值没有改变, <code>CompareExchange</code>, 就把<code>target</code>更改为<code>desiredVal</code>中的新值.</li>
+<li>如果值被别的线程改变了, <code>CompareExchange</code>就不改变<code>target(新)</code>值.</li>
+<li>将方法<code>target(新)</code>返回值放入<code>currenVal</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>比较<code>currenVal</code>和<code>startVal</code><ul>
+<li>如果相等, 则说明没有其他线程更改<code>target</code>, 此时<code>target</code>包含了<code>desiredVal</code>新值.while循环不再继续.</li>
+<li>如果不相等, 代表其他线程更改了<code>target</code>, <code>target</code>需要重新循环进行下一次迭代和相同操作.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/29基元线程同步构造/QQ截图20190929182549.png" alt=""></p>
+<p>Morph方法由于调用了morpher回调方法, 所以肯定会招致一定的性能惩罚. 想要获得最佳性能, 只能以内联或者嵌入方式执行操作, 就像<code>Maximum</code>一样.</p>
+<h1 id="内核模式构造"><a href="#内核模式构造" class="headerlink" title="内核模式构造"></a>内核模式构造</h1><p>内核模式比用户模式慢，这个是可以预见的，因为线程要从托管代码转为本机用户模式代码，再转为内核模式代码，然后原路返回，也就了解为什么慢了。</p>
+<p>但是之前也介绍过了，内核模式也具备用户模式所不具备的优点：</p>
+<ul>
+<li>内核模式的构造检测到一个资源上的竞争，windows会阻塞输掉的线程，使他不会像之前介绍的用户模式那样“自旋”（也就是那个不断循环的鬼），这样也就不会一直占着一个CPU了，浪费资源。</li>
+<li>内核模式的构造可实现<strong>本机</strong>和<strong>托管线程</strong>相互之间的同步</li>
+<li>内核模式的构造可同步在同一台机器的不同进程中运行的线程。</li>
+<li>内核模式的构造可应用安全性设置，防止未经授权的帐户访问它们。</li>
+<li>线程可一直阻塞，直到集合中所有内核模式构造可用，或直到集合中的任何内核模式构造可用</li>
+<li>在内核模式的构造上阻塞的线程可指定超时值；指定时间内访问不到希望的资源，线程就可以解除阻塞并执行任务。</li>
+</ul>
+<p>事件和信号量是两种基元内核模式线程同步构造. 至于互斥体什么的则是在这两者基础上建立而来的。</p>
+<p><code>System.Threading</code>命名空间提供了一个抽象基类<code>WaitHandle</code>。这个简单的类唯一的作用就是包装一个Windows内核对象句柄。</p>
+<p>类层次继承结构如下:</p>
+<ul>
+<li>WaitHandle<ul>
+<li>EventWaitHandle<ul>
+<li>AutoResetEvent</li>
+<li>ManualResetEvent</li>
+</ul>
+</li>
+<li>Semaphore (信号量)</li>
+<li>Mutex (互斥体)</li>
+</ul>
+</li>
+</ul>
+<p><code>WaitHandle</code>基类内部有一个<code>SafeWaitHandle</code>字段，它容纳一个Win32内核对象句柄。 这个字段是在构造一个具体的WaitHandle派生类时初始化的, 在一个内核模式的构造上调用的每个方法都代表一个完整的内存栅栏.</p>
+<blockquote>
+<p>内存栅栏: 是表明调用这个方法之前的任何变量写入都必须在这个方法调用之前发生. 而调用之后的任何变量读取都必须在这个调用之后发生.</p>
+</blockquote>
+<p>WaitHandle公开方法:</p>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/29基元线程同步构造/QQ截图20190929214150.png" alt=""></p>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/29基元线程同步构造/QQ截图20190929214208.png" alt=""></p>
+<p>这些方法有几点需要注意:</p>
+<ul>
+<li>可以调用<code>WaitHandle.WaitOne</code>方法让<strong>调用线程等待底层内核对象</strong>收到信号, 这个方法在内部调用WIN32 <code>WaitForSingleObjectEx</code>函数. <strong>如果对象收到信号, <code>WaitOne</code>就返回true,超时则返回false</strong>.</li>
+<li>静态方法<code>WaitAll</code>让调用线程等待<code>WaitHandle[]</code>中指定的所有内核对象都收到信号, 才返回true.</li>
+<li>静态方法<code>WaitAny</code>方法让调用线程等待<code>WaitHandle[]</code>中指定的任何对象收到信号. 返回的<code>Int32</code>是与收到信号的内核对象对应的数组元素索引.</li>
+</ul>
+<p><strong>线程同步能避免尽量避免, 如果一定要进行线程同步, 就尽量使用用户模式的构造. 内核模式会慢很多很多.</strong></p>
+<p>… 看不懂, 过段时间再来回顾.</p>
+
         
             <div class="donate-container">
     <div class="donate-button">
