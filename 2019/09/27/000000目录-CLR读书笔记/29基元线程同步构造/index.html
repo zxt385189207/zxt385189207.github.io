@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#基元线程同步构造"><span class="toc-text">基元线程同步构造</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#类库和线程安全"><span class="toc-text">类库和线程安全</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#基元用户模式和内核模式构造"><span class="toc-text">基元用户模式和内核模式构造</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用户模式构造"><span class="toc-text">用户模式构造</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#易变构造"><span class="toc-text">易变构造</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-对易变字段的支持"><span class="toc-text">C#对易变字段的支持</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#互锁构造"><span class="toc-text">互锁构造</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#实现简单的自旋锁"><span class="toc-text">实现简单的自旋锁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在线程处理种引入延迟"><span class="toc-text">在线程处理种引入延迟</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Interlocked-Anything模式"><span class="toc-text">Interlocked Anything模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核模式构造"><span class="toc-text">内核模式构造</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#基元线程同步构造"><span class="toc-text">基元线程同步构造</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#类库和线程安全"><span class="toc-text">类库和线程安全</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#基元用户模式和内核模式构造"><span class="toc-text">基元用户模式和内核模式构造</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用户模式构造"><span class="toc-text">用户模式构造</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#易变构造"><span class="toc-text">易变构造</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-对易变字段的支持"><span class="toc-text">C#对易变字段的支持</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#互锁构造"><span class="toc-text">互锁构造</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#实现简单的自旋锁"><span class="toc-text">实现简单的自旋锁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在线程处理种引入延迟"><span class="toc-text">在线程处理种引入延迟</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Interlocked-Anything模式"><span class="toc-text">Interlocked Anything模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核模式构造"><span class="toc-text">内核模式构造</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Event构造"><span class="toc-text">Event构造</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Semaphore构造"><span class="toc-text">Semaphore构造</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mutex构造"><span class="toc-text">Mutex构造</span></a></li></ol></li></ol>
 </div>
 
     
@@ -440,9 +440,216 @@
 <li>可以调用<code>WaitHandle.WaitOne</code>方法让<strong>调用线程等待底层内核对象</strong>收到信号, 这个方法在内部调用WIN32 <code>WaitForSingleObjectEx</code>函数. <strong>如果对象收到信号, <code>WaitOne</code>就返回true,超时则返回false</strong>.</li>
 <li>静态方法<code>WaitAll</code>让调用线程等待<code>WaitHandle[]</code>中指定的所有内核对象都收到信号, 才返回true.</li>
 <li>静态方法<code>WaitAny</code>方法让调用线程等待<code>WaitHandle[]</code>中指定的任何对象收到信号. 返回的<code>Int32</code>是与收到信号的内核对象对应的数组元素索引.</li>
+<li>在传给WaitAny和WaitAll方法的数组中, 包含的元素数不能超过64个, 否则会抛出NotSupportedException异常.</li>
+<li>强烈反对显式调用Dispose. 让GC去完成清理工作.</li>
 </ul>
+<p>内核模式的构造一个常见用途是创造在任何只允许它的一个实例运行的应用程序.</p>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/29基元线程同步构造/QQ截图20190930103622.png" alt=""></p>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/29基元线程同步构造/QQ截图20190930103701.png" alt=""></p>
+<h2 id="Event构造"><a href="#Event构造" class="headerlink" title="Event构造"></a>Event构造</h2><p><code>EventHandle</code>(Event构造),事件实际上就是由内核维护的Boolean变量。<strong>事件为false在事件上等待的线程就阻塞</strong>, <strong>为true就解除阻塞</strong>。</p>
+<p>有两种事件，即自动重置事件（AutoResetEvent）和手动重置事件（ManualResetEvent）。区别就在于是否在解除第一个线程的阻塞后，将事件自动重置为false, 造成其余线程继续阻塞. 而当手动重置事件为true时, 它解除正在等待它的所有线程的阻塞, 因为内核不将事件自动重置回false, 需要在代码中将事件手动重置回false.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EventWaitHandle</span> <span class="token punctuation">:</span> WaitHandle
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> Boolean <span class="token function">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 将Boolean设为true, 总是返回true</span>
+   <span class="token keyword">public</span> Boolean <span class="token function">Reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 将Boolean设为false, 总是返回true</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">AutoResetEvent</span> <span class="token punctuation">:</span> EventWaitHandle
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token function">AutoResetEvent</span><span class="token punctuation">(</span>Boolean initialState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">ManualResetEvent</span> <span class="token punctuation">:</span> EventWaitHandle
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token function">ManualResetEvent</span><span class="token punctuation">(</span>Boolean initialState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>用自动重置事件写个锁示例如下：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SimpleWaitLock</span> <span class="token punctuation">:</span> IDisposable
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> AutoResetEvent m_available<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">SimpleWaitLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_available <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AutoResetEvent</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 最开始时自由可用</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Enter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 在内核中阻塞, 直到资源可用</span>
+        <span class="token comment" spellcheck="true">// 发生资源竞争, 没有竞争赢的线程会阻塞</span>
+        m_available<span class="token punctuation">.</span><span class="token function">WaitOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Leave</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 让另一个线程访问资源</span>
+        m_available<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_available<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 对比自旋锁</span>
+<span class="token keyword">internal</span> <span class="token keyword">struct</span> SimpleSpinLock
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Int32 m_ResourceInUse<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 0=false (默认), 1=true</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Enter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 总是将资源设为 "正在使用"</span>
+            <span class="token comment" spellcheck="true">// 只有从未使用->正在使用( 从0到1 ) 才会 return</span>
+            <span class="token comment" spellcheck="true">// 从1-1不会返回, 继续自旋</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>Interlocked<span class="token punctuation">.</span><span class="token function">Exchange</span><span class="token punctuation">(</span><span class="token keyword">ref</span> m_ResourceInUse<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// "黑科技"</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Leave</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 一次只有一个线程才能进入这里访问资源</span>
+        Volatile<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token keyword">ref</span> m_ResourceInUse<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可采取和使用<code>SimpleSpinLock</code>时完全一样的方式使用这个<code>SimpleWaitLock</code>. <strong>事实上,外部行为是完全相同的; 不过两个锁的性能截然不同.</strong></p>
+<ul>
+<li>锁上面没有竞争的时候,<code>SimpleWaitLock</code>比<code>SimpleSpinLock</code>慢得多. 因为WaitLock的<code>Enter和Leave方法</code>的每一个调用都强迫调用线程从托管代码转换为内核代码, 再转换回来. 这是不好的地方.</li>
+<li>存在竞争的时候, 输掉的线程会被内核阻塞. 不会在那边自旋(浪费CPU时间), 这是好的地方.</li>
+</ul>
+<p><img src="/2019/09/27/000000目录-CLR读书笔记/29基元线程同步构造/QQ截图20190930110241.png" alt=""></p>
 <p><strong>线程同步能避免尽量避免, 如果一定要进行线程同步, 就尽量使用用户模式的构造. 内核模式会慢很多很多.</strong></p>
-<p>… 看不懂, 过段时间再来回顾.</p>
+<h2 id="Semaphore构造"><a href="#Semaphore构造" class="headerlink" title="Semaphore构造"></a>Semaphore构造</h2><p><code>Semaphore</code>的英文就是信号量，其实是由内核维护的<code>Int32变量</code>。信号量为0时，在信号量上等待的线程阻塞，信号量大于0时接触阻塞。信号量上等待的线解除阻塞时，信号量自动减1.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Semaphore</span> <span class="token punctuation">:</span> WaitHandle
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token function">Semaphore</span><span class="token punctuation">(</span>Int32 initialCount<span class="token punctuation">,</span> Int32 maximumCount<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> Int32 <span class="token function">Release</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 调用 Release(1); 返回上一个计数</span>
+   <span class="token keyword">public</span> Int32 <span class="token function">Release</span><span class="token punctuation">(</span>Int32 releaseCount<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 返回上一个计数</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>下面总结一下这三种内核模式基元的行为.</p>
+<ul>
+<li>多个线程在一个<code>自动重置事件</code>上等待时, 设置事件只导致一个线程被解除阻塞.</li>
+<li>多个线程在一个<code>手动重置事件</code>上等待时, 设置事件导致所有线程被解除阻塞.</li>
+<li>多个线程在一个<code>信号量</code>上等待时, 释放信号量导致<code>releaseCount</code>个线程被解除阻塞</li>
+</ul>
+<p>因此自动重置事件在行为上和最大计数为1的信号量非常相似. 两者区别在在一个自动重置时间上连续多次调用<code>Set</code>, 同时仍然只有一个线程解除阻塞. 相反, 在一个信号量上连续多次调用<code>Release</code>,会导致它的计数超过最大计数, 这是<code>Release</code>会抛出<code>SemaphoreFullException</code>.</p>
+<p>用信号量重新实现<code>SimpleWaitLock</code>:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">/// &lt;summary></span>
+<span class="token comment" spellcheck="true">/// 简单的阻塞锁</span>
+<span class="token comment" spellcheck="true">/// &lt;/summary></span>
+<span class="token keyword">class</span> <span class="token class-name">SimpleWaitLock</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> Semaphore m_ResourceInUse<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">SimpleWaitLock</span><span class="token punctuation">(</span>Int32 maxCount<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_ResourceInUse <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Semaphore</span><span class="token punctuation">(</span>maxCount<span class="token punctuation">,</span> maxCount<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Enter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//阻塞内核，直到资源可用</span>
+        m_ResourceInUse<span class="token punctuation">.</span><span class="token function">WaitOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Leave</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//解除当前线程阻塞，让另外2个线程访问资源</span>
+        m_ResourceInUse<span class="token punctuation">.</span><span class="token function">Release</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_ResourceInUse<span class="token punctuation">.</span><span class="token function">Close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Mutex构造"><a href="#Mutex构造" class="headerlink" title="Mutex构造"></a>Mutex构造</h2><p>Mutex的中文就是互斥体。代表了一个互斥的锁。 它的工作方式和<code>AutoResetEvent</code>(或者<code>计数为1的Semaphore</code>)相似, 三者都是一次只释放一个正在等待的线程.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Mutex</span> <span class="token punctuation">:</span> WaitHandle
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token function">Mutex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">ReleaseMutex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>互斥体有一个额外的逻辑，Mutex会记录下线程的ID值，如果释放的时候不是这个线程释放的，那么就不会释放掉，并且还会抛<code>ApplicationException异常</code>。 另外拥有Mutex的线程因为任何原因而终止, 在<code>Mutex</code>上等待的某个线程会因为抛出<code>AbandonedMuteException</code>异常而被唤醒. 该异常通常会成为未处理异常, 从而终止整个进程.</p>
+<p><code>互斥体</code>实际上在维护一个<code>递归计数</code>，一个线程当前拥有一个Mutex，而后该线程再次在Mutex等待，那么此计数就会递增，而线程调用ReleaseMutex会导致递减，只有计数递减为0，那么这个线程才会解除阻塞。另一个线程才会称为该Mutex的所有者.</p>
+<p>Mutex对象需要额外的内存来容纳那些记录下来的ID值和计数信息，并且锁也会变得更慢了。所以很多人避免用Mutex对象。</p>
+<p>通常, 当一个方法获取了一个锁, 然后调用也需要锁的另一个方法, 就需要一个递归锁.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SomeClass</span>
+<span class="token punctuation">{</span>
+     <span class="token keyword">private</span> <span class="token keyword">readonly</span> Mutex m_lock <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Mutex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+     <span class="token punctuation">{</span>
+         m_lock<span class="token punctuation">.</span><span class="token function">WaitOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token function">Method2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//递归获取锁</span>
+         m_lock<span class="token punctuation">.</span><span class="token function">ReleaseMutex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Method2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+     <span class="token punctuation">{</span>
+         m_lock<span class="token punctuation">.</span><span class="token function">WaitOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token comment" spellcheck="true">/*做点什么*/</span>
+         m_lock<span class="token punctuation">.</span><span class="token function">ReleaseMutex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码中, 使用<code>SomeClass对象</code>的代码可以调用<code>Method1</code>,它获取<code>Mutex</code>,执行一些线程安全的操作, 然后调用<code>Method2</code>, 它也执行一些线程安全的操作. <strong>由于<code>Mutex</code>对象支持递归, 所以线程会获取两次锁, 然后释放它两次.</strong></p>
+<p>如果<code>SomeClass</code>使用一个<code>AutoResetEvent</code>而不是<code>Mutex</code>,线程在调用<code>Method2</code>的<code>WaitOne</code>方法时会阻塞,从而死锁.</p>
+<p>如果需要递归锁, 可以使用<code>AutoResetEvent</code>来简单的创建一个:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">/// &lt;summary></span>
+<span class="token comment" spellcheck="true">/// 事件构造实现的递归锁，效率比Mutex高很多</span>
+<span class="token comment" spellcheck="true">/// &lt;/summary></span>
+<span class="token keyword">class</span> <span class="token class-name">RecursiveAutoResetEvent</span> <span class="token punctuation">:</span> IDisposable
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span>  AutoResetEvent m_lock<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">AutoResetEvent</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> Int32 m_owningThreadId <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> Int32 m_lockCount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Enter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 获取当前线程ID</span>
+        Int32 currentThreadId <span class="token operator">=</span> Thread<span class="token punctuation">.</span>CurrentThread<span class="token punctuation">.</span>ManagedThreadId<span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 如果调用线程拥有锁, 就递增递归计数</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>m_owningThreadId <span class="token operator">==</span> currentThreadId<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            m_lockCount<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 调用线程不拥有锁,等待它</span>
+        m_lock<span class="token punctuation">.</span><span class="token function">WaitOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 调用线程现在拥有了锁, 初始化拥有线程的ID和递归计数</span>
+        m_owningThreadId <span class="token operator">=</span> currentThreadId<span class="token punctuation">;</span>
+        m_lockCount <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Leave</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//获取当前线程ID</span>
+        Int32 currentThreadId <span class="token operator">=</span> Thread<span class="token punctuation">.</span>CurrentThread<span class="token punctuation">.</span>ManagedThreadId<span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 如果调用线程不拥有锁, 就出错了</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>m_owningThreadId <span class="token operator">!=</span> currentThreadId<span class="token punctuation">)</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidOperationException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 从递归计数中减1</span>
+        <span class="token comment" spellcheck="true">// 如果递归计数为0, 表名没有线程拥有锁</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">--</span>m_lockCount <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            m_owningThreadId <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 唤醒一个正在等待的线程</span>
+            m_lock<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_lock<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>虽然<code>RecursiveAutoResetEvent</code>类的行为和<code>Mutex</code>类完全一样, 但在一个线程试图递归获取锁时, <code>RecursiveAutoResetEvent</code>的性能会好得多, 因为<strong>现在跟踪线程所有权和递归的都是托管代码</strong>. 只有在第一次获取<code>AutoResetEvent</code>或者最后把它放弃给其他线程时, 才需要从托管代码转换为内核代码.</p>
 
         
             <div class="donate-container">
