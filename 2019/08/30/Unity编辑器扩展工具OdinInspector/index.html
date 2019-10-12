@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Odin"><span class="toc-text">Odin</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Odin"><span class="toc-text">Odin</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#常用特性"><span class="toc-text">常用特性</span></a></li></ol>
 </div>
 
     
@@ -140,6 +140,187 @@
     </div>
     <div class="post-content no-indent">
         <h1 id="Odin"><a href="#Odin" class="headerlink" title="Odin"></a>Odin</h1><p><a href="https://odininspector.com/tutorials/getting-started/installing-odin-inspector" target="_blank" rel="external">Odin官网</a></p>
+<p><a href="https://odininspector.com/attributes" target="_blank" rel="external">特性查询文档</a></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 选取后缀为.unity文件路径</span>
+<span class="token punctuation">[</span><span class="token function">FilePath</span><span class="token punctuation">(</span>Extensions <span class="token operator">=</span> <span class="token string">".unity"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">string</span> ScenePath<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 按钮</span>
+<span class="token punctuation">[</span><span class="token function">Button</span><span class="token punctuation">(</span>ButtonSizes<span class="token punctuation">.</span>Large<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"Hello button!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// inspector面板上的标题栏</span>
+<span class="token punctuation">[</span><span class="token function">Title</span><span class="token punctuation">(</span><span class="token string">"Wide Vector"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+<span class="token comment" spellcheck="true">// 能隐藏掉属性名称WideColor1的显示</span>
+<span class="token punctuation">[</span>HideLabel<span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token function">ColorPalette</span><span class="token punctuation">(</span><span class="token string">"Fall"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> Color WideColor1<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 表示此属性需要一个值, 以红色感叹号警告, 并传递一个字符串</span>
+<span class="token punctuation">[</span><span class="token function">Required</span><span class="token punctuation">(</span><span class="token string">"$DynamicMessage"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> GameObject GameObject<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">string</span> DynamicMessage <span class="token operator">=</span> <span class="token string">"Dynamic error message"</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/08/30/Unity编辑器扩展工具OdinInspector/QQ截图20191005221445.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 隐藏了属性名称Name标签, 在没有值的情况下显示警告, 排序</span>
+<span class="token punctuation">[</span>HideLabel<span class="token punctuation">,</span> Required<span class="token punctuation">,</span> <span class="token function">PropertyOrder</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span>ShowInInspector<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span><span class="token function">Button</span><span class="token punctuation">(</span>ButtonSizes<span class="token punctuation">.</span>Medium<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">PropertyOrder</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">RandomName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>Name <span class="token operator">=</span> Guid<span class="token punctuation">.</span><span class="token function">NewGuid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span>PreviewField<span class="token punctuation">,</span> Required<span class="token punctuation">,</span> AssetsOnly<span class="token punctuation">]</span>
+<span class="token keyword">public</span> GameObject Prefab<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>组属性布局</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// PreviewField(50) 参数:高度</span>
+<span class="token punctuation">[</span><span class="token function">HorizontalGroup</span><span class="token punctuation">(</span><span class="token string">"Split"</span><span class="token punctuation">,</span> Width <span class="token operator">=</span> <span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">,</span> HideLabel<span class="token punctuation">,</span> <span class="token function">PreviewField</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> Texture2D Icon<span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span><span class="token function">VerticalGroup</span><span class="token punctuation">(</span><span class="token string">"Split/Properties"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">string</span> MinionName<span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span><span class="token function">VerticalGroup</span><span class="token punctuation">(</span><span class="token string">"Split/Properties"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">float</span> Health<span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span><span class="token function">VerticalGroup</span><span class="token punctuation">(</span><span class="token string">"Split/Properties"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">float</span> Damage<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/08/30/Unity编辑器扩展工具OdinInspector/QQ截图20191006104813.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span><span class="token function">LabelText</span><span class="token punctuation">(</span><span class="token string">"$IAmLabel"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">string</span> IAmLabel<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 注册增加和移除的函数调用</span>
+<span class="token punctuation">[</span><span class="token function">ListDrawerSettings</span><span class="token punctuation">(</span>
+    CustomAddFunction <span class="token operator">=</span> <span class="token string">"CreateNewGUID"</span><span class="token punctuation">,</span>
+    CustomRemoveIndexFunction <span class="token operator">=</span> <span class="token string">"RemoveGUID"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> List<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> GuidList<span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> <span class="token keyword">string</span> <span class="token function">CreateNewGUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> Guid<span class="token punctuation">.</span><span class="token function">NewGuid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">RemoveGUID</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>GuidList<span class="token punctuation">.</span><span class="token function">RemoveAt</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 分Tab页</span>
+<span class="token punctuation">[</span><span class="token function">TabGroup</span><span class="token punctuation">(</span><span class="token string">"First Tab"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span> FirstTab<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/08/30/Unity编辑器扩展工具OdinInspector/QQ截图20191006124558.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span><span class="token function">Button</span><span class="token punctuation">(</span>ButtonSizes<span class="token punctuation">.</span>Large<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token function">FoldoutGroup</span><span class="token punctuation">(</span><span class="token string">"Buttons in Boxes"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token function">HorizontalGroup</span><span class="token punctuation">(</span><span class="token string">"Buttons in Boxes/Horizontal"</span><span class="token punctuation">,</span> Width <span class="token operator">=</span> <span class="token number">60</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token function">BoxGroup</span><span class="token punctuation">(</span><span class="token string">"Buttons in Boxes/Horizontal/One"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Button1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span><span class="token function">Button</span><span class="token punctuation">(</span>ButtonSizes<span class="token punctuation">.</span>Large<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token function">BoxGroup</span><span class="token punctuation">(</span><span class="token string">"Buttons in Boxes/Horizontal/Two"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Button2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span>Button<span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token function">BoxGroup</span><span class="token punctuation">(</span><span class="token string">"Buttons in Boxes/Horizontal/Double"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Accept</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span>Button<span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token function">BoxGroup</span><span class="token punctuation">(</span><span class="token string">"Buttons in Boxes/Horizontal/Double"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 验证值</span>
+<span class="token punctuation">[</span><span class="token function">ValidateInput</span><span class="token punctuation">(</span><span class="token string">"IsValid"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span> GreaterThanZero<span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> <span class="token keyword">bool</span> <span class="token function">IsValid</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token keyword">value</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">value</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span><span class="token function">OnValueChanged</span><span class="token punctuation">(</span><span class="token string">"UpdateRigidbodyReference"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> GameObject Prefab<span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> Rigidbody prefabRigidbody<span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">UpdateRigidbodyReference</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>Prefab <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>prefabRigidbody <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>Prefab<span class="token punctuation">.</span><span class="token generic-method function">GetComponent<span class="token punctuation">&lt;</span>Rigidbody<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>prefabRigidbody <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 属性表达式@符号开头</span>
+<span class="token punctuation">[</span><span class="token function">InfoBox</span><span class="token punctuation">(</span><span class="token string">"@myStr"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">string</span> myStr<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 始终显示当前时间的信息框</span>
+<span class="token punctuation">[</span><span class="token function">InfoBox</span><span class="token punctuation">(</span><span class="token string">@"@""The current time is: "" + DateTime.Now.ToString(""HH:mm:ss"")"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">string</span> myStr<span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span><span class="token function">ShowIf</span><span class="token punctuation">(</span><span class="token string">"@this.someNumber >= 0f &amp;&amp; this.someNumber &lt;= 10f"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">string</span> myStr<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">float</span> someNumber<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// $property关键字可让您访问InspectorProperty</span>
+<span class="token punctuation">[</span><span class="token function">LabelText</span><span class="token punctuation">(</span><span class="token string">"$IAmLabel"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">string</span> IAmLabel<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Example</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token function">InfoBox</span><span class="token punctuation">(</span><span class="token string">@"@""This member's parent property is called "" + $property.Parent.NiceName"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> myStr<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 现在，在声明myStr的任何地方，myStr都会动态地知道它的父类的名称</span>
+<span class="token keyword">public</span> Example exampleInstance<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>RequireComponent</code> 需求组件</li>
+<li><code>AssetsOnly</code>  仅资产可填</li>
+<li><code>FilePath</code>, when RequireExistingPath is set to true 文件路径</li>
+<li><code>FolderPath</code>, when RequireExistingPath is set to true 文件夹路径</li>
+<li><code>ChildGameObjectsOnly</code> 子游戏对象</li>
+<li><code>SceneObjectsOnly</code> 场景对象</li>
+<li><code>DetailedInfoBox</code> when an error is shown 详细信息框</li>
+<li><code>InfoBox</code> when an error is shown 提示信息框</li>
+<li><code>Required</code> 需要</li>
+<li><code>ValidateInput</code> 验证输入</li>
+<li><code>MinValue</code> 最小值</li>
+<li><code>MaxValue</code> 最大值</li>
+<li><code>Range and PropertyRange</code> 范围 和属性范围</li>
+<li><code>MinMaxSlider</code> 滑动区间</li>
+</ul>
+<p><img src="/2019/08/30/Unity编辑器扩展工具OdinInspector/QQ截图20191006135209.png" alt=""></p>
+<h1 id="常用特性"><a href="#常用特性" class="headerlink" title="常用特性"></a>常用特性</h1><p><code>Button</code><br>绘制一个按钮<br>ButtonSizes：按钮大小<br>name：按钮名称<br>ButtonStyle：按钮样式</p>
+<p><code>Range</code><br>绘制一个有范围的滚动条<br>min：最小值<br>max：最大值</p>
+<p><code>EnumToggleButtons</code><br>绘制水平枚举类型的单选框</p>
+<p><code>ColorPalette</code><br>颜色选择面板，可自定义</p>
+<p><code>AssetList</code><br>为asset文件绘制一个List</p>
+<p><code>InlineEditor</code><br>预览unity内置的objects，例如shader，animation<br>PreviewWidth：预览宽度<br>PreviewHeight：预览高度<br>IncrementInlineEditorDrawerDepth：允许绘制递增<br>Expanded：允许拉伸<br>DrawHeader：绘制标题头</p>
+<p><code>ProgressBar</code><br>绘制进度条<br>min：进度条最小值<br>max：进度条最大值<br>Segmented：允许进度条分段显示<br>ColorMember：可自定义颜色<br>BackgroundColorMember：背景颜色</p>
+<p><code>BoxGroup</code><br>绘制包围盒<br>ShowLabel：显示标题文字<br>CenterLabel：居中显示标题文字</p>
+<p><code>ValueDropdown</code><br>值的下拉列表</p>
+<p><code>Multiline</code><br>绘制一个可编辑的string框<br>lines：行数</p>
+<p><code>MultiLineProperty</code><br>类似于Multiline，但是可以用于字段和属性</p>
+<p><code>TableMatrix</code><br>绘制矩阵形式</p>
+<p><code>TableList</code><br>平铺显示所有属性<br>ShowIndexLabels：显示序号<br>DrawScrollView：使用滚动条<br>ShowPaging：分页显示</p>
+<p><code>TabGroup</code><br>分组显示</p>
+<p><code>VerticalGroup</code><br>垂直分布的组<br>groupId：所属group名称<br>order：层级</p>
+<p><code>HorizontalGroup</code><br>水平分布的组<br>groupId：所属group名称<br>order：层级</p>
+<p><code>FoldoutGroup</code><br>分页显示组别</p>
+<p><code>BoxGroup</code><br>包围盒显示</p>
+<p><code>ToggleGroup</code><br>单选组</p>
 
         
             <div class="donate-container">

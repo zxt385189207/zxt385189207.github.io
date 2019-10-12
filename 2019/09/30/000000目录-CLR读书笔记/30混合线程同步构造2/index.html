@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        30混合线程同步构造2 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#著名的双检锁技术"><span class="toc-text">著名的双检锁技术</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Volatile-Write作用"><span class="toc-text">Volatile.Write作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不使用双检锁的更好版本"><span class="toc-text">不使用双检锁的更好版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#另一种生成Singleton方式"><span class="toc-text">另一种生成Singleton方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FCL的Lazy类封装了上述描述的模式"><span class="toc-text">FCL的Lazy类封装了上述描述的模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#条件变量模式"><span class="toc-text">条件变量模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#线程安全的队列"><span class="toc-text">线程安全的队列</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异步的同步构造"><span class="toc-text">异步的同步构造</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#并发集合类"><span class="toc-text">并发集合类</span></a></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        30混合线程同步构造2
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-30 20:07:51</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CLR读书笔记" title="CLR读书笔记">CLR读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="著名的双检锁技术"><a href="#著名的双检锁技术" class="headerlink" title="著名的双检锁技术"></a>著名的双检锁技术</h1><p><strong>双检锁（Double-Check Locking）</strong> 是一个非常著名的技术，开发人员用它将 <strong>单实例（Singleton）</strong> 对象的构造推迟到应用程序首次请求该对象时进行。有时也称为 <strong>延迟初始化（Lazy initialization）</strong>。</p>
+<p>如果应用程序永远不请求对象，对象就永远不会构造，从而节约了事件和内存。但当多个线程同时请求单实例对象时就可能出现问题。这个时候必须使用一些线程同步机制确保单实例对象只被构造一次。</p>
+<p>然而CLR很好的支持了双检锁技术，以下代码演示了如何使用C#实现双检锁技术：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 大多数时候这个双检锁技术实际会损害效率</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Singleton</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// s_lock对象是实现线程安全所需要的。定义这个对象时，</span>
+    <span class="token comment" spellcheck="true">// 我们假设创建单实例对象的代价要高于创建一个System.Object对象，</span>
+    <span class="token comment" spellcheck="true">// 并假设可能根本不需要创建单实例对象</span>
+    <span class="token comment" spellcheck="true">// 否则更经济更简单的办法是在类构造器中创建单实例对象</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Object m_lock <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 这个字段引用单实例对象</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Singleton s_value <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 私有构造器,阻止在这个类的外部创建类的实例</span>
+    <span class="token keyword">private</span> <span class="token function">Singleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 以下公共静态方法返回单实例对象</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Singleton <span class="token function">GetSingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 如果单实例对象已经创建, 直接返回它</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>s_value <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token keyword">return</span> s_value<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 没创建,让一个线程创建它</span>
+        Monitor<span class="token punctuation">.</span><span class="token function">Enter</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>s_value <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">//仍未创建，创建它</span>
+            Singleton temp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Singleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">//将引用保存到s_value中</span>
+            Volatile<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token keyword">ref</span> s_value<span class="token punctuation">,</span> temp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        Monitor<span class="token punctuation">.</span><span class="token function">Exit</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 返回单实例对象的引用</span>
+        <span class="token keyword">return</span> s_value<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>双检锁背后的思路在于,对<code>GetSingleton</code>方法的调用可以快速检查<code>s_value字段</code>, 判断对象是否创建.</p>
+<ul>
+<li>如果是, 方法就返回对它的引用<ul>
+<li>这里的妙处就在于, 如果对象已经构造好, 就不需要线程同步, 程序会运行的很快.</li>
+</ul>
+</li>
+<li>如果没创建, 就会获取一个同步锁来确保只有一个线程构造单实例对象.<ul>
+<li>这就意味着只有线程第一次查询单实例对象时, 才会出现性能上的损失.</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>此技术在java虚拟机会出现问题.</p>
+</blockquote>
+<p>在CLR中, 对任何锁方法的调用都构成了一个完整的内存栅栏.</p>
+<ul>
+<li>在栅栏之前的任何变量的<strong>写入</strong>必须<strong>在栅栏之前完成</strong>.</li>
+<li>在栅栏之后的任何变量<strong>读取</strong>都必须<strong>在栅栏之后开始</strong>.</li>
+</ul>
+<p>对于<code>GetSingleton</code>方法, 这意味着<code>s_value</code>字段的值必须在调用了<code>Monitor.Enter</code>之后重新读取. 调用前缓存到寄存器的东西不算.</p>
+<h2 id="Volatile-Write作用"><a href="#Volatile-Write作用" class="headerlink" title="Volatile.Write作用"></a>Volatile.Write作用</h2><p><code>Volatile.Write</code>这个的作用, 假如在第二个if语句中包含的是下面这句代码:</p>
+<p><code>s_value = new Singleton(); // 你极有可能这样写</code></p>
+<p>你的想法是让编译器为一个<code>Singleton</code>分配内存, 调用构造器来初始化字段, 再将引用赋给<code>s_value</code>,但是编译器<strong>可能</strong>这样做:</p>
+<ul>
+<li>为Singleton分配内存,</li>
+<li>将引用赋给s_value,</li>
+<li>再调用构造器. (从单线程的角度出发, 这样改变顺序是无关紧要的)</li>
+</ul>
+<p>但是在引用赋给<code>s_value</code>之后,在<strong>调用构造器</strong>之前, 如果另一个线程调用了<code>GetSingleton</code>方法,就会发生<code>s_value</code>这个值不为<code>null</code>, 就会开始使用<code>Singleton</code>对象, 但是此对象的构造器还没有执行.</p>
+<p><strong><code>Volatile.Write</code>就修正了这个问题, 它保证<code>temp</code>中的引用只有在构造器结束执行之后,才发布到<code>s_value</code>中.</strong></p>
+<p>解决这个问题的另一个办法就是使用C#的<code>volatile</code>关键字标记<code>s_value</code>字段.  这同样使构造器必须在写入发生前结束运行. 但不好的地方, 同时会使所有读取操作具有<code>易变性</code>. 这是完全没有必要的.会使性能无谓地收到损害.</p>
+<h2 id="不使用双检锁的更好版本"><a href="#不使用双检锁的更好版本" class="headerlink" title="不使用双检锁的更好版本"></a>不使用双检锁的更好版本</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Singleton</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Singleton s_value <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Singleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//私有化构造器防止这个类外部的任何代码创建一个实例</span>
+    <span class="token keyword">private</span> <span class="token function">Singleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 以下公共静态方法返回单实例对象(第一次调用之后才会创建)</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Singleton <span class="token function">GetSingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> s_value<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>首次调用<code>GetSingleton</code>方法,CLR就会自动调用类构造器,从而创建一个对象实例. <strong>CLR保证对类构造器的调用时线程安全的.(第8章3节中解释了)</strong>  首次访问类的任何成员都会调用类型构造器. 如果定义了其他静态成员, 就会在访问其他任何静态成员时创建<code>Singleton</code>对象.有人通过定义嵌套类来解决这个问题.</p>
+<h2 id="另一种生成Singleton方式"><a href="#另一种生成Singleton方式" class="headerlink" title="另一种生成Singleton方式"></a>另一种生成Singleton方式</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Singleton</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Singleton s_value <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token function">Singleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Singleton <span class="token function">GetSingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>s_value <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token keyword">return</span> s_value<span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//创建一个新的单实例对象，并把它固定下来（如果另一个线程还为固定的话）</span>
+        Singleton temp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Singleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Interlocked<span class="token punctuation">.</span><span class="token function">CompareExchange</span><span class="token punctuation">(</span><span class="token keyword">ref</span> s_value<span class="token punctuation">,</span>temp<span class="token punctuation">,</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//如果这个线程竞争失败，新建的第二个实例对象就会被回收</span>
+
+        <span class="token keyword">return</span> s_value<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上面的代码保证了只有在第一个调用<code>GetSingleton()</code>方法方法时，才会构建单实例对象。但是缺点也是明显的，就是可能会创建多个Singleton对象，但是最终<code>Interlocked.CompareExchange</code>只会固定一个<code>Singleton</code>实例对象。 没有通过固定的对象会被垃圾回收, 但是一般很少同时调用<code>GetSingleton()</code>的情况.</p>
+<p>上述代码面的优势:</p>
+<ul>
+<li>速度非常快</li>
+<li>永不阻塞线程</li>
+</ul>
+<p><strong>此方法只有在构造器没有副作用的时候才能使用这个技术.</strong></p>
+<h2 id="FCL的Lazy类封装了上述描述的模式"><a href="#FCL的Lazy类封装了上述描述的模式" class="headerlink" title="FCL的Lazy类封装了上述描述的模式"></a>FCL的Lazy类封装了上述描述的模式</h2><p><code>System.Lazy</code>和<code>System.Threading.LazyInitializer</code>是FCL封装提供的延迟构造的类。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Lazy</span><span class="token operator">&lt;</span>T<span class="token operator">></span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token function">Lazy</span><span class="token punctuation">(</span>Func<span class="token operator">&lt;</span>T<span class="token operator">></span> valueFactory<span class="token punctuation">,</span> LazyThreadSafetyMode mode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> Boolean IsValueCreated <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+   <span class="token keyword">public</span> T Value <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">enum</span> LazyThreadSafetyMode
+<span class="token punctuation">{</span>
+  None<span class="token punctuation">,</span>                      <span class="token comment" spellcheck="true">// 完全没有线程安全支持(适合GUI应用程序)</span>
+  PublicationOnly<span class="token punctuation">,</span>           <span class="token comment" spellcheck="true">// 使用双检锁技术</span>
+  ExecutionAndPublication    <span class="token comment" spellcheck="true">// 使用Interlocked.CompareExchange技术</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Lazy类用法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 创建一个"延迟初始化"包装器, 它将DateTime的获取包装起来</span>
+<span class="token comment" spellcheck="true">// // isThreadSafe ? LazyThreadSafetyMode.ExecutionAndPublication : LazyThreadSafetyMode.None</span>
+Lazy<span class="token operator">&lt;</span>String<span class="token operator">></span> s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Lazy</span><span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">.</span><span class="token function">ToLongTimeString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>s<span class="token punctuation">.</span>IsValueCreated<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 还没查询Value 所以返回false</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>s<span class="token punctuation">.</span>Value<span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token comment" spellcheck="true">// 现在调用</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>s<span class="token punctuation">.</span>IsValueCreated<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 能查询到Value 返回true</span>
+Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 等待10秒, 再次显示时间</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>s<span class="token punctuation">.</span>Value<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Lambda方法委托没有被调用, 显示之前的结果</span>
+
+<span class="token comment" spellcheck="true">// False</span>
+<span class="token comment" spellcheck="true">// 20:18:54</span>
+<span class="token comment" spellcheck="true">// True</span>
+<span class="token comment" spellcheck="true">// 20:18:54</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>内存有限时可能不想创建Lazy类的实例 , 可以调用<code>LazyInitializer</code>类的静态方法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">LazyInitializer</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 这两个方法在内部使用Interlocked.CompareExchange</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> T <span class="token generic-method function">EnsureInitialized<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">ref</span> T target<span class="token punctuation">)</span> <span class="token keyword">where</span> T <span class="token punctuation">:</span> <span class="token keyword">class</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> T <span class="token generic-method function">EnsureInitialized<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">ref</span> T target<span class="token punctuation">,</span> Func<span class="token operator">&lt;</span>T<span class="token operator">></span> valueFactory<span class="token punctuation">)</span> <span class="token keyword">where</span> T <span class="token punctuation">:</span> <span class="token keyword">class</span><span class="token punctuation">;</span>
+
+   <span class="token comment" spellcheck="true">// 这两个方法在内部将同步锁(syncLock)传给Monitor的Enter和Exit方法</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> T <span class="token generic-method function">EnsureInitialized<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">ref</span> T target<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token keyword">bool</span> initialized<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token keyword">object</span> syncLock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> T <span class="token generic-method function">EnsureInitialized<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">ref</span> T target<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token keyword">bool</span> initialized<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token keyword">object</span> syncLock<span class="token punctuation">,</span> Func<span class="token operator">&lt;</span>T<span class="token operator">></span> valueFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>   
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 缓存激活选择器函数(activation selector function)以避免委托分配。</span>
+<span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">LazyHelpers</span><span class="token operator">&lt;</span>T<span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">internal</span> <span class="token keyword">static</span> Func<span class="token operator">&lt;</span>T<span class="token operator">></span> s_activatorFactorySelector <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Func</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">(</span>ActivatorFactorySelector<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> T <span class="token function">ActivatorFactorySelector</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token punctuation">(</span>T<span class="token punctuation">)</span>Activator<span class="token punctuation">.</span><span class="token function">CreateInstance</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>T<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">MissingMethodException</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">MissingMemberException</span><span class="token punctuation">(</span>Environment<span class="token punctuation">.</span><span class="token function">GetResourceString</span><span class="token punctuation">(</span><span class="token string">"Lazy_CreateValue_NoParameterlessCtorForT"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>EnsureInitialized</code>方法的<code>syncLock参数</code>显式指定同步对象, 可以用同一个锁保护多个初始化函数和字段.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">String name <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 由于name是null, 所以委托执行并初始化name</span>
+LazyInitializer<span class="token punctuation">.</span><span class="token function">EnsureInitialized</span><span class="token punctuation">(</span><span class="token keyword">ref</span> name<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">"Jeff"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Jeff</span>
+
+<span class="token comment" spellcheck="true">// 由于name不为null, 所以委托不运行</span>
+LazyInitializer<span class="token punctuation">.</span><span class="token function">EnsureInitialized</span><span class="token punctuation">(</span><span class="token keyword">ref</span> name<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">"Richter"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Jeff</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="条件变量模式"><a href="#条件变量模式" class="headerlink" title="条件变量模式"></a>条件变量模式</h1><p>假定一个线程希望在一个符合条件为true时执行一些代码. 一个选项是让线程连续”自旋”, 反复测试条件, 但这会浪费CPU时间. 也不可能对构造成符合条件的多个变量进行原子性的测试.</p>
+<p>幸好, 有一个模式允许线程根据一个符合条件来同步他们的操作,而且不会浪费资源, 这个模式成为条件变量模式, 我们通过<code>Monitor</code>类中定义的一下方法来使用该模式:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> Boolean <span class="token function">Wait</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> Boolean <span class="token function">Wait</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">,</span> Int32 millisecondsTimeout<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// Pulse 脉冲脉搏,使跳动</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Pulse</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">PulseAll</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>下面演示了这个模式的写法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">ConditionVariablePattern</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> Object  m_lock      <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span>          Boolean m_condition <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Thread1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 获取一个互斥锁</span>
+        Monitor<span class="token punctuation">.</span><span class="token function">Enter</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//在锁中, 原子性地测试复合条件</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span>m_condition<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 如果条件不满足, 就等待另一个线程更改条件</span>
+            <span class="token comment" spellcheck="true">// 临时释放锁, 使其他线程能获取它</span>
+            <span class="token comment" spellcheck="true">// 如果你使用了Monitor.Wait,调用的线程将阻止在这里，直到另外一个线程调用Monitor.Pulse.代码再继续往下执行</span>
+            Monitor<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 条件满足,处理数据</span>
+
+        Monitor<span class="token punctuation">.</span><span class="token function">Exit</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 永久释放锁</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Thread2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 获取一个互斥锁</span>
+        Monitor<span class="token punctuation">.</span><span class="token function">Enter</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 处理数据并修改条件</span>
+        m_condition <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// Monitor.Pulse(m_lock);         // 释放锁之后唤醒一个正在等待的线程</span>
+        Monitor<span class="token punctuation">.</span><span class="token function">PulseAll</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment" spellcheck="true">// 释放锁之后唤醒所有正在等待的线程</span>
+
+        Monitor<span class="token punctuation">.</span><span class="token function">Exit</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 释放锁</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>执行<code>Thread1</code>方法的线程进入一个互斥锁, 然后对一个条件进行测试. 在这里, 我只是检查一个<code>Boolean</code>字段, 但它可以是任意复合条件. <strong>线程不是自旋,而是调用<code>Wait</code>释放锁, 使另一个线程能获得它并阻塞调用线程</strong>. (如果你使用了Monitor.Wait,调用的线程将阻止在这里，直到另外一个线程调用<code>Monitor.Pulse</code>.代码再继续往下执行)</p>
+<p><code>Thread2</code>方法是第二个线程执行的代码, 它调用<code>Enter</code>来获取锁的所有权,处理一些数据造成一些状态的改变. 再调用<code>Pulse</code>或<code>PulseAll</code>, 从而解除一个线程因为调用Wait而进入的阻塞状态. 注意, <code>Pulse</code>只能解除等待最久的线程,而<code>PulseAll</code>解除所有正在等待的线程的阻塞.</p>
+<p>执行<code>Thread2</code>线程<code>Pulse</code>之后必须调用<code>Monitor.Exit</code>, 允许锁由另一个线程拥有, 另外如果调用的是<code>PulseAll</code>, 其他线程不会同时解除阻塞. <strong>调用<code>Wait</code>的线程解除阻塞后, 它成为锁的所有者, 由于这是一个互斥锁, 所以一次只能有一个线程拥有它</strong>. 其他线程只有在锁的所有者调用了<code>Wait</code>或者<code>Exit</code>之后才能得到它.</p>
+<p>执行<code>Thread1</code>的线程醒来时, 它进行下一次循环迭代, 再次对条件进行测试. 如果条件仍为false, 它就再次调用Wait. 如果条件为true,它就处理数据, 并最终调用<code>Exit</code>. 这样就会将锁释放, 使其他线程能得到它.</p>
+<p>这个模式的妙处在于, 可以使用简单的同步逻辑(只是一个锁)来测试构成一个符合条件的几个变量,而且多个正在等待的线程可以全部解除阻塞,而不会造成任何逻辑错误, 唯一的缺点就是解除线程的阻塞可能会浪费一些CPU时间.</p>
+<h2 id="线程安全的队列"><a href="#线程安全的队列" class="headerlink" title="线程安全的队列"></a>线程安全的队列</h2><p>允许多个线程在其中对数据项进行入队和出队操作. 注意, 除非有了一个可供处理的数据项, 否则试图出队的线程会一直阻塞.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">   <span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">SynchronizedQueue</span><span class="token operator">&lt;</span>T<span class="token operator">></span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">private</span> <span class="token keyword">readonly</span> Object   m_lock  <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token keyword">private</span> <span class="token keyword">readonly</span> Queue<span class="token operator">&lt;</span>T<span class="token operator">></span> m_queue <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Queue</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+       <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Enqueue</span><span class="token punctuation">(</span>T item<span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+           Monitor<span class="token punctuation">.</span><span class="token function">Enter</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+           <span class="token comment" spellcheck="true">// 一个数据项入队后, 就唤醒 任何/所有 正在等待的线程</span>
+           m_queue<span class="token punctuation">.</span><span class="token function">Enqueue</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+           Monitor<span class="token punctuation">.</span><span class="token function">PulseAll</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+           Monitor<span class="token punctuation">.</span><span class="token function">Exit</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+
+       <span class="token keyword">public</span> T <span class="token function">Dequeue</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+           Monitor<span class="token punctuation">.</span><span class="token function">Enter</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+           <span class="token comment" spellcheck="true">// 队列为空(这是条件)就一直循环</span>
+           <span class="token keyword">while</span> <span class="token punctuation">(</span>m_queue<span class="token punctuation">.</span>Count <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+               Monitor<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+           <span class="token comment" spellcheck="true">// 使一个数据项出队, 返回它供处理</span>
+           T item <span class="token operator">=</span> m_queue<span class="token punctuation">.</span><span class="token function">Dequeue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           Monitor<span class="token punctuation">.</span><span class="token function">Exit</span><span class="token punctuation">(</span>m_lock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token keyword">return</span> item<span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="异步的同步构造"><a href="#异步的同步构造" class="headerlink" title="异步的同步构造"></a>异步的同步构造</h1><p>任何使用了内核模式的基元的线程同步构造, 作者都不是很喜欢. 因为所有这些基元都会阻塞一个线程的运行. 创建线程的代价很大, 创建了不用,这于情于理都说不通. 下面这个例子能很好地说明这个问题.</p>
+<p><img src="/2019/09/30/000000目录-CLR读书笔记/30混合线程同步构造2/QQ截图20191004170003.png" alt=""></p>
+<p><img src="/2019/09/30/000000目录-CLR读书笔记/30混合线程同步构造2/QQ截图20191004170116.png" alt=""></p>
+<p>观察本章介绍的所有构造, <strong>你会发现这些构造想要解决的许多问题其实最好都是用Task类完成</strong>.</p>
+<p>Task具有下述许多优势:</p>
+<ul>
+<li>任务使用的内存比线程少得多, 创建和销毁所需的时间也少得多.</li>
+<li>线程池根据可用CPU数量自动伸缩任务规模.</li>
+<li>每一个任务完成一个阶段后, 运行任务的线程回到线程池, 在那里能接受新任务.</li>
+<li>线程池是站在整个进程的高度观察任务. 所以,它能更好地调度这些任务, 减少进程中的线程数, 并减少上下文切换.</li>
+</ul>
+<p>锁很流行，但长时间拥有会带来巨大的伸缩性问题。如果代码能够通过异步的同步构造指出它想要一个锁，那么会非常有用。在这种情况下，如果线程得不到锁，可以直接返回并执行其他工作，而不必在哪里傻傻地阻塞。以后当锁可用时，代码可恢复执行并访问锁所保护的资源。</p>
+<p>SemaphoreSlim类通过WaitAsync方法实现了这个思路，下面是这个方法最复杂的版本：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> Tast<span class="token operator">&lt;</span>Boolean<span class="token operator">></span> <span class="token function">WaitAsync</span><span class="token punctuation">(</span>Int32 millisecondsTimeout<span class="token punctuation">,</span>CancellationToken cancellationToken<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可用它异步地同步对一个资源的访问（不阻塞任何线程）：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">async</span> Task <span class="token function">AccessResourceViaAsyncSynchronization</span><span class="token punctuation">(</span>SemaphoreSlim asyncLock<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//do something</span>
+
+    <span class="token comment" spellcheck="true">//请求获取锁对资源进行独占访问</span>
+    <span class="token keyword">await</span> asyncLock<span class="token punctuation">.</span><span class="token function">WaitAsync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//执行到这里, 表明没有其他线程正在访问资源</span>
+
+    <span class="token comment" spellcheck="true">//独占式访问资源</span>
+
+    <span class="token comment" spellcheck="true">//资源访问完毕，释放锁</span>
+    asyncLock<span class="token punctuation">.</span><span class="token function">Release</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//do Something</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>SemaphoreSlim</code>的<code>WaitAsync</code>方法很好用，但它提供的是信号量语义。一般创建最大计数为1的<code>SemaphoreSlim</code>, 从而对<code>SemaphoreSlim</code>保护的资源进行互斥访问.所以, 这和使用<code>Monitor</code>时的行为相似, 只是<code>SemaphoreSlim</code>不支持线程所有权和递归语义(这是好事).</p>
+<p>.Net Framework并没有提供reader-writer语义的异步锁。 但作者构建了这样一个类, 称为<code>AsyncOneManyLock</code>. 它的用法和<code>SemaphoreSlim</code>一样. 如下使用:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">async</span> Task <span class="token function">AccessResourceViaAsyncSynchronization</span><span class="token punctuation">(</span>AsyncOneManyLock asyncLock<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Execute whatever code you want here...</span>
+
+    <span class="token comment" spellcheck="true">// 为想要访问的并发传递OneManyMode.Exclusive或OneManyMode.Shared</span>
+    <span class="token keyword">await</span> asyncLock<span class="token punctuation">.</span><span class="token function">WaitAsync</span><span class="token punctuation">(</span>OneManyMode<span class="token punctuation">.</span>Shared<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 要求共享访问</span>
+    <span class="token comment" spellcheck="true">// 如果执行到这里, 表明没有其他线程在想资源写入; 可能有其他线程在读取</span>
+
+    <span class="token comment" spellcheck="true">// TODO:从资源读取</span>
+
+    <span class="token comment" spellcheck="true">//资源访问完毕就放弃锁, 使其他代码能访问资源</span>
+    asyncLock<span class="token punctuation">.</span><span class="token function">Release</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Execute whatever code you want here...</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">/// &lt;summary></span>
+<span class="token comment" spellcheck="true">/// 这个类实现了一个从不阻塞任何线程的reader/writer(读/写锁)</span>
+<span class="token comment" spellcheck="true">/// 若要使用，请等待AccessAsync的结果，并在操作共享状态后执行,</span>
+<span class="token comment" spellcheck="true">/// 调用Release.</span>
+<span class="token comment" spellcheck="true">/// &lt;/summary></span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">AsyncOneManyLock</span>
+<span class="token punctuation">{</span>
+    <span class="token preprocessor property">#<span class="token directive keyword">region</span> 锁的代码</span>
+
+    <span class="token keyword">private</span> SpinLock m_lock <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SpinLock</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 自旋锁不要用readonly</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Boolean taken <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+        m_lock<span class="token punctuation">.</span><span class="token function">Enter</span><span class="token punctuation">(</span><span class="token keyword">ref</span> taken<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_lock<span class="token punctuation">.</span><span class="token function">Exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">region</span> 锁的状态和辅助方法</span>
+
+    <span class="token keyword">private</span> Int32 m_state <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> Boolean IsFree
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> m_state <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> Boolean IsOwnedByWriter
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> m_state <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> Boolean IsOwnedByReaders
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> m_state <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> Int32 <span class="token function">AddReaders</span><span class="token punctuation">(</span>Int32 count<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> m_state <span class="token operator">+</span><span class="token operator">=</span> count<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> Int32 <span class="token function">SubtractReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token operator">--</span>m_state<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">MakeWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_state <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">MakeFree</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_state <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+
+    <span class="token comment" spellcheck="true">// 目的是在非竞态条件时增强性能和减少内存消耗</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> Task m_noContentionAccessGranter<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 每个等待的writer都通过它们在这里排队的TaskCompletionSource来唤醒</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> Queue<span class="token operator">&lt;</span>TaskCompletionSource<span class="token operator">&lt;</span>Object<span class="token operator">></span><span class="token operator">></span> m_qWaitingWriters <span class="token operator">=</span>
+        <span class="token keyword">new</span> <span class="token class-name">Queue</span><span class="token operator">&lt;</span>TaskCompletionSource<span class="token operator">&lt;</span>Object<span class="token operator">></span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 一个TaskCompletionSource收到信号, 所有等待的reader都唤醒</span>
+    <span class="token keyword">private</span> TaskCompletionSource<span class="token operator">&lt;</span>Object<span class="token operator">></span> m_waitingReadersSignal <span class="token operator">=</span>
+        <span class="token keyword">new</span> <span class="token class-name">TaskCompletionSource</span><span class="token operator">&lt;</span>Object<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> Int32 m_numWaitingReaders <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary>Constructs an AsyncOneManyLock object.&lt;/summary></span>
+    <span class="token keyword">public</span> <span class="token function">AsyncOneManyLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_noContentionAccessGranter <span class="token operator">=</span> Task<span class="token punctuation">.</span><span class="token generic-method function">FromResult<span class="token punctuation">&lt;</span>Object<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// Asynchronously requests access to the state protected by this AsyncOneManyLock.</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token comment" spellcheck="true">/// &lt;param name="mode">Specifies whether you want exclusive (write) access or shared (read) access.&lt;/param></span>
+    <span class="token comment" spellcheck="true">/// &lt;returns>A Task to await.&lt;/returns></span>
+    <span class="token keyword">public</span> Task <span class="token function">WaitAsync</span><span class="token punctuation">(</span>OneManyMode mode<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Task accressGranter <span class="token operator">=</span> m_noContentionAccessGranter<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 假定无竞争</span>
+
+        <span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>mode<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> OneManyMode<span class="token punctuation">.</span>Exclusive<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>IsFree<span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    <span class="token function">MakeWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 无竞争</span>
+                <span class="token punctuation">}</span>
+                <span class="token keyword">else</span>
+                <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">// 竞争: 递增等待的reader数量, 并返回reader任务使reader等待</span>
+                    <span class="token keyword">var</span> tcs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TaskCompletionSource</span><span class="token operator">&lt;</span>Object<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    m_qWaitingWriters<span class="token punctuation">.</span><span class="token function">Enqueue</span><span class="token punctuation">(</span>tcs<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    accressGranter <span class="token operator">=</span> tcs<span class="token punctuation">.</span>Task<span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">case</span> OneManyMode<span class="token punctuation">.</span>Shared<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>IsFree <span class="token operator">||</span> <span class="token punctuation">(</span>IsOwnedByReaders <span class="token operator">&amp;&amp;</span> m_qWaitingWriters<span class="token punctuation">.</span>Count <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    <span class="token function">AddReaders</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 无竞争</span>
+                <span class="token punctuation">}</span>
+                <span class="token keyword">else</span>
+                <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">// 竞争</span>
+                    <span class="token comment" spellcheck="true">// 竞争: 递增等待的reader数量, 并返回reader任务使reader等待</span>
+                    m_numWaitingReaders<span class="token operator">++</span><span class="token punctuation">;</span>
+                    accressGranter <span class="token operator">=</span> m_waitingReadersSignal<span class="token punctuation">.</span>Task<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>t <span class="token operator">=</span><span class="token operator">></span> t<span class="token punctuation">.</span>Result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> accressGranter<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// Releases the AsyncOneManyLock allowing other code to acquire it</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Release</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        TaskCompletionSource<span class="token operator">&lt;</span>Object<span class="token operator">></span> accessGranter <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 假定没有代码被释放</span>
+
+        <span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>IsOwnedByWriter<span class="token punctuation">)</span> <span class="token function">MakeFree</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 一个writer离开</span>
+        <span class="token keyword">else</span> <span class="token function">SubtractReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>           <span class="token comment" spellcheck="true">// 一个reader离开</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>IsFree<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 如果自由, 唤醒1个等待的writer或所有等待的readers</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>m_qWaitingWriters<span class="token punctuation">.</span>Count <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token function">MakeWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                accessGranter <span class="token operator">=</span> m_qWaitingWriters<span class="token punctuation">.</span><span class="token function">Dequeue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>m_numWaitingReaders <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token function">AddReaders</span><span class="token punctuation">(</span>m_numWaitingReaders<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                m_numWaitingReaders <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                accessGranter       <span class="token operator">=</span> m_waitingReadersSignal<span class="token punctuation">;</span>
+
+                <span class="token comment" spellcheck="true">// 为将来需要等待的reader创建一个新的TCS</span>
+                m_waitingReadersSignal <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TaskCompletionSource</span><span class="token operator">&lt;</span>Object<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 唤醒锁外面的reader/writer,减少竞争几率以提高性能</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>accessGranter <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> accessGranter<span class="token punctuation">.</span><span class="token function">SetResult</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码永远不会阻塞线程, 原因是在内部没有使用任何内核构造. 这里确实使用了一个SpinLock, 它在内部使用了用户模式的构造. 但29章讨论自旋锁的时候说过, 只有执行时间很短的代码才可以用自旋锁来保护. 查看我的<code>WaitAsync</code>方法, 会发现我用锁保护的只是一些整数计算和比较, 以及构造一个<code>TaskCompletionSource</code>, 同样花不了多少时间. 使用一个<code>SpinLock</code>来保护对<code>Queue</code>的访问.</p>
+<h1 id="并发集合类"><a href="#并发集合类" class="headerlink" title="并发集合类"></a>并发集合类</h1><p>FCL提供了4个线程线程安全的集合类，全部在<code>System.Collections.Concurrent</code>命名空间中定义。它们是<code>ConcurrentQueue</code>、<code>ConcurrentStack</code>、<code>ConcurrentDictionary</code>和<code>ConcurrentBag</code>。</p>
+<ul>
+<li>ConcurrentQueue 先入先出FIFO的顺序处理数据项</li>
+<li>ConcurrentStack 后入先出</li>
+<li>ConcurrentDictionary 无序key/value对集合</li>
+<li>ConcurrentBag  无序数据项集合,允许重复</li>
+</ul>
+<p>这些集合类都是非阻塞的, 换言之, 如果一个先出试图提取一个不存在的元素, 线程会立即返回; 线程不会阻塞在哪里等着一个元素的出现.</p>
+<p><img src="/2019/09/30/000000目录-CLR读书笔记/30混合线程同步构造2/QQ截图20191004214443.png" alt=""></p>
+<p>剩下的以后再看…</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#接口"><span class="toc-text">接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#定义接口"><span class="toc-text">定义接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#继承接口"><span class="toc-text">继承接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#关于调用接口方法的更多探讨"><span class="toc-text">关于调用接口方法的更多探讨</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#隐式和显式接口方法实现-幕后发生的事情"><span class="toc-text">隐式和显式接口方法实现(幕后发生的事情)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型接口"><span class="toc-text">泛型接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型和接口约束"><span class="toc-text">泛型和接口约束</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实现多个具有相同方法名和签名的接口"><span class="toc-text">实现多个具有相同方法名和签名的接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用显式接口方法实现EIMI来增强编译时类型安全性"><span class="toc-text">用显式接口方法实现EIMI来增强编译时类型安全性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#谨慎使用显式接口方法实现"><span class="toc-text">谨慎使用显式接口方法实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计-基类还是接口"><span class="toc-text">设计:基类还是接口</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#接口"><span class="toc-text">接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#定义接口"><span class="toc-text">定义接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#继承接口"><span class="toc-text">继承接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#关于调用接口方法的更多探讨"><span class="toc-text">关于调用接口方法的更多探讨</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#隐式和显式接口方法实现-幕后发生的事情"><span class="toc-text">隐式和显式接口方法实现(幕后发生的事情)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型接口"><span class="toc-text">泛型接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型和接口约束"><span class="toc-text">泛型和接口约束</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实现多个具有相同方法名和签名的接口"><span class="toc-text">实现多个具有相同方法名和签名的接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用显式接口方法实现EIMI来增强编译时类型安全性"><span class="toc-text">用显式接口方法实现EIMI来增强编译时类型安全性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#谨慎使用显式接口方法实现"><span class="toc-text">谨慎使用显式接口方法实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计-基类还是接口"><span class="toc-text">设计:基类还是接口</span></a></li></ol>
 </div>
 
     
@@ -139,7 +139,37 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        <h1 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h1><p>CLR通过<code>接口</code>提供了’缩水版’的多继承.</p>
+        <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><strong>关键字in的用法</strong></p>
+<ul>
+<li>泛型接口和委托中的泛型类型参数。<ul>
+<li>in(里面,内部,子类) 参数类型允许它的子类; out(外面,外部,基类) 返回类型允许它的基类.</li>
+<li><code>public delegate TResult Func&lt;in T, out TResult&gt;(T arg); // 原型</code></li>
+<li><code>Func&lt;Object, ArgumentException&gt; fn1 = null; // 声明</code></li>
+<li><code>Func&lt;String, Exception&gt; fn2 = fn1; // 使用不需要显式转型</code></li>
+</ul>
+</li>
+<li>作为参数修饰符，它允许按引用而不是按值向方法传递参数。</li>
+<li>foreach 语句。</li>
+<li>LINQ 查询表达式中的 from 子句。</li>
+<li>LINQ 查询表达式中的 join 子句。</li>
+</ul>
+<p><strong>关键字ref的用法</strong></p>
+<ul>
+<li>要求在传递之前初始化变量</li>
+<li>在方法签名和方法调用中，按引用将参数传递给方法。。</li>
+<li>在方法签名中，按引用将值返回给调用方。</li>
+<li>在成员正文中，指示引用返回值是否作为调用方欲修改的引用被存储在本地，或在一般情况下，局部变量按引用访问另一个值。</li>
+<li>在<code>struct</code>声明中声明<code>ref struct</code>或<code>readonly ref struct</code>。<ul>
+<li>永远不能在作为另一类的成员的堆上创建这些类型的实例</li>
+</ul>
+</li>
+</ul>
+<p><strong>关键字out的用法</strong></p>
+<ul>
+<li>它与<code>ref</code>关键字相似，只不过<code>ref</code>要求在传递之前初始化变量</li>
+<li>作为<code>out</code>参数传递的变量在方法调用中传递之前不必进行初始化.但是,被调用的方法需要在返回之前赋一个值.</li>
+</ul>
+<h1 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h1><p>CLR通过<code>接口</code>提供了’缩水版’的多继承.</p>
 <p><strong><code>接口</code>是引用类型</strong>. 实际是对一组方法签名进行统一命名. 这些方法不提供任何实现.类通过指定接口名称来继承接口. <strong>必须显式实现接口方法.</strong></p>
 <p>凡是能使用<code>具体名称接口类型的实例</code>的地方, 都能使用<code>实现了接口的类型的实例</code>.</p>
 <h1 id="定义接口"><a href="#定义接口" class="headerlink" title="定义接口"></a>定义接口</h1><p>接口对一组方法签名进行了统一命名.</p>

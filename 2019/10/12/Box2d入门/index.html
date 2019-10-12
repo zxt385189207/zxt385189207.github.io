@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Box2d入门 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Box2D-C-版"><span class="toc-text">Box2D(C#版)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是AABB"><span class="toc-text">什么是AABB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AABB碰撞树"><span class="toc-text">AABB碰撞树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树"><span class="toc-text">二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#平衡二叉树"><span class="toc-text">平衡二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#红黑树"><span class="toc-text">红黑树</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用AABB碰撞树进行初步检测"><span class="toc-text">使用AABB碰撞树进行初步检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#传感器"><span class="toc-text">传感器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#island是什么"><span class="toc-text">island是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#连续物理模拟"><span class="toc-text">连续物理模拟</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Box2d入门
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-10-12 09:17:08</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Box2D物理引擎" title="Box2D物理引擎">Box2D物理引擎</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="Box2D-C-版"><a href="#Box2D-C-版" class="headerlink" title="Box2D(C#版)"></a>Box2D(C#版)</h1><p>选择从<code>Step</code>说起是因为<code>Step</code>是Box2D对一个<strong>逻辑帧</strong>的实现。了解了<code>Step</code>，你就了解了物理引擎的逻辑结构。</p>
+<p><code>public void Step(float timeStep, int velocityIterations, int positionIterations)</code></p>
+<ul>
+<li><code>timeStep</code>: 逻辑帧的时间长度.</li>
+<li><code>velocityIterations</code>:对于两个速度不同的物体碰撞时, 根据物体的质量速度大小和方向重新分配, 也需要进行矫正.</li>
+<li><code>positionIterations</code>:对于刚体碰撞之后重叠的矫正处理, 设置为1则重叠无法被即使矫正, 通常设置为10, 越高所需资源消耗也会越大.</li>
+</ul>
+<h2 id="什么是AABB"><a href="#什么是AABB" class="headerlink" title="什么是AABB"></a>什么是AABB</h2><p>平行于坐标轴的包围盒子(Axis Aligned BoundingBox,AABB ).</p>
+<p><img src="/2019/10/12/Box2d入门/QQ截图20191012093706.png" alt=""></p>
+<p><code>Fixture</code>类的<code>GetAABB()</code>返回的是能包围当前形状的<strong>最小矩形</strong>.</p>
+<p><img src="/2019/10/12/Box2d入门/QQ截图20191012094408.png" alt=""></p>
+<p><code>Fixture</code>类的<code>CombineAABB()</code>能将一个刚体里的2个<code>Fixture</code>合并.(有多个<code>fixture</code>的话遍历这个刚体依次调用<code>CombineAABB()</code>)</p>
+<p>举个游戏上的例子:</p>
+<p><img src="/2019/10/12/Box2d入门/QQ截图20191012105657.png" alt=""></p>
+<h2 id="AABB碰撞树"><a href="#AABB碰撞树" class="headerlink" title="AABB碰撞树"></a>AABB碰撞树</h2><p>（1）AABB碰撞树是二叉平衡树。<br>（2）每一个叶子节点都是一个刚体的AABB。<br>（3）非叶子节点也是一个AABB，但并不是刚体的AABB。<br>（4）父节点的AABB总是包涵子节点的AABB。<br>（5）新的叶子节点插入是第一优先级是保持树的平衡。第二是插入到而两个子节点中（由于两个节点并没有排序，所以请允许我使用第二个来形容它的位置）。<br>（6）详细的树处理操作在<code>DynamicTree.cs</code>中。</p>
+<h3 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h3><p>二叉树binary tree是指每个节点最多含有两个子树的树结构。</p>
+<p>特点：</p>
+<ol>
+<li>所有节点最多拥有两个子节点，即度不大于2</li>
+<li>左子树的键值小于根的键值，右子树的键值大于根的键值。</li>
+</ol>
+<p>因为二叉树只是定义了简单的结构，所以存在多种深度可能，导致二叉树的效率低，所以引入了平衡二叉树。</p>
+<p><img src="/2019/10/12/Box2d入门/QQ截图20191012110422.png" alt=""></p>
+<h3 id="平衡二叉树"><a href="#平衡二叉树" class="headerlink" title="平衡二叉树"></a>平衡二叉树</h3><p>平衡二叉树，基于avl算法，即是avl树（avl tree）</p>
+<p>特点：</p>
+<ol>
+<li>符合二叉树的条件下</li>
+<li>任何节点的两个子树的高度最大差为1</li>
+</ol>
+<p>如果在avl 树，中进行插入和删除节点操作，可能导致avl树失去平衡，那么可以通过旋转重新达到平衡。因此我们说的二叉树也称自平衡二叉树。</p>
+<h3 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h3><p>红黑树和avl树类似，都是在进行插入和删除操作时通过特定的操作保持二叉树的平衡，从而获得较高的查找性能。</p>
+<p>在java中TreeSet，TreeMap的底层就是用的这个方法。</p>
+<p>特点：</p>
+<ol>
+<li>节点是红色或黑色</li>
+<li>根节点是黑色</li>
+<li>叶子节点（nil,空节点）是黑色</li>
+<li>每个红色节点的两个子节点都是黑色</li>
+</ol>
+<h2 id="使用AABB碰撞树进行初步检测"><a href="#使用AABB碰撞树进行初步检测" class="headerlink" title="使用AABB碰撞树进行初步检测"></a>使用AABB碰撞树进行初步检测</h2><p>使用AABB碰撞树无疑是为了进行初步筛选，在AABB都无法碰撞的情况下刚体肯定无法碰撞。而且矩形碰撞检测极其简单（只需要检测矩形A的右上角是否在B的左下角的左边或下边和与B的右上角是否在A的左下角的左边或下边）。而在查询的时候只需要使用刚体的AABB在树中进行遍历（剪掉节点AABB与刚体AABB不碰撞的节点及其子节点）就能初步获取所有可能产生碰撞的刚体。并组成碰撞元素（Contact）。</p>
+<p>如果一个刚体被标记为传感器（sensor）的话，他是不会触发碰撞初始化处理的。需要注意的是，他只会出发开始碰撞和结束碰撞，并不会持续发送碰撞信号。如果一个刚体没有被标记为传感器，在发送碰撞时它还会回调<code>PreSolve</code>.这个方法本意是允许用户进行自定义个物理模拟。当然了，你也可以拿来作别的事情。</p>
+<h2 id="传感器"><a href="#传感器" class="headerlink" title="传感器"></a>传感器</h2><p>传感器是一种会发送碰撞信号但不进行系统物理碰撞模拟的刚体（你也可以自己模拟碰撞效果）。<br>传感器是可以穿过边界的，他真不会进行任何系统的物理碰撞。所以如果一个传感器在高速运动。你需要在有需要的时候销毁它。<br>当我们要模拟一些技能效果的时候，就可以使用传感器。</p>
+<h2 id="island是什么"><a href="#island是什么" class="headerlink" title="island是什么"></a>island是什么</h2><p>Box2D在进行物理模拟（也包括下面的连续物理模拟）时使用到了island减小计算规模。Box2D将大量需要进行模拟的元素分为一个一个的island，然后再进行物理碰撞模拟。</p>
+<p>island的定义:</p>
+<ol>
+<li>island 由刚体，碰撞元素，连接器（joint）组成。</li>
+<li>island 与island 之间互不影响（这是island存在的理由，也使得Box2D对island可以生成一个处理一个）。</li>
+</ol>
+<p>大量的刚体，碰撞事件和连接器被分为多个island后可以有效的降低物理模拟是消耗的计算资源。原因是碰撞的算法复杂度为O(n2)。这也是为什么一个复杂机器我们会将其分为几个小的模块进行模拟，而不是使用单个动力驱动并将其组为一个整体。</p>
+<h2 id="连续物理模拟"><a href="#连续物理模拟" class="headerlink" title="连续物理模拟"></a>连续物理模拟</h2><p>物理引擎中的时间确实粒子化的，无论几秒中计算多少次都无法模拟连续的时间（更何况由于cpu或gpu算力有限，时间1秒进行的计算次数并不多）。这就产生了一个问题，如果一个物体移动速度够快，在两次物理模拟计算中间穿越了另一个物体，引擎是无法发现的（一般情况下）。而连续物理模拟就是为了缓解这一问题。</p>
+<ul>
+<li>连续碰撞只会针对标记为bullet的刚体进行处理。</li>
+</ul>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
