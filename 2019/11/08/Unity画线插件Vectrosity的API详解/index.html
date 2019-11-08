@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Unity画线插件Vectrosity的API详解 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MakeCube"><span class="toc-text">MakeCube</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MakeRect"><span class="toc-text">MakeRect</span></a></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Unity画线插件Vectrosity的API详解
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-11-08 21:03:47</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Unity插件" title="Unity插件">Unity插件</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="MakeCube"><a href="#MakeCube" class="headerlink" title="MakeCube"></a>MakeCube</h1><pre class="line-numbers language-csharp"><code class="language-csharp">function <span class="token function">MakeCube</span> <span class="token punctuation">(</span>
+      origin <span class="token punctuation">:</span> Vector3<span class="token punctuation">,</span>
+      xSize  <span class="token punctuation">:</span> <span class="token keyword">float</span><span class="token punctuation">,</span>
+      ySize  <span class="token punctuation">:</span> <span class="token keyword">float</span><span class="token punctuation">,</span>
+      zSize  <span class="token punctuation">:</span> <span class="token keyword">float</span><span class="token punctuation">,</span>
+      index  <span class="token punctuation">:</span> <span class="token keyword">int</span> <span class="token operator">=</span> <span class="token number">0</span>
+      <span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">void</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Creates a cube in VectorLine.points3 (which must have a count of at least 24). The VectorLine must be LineType.Discrete. The origin is the world-space coordinate for the center of the cube. The xSize, ySize, and zSize are floats indicating how many units in size the cube is for those dimensions. The optional index is 0 by default, though it can be anything, as long as the count of VectorLine.points3 is at least 24 plus the index.</p>
+<p>在<code>VectorLine</code>中创建一个立方体。</p>
+<ul>
+<li><code>VectorLine.points3</code>(必须有至少24个点数)。</li>
+<li><code>VectorLine</code>必须是<code>LineType.Discrete</code>。</li>
+<li><code>origin</code>是立方体中心的世界空间坐标。</li>
+<li><code>xSize</code>、<code>ySize</code>和<code>zSize</code>是浮点数，指示这些维度的立方体的大小。</li>
+<li>可选索引<code>index</code>默认为0，尽管可以为任意值，只要<code>VectorLine.points3</code>的<code>count</code>至少为24加索引即可。</li>
+</ul>
+<h1 id="MakeRect"><a href="#MakeRect" class="headerlink" title="MakeRect"></a>MakeRect</h1><pre class="line-numbers language-csharp"><code class="language-csharp">function <span class="token function">MakeRect</span> <span class="token punctuation">(</span>
+    rect <span class="token punctuation">:</span> Rect<span class="token punctuation">,</span>
+    index <span class="token punctuation">:</span> <span class="token keyword">int</span> <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">void</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在VectorLine中创建一个矩形。用<code>VectorLine.points2</code> 或 <code>VectorLine.points3</code>。</p>
+<ul>
+<li>如果使用<code>Vector2</code>，则提供的<code>rect</code>位于屏幕空间像素中，</li>
+<li>如果使用Vector3，则位于世界空间坐标中。</li>
+</ul>
+<p>默认情况下，可选索引为0，但它可以是任何内容，只要rect适合<code>VectorLine.points2</code>或<code>VectorLine.points3</code>。这允许在同一行中创建多个矩形，因为用于创建矩形的点从索引定义的值开始。VectorLine.points2的长度或VectorLine.points3如果该行创建为连续行，则必须至少为5；如果该行创建为离散线。</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

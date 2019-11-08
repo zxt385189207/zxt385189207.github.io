@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Unity画线插件Vectrosity - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#画点"><span class="toc-text">画点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#绘制2D线段"><span class="toc-text">绘制2D线段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#绘制3D绘制立方体"><span class="toc-text">绘制3D绘制立方体</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3D网格绘制"><span class="toc-text">3D网格绘制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#绘制对象运动的路径"><span class="toc-text">绘制对象运动的路径</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#增加线段的封头EndCap材质"><span class="toc-text">增加线段的封头EndCap材质</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#屏幕上自由绘制"><span class="toc-text">屏幕上自由绘制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#绘制字体"><span class="toc-text">绘制字体</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#绘制曲线"><span class="toc-text">绘制曲线</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#绘制椭圆-圆形"><span class="toc-text">绘制椭圆(圆形)</span></a></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Unity画线插件Vectrosity
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-11-08 12:49:30</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Unity插件" title="Unity插件">Unity插件</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="画点"><a href="#画点" class="headerlink" title="画点"></a>画点</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">float</span> dotSize       <span class="token operator">=</span> <span class="token number">2.0f</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 点的大小</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span>   numberOfDots  <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 每个环点的数量</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span>   numberOfRings <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// 环的数量</span>
+<span class="token keyword">public</span> Color dotColor      <span class="token operator">=</span> Color<span class="token punctuation">.</span>cyan<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">var</span> totalDots <span class="token operator">=</span> numberOfDots <span class="token operator">*</span> numberOfRings<span class="token punctuation">;</span>
+    <span class="token keyword">var</span> dotPoints <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">[</span>totalDots<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> dotColors <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Color32</span><span class="token punctuation">[</span>totalDots<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 设置每圈的点的颜色</span>
+    <span class="token keyword">var</span> reduceAmount <span class="token operator">=</span> <span class="token number">1.0f</span> <span class="token operator">-</span> <span class="token punctuation">.</span><span class="token number">75f</span> <span class="token operator">/</span> totalDots<span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> dotColors<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        dotColors<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span>  dotColor<span class="token punctuation">;</span>
+        dotColor     <span class="token operator">*</span><span class="token operator">=</span> reduceAmount<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 绘制线段的类型为Points, 2D坐标数组dotPoints,每个点的大小</span>
+    <span class="token keyword">var</span> dots <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Dots"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector2<span class="token operator">></span><span class="token punctuation">(</span>dotPoints<span class="token punctuation">)</span><span class="token punctuation">,</span> dotSize<span class="token punctuation">,</span> LineType<span class="token punctuation">.</span>Points<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 设置点的颜色</span>
+    dots<span class="token punctuation">.</span><span class="token function">SetColors</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Color32<span class="token operator">></span><span class="token punctuation">(</span>dotColors<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 设置成一个圆, 设定圆心坐标,半径,分段,</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> numberOfRings<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        dots<span class="token punctuation">.</span><span class="token function">MakeCircle</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span>Screen<span class="token punctuation">.</span>width <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">,</span> Screen<span class="token punctuation">.</span>height <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Screen<span class="token punctuation">.</span>height <span class="token operator">/</span> <span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> numberOfDots<span class="token punctuation">,</span> numberOfDots <span class="token operator">*</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    dots<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity/QQ截图20191108203135.png" alt=""></p>
+<h1 id="绘制2D线段"><a href="#绘制2D线段" class="headerlink" title="绘制2D线段"></a>绘制2D线段</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//--------------- 画线方式一:---------------</span>
+<span class="token keyword">var</span> linePoints <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector2<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 屏幕左边的某个点</span>
+linePoints<span class="token punctuation">.</span><span class="token function">Add</span> <span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> Random<span class="token punctuation">.</span><span class="token function">Range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> Screen<span class="token punctuation">.</span>height<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 屏幕右边的某个点</span>
+linePoints<span class="token punctuation">.</span><span class="token function">Add</span> <span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span>Screen<span class="token punctuation">.</span>width<span class="token number">-1</span><span class="token punctuation">,</span> Random<span class="token punctuation">.</span><span class="token function">Range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> Screen<span class="token punctuation">.</span>height<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 使用上面的点创建一个VectorLine对象，宽度为2像素</span>
+<span class="token comment" spellcheck="true">// line1</span>
+<span class="token keyword">var</span> line <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Line"</span><span class="token punctuation">,</span> linePoints<span class="token punctuation">,</span> <span class="token number">2.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// line2</span>
+<span class="token comment" spellcheck="true">// 指定纹理的线条</span>
+<span class="token comment" spellcheck="true">// lineTexture 可以设置成"点"的图片 然后设置缩放</span>
+<span class="token keyword">var</span> line <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Line"</span><span class="token punctuation">,</span> linePoints<span class="token punctuation">,</span> lineTexture<span class="token punctuation">,</span> lineWidth<span class="token punctuation">)</span><span class="token punctuation">;</span>
+line<span class="token punctuation">.</span>textureScale <span class="token operator">=</span> <span class="token number">1.0</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 画这条线</span>
+<span class="token comment" spellcheck="true">// 绘制在2D摄像机上的线段</span>
+line<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//--------------- 画线方式二:---------------</span>
+<span class="token comment" spellcheck="true">// 静态方法画线 ( 白色,起点,终点 )</span>
+VectorLine<span class="token punctuation">.</span><span class="token function">SetLine</span> <span class="token punctuation">(</span>Color<span class="token punctuation">.</span>white<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span>Screen<span class="token punctuation">.</span>width<span class="token number">-1</span><span class="token punctuation">,</span> Screen<span class="token punctuation">.</span>height<span class="token number">-1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>line1:</p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity/QQ截图20191108125712.png" alt=""></p>
+<p>line2:</p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity/QQ截图20191108125852.png" alt=""></p>
+<h1 id="绘制3D绘制立方体"><a href="#绘制3D绘制立方体" class="headerlink" title="绘制3D绘制立方体"></a>绘制3D绘制立方体</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">var</span> cubePoints <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector3<span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5f</span><span class="token punctuation">,</span> <span class="token number">0.5f</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 用上面的点画一个立方体，宽度为2像素</span>
+<span class="token keyword">var</span> line1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span>gameObject<span class="token punctuation">.</span>name<span class="token punctuation">,</span> cubePoints<span class="token punctuation">,</span> <span class="token number">2.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 绘制3D线段</span>
+line1<span class="token punctuation">.</span><span class="token function">Draw3DAuto</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity/QQ截图20191108141230.png" alt=""></p>
+<h1 id="3D网格绘制"><a href="#3D网格绘制" class="headerlink" title="3D网格绘制"></a>3D网格绘制</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">/// &lt;summary></span>
+<span class="token comment" spellcheck="true">/// 网格条数</span>
+<span class="token comment" spellcheck="true">/// &lt;/summary></span>
+<span class="token keyword">public</span> <span class="token keyword">int</span> numberOfLines <span class="token operator">=</span> <span class="token number">20</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">/// &lt;summary></span>
+<span class="token comment" spellcheck="true">/// 两根线间距</span>
+<span class="token comment" spellcheck="true">/// &lt;/summary></span>
+<span class="token keyword">public</span> <span class="token keyword">float</span> distanceBetweenLines <span class="token operator">=</span> <span class="token number">2.0f</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">/// &lt;summary></span>
+<span class="token comment" spellcheck="true">/// 线宽</span>
+<span class="token comment" spellcheck="true">/// &lt;/summary></span>
+<span class="token keyword">public</span> <span class="token keyword">float</span> lineWidth <span class="token operator">=</span> <span class="token number">2.0f</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 限制numberOfLines在2和8190之间</span>
+    numberOfLines <span class="token operator">=</span> Mathf<span class="token punctuation">.</span><span class="token function">Clamp</span><span class="token punctuation">(</span>numberOfLines<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">8190</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 创建一组点</span>
+    <span class="token keyword">var</span> points <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector3<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 绘制X轴正方向, 垂直X轴,平行Z轴的网格线</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> numberOfLines<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        points<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span>i <span class="token operator">*</span> distanceBetweenLines<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        points<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span>i <span class="token operator">*</span> distanceBetweenLines<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>numberOfLines <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> distanceBetweenLines<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 绘制Z轴正方向,垂直Z轴,平行X轴的网格线</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> numberOfLines<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        points<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> i <span class="token operator">*</span> distanceBetweenLines<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        points<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token punctuation">(</span>numberOfLines <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> distanceBetweenLines<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> i <span class="token operator">*</span> distanceBetweenLines<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 绘制一组由2个点组成的线</span>
+    <span class="token keyword">var</span> line <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Grid"</span><span class="token punctuation">,</span> points<span class="token punctuation">,</span> lineWidth<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    line<span class="token punctuation">.</span><span class="token function">Draw3DAuto</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity/QQ截图20191108142352.png" alt=""></p>
+<h1 id="绘制对象运动的路径"><a href="#绘制对象运动的路径" class="headerlink" title="绘制对象运动的路径"></a>绘制对象运动的路径</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">/// &lt;summary></span>
+<span class="token comment" spellcheck="true">/// 材质</span>
+<span class="token comment" spellcheck="true">/// &lt;/summary></span>
+<span class="token keyword">public</span> Texture    lineTex<span class="token punctuation">;</span>
+<span class="token keyword">public</span> Color      lineColor        <span class="token operator">=</span> Color<span class="token punctuation">.</span>green<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span>        maxPoints        <span class="token operator">=</span> <span class="token number">500</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">bool</span>       continuousUpdate <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> GameObject ballPrefab<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">float</span>      force <span class="token operator">=</span> <span class="token number">16.0f</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/// &lt;summary></span>
+<span class="token comment" spellcheck="true">/// 路径线段</span>
+<span class="token comment" spellcheck="true">/// &lt;/summary></span>
+<span class="token keyword">private</span> VectorLine pathLine<span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token keyword">int</span>        pathIndex <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">private</span> GameObject ball<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 设定材质,线段类型:连续的</span>
+    pathLine              <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Path"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector3<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> lineTex<span class="token punctuation">,</span> <span class="token number">12.0f</span><span class="token punctuation">,</span> LineType<span class="token punctuation">.</span>Continuous<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    pathLine<span class="token punctuation">.</span>color        <span class="token operator">=</span> Color<span class="token punctuation">.</span>green<span class="token punctuation">;</span>
+    pathLine<span class="token punctuation">.</span>textureScale <span class="token operator">=</span> <span class="token number">1.0f</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 实例化一个有刚体组件的球,并且存在重力</span>
+    <span class="token function">MakeBall</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 开启一个协程,传入球的transform</span>
+    <span class="token function">StartCoroutine</span><span class="token punctuation">(</span><span class="token function">SamplePoints</span><span class="token punctuation">(</span>ball<span class="token punctuation">.</span>transform<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">MakeBall</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>ball<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">Destroy</span><span class="token punctuation">(</span>ball<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    ball <span class="token operator">=</span>
+        <span class="token function">Instantiate</span><span class="token punctuation">(</span>ballPrefab<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">2.25f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">4.4f</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.9f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            Quaternion<span class="token punctuation">.</span><span class="token function">Euler</span><span class="token punctuation">(</span><span class="token number">300.0f</span><span class="token punctuation">,</span> <span class="token number">70.0f</span><span class="token punctuation">,</span> <span class="token number">310.0f</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">as</span> GameObject<span class="token punctuation">;</span>
+    ball<span class="token punctuation">.</span><span class="token generic-method function">GetComponent<span class="token punctuation">&lt;</span>Rigidbody<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>useGravity <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    ball<span class="token punctuation">.</span><span class="token generic-method function">GetComponent<span class="token punctuation">&lt;</span>Rigidbody<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">AddForce</span><span class="token punctuation">(</span>ball<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>forward <span class="token operator">*</span> force<span class="token punctuation">,</span> ForceMode<span class="token punctuation">.</span>Impulse<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+IEnumerator <span class="token function">SamplePoints</span><span class="token punctuation">(</span>Transform thisTransform<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Gets the position of the 3D object at intervals (20 times/second)</span>
+    <span class="token keyword">var</span> running <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>running<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 将位置写入</span>
+        pathLine<span class="token punctuation">.</span>points3<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>thisTransform<span class="token punctuation">.</span>position<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 路径达到500个点就停止绘制</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">++</span>pathIndex <span class="token operator">==</span> maxPoints<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            running <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 每0.05秒绘制一次, 1秒绘制20次,</span>
+        <span class="token keyword">yield</span> <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">WaitForSeconds</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token number">05f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 绘制这条路径</span>
+        pathLine<span class="token punctuation">.</span><span class="token function">Draw3DAuto</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity/QQ截图20191108152432.png" alt=""></p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity/QQ截图20191108152448.png" alt=""></p>
+<h1 id="增加线段的封头EndCap材质"><a href="#增加线段的封头EndCap材质" class="headerlink" title="增加线段的封头EndCap材质"></a>增加线段的封头EndCap材质</h1><p>一个线段可以通过EndCap属性设置3个材质纹理, 头,本身,尾.</p>
+<p><strong>同一个线段纹理数组中的纹理都需要是正方形,长宽一致.</strong></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 创建3种EndCap类型</span>
+<span class="token comment" spellcheck="true">// 命名封头, 封头的类型: 前端, 传入线段的材质和前端的材质</span>
+VectorLine<span class="token punctuation">.</span><span class="token function">SetEndCap</span><span class="token punctuation">(</span><span class="token string">"arrow"</span><span class="token punctuation">,</span> EndCap<span class="token punctuation">.</span>Front<span class="token punctuation">,</span> lineTex<span class="token punctuation">,</span> frontTex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 命名封头, 封头的类型: 前后, 传入线段的材质和前端的材质,后端材质</span>
+VectorLine<span class="token punctuation">.</span><span class="token function">SetEndCap</span><span class="token punctuation">(</span><span class="token string">"arrow2"</span><span class="token punctuation">,</span> EndCap<span class="token punctuation">.</span>Both<span class="token punctuation">,</span> lineTex2<span class="token punctuation">,</span> frontTex<span class="token punctuation">,</span> backTex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 命名封头, 封头的类型: 前后镜像, 传入线段的材质和封头镜像材质</span>
+VectorLine<span class="token punctuation">.</span><span class="token function">SetEndCap</span><span class="token punctuation">(</span><span class="token string">"rounded"</span><span class="token punctuation">,</span> EndCap<span class="token punctuation">.</span>Mirror<span class="token punctuation">,</span> lineTex3<span class="token punctuation">,</span> capTex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+<span class="token comment" spellcheck="true">// 使用</span>
+<span class="token comment" spellcheck="true">// -------------------line1-------------------</span>
+<span class="token keyword">var</span> line1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Arrow"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector2<span class="token operator">></span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">30.0f</span><span class="token punctuation">,</span> LineType<span class="token punctuation">.</span>Continuous<span class="token punctuation">,</span> Joins<span class="token punctuation">.</span>Weld<span class="token punctuation">)</span><span class="token punctuation">;</span>
+line1<span class="token punctuation">.</span>useViewportCoords <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> splinePoints <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token number">1f</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token number">15f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token number">3f</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token number">5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token number">5f</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token number">6f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token number">7f</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token number">5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token number">9f</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token number">15f</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+line1<span class="token punctuation">.</span><span class="token function">MakeSpline</span><span class="token punctuation">(</span>splinePoints<span class="token punctuation">)</span><span class="token punctuation">;</span>
+line1<span class="token punctuation">.</span>endCap <span class="token operator">=</span> <span class="token string">"arrow"</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 使用名称为arrow的EndCap</span>
+line1<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// -------------------line2-------------------</span>
+<span class="token keyword">var</span> line2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Arrow2"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector2<span class="token operator">></span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">40.0f</span><span class="token punctuation">,</span> LineType<span class="token punctuation">.</span>Continuous<span class="token punctuation">,</span> Joins<span class="token punctuation">.</span>Weld<span class="token punctuation">)</span><span class="token punctuation">;</span>
+line2<span class="token punctuation">.</span>useViewportCoords <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+splinePoints <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token number">1f</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token number">85f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token number">3f</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token number">5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token number">5f</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token number">4f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token number">7f</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token number">5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token number">9f</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token number">85f</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+line2<span class="token punctuation">.</span><span class="token function">MakeSpline</span><span class="token punctuation">(</span>splinePoints<span class="token punctuation">)</span><span class="token punctuation">;</span>
+line2<span class="token punctuation">.</span>endCap            <span class="token operator">=</span> <span class="token string">"arrow2"</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 使用名称为arrow2的EndCap</span>
+line2<span class="token punctuation">.</span>continuousTexture <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+line2<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// -------------------line3-------------------</span>
+<span class="token keyword">var</span> line3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Rounded"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector2<span class="token operator">></span> <span class="token punctuation">{</span><span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token number">1f</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token number">5f</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token number">9f</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token number">5f</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">20.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+line3<span class="token punctuation">.</span>useViewportCoords <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+line3<span class="token punctuation">.</span>endCap            <span class="token operator">=</span> <span class="token string">"rounded"</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 使用名称为rounded的EndCap</span>
+line3<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity/QQ截图20191108154954.png" alt=""></p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity/QQ截图20191108154918.png" alt=""></p>
+<h1 id="屏幕上自由绘制"><a href="#屏幕上自由绘制" class="headerlink" title="屏幕上自由绘制"></a>屏幕上自由绘制</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> Texture2D lineTex<span class="token punctuation">;</span>              <span class="token comment" spellcheck="true">// 线段材质</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span>       maxPoints    <span class="token operator">=</span> <span class="token number">5000</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 最大点数量</span>
+<span class="token keyword">public</span> <span class="token keyword">float</span>     lineWidth    <span class="token operator">=</span> <span class="token number">4.0f</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 线宽</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span>       minPixelMove <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">// 每个样本必须移动至少这么多像素才能记录新片段</span>
+<span class="token keyword">public</span> <span class="token keyword">bool</span>      useEndCap    <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 是否使用封头</span>
+<span class="token keyword">public</span> Texture2D capLineTex<span class="token punctuation">;</span>           <span class="token comment" spellcheck="true">// 封头的线段材质</span>
+<span class="token keyword">public</span> Texture2D capTex<span class="token punctuation">;</span>               <span class="token comment" spellcheck="true">// 封头材质</span>
+
+<span class="token keyword">public</span> <span class="token keyword">float</span> capLineWidth <span class="token operator">=</span> <span class="token number">20.0f</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 如果line3D为true，则在场景中绘制线条，而不是作为叠加。</span>
+<span class="token comment" spellcheck="true">// 注意在这个演示中，这条线在游戏视图中看起来是一样的，但是你可以在场景视图中看到不同。</span>
+
+<span class="token keyword">public</span> <span class="token keyword">bool</span>  line3D             <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 是否使用Vcetor3变量</span>
+<span class="token keyword">public</span> <span class="token keyword">float</span> distanceFromCamera <span class="token operator">=</span> <span class="token number">1.0f</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 离摄像机的距离</span>
+
+<span class="token keyword">private</span> VectorLine line<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 线段</span>
+
+<span class="token comment" spellcheck="true">/// &lt;summary></span>
+<span class="token comment" spellcheck="true">/// 第一次点击时的坐标</span>
+<span class="token comment" spellcheck="true">/// &lt;/summary></span>
+<span class="token keyword">private</span> Vector3 previousPosition<span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> <span class="token keyword">int</span>  sqrMinPixelMove<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 向量的大小的平方</span>
+<span class="token keyword">private</span> <span class="token keyword">bool</span> canDraw <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">float</span>     useLineWidth<span class="token punctuation">;</span>
+    Texture2D tex<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>useEndCap<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        VectorLine<span class="token punctuation">.</span><span class="token function">SetEndCap</span><span class="token punctuation">(</span><span class="token string">"RoundCap"</span><span class="token punctuation">,</span> EndCap<span class="token punctuation">.</span>Mirror<span class="token punctuation">,</span> capLineTex<span class="token punctuation">,</span> capTex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        tex          <span class="token operator">=</span> capLineTex<span class="token punctuation">;</span>
+        useLineWidth <span class="token operator">=</span> capLineWidth<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span>
+    <span class="token punctuation">{</span>
+        tex          <span class="token operator">=</span> lineTex<span class="token punctuation">;</span>
+        useLineWidth <span class="token operator">=</span> lineWidth<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>line3D<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        line <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"DrawnLine3D"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector3<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> tex<span class="token punctuation">,</span> useLineWidth<span class="token punctuation">,</span> LineType<span class="token punctuation">.</span>Continuous<span class="token punctuation">,</span> Joins<span class="token punctuation">.</span>Weld<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span>
+    <span class="token punctuation">{</span>
+        line <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"DrawnLine"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector2<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> tex<span class="token punctuation">,</span> useLineWidth<span class="token punctuation">,</span> LineType<span class="token punctuation">.</span>Continuous<span class="token punctuation">,</span> Joins<span class="token punctuation">.</span>Weld<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 只更新行的最后两个点的优化，其余的不重新计算</span>
+    line<span class="token punctuation">.</span>endPointsUpdate <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 是否使用封头</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>useEndCap<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        line<span class="token punctuation">.</span>endCap <span class="token operator">=</span> <span class="token string">"RoundCap"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 用于设置2个点相距多远开始画线</span>
+    <span class="token comment" spellcheck="true">// 向量的长度Magnitude是(x*x+y*y+z*z)的平方根。</span>
+    <span class="token comment" spellcheck="true">// 向量的长度的平方sqrMagnitude是(x*x+y*y+z*z). 如果用于比较的话用平方来比较,不需要开方速度较快</span>
+    sqrMinPixelMove <span class="token operator">=</span> minPixelMove <span class="token operator">*</span> minPixelMove<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 计算屏幕点击的点对应3d的坐标点,z轴还需要加上距离摄像机的距离</span>
+    <span class="token keyword">var</span> newPoint <span class="token operator">=</span> <span class="token function">GetMousePos</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 鼠标左键按下时一直返回true，所以开始绘制一个新的线段</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>Input<span class="token punctuation">.</span><span class="token function">GetMouseButtonDown</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 清空points3里的点</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>line3D<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            line<span class="token punctuation">.</span>points3<span class="token punctuation">.</span><span class="token function">Clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            line<span class="token punctuation">.</span><span class="token function">Draw3D</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span>
+        <span class="token punctuation">{</span>
+            line<span class="token punctuation">.</span>points2<span class="token punctuation">.</span><span class="token function">Clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            line<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 记录点击时的坐标</span>
+        previousPosition <span class="token operator">=</span> Input<span class="token punctuation">.</span>mousePosition<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>line3D<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 自带的vector3[]成员</span>
+            line<span class="token punctuation">.</span>points3<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>newPoint<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 自带的vector2[]成员</span>
+            line<span class="token punctuation">.</span>points2<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>newPoint<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 允许绘制</span>
+        canDraw <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 鼠标左键是否按下，鼠标移动到足够远的地方，使一个新的点</span>
+    <span class="token comment" spellcheck="true">// 向量的长度Magnitude是(x*x+y*y+z*z)的平方根。</span>
+    <span class="token comment" spellcheck="true">// 向量的长度的平方sqrMagnitude是(x*x+y*y+z*z). 如果用于比较的话用平方来比较,不需要开方速度较快</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>Input<span class="token punctuation">.</span><span class="token function">GetMouseButton</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>Input<span class="token punctuation">.</span>mousePosition <span class="token operator">-</span> previousPosition<span class="token punctuation">)</span><span class="token punctuation">.</span>sqrMagnitude <span class="token operator">></span> sqrMinPixelMove <span class="token operator">&amp;&amp;</span> canDraw<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        previousPosition <span class="token operator">=</span> Input<span class="token punctuation">.</span>mousePosition<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> pointCount<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>line3D<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 添加计算转换后的点,绘制出来</span>
+            line<span class="token punctuation">.</span>points3<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>newPoint<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            pointCount <span class="token operator">=</span> line<span class="token punctuation">.</span>points3<span class="token punctuation">.</span>Count<span class="token punctuation">;</span>
+            line<span class="token punctuation">.</span><span class="token function">Draw3D</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span>
+        <span class="token punctuation">{</span>
+            line<span class="token punctuation">.</span>points2<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>newPoint<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            pointCount <span class="token operator">=</span> line<span class="token punctuation">.</span>points2<span class="token punctuation">.</span>Count<span class="token punctuation">;</span>
+            line<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>pointCount <span class="token operator">>=</span> maxPoints<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            canDraw <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+Vector3 <span class="token function">GetMousePos</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">var</span> p <span class="token operator">=</span> Input<span class="token punctuation">.</span>mousePosition<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>line3D<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        p<span class="token punctuation">.</span>z <span class="token operator">=</span> distanceFromCamera<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> Camera<span class="token punctuation">.</span>main<span class="token punctuation">.</span><span class="token function">ScreenToWorldPoint</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> p<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity/QQ截图20191108172214.png" alt=""></p>
+<h1 id="绘制字体"><a href="#绘制字体" class="headerlink" title="绘制字体"></a>绘制字体</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">string</span> text <span class="token operator">=</span> <span class="token string">"Vectrosity!"</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span> textSize <span class="token operator">=</span> <span class="token number">40</span><span class="token punctuation">;</span>
+<span class="token keyword">private</span> VectorLine textLine<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">Start</span> <span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  textLine <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Text"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector2<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  textLine<span class="token punctuation">.</span>color <span class="token operator">=</span> Color<span class="token punctuation">.</span>yellow<span class="token punctuation">;</span>
+  textLine<span class="token punctuation">.</span>drawTransform <span class="token operator">=</span> transform<span class="token punctuation">;</span>
+  textLine<span class="token punctuation">.</span><span class="token function">MakeText</span> <span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span>Screen<span class="token punctuation">.</span>width<span class="token operator">/</span><span class="token number">2</span> <span class="token operator">-</span> text<span class="token punctuation">.</span>Length<span class="token operator">*</span>textSize<span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">,</span> Screen<span class="token punctuation">.</span>height<span class="token operator">/</span><span class="token number">2</span> <span class="token operator">+</span> textSize<span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> textSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  textLine<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity/QQ截图20191108204327.png" alt=""></p>
+<h1 id="绘制曲线"><a href="#绘制曲线" class="headerlink" title="绘制曲线"></a>绘制曲线</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 在inspector中定义曲线的点</span>
+<span class="token keyword">public</span> Vector2<span class="token punctuation">[</span><span class="token punctuation">]</span> curvePoints<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span>       segments <span class="token operator">=</span> <span class="token number">50</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>curvePoints<span class="token punctuation">.</span>Length <span class="token operator">!=</span> <span class="token number">4</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"Curve points array must have 4 elements only"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 创建Vector2列表，其中大小是段数加上1，因为这是连续的线</span>
+    <span class="token comment" spellcheck="true">// (一条离散的线需要段*2的大小)</span>
+    <span class="token keyword">var</span> linePoints <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector2<span class="token operator">></span><span class="token punctuation">(</span>segments <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 使用上面的点和默认材质创建一个VectorLine对象，宽度为2像素，结束点为0像素，深度为0</span>
+    <span class="token keyword">var</span> line <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Curve"</span><span class="token punctuation">,</span> linePoints<span class="token punctuation">,</span> <span class="token number">2.0f</span><span class="token punctuation">,</span> LineType<span class="token punctuation">.</span>Continuous<span class="token punctuation">,</span> Joins<span class="token punctuation">.</span>Weld<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    line<span class="token punctuation">.</span><span class="token function">MakeCurve</span><span class="token punctuation">(</span>curvePoints<span class="token punctuation">,</span> segments<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Draw the line</span>
+    line<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity/QQ截图20191108205816.png" alt=""></p>
+<h1 id="绘制椭圆-圆形"><a href="#绘制椭圆-圆形" class="headerlink" title="绘制椭圆(圆形)"></a>绘制椭圆(圆形)</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> Texture lineTexture<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">float</span>   xRadius       <span class="token operator">=</span> <span class="token number">120.0f</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">float</span>   yRadius       <span class="token operator">=</span> <span class="token number">120.0f</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span>     segments      <span class="token operator">=</span> <span class="token number">60</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">float</span>   pointRotation <span class="token operator">=</span> <span class="token number">0.0f</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 创建Vector2列表，其中大小为段数加1(因为第一个和最后一个点必须相同)</span>
+    <span class="token keyword">var</span> linePoints <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector2<span class="token operator">></span><span class="token punctuation">(</span>segments <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 使用上面的点创建一个VectorLine对象，宽度为3像素</span>
+    <span class="token keyword">var</span> line <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Line"</span><span class="token punctuation">,</span> linePoints<span class="token punctuation">,</span> lineTexture<span class="token punctuation">,</span> <span class="token number">3.0f</span><span class="token punctuation">,</span> LineType<span class="token punctuation">.</span>Continuous<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 在VectorLine对象中创建一个椭圆，其中原点是屏幕的中心</span>
+    <span class="token comment" spellcheck="true">// 如果xRadius和yRadius相同，则可以使用MakeCircleInLine，它只需要一个半径值，而不是两个</span>
+    line<span class="token punctuation">.</span><span class="token function">MakeEllipse</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span>Screen<span class="token punctuation">.</span>width <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">,</span> Screen<span class="token punctuation">.</span>height <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> xRadius<span class="token punctuation">,</span> yRadius<span class="token punctuation">,</span> segments<span class="token punctuation">,</span> pointRotation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// Draw the line</span>
+    line<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity/QQ截图20191108205124.png" alt=""></p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

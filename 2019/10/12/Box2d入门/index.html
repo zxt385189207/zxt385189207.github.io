@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Box2D-C-版"><span class="toc-text">Box2D(C#版)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是AABB"><span class="toc-text">什么是AABB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AABB碰撞树"><span class="toc-text">AABB碰撞树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树"><span class="toc-text">二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#平衡二叉树"><span class="toc-text">平衡二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#红黑树"><span class="toc-text">红黑树</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用AABB碰撞树进行初步检测"><span class="toc-text">使用AABB碰撞树进行初步检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#传感器"><span class="toc-text">传感器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#island是什么"><span class="toc-text">island是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#连续物理模拟"><span class="toc-text">连续物理模拟</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Box2D-C-版"><span class="toc-text">Box2D(C#版)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是AABB"><span class="toc-text">什么是AABB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AABB碰撞树"><span class="toc-text">AABB碰撞树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树"><span class="toc-text">二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#平衡二叉树"><span class="toc-text">平衡二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#红黑树"><span class="toc-text">红黑树</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用AABB碰撞树进行初步检测"><span class="toc-text">使用AABB碰撞树进行初步检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#传感器"><span class="toc-text">传感器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#island是什么"><span class="toc-text">island是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#连续物理模拟"><span class="toc-text">连续物理模拟</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#刚体Body"><span class="toc-text">刚体Body</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#刚体形状"><span class="toc-text">刚体形状</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#刚体类型"><span class="toc-text">刚体类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#刚体的创建流程总结"><span class="toc-text">刚体的创建流程总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#碰撞"><span class="toc-text">碰撞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#碰撞的不同阶段处理"><span class="toc-text">碰撞的不同阶段处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Contact对象"><span class="toc-text">Contact对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Manifold"><span class="toc-text">Manifold</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ContactImpulse"><span class="toc-text">ContactImpulse</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Box2D的碰撞体可视化Debugger组件"><span class="toc-text">Box2D的碰撞体可视化Debugger组件</span></a></li></ol>
 </div>
 
     
@@ -192,6 +192,172 @@
 <ul>
 <li>连续碰撞只会针对标记为bullet的刚体进行处理。</li>
 </ul>
+<h1 id="刚体Body"><a href="#刚体Body" class="headerlink" title="刚体Body"></a>刚体Body</h1><p>创建刚体需要创建多个对象,</p>
+<ol>
+<li><code>BodyDef</code> 要创建的刚体信息定义</li>
+<li><code>FixtureDef</code>(辅助类)要创建的刚体信息定义<ol>
+<li>固定设施(夹具): 用来定义刚体所固有的一些属性,通常是物体材料特性相关的一些属性.</li>
+</ol>
+</li>
+<li><code>Body</code> 最终创建刚体通过此类<ol>
+<li>此类构造函数基本是只在Box2D内部调用</li>
+</ol>
+</li>
+</ol>
+<p><img src="/2019/10/12/Box2d入门/QQ截图20191015105215.png" alt=""></p>
+<p><img src="/2019/10/12/Box2d入门/QQ截图20191015105245.png" alt=""></p>
+<p>创建刚体通过 <code>world.CreateBody(bodydef);</code></p>
+<p><code>FixtureDef</code>只是定义和暂存了刚体的属性, 就像<code>BodyDef</code>和<code>Body</code>关系一样, 还存在<code>Fixture</code>类, <code>Fixture</code>对象不能单独存在, 必须绑定到刚体<code>Body</code>中才能起作用.</p>
+<blockquote>
+<p>一个刚体可能包含不止一个形状,也就是会对应多个<code>Fixture</code>对象, 创建完刚体后,可以再次为其添加<code>Fixture</code>对象, 实现多个形状的组合.</p>
+</blockquote>
+<p><code>CreateFixture()</code>方法将<code>FixtureDef</code>对象中包含的属性和刚体绑定再一起.</p>
+<p><img src="/2019/10/12/Box2d入门/QQ截图20191015111425.png" alt=""></p>
+<h2 id="刚体形状"><a href="#刚体形状" class="headerlink" title="刚体形状"></a>刚体形状</h2><ul>
+<li>标准圆: <code>CircleShape</code><ul>
+<li><strong>radius</strong>: 半径 ,单位是(米)</li>
+</ul>
+</li>
+<li>多边形类: <code>PolygonShape</code><ul>
+<li><code>SetAsBox()</code> 构造一个矩形, 传入半宽,半高<ul>
+<li>需要进行米和像素的转化: 例如创建一个100px-200px的矩形,传入的参数50/30, 100/30</li>
+</ul>
+</li>
+<li><code>Set()</code> 传入顶点列表(<code>List&lt;Vector2&gt;</code>)</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2019/10/12/Box2d入门/QQ截图20191015152900.png" alt=""></p>
+<h2 id="刚体类型"><a href="#刚体类型" class="headerlink" title="刚体类型"></a>刚体类型</h2><ul>
+<li>BodyType.StaticBody 静态刚体</li>
+<li>BodyType.KinematicBody 可动刚体</li>
+<li>BodyType.DynamicBody 动态刚体</li>
+</ul>
+<h2 id="刚体的创建流程总结"><a href="#刚体的创建流程总结" class="headerlink" title="刚体的创建流程总结"></a>刚体的创建流程总结</h2><p>创建刚体的过程的4个必备要素:</p>
+<ul>
+<li>BodyDef</li>
+<li>Body</li>
+<li>FixtureDef</li>
+<li>Shape</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">/// &lt;summary></span>
+<span class="token comment" spellcheck="true">/// 创造一个动态刚体</span>
+<span class="token comment" spellcheck="true">/// &lt;/summary></span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> Body <span class="token function">CreateDynamicBody</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> Game<span class="token punctuation">.</span>Scene<span class="token punctuation">.</span><span class="token generic-method function">GetComponent<span class="token punctuation">&lt;</span>B2S_WorldComponent<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetWorld</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">CreateBody</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">BodyDef</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> BodyType <span class="token operator">=</span> BodyType<span class="token punctuation">.</span>DynamicBody <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token comment" spellcheck="true">/// &lt;summary></span>
+<span class="token comment" spellcheck="true">/// 为刚体挂载一个矩形碰撞体</span>
+<span class="token comment" spellcheck="true">/// 传的UserData为B2S_HeroColliderData</span>
+<span class="token comment" spellcheck="true">/// &lt;/summary></span>
+<span class="token comment" spellcheck="true">/// &lt;param name="self">&lt;/param></span>
+<span class="token comment" spellcheck="true">/// &lt;param name="hx">半宽&lt;/param></span>
+<span class="token comment" spellcheck="true">/// &lt;param name="hy">半高&lt;/param></span>
+<span class="token comment" spellcheck="true">/// &lt;param name="offset">偏移量&lt;/param></span>
+<span class="token comment" spellcheck="true">/// &lt;param name="angle">角度&lt;/param></span>
+<span class="token comment" spellcheck="true">/// &lt;param name="isSensor">是否为触发器&lt;/param></span>
+<span class="token comment" spellcheck="true">/// &lt;param name="userData">用户自定义信息&lt;/param></span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">CreateBoxFixture</span><span class="token punctuation">(</span><span class="token keyword">this</span> Body self<span class="token punctuation">,</span> <span class="token keyword">float</span> hx<span class="token punctuation">,</span> <span class="token keyword">float</span> hy<span class="token punctuation">,</span> Vector2 offset<span class="token punctuation">,</span> <span class="token keyword">float</span> angle<span class="token punctuation">,</span> <span class="token keyword">bool</span> isSensor<span class="token punctuation">,</span> <span class="token keyword">object</span> userData<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 创建一个多边形对象</span>
+    PolygonShape m_BoxShape <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PolygonShape</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 设置多边形的形状, 宽高,坐标,角度</span>
+    m_BoxShape<span class="token punctuation">.</span><span class="token function">SetAsBox</span><span class="token punctuation">(</span>hx<span class="token punctuation">,</span> hy<span class="token punctuation">,</span> offset<span class="token punctuation">,</span> angle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 创建夹具对象</span>
+    FixtureDef fixtureDef <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FixtureDef</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 设置夹具属性: 是否是传感器</span>
+    fixtureDef<span class="token punctuation">.</span>IsSensor <span class="token operator">=</span> isSensor<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 应用形状</span>
+    fixtureDef<span class="token punctuation">.</span>Shape <span class="token operator">=</span> m_BoxShape<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 设置UserData,传的UserData为B2S_HeroColliderData</span>
+    fixtureDef<span class="token punctuation">.</span>UserData <span class="token operator">=</span> userData<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 绑定属性到刚体上</span>
+    self<span class="token punctuation">.</span><span class="token function">CreateFixture</span><span class="token punctuation">(</span>fixtureDef<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/10/12/Box2d入门/QQ截图20191015181123.png" alt=""></p>
+<h1 id="碰撞"><a href="#碰撞" class="headerlink" title="碰撞"></a>碰撞</h1><p>潜在碰撞: 最小包围盒AABB指的也是扩充后的FattenAABB. 包围盒发生重叠.</p>
+<p><img src="/2019/10/12/Box2d入门/QQ截图20191014114440.png" alt=""></p>
+<p>五个碰撞阶段:</p>
+<ul>
+<li>潜在碰撞<ul>
+<li>FattenAABB包围盒发生重叠</li>
+</ul>
+</li>
+<li>常规接触碰撞<ul>
+<li>刚体的形状发生了接触</li>
+</ul>
+</li>
+<li>碰撞重叠处理<ul>
+<li>对刚体重叠处的部分进行修复</li>
+</ul>
+</li>
+<li>停止常规接触<ul>
+<li>发生碰撞的形状之间开始分离,不再有接触</li>
+</ul>
+</li>
+<li>潜在风险消除<ul>
+<li>FattenAABB包围盒不再有重叠</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2019/10/12/Box2d入门/QQ截图20191014145205.png" alt=""></p>
+<p>BOX2D将碰撞信息存在<code>Contact对象</code>里, 包括了碰撞的位置,角度等信息. 获取方式:</p>
+<ul>
+<li><code>GetContactList()</code>方法获取<code>Contact列表</code>.<ul>
+<li>是对Box2d世界里的所有Contact遍历.</li>
+</ul>
+</li>
+<li>通过<code>ContactListener类</code>的<strong>碰撞事件处理函数</strong>来获取当前碰撞的<code>Contact对象</code>.</li>
+</ul>
+<h2 id="碰撞的不同阶段处理"><a href="#碰撞的不同阶段处理" class="headerlink" title="碰撞的不同阶段处理"></a>碰撞的不同阶段处理</h2><ul>
+<li><code>PreSolve()</code> 潜在碰撞处理<ul>
+<li><strong>从FattenAABB接触到FattenAABB分离整个过程都每次Step都持续运行</strong>.</li>
+</ul>
+</li>
+<li><code>BeginContact()</code> 开始碰撞的处理<ul>
+<li>只在初次接触时运行一次</li>
+</ul>
+</li>
+<li><code>EndContact()</code> 结束碰撞的处理<ul>
+<li>只在初次离开时运行一次</li>
+<li><code>PreSolve(Contact contact, in Manifold oldManifold)</code></li>
+</ul>
+</li>
+<li><code>PostSolve()</code><ul>
+<li>在<strong>碰撞修复阶段消除形状重叠阶段</strong>一直运行, 直到两个形状彻底分离</li>
+<li><code>PostSolve(Contact contact, in ContactImpulse impulse)</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="Contact对象"><a href="#Contact对象" class="headerlink" title="Contact对象"></a>Contact对象</h2><p>Box2d会根据碰撞检测的情况自动创建. 在潜在碰撞发生时被创建, 直到碰撞双方的FattenAABB不再重叠,才会被销毁.</p>
+<h2 id="Manifold"><a href="#Manifold" class="headerlink" title="Manifold"></a>Manifold</h2><p>在碰撞发生时, 保存碰撞点坐标的对象.</p>
+<h2 id="ContactImpulse"><a href="#ContactImpulse" class="headerlink" title="ContactImpulse"></a>ContactImpulse</h2><p>记录了碰撞时产生的冲量.</p>
+<ul>
+<li><code>normallmpulses</code>属性: 垂直于碰撞面的冲量.</li>
+<li><code>tangentlmpulses</code>属性: 平行于碰撞面的冲量.</li>
+</ul>
+<h1 id="Box2D的碰撞体可视化Debugger组件"><a href="#Box2D的碰撞体可视化Debugger组件" class="headerlink" title="Box2D的碰撞体可视化Debugger组件"></a>Box2D的碰撞体可视化Debugger组件</h1><p><code>public LineRenderer lineRenderer;</code></p>
+<p><a href="https://connect.unity.com/doc/Manual/class-LineRenderer" target="_blank" rel="external">https://connect.unity.com/doc/Manual/class-LineRenderer</a></p>
+<p>LineRenderer线渲染器主要是用于在3D中渲染线段，虽然我们也可以使用GL图像库来渲染线段，但是使用LineRenderer我们可以对线段进行更多的操作，例如：设置颜色，宽度等。在这里要注意LineRenderer渲染出的线段的两个端点是3D世界中的点，即他是属于世界坐标（World Point）中的。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">lineRenderer <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>transform<span class="token punctuation">.</span><span class="token generic-method function">GetComponent<span class="token punctuation">&lt;</span>LineRenderer<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//this.lineRenderer.SetWidth(0.05f, 0.05f);</span>
+<span class="token comment" spellcheck="true">// 设定开始处和结束处线段的宽度</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>lineRenderer<span class="token punctuation">.</span>startWidth <span class="token operator">=</span> <span class="token number">0.05f</span><span class="token punctuation">;</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>lineRenderer<span class="token punctuation">.</span>endWidth <span class="token operator">=</span> <span class="token number">0.05f</span><span class="token punctuation">;</span>
+
+
+<span class="token keyword">this</span><span class="token punctuation">.</span>lineRenderer<span class="token punctuation">.</span>material <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Material</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>m_shader<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// this.lineRenderer.SetColors(Color.red, Color.red);</span>
+<span class="token comment" spellcheck="true">// 设定开始处和结束处线段的颜色</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>lineRenderer<span class="token punctuation">.</span>startColor <span class="token operator">=</span> Color<span class="token punctuation">.</span>red<span class="token punctuation">;</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>lineRenderer<span class="token punctuation">.</span>endColor <span class="token operator">=</span> Color<span class="token punctuation">.</span>red<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
         
             <div class="donate-container">

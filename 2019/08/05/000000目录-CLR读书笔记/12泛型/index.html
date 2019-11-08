@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型"><span class="toc-text">泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型有两种表现形式-泛型类型和泛型方法。"><span class="toc-text">泛型有两种表现形式:泛型类型和泛型方法。</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型的写法"><span class="toc-text">泛型的写法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用泛型"><span class="toc-text">使用泛型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用泛型的优势"><span class="toc-text">使用泛型的优势</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#比较泛型和非泛型算法的性能"><span class="toc-text">比较泛型和非泛型算法的性能</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#FCL中的泛型"><span class="toc-text">FCL中的泛型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型基础结构"><span class="toc-text">泛型基础结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CLR内部如何处理泛型"><span class="toc-text">CLR内部如何处理泛型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型类型和继承"><span class="toc-text">泛型类型和继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型类型的同一性"><span class="toc-text">泛型类型的同一性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码爆炸"><span class="toc-text">代码爆炸</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型接口"><span class="toc-text">泛型接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型委托"><span class="toc-text">泛型委托</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#委托和接口的逆变和协变泛型类型实参"><span class="toc-text">委托和接口的逆变和协变泛型类型实参</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型方法"><span class="toc-text">泛型方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型方法和类型推断"><span class="toc-text">泛型方法和类型推断</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型和其他成员"><span class="toc-text">泛型和其他成员</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#可验证性和约束"><span class="toc-text">可验证性和约束</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#主要约束"><span class="toc-text">主要约束</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#两个特殊的主要约束-class-和struct"><span class="toc-text">两个特殊的主要约束 class 和struct</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#构造器约束"><span class="toc-text">构造器约束</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他可验证性问题"><span class="toc-text">其他可验证性问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型类型变量作为操作数使用"><span class="toc-text">泛型类型变量作为操作数使用</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型"><span class="toc-text">泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型有两种表现形式-泛型类型和泛型方法。"><span class="toc-text">泛型有两种表现形式:泛型类型和泛型方法。</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型的写法"><span class="toc-text">泛型的写法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用泛型"><span class="toc-text">使用泛型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用泛型的优势"><span class="toc-text">使用泛型的优势</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#比较泛型和非泛型算法的性能"><span class="toc-text">比较泛型和非泛型算法的性能</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#FCL中的泛型"><span class="toc-text">FCL中的泛型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型基础结构"><span class="toc-text">泛型基础结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CLR内部如何处理泛型"><span class="toc-text">CLR内部如何处理泛型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型类型和继承"><span class="toc-text">泛型类型和继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型类型的同一性"><span class="toc-text">泛型类型的同一性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码爆炸"><span class="toc-text">代码爆炸</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型接口"><span class="toc-text">泛型接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型委托"><span class="toc-text">泛型委托</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#委托和接口的逆变和协变泛型类型实参"><span class="toc-text">委托和接口的逆变和协变泛型类型实参</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型方法"><span class="toc-text">泛型方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型方法和类型推断"><span class="toc-text">泛型方法和类型推断</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型和其他成员"><span class="toc-text">泛型和其他成员</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#可验证性和约束"><span class="toc-text">可验证性和约束</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#主要约束"><span class="toc-text">主要约束</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#两个特殊的主要约束-class-和struct"><span class="toc-text">两个特殊的主要约束 class 和struct</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#次要约束"><span class="toc-text">次要约束</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#构造器约束"><span class="toc-text">构造器约束</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他可验证性问题"><span class="toc-text">其他可验证性问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型类型变量作为操作数使用"><span class="toc-text">泛型类型变量作为操作数使用</span></a></li></ol></li></ol>
 </div>
 
     
@@ -743,66 +743,80 @@ Int32 n1 <span class="token operator">=</span> <span class="token number">1</spa
 <li>任何类,接口类型,委托类型或者数组类型都满足这个约束.<br>struct约束是承诺类型实参是<code>值类型</code>.</li>
 <li>包括枚举在内的任何值类型都满足这个约束.</li>
 <li>CLR和编译器将任何<code>System.Nullable&lt;T&gt;</code>值视为<code>特殊类型</code>, 不满足这个struct约束.</li>
-<li>原因是<code>Nullable&lt;T&gt;</code>类型将它的类型参数约束为struct,而CLR希望禁止这样的递归类型.<br>```csharp<br>internal sealed class Test<t> where T : class<br>{<br>public void M()<br>{<br>// 引用类型的变量都能设为null<br>// 值类型的变量不能设置为null<br>T temp = null; //允许,因为T约束为引用类型<br>}<br>}</t></li>
+<li>原因是<code>Nullable&lt;T&gt;</code>类型将它的类型参数约束为struct,而CLR希望禁止这样的递归类型.</li>
 </ul>
-<p>internal sealed class Test<t> where T : struct<br>{<br>  public static T Factory()<br>  {<br>    // 允许,因为所有值类型都隐式有一个公共无参构造器<br>    // 如果约束为class, 无法通过编译,因为有的引用类型没有公共的无参构造器.<br>    return new T();<br>  }<br>}</t></p>
-<pre><code>
-&gt; 值类型都有公共的无参构造器. 不允许设置为null
-&gt; 引用类型不一定都有无参构造器,不允许设置为null
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Test</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token keyword">where</span> T <span class="token punctuation">:</span> <span class="token keyword">class</span>
+<span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">M</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 引用类型的变量都能设为null</span>
+    <span class="token comment" spellcheck="true">// 值类型的变量不能设置为null</span>
+    T temp <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//允许,因为T约束为引用类型</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-## 次要约束
+<span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Test</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token keyword">where</span> T <span class="token punctuation">:</span> <span class="token keyword">struct</span>
+<span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> T <span class="token function">Factory</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 允许,因为所有值类型都隐式有一个公共无参构造器</span>
+    <span class="token comment" spellcheck="true">// 如果约束为class, 无法通过编译,因为有的引用类型没有公共的无参构造器.</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>值类型都有公共的无参构造器. 不允许设置为null<br>引用类型不一定都有无参构造器,不允许设置为null</p>
+</blockquote>
+<h2 id="次要约束"><a href="#次要约束" class="headerlink" title="次要约束"></a>次要约束</h2><p><code>T : interface</code></p>
+<p>类型参数可以指定 <strong>0个或多个</strong> <code>次要约束</code>, 次要约束代表<code>接口类型</code>. 向编译器承诺类型实参实现了接口. 由于能指定多个接口约束,所以类型实参必须实现了所有接口约束.</p>
+<blockquote>
+<p>在第13章详细讲 接口约束.</p>
+</blockquote>
+<p><code>T : TBase</code></p>
+<p>还有一种次要约束称为 <code>类型参数约束</code>, 也称为 <code>裸类型约束</code>. 它允许一个泛型类型或方法规定: 指定的类型实参要么就是约束类型,要么是约束的类型的派生类.  一个类型参数可指定 <strong>0个或多个</strong> <code>裸类型约束</code>.</p>
+<blockquote>
+<p>意思就是: T 由 TBase 约束, 由类型参数决定约束.  List<t,tbase> where T:TBase</t,tbase></p>
+</blockquote>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 指定了两个类型参数</span>
+<span class="token comment" spellcheck="true">// T参数 由TBase类型参数约束, T必须兼容于TBase指定的类实参</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> List<span class="token operator">&lt;</span>TBase<span class="token operator">></span> <span class="token generic-method function">ConvertIList<span class="token punctuation">&lt;</span>T<span class="token punctuation">,</span> TBase<span class="token punctuation">></span></span><span class="token punctuation">(</span>IList<span class="token operator">&lt;</span>T<span class="token operator">></span> list<span class="token punctuation">)</span> <span class="token keyword">where</span> T <span class="token punctuation">:</span> TBase
+<span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>TBase<span class="token operator">></span> baseList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>TBase<span class="token operator">></span><span class="token punctuation">(</span>list<span class="token punctuation">.</span>Count<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-`T : interface`
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> index <span class="token operator">&lt;</span> list<span class="token punctuation">.</span>Count<span class="token punctuation">;</span> index<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        baseList<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>list<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> baseList<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 初始化一个List&lt;String> , 它实现了IList&lt;String></span>
+    List<span class="token operator">&lt;</span>String<span class="token operator">></span> ls <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ls<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token string">"A String"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-类型参数可以指定 **0个或多个** `次要约束`, 次要约束代表`接口类型`. 向编译器承诺类型实参实现了接口. 由于能指定多个接口约束,所以类型实参必须实现了所有接口约束.
+    <span class="token comment" spellcheck="true">// 将IList&lt;String>转成IList&lt;Object></span>
+    <span class="token comment" spellcheck="true">// 编译器检查String是否兼容于Object,由于是派生关系,所以满足约束 T(string) : TBase(Object)</span>
+    IList<span class="token operator">&lt;</span>Object<span class="token operator">></span> lo <span class="token operator">=</span> <span class="token generic-method function">ConvertIList<span class="token punctuation">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token punctuation">></span></span><span class="token punctuation">(</span>ls<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-&gt; 在第13章详细讲 接口约束.
+    <span class="token comment" spellcheck="true">// 将IList&lt;String> 转成IList&lt;IComparable></span>
+    <span class="token comment" spellcheck="true">// 编译器检查Strings是否实现了IComparable接口,由于String实现了,所以也满足约束.</span>
+    IList<span class="token operator">&lt;</span>IComparable<span class="token operator">></span> lc <span class="token operator">=</span> <span class="token generic-method function">ConvertIList<span class="token punctuation">&lt;</span>String<span class="token punctuation">,</span> IComparable<span class="token punctuation">></span></span><span class="token punctuation">(</span>ls<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-`T : TBase`
+    <span class="token comment" spellcheck="true">// 将IList&lt;String> 转成IList&lt;IComparable&lt;String>></span>
+    <span class="token comment" spellcheck="true">// 由于String实现了接口,所以也满足约束.</span>
+    IList<span class="token operator">&lt;</span>IComparable<span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token operator">></span> lcs <span class="token operator">=</span> ConvertIList<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> IComparable<span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token operator">></span><span class="token punctuation">(</span>ls<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-还有一种次要约束称为 `类型参数约束`, 也称为 `裸类型约束`. 它允许一个泛型类型或方法规定: 指定的类型实参要么就是约束类型,要么是约束的类型的派生类.  一个类型参数可指定 **0个或多个** `裸类型约束`.
+    <span class="token comment" spellcheck="true">//  IList&lt;String>转成 IList&lt;String></span>
+    IList<span class="token operator">&lt;</span>String<span class="token operator">></span> ls2 <span class="token operator">=</span> <span class="token generic-method function">ConvertIList<span class="token punctuation">&lt;</span>String<span class="token punctuation">,</span> String<span class="token punctuation">></span></span><span class="token punctuation">(</span>ls<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-&gt; 意思就是: T 由 TBase 约束, 由类型参数决定约束.  List&lt;T,TBase&gt; where T:TBase
-
-```csharp
-// 指定了两个类型参数
-// T参数 由TBase类型参数约束, T必须兼容于TBase指定的类实参
-private static List&lt;TBase&gt; ConvertIList&lt;T, TBase&gt;(IList&lt;T&gt; list) where T : TBase
-{
-    List&lt;TBase&gt; baseList = new List&lt;TBase&gt;(list.Count);
-
-    for (int index = 0; index &lt; list.Count; index++)
-    {
-        baseList.Add(list[index]);
-    }
-    return baseList;
-}
-static void Main(string[] args)
-{
-    // 初始化一个List&lt;String&gt; , 它实现了IList&lt;String&gt;
-    List&lt;String&gt; ls = new List&lt;string&gt;();
-    ls.Add(&quot;A String&quot;);
-
-    // 将IList&lt;String&gt;转成IList&lt;Object&gt;
-    // 编译器检查String是否兼容于Object,由于是派生关系,所以满足约束 T(string) : TBase(Object)
-    IList&lt;Object&gt; lo = ConvertIList&lt;String, Object&gt;(ls);
-
-    // 将IList&lt;String&gt; 转成IList&lt;IComparable&gt;
-    // 编译器检查Strings是否实现了IComparable接口,由于String实现了,所以也满足约束.
-    IList&lt;IComparable&gt; lc = ConvertIList&lt;String, IComparable&gt;(ls);
-
-    // 将IList&lt;String&gt; 转成IList&lt;IComparable&lt;String&gt;&gt;
-    // 由于String实现了接口,所以也满足约束.
-    IList&lt;IComparable&lt;String&gt;&gt; lcs = ConvertIList&lt;String, IComparable&lt;String&gt;&gt;(ls);
-
-    //  IList&lt;String&gt;转成 IList&lt;String&gt;
-    IList&lt;String&gt; ls2 = ConvertIList&lt;String, String&gt;(ls);
-
-    // 错误,不能将IList&lt;String&gt;转 IList&lt;Exception&gt;
-    // String没有隐式引用转换到Exception
-    // IList&lt;Exception&gt; le = ConvertIList&lt;String, Exception&gt;(ls);
-}
-</code></pre><h2 id="构造器约束"><a href="#构造器约束" class="headerlink" title="构造器约束"></a>构造器约束</h2><p><code>T : new()</code></p>
+    <span class="token comment" spellcheck="true">// 错误,不能将IList&lt;String>转 IList&lt;Exception></span>
+    <span class="token comment" spellcheck="true">// String没有隐式引用转换到Exception</span>
+    <span class="token comment" spellcheck="true">// IList&lt;Exception> le = ConvertIList&lt;String, Exception>(ls);</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="构造器约束"><a href="#构造器约束" class="headerlink" title="构造器约束"></a>构造器约束</h2><p><code>T : new()</code></p>
 <p>类型参数可以指定 <strong>0个或1个</strong> <code>构造器约束</code>.  它向编译器承诺类型实参是 <strong>实现了公共无参构造器的非抽象类型</strong>. 如果同时和struct约束一起使用,C#编译器会认为这是一个错误,因为是多余的; 所有值类型都隐式提供了公共无参构造器.</p>
 <pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Test</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token keyword">where</span> T <span class="token punctuation">:</span> <span class="token keyword">new</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">{</span>
