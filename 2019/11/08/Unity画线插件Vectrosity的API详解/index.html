@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MakeCube"><span class="toc-text">MakeCube</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MakeRect"><span class="toc-text">MakeRect</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#2D线段操作"><span class="toc-text">2D线段操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#参数"><span class="toc-text">参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Style-线条样式"><span class="toc-text">Style 线条样式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Texture-线条材质"><span class="toc-text">Texture 线条材质</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ContinuousTexture"><span class="toc-text">ContinuousTexture</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EndPointsUpdate"><span class="toc-text">EndPointsUpdate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Layer"><span class="toc-text">Layer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Partial-Line-部分线"><span class="toc-text">Partial Line 部分线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Line-Points-线段上的点"><span class="toc-text">Line Points 线段上的点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#End-cap"><span class="toc-text">End cap</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LineMaker可视化编辑3D线条"><span class="toc-text">LineMaker可视化编辑3D线条</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码中使用方法"><span class="toc-text">代码中使用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#利用Transform"><span class="toc-text">利用Transform</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除"><span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#方法"><span class="toc-text">方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Resize"><span class="toc-text">Resize</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GetSegmentNumber"><span class="toc-text">GetSegmentNumber</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GetPoint01"><span class="toc-text">GetPoint01</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BytesToVector2Array-and-BytesToVector3Array"><span class="toc-text">BytesToVector2Array and BytesToVector3Array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Selected"><span class="toc-text">Selected</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#绘制形状的方法"><span class="toc-text">绘制形状的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MakeRect"><span class="toc-text">MakeRect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MakeRoundedRect"><span class="toc-text">MakeRoundedRect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MakeCircle"><span class="toc-text">MakeCircle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MakeEllipse"><span class="toc-text">MakeEllipse</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MakeArc"><span class="toc-text">MakeArc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MakeCurve"><span class="toc-text">MakeCurve</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MakeSpline"><span class="toc-text">MakeSpline</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MakeText"><span class="toc-text">MakeText</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MakeWireframe-线框"><span class="toc-text">MakeWireframe 线框</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MakeCube"><span class="toc-text">MakeCube</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ObjectSetup"><span class="toc-text">ObjectSetup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SetBrightnessParameters"><span class="toc-text">SetBrightnessParameters</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GetBrightnessValue"><span class="toc-text">GetBrightnessValue</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Q-amp-A"><span class="toc-text">Q&A</span></a></li></ol>
 </div>
 
     
@@ -139,25 +139,199 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        <h1 id="MakeCube"><a href="#MakeCube" class="headerlink" title="MakeCube"></a>MakeCube</h1><pre class="line-numbers language-csharp"><code class="language-csharp">function <span class="token function">MakeCube</span> <span class="token punctuation">(</span>
-      origin <span class="token punctuation">:</span> Vector3<span class="token punctuation">,</span>
-      xSize  <span class="token punctuation">:</span> <span class="token keyword">float</span><span class="token punctuation">,</span>
-      ySize  <span class="token punctuation">:</span> <span class="token keyword">float</span><span class="token punctuation">,</span>
-      zSize  <span class="token punctuation">:</span> <span class="token keyword">float</span><span class="token punctuation">,</span>
-      index  <span class="token punctuation">:</span> <span class="token keyword">int</span> <span class="token operator">=</span> <span class="token number">0</span>
-      <span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">void</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Creates a cube in VectorLine.points3 (which must have a count of at least 24). The VectorLine must be LineType.Discrete. The origin is the world-space coordinate for the center of the cube. The xSize, ySize, and zSize are floats indicating how many units in size the cube is for those dimensions. The optional index is 0 by default, though it can be anything, as long as the count of VectorLine.points3 is at least 24 plus the index.</p>
-<p>在<code>VectorLine</code>中创建一个立方体。</p>
-<ul>
-<li><code>VectorLine.points3</code>(必须有至少24个点数)。</li>
-<li><code>VectorLine</code>必须是<code>LineType.Discrete</code>。</li>
-<li><code>origin</code>是立方体中心的世界空间坐标。</li>
-<li><code>xSize</code>、<code>ySize</code>和<code>zSize</code>是浮点数，指示这些维度的立方体的大小。</li>
-<li>可选索引<code>index</code>默认为0，尽管可以为任意值，只要<code>VectorLine.points3</code>的<code>count</code>至少为24加索引即可。</li>
+        <h1 id="2D线段操作"><a href="#2D线段操作" class="headerlink" title="2D线段操作"></a>2D线段操作</h1><p><strong><code>Line</code>在<code>Inspector</code>面板中目前只适用于2D点，但是你可以使用<code>LineMaker</code>工具来做一些3D点编辑，基于现有的网格</strong>。</p>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><h2 id="Style-线条样式"><a href="#Style-线条样式" class="headerlink" title="Style 线条样式"></a>Style 线条样式</h2><ul>
+<li><code>Width</code> 线宽<ul>
+<li>至少是1</li>
 </ul>
-<h1 id="MakeRect"><a href="#MakeRect" class="headerlink" title="MakeRect"></a>MakeRect</h1><pre class="line-numbers language-csharp"><code class="language-csharp">function <span class="token function">MakeRect</span> <span class="token punctuation">(</span>
-    rect <span class="token punctuation">:</span> Rect<span class="token punctuation">,</span>
+</li>
+<li><code>Cap Length</code> 线段末端的封头长度</li>
+</ul>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109123537.png" alt=""><br><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109112403.png" alt=""></p>
+<blockquote>
+<p>红圈就是Cap Length属性设置为40的效果</p>
+</blockquote>
+<ul>
+<li><code>Color</code> 线条颜色</li>
+<li><code>LineType</code> 线条类型<ul>
+<li><code>Continuous</code> 连续的<ul>
+<li>连续的线是由所有的点连接而成的</li>
+<li>任何线段的第二个点总是下一个线段的第一个点。</li>
+</ul>
+</li>
+<li><code>Discrete</code> 不连续的 (默认)<ul>
+<li>必须是偶数长度</li>
+<li>不能使用<code>Join</code>连接</li>
+<li>每两点用单独的线段构成不连续的线</li>
+</ul>
+</li>
+<li><code>Points</code> 点<ul>
+<li>点只是画出实际的点，而不是线段</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109151013.png" alt=""></p>
+<ul>
+<li><code>Join</code> 连接<ul>
+<li><code>None</code> 无 (默认值)</li>
+<li><code>Fill</code> 填充<ul>
+<li>Fill用粗线填充可见的空隙</li>
+</ul>
+</li>
+<li><code>Weld</code> 焊接<ul>
+<li>移动线段中的顶点以将它们焊接在一起。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>如果第一个点和最后一个点是相同的话 Joins.Fill 和 Joins.Weld 会连接它们.</p>
+</blockquote>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109124639.png" alt=""></p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109124730.png" alt=""></p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109124836.png" alt=""></p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109151443.png" alt=""></p>
+<ul>
+<li><code>maxWeldDistance</code> 焊接线段时最长的距离<ul>
+<li>关于<code>Join.Weld</code>, 如果两个线段趋于平行,则尖角会很长,为了解决这个情况,使用<code>maxWeldDistance</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109152134.png" alt=""></p>
+<blockquote>
+<p>默认情况下，这个距离是矢量线创建时像素宽度的两倍。因此，例如，像素宽度为20的直线，其默认maxWeldDistance为40。这可以改变后，在任何时候的行创建</p>
+</blockquote>
+<h2 id="Texture-线条材质"><a href="#Texture-线条材质" class="headerlink" title="Texture 线条材质"></a>Texture 线条材质</h2><p>默认情况下, 纹理沿着每个线段的长度进行拉伸.</p>
+<p>如果你使用<code>Texture Scale</code>，纹理将被均匀缩放。这要求纹理使用 <code>Repeat</code> 的模式(wrap mode)，而不是 <code>Clamp</code>。</p>
+<ul>
+<li><code>Texture Scale</code> 纹理缩放数字可以用来拉伸一个纹理的相对数量，使它重复。</li>
+<li><code>Texture Offset</code> 纹理偏移量将用一个相对量来偏移纹理</li>
+</ul>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109130109.png" alt=""></p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109130133.png" alt=""></p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109130211.png" alt=""></p>
+<h2 id="ContinuousTexture"><a href="#ContinuousTexture" class="headerlink" title="ContinuousTexture"></a>ContinuousTexture</h2><p>如果您在您的line上使用纹理，纹理的默认行为是对每个线段重复一次。通过设置continuousTexture为真，你可以使纹理延伸整个长度的线。</p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109160414.png" alt=""></p>
+<h2 id="EndPointsUpdate"><a href="#EndPointsUpdate" class="headerlink" title="EndPointsUpdate"></a>EndPointsUpdate</h2><p>允许您指定在调用Draw或Draw3D时，从末端实际更新多少个点。这使得Vectrosity可以跳过其余点的计算，从而提高性能。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 只重绘最后2个点</span>
+myLine<span class="token punctuation">.</span>endPointsUpdate <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="Layer"><a href="#Layer" class="headerlink" title="Layer"></a>Layer</h2><p>如果你想改变线条的GameObject层(用于相机筛选蒙版)，</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 这与layers排序不同;使用 VectorLine.drawDepth用于线分类的绘制深度</span>
+myLine<span class="token punctuation">.</span>layer <span class="token operator">=</span> LayerMask<span class="token punctuation">.</span><span class="token function">NameToLayer</span> <span class="token punctuation">(</span><span class="token string">"TransparentFX"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="Partial-Line-部分线"><a href="#Partial-Line-部分线" class="headerlink" title="Partial Line 部分线"></a>Partial Line 部分线</h2><p>可以控制显示第几个点到第几个点的线段显示, 其余不显示.</p>
+<ul>
+<li><code>Draw Start</code></li>
+<li><code>Draw End</code></li>
+</ul>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109130610.png" alt=""></p>
+<blockquote>
+<p>只绘制前4段线段.</p>
+</blockquote>
+<h2 id="Line-Points-线段上的点"><a href="#Line-Points-线段上的点" class="headerlink" title="Line Points 线段上的点"></a>Line Points 线段上的点</h2><p>一条<code>Line</code>由多个<code>segments</code>组成,</p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109131527.png" alt=""></p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109131621.png" alt=""></p>
+<blockquote>
+<p>勾选Smooth Width之后的效果</p>
+</blockquote>
+<h2 id="End-cap"><a href="#End-cap" class="headerlink" title="End cap"></a>End cap</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 创建一个封头</span>
+VectorLine<span class="token punctuation">.</span><span class="token function">SetEndCap</span> <span class="token punctuation">(</span><span class="token string">"Arrow2"</span><span class="token punctuation">,</span> EndCap<span class="token punctuation">.</span>Mirror<span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.0f</span><span class="token punctuation">,</span> lineTex<span class="token punctuation">,</span> frontTex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109161326.png" alt=""></p>
+<h1 id="LineMaker可视化编辑3D线条"><a href="#LineMaker可视化编辑3D线条" class="headerlink" title="LineMaker可视化编辑3D线条"></a>LineMaker可视化编辑3D线条</h1><p>你可以使用LineMaker工具来做一些3D点编辑，基于现有的网格。</p>
+<ol>
+<li>在你选择的3D应用程序中创建一个网格。理想情况下，这应该是合理的低多边形…LineMaker可能会有点慢与高多边形对象。拖动网格到你的场景。</li>
+<li>选中对象后，从Assets菜单中选择LineMaker。你的网格会变得透明，每个顶点上都有蓝点，并且会出现LineMaker窗口</li>
+<li>LineMaker窗口有许多控件。在顶部，在对象的名称下，是两个控制组成3D vector对象的点和线的大小的滑块。你可以根据你的网格大小来调整这些，以使工作更容易。当完成矢量线，你可以关闭这个窗口，网格将恢复到正常状态。</li>
+<li>点击“连接所有点”，网格中的所有点都会自动用绿线连接。这些线就是你的3D向量对象的样子。您可能会发现，首先连接所有点，然后删除您不想要的线段比从头开始创建更容易。</li>
+</ol>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109133044.png" alt=""></p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109142223.png" alt=""></p>
+<ol>
+<li>选中对应边可以在上面显示出对应的段数Index</li>
+<li>可以生成所有点对应的坐标点</li>
+</ol>
+<h1 id="代码中使用方法"><a href="#代码中使用方法" class="headerlink" title="代码中使用方法"></a>代码中使用方法</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 画一条3个点的线段  形状 ></span>
+VectorLine<span class="token punctuation">.</span><span class="token function">SetLine</span> <span class="token punctuation">(</span>Color<span class="token punctuation">.</span>green<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span>Screen<span class="token punctuation">.</span>width<span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">,</span>
+Screen<span class="token punctuation">.</span>height<span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> Screen<span class="token punctuation">.</span>height<span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 画一条射线, 长度为它方向的正前方5个单位处</span>
+<span class="token comment" spellcheck="true">// 以下2个区别在于显示会不会被对象阻挡</span>
+VectorLine<span class="token punctuation">.</span><span class="token function">SetRay</span> <span class="token punctuation">(</span>Color<span class="token punctuation">.</span>green<span class="token punctuation">,</span> transform<span class="token punctuation">.</span>position<span class="token punctuation">,</span> transform<span class="token punctuation">.</span>forward <span class="token operator">*</span> <span class="token number">5.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+VectorLine<span class="token punctuation">.</span><span class="token function">SetRay3D</span> <span class="token punctuation">(</span>Color<span class="token punctuation">.</span>green<span class="token punctuation">,</span> transform<span class="token punctuation">.</span>position<span class="token punctuation">,</span> transform<span class="token punctuation">.</span>forward <span class="token operator">*</span> <span class="token number">5.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 传入持续的时间, 之后自动删除,不然会永久存在</span>
+VectorLine<span class="token punctuation">.</span><span class="token function">SetLine</span> <span class="token punctuation">(</span>Color<span class="token punctuation">.</span>green<span class="token punctuation">,</span> <span class="token number">4.0f</span><span class="token punctuation">,</span> <span class="token function">Vector2</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">Vector2</span><span class="token punctuation">(</span><span class="token number">250</span><span class="token punctuation">,</span> <span class="token number">250</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+VectorLine<span class="token punctuation">.</span><span class="token function">SetRay</span> <span class="token punctuation">(</span>Color<span class="token punctuation">.</span>green<span class="token punctuation">,</span> <span class="token number">3.0f</span><span class="token punctuation">,</span> transform<span class="token punctuation">.</span>position<span class="token punctuation">,</span> transform<span class="token punctuation">.</span>forward <span class="token operator">*</span> <span class="token number">5.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意: 在<code>Update</code>中使用这些命令时要小心!每次调用<code>SetLine</code>或<code>SetRay</code>时，它都会创建一个新<code>line</code>，与调试命令的默认行为不同，这些行会永久保留，除非您指定了持续时间。</p>
+<p><strong>如果你调用<code>SetLine</code>或<code>SetRay</code>的每一帧更新，你的场景将很快充满数百个重复的行对象。</strong></p>
+<p>您可以做的一件事是传入一个时间值。这将导致在给定的秒数内绘制这条线，然后删除它。</p>
+<p><strong><code>Draw()</code>和<code>Draw3D()</code>都不会创建新的线条对象——相反，它们只会重新绘制现有的VectorLine对象，</strong></p>
+<ul>
+<li>每条Line使用不连续<code>discrete</code>的类型时最多能有32765个点.</li>
+<li>每条Line使用连续<code>continuous</code>的类型时最多能有16383个点.</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 如果你打算以后添加点，不想先提供任何点，你可以在行内声明一个空列表</span>
+<span class="token keyword">var</span> myLine <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Line"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vector3<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="利用Transform"><a href="#利用Transform" class="headerlink" title="利用Transform"></a>利用Transform</h2><p>使用它所附加到的任何对象的transform组件。您应该再次调用Draw来更新该line。你可以使用任何对象的Transform.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">var</span> myLine <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Line"</span><span class="token punctuation">,</span> linePoints<span class="token punctuation">,</span> lineWidth<span class="token punctuation">)</span><span class="token punctuation">;</span>
+myLine<span class="token punctuation">.</span>drawTransform <span class="token operator">=</span> transform<span class="token punctuation">;</span>
+myLine<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+myLine<span class="token punctuation">.</span>drawTransform <span class="token operator">=</span> GameObject<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"Some Object"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>transform<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>如果您在每一帧中不断地用转换更新line，那么通常最好在<code>LateUpdate</code>中调用<code>VectorLine.Draw</code>。而不是<code>Update</code>，以确保更新是正确的，也就是说在<code>transform</code>移动之后进行更新。</strong></p>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 在销毁数组或列表的情况下，如果使用c#，则不需要“ref”。</span>
+VectorLine<span class="token punctuation">.</span><span class="token function">Destroy</span> <span class="token punctuation">(</span><span class="token keyword">ref</span> myLine<span class="token punctuation">)</span><span class="token punctuation">;</span>
+VectorLine<span class="token punctuation">.</span><span class="token function">Destroy</span> <span class="token punctuation">(</span><span class="token keyword">ref</span> myLine<span class="token punctuation">,</span> gameObject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><h2 id="Resize"><a href="#Resize" class="headerlink" title="Resize"></a>Resize</h2><p>调整一条线上的点数量</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">myLine<span class="token punctuation">.</span><span class="token function">Resize</span> <span class="token punctuation">(</span>myLine<span class="token punctuation">.</span>points2<span class="token punctuation">.</span>Count <span class="token operator">+</span> <span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 这个代码将使line有100个点，不管它目前有多少:</span>
+myLine<span class="token punctuation">.</span><span class="token function">Resize</span> <span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 您可以使用调整大小来删除点;你只要确保不低于0</span>
+myLine<span class="token punctuation">.</span><span class="token function">Resize</span> <span class="token punctuation">(</span>myLine<span class="token punctuation">.</span>points2<span class="token punctuation">.</span>Count <span class="token operator">-</span> <span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="GetSegmentNumber"><a href="#GetSegmentNumber" class="headerlink" title="GetSegmentNumber"></a>GetSegmentNumber</h2><p>返回一条Line上有多少段</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 返回49,25</span>
+<span class="token keyword">var</span> line1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Line1"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List<span class="token punctuation">.</span></span><span class="token operator">&lt;</span>Vector2<span class="token operator">></span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1.0f</span><span class="token punctuation">,</span> LineType<span class="token punctuation">.</span>Continuous<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> line2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Line2"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List<span class="token punctuation">.</span></span><span class="token operator">&lt;</span>Vector2<span class="token operator">></span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1.0f</span><span class="token punctuation">,</span> LineType<span class="token punctuation">.</span>Discrete<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Debug<span class="token punctuation">.</span><span class="token function">Log</span> <span class="token punctuation">(</span>line1<span class="token punctuation">.</span><span class="token function">GetSegmentNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">", "</span> <span class="token operator">+</span> line2<span class="token punctuation">.</span><span class="token function">GetSegmentNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="GetPoint01"><a href="#GetPoint01" class="headerlink" title="GetPoint01"></a>GetPoint01</h2><p>它的工作原理与上面的GetPoint相同，只是它使用了0.0到1.0之间的标准化坐标表示距离。换句话说，是百分比而不是绝对值。如果您不关心这条线有多长，但是需要在这条线长度的某个百分比处有一个点，那么这是非常有用的。您可以在上面的脚本中使用这段代码来代替GetPoint，它将把GUIText定位在该行的中间位置</p>
+<h2 id="BytesToVector2Array-and-BytesToVector3Array"><a href="#BytesToVector2Array-and-BytesToVector3Array" class="headerlink" title="BytesToVector2Array and BytesToVector3Array"></a>BytesToVector2Array and BytesToVector3Array</h2><p>在代码中指定line points的另一种方法是使用包含Vector2或Vector3数组数据的TextAsset文件作为二进制数据。您可以使用LineMaker编辑器脚本创建这些文件。您可以为线条创建特定的形状，并将它们作为资产存储在Unity项目中，并像往常一样使用拖放。然后使用 BytesToVector2List 或者BytesToVector3List 将这些资产分别转换为Vector2表或Vector3表。</p>
+<p>如果您有复杂的预先制作的形状，而另一种选择是Vector2或Vector3的长字符串，那么这是非常有用的数据。它还允许灵活地连接Unity检查器中的资产，而不是将数据硬编码到脚本中.</p>
+<p>使用这些函数，首先需要一个TextAsset变量。然后将TextAsset中的字节传递到函数中，函数将其转换为适当的数组:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> TextAsset lineData<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// C#</span>
+<span class="token keyword">void</span> <span class="token function">Start</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token keyword">var</span> linePoints <span class="token operator">=</span> VectorLine<span class="token punctuation">.</span><span class="token function">BytesToVector2List</span> <span class="token punctuation">(</span>lineData<span class="token punctuation">.</span>bytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> line <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Vector Shape"</span><span class="token punctuation">,</span> linePoints<span class="token punctuation">,</span> <span class="token number">2.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+line<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>VectrosityDemos包中的_Simple3DObject场景就是这样一个例子。在多维数据集对象上，您可以使用Simple3D脚本(它将向量多维数据硬编码到脚本中)或Simple3D 2脚本(使用CubeVector TextAsset文件)。可以尝试从。中拖动不同的文件矢量文件夹到VectorCube槽，以获得不同的形状。</p>
+<h2 id="Selected"><a href="#Selected" class="headerlink" title="Selected"></a>Selected</h2><p>如果您想确切地知道所选择的线段(或点)是什么，您可以传入一个整数变量，该变量将在调用selected后包含线段或点索引。如果Selected返回false,则索引将包含-1 。例如:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">if</span> <span class="token punctuation">(</span>line<span class="token punctuation">.</span><span class="token function">Selected</span> <span class="token punctuation">(</span>Input<span class="token punctuation">.</span>mousePosition<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">out</span> index<span class="token punctuation">)</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>还可以传入一个额外的整数参数，该参数实际上是为所选函数的目的将行宽扩展了那么多像素。这可以使单击行(特别是细行)变得更容易，因为输入不必精确地超过行。注意，即使您不打算使用索引，在使用额外的距离参数时也需要索引参数。例如，这将把一行的选择区域扩展10个像素:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">if</span> <span class="token punctuation">(</span>line<span class="token punctuation">.</span><span class="token function">Selected</span> <span class="token punctuation">(</span>Input<span class="token punctuation">.</span>mousePosition<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+Debug<span class="token punctuation">.</span><span class="token function">Log</span> <span class="token punctuation">(</span><span class="token string">"Selected!"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>在某些情况下，您可能希望在线段的末端以及宽度上添加额外的选择空间。<br>为此，在第一个整数之后添加另一个整数;这将增加10像素的宽度和2像素的长度</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">if</span> <span class="token punctuation">(</span>line<span class="token punctuation">.</span><span class="token function">Selected</span> <span class="token punctuation">(</span>Input<span class="token punctuation">.</span>mousePosition<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>请注意，默认情况下Selected使用SetCamera3D设置的相机，或者标记的第一个相机<br>如果没有使用SetCamera3D，则使用“MainCamera”。你可以提供一个不同的相机，如果需要，使用任何选择的超载:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">if</span> <span class="token punctuation">(</span>line<span class="token punctuation">.</span><span class="token function">Selected</span> <span class="token punctuation">(</span>Input<span class="token punctuation">.</span>mousePosition<span class="token punctuation">)</span><span class="token punctuation">,</span> index<span class="token punctuation">,</span> myCamera<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="绘制形状的方法"><a href="#绘制形状的方法" class="headerlink" title="绘制形状的方法"></a>绘制形状的方法</h1><h2 id="MakeRect"><a href="#MakeRect" class="headerlink" title="MakeRect"></a>MakeRect</h2><pre class="line-numbers language-c"><code class="language-c">function <span class="token function">MakeRect</span> <span class="token punctuation">(</span>
+    rect  <span class="token punctuation">:</span> Rect<span class="token punctuation">,</span>
     index <span class="token punctuation">:</span> <span class="token keyword">int</span> <span class="token operator">=</span> <span class="token number">0</span>
     <span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">void</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
@@ -166,7 +340,182 @@
 <li>如果使用<code>Vector2</code>，则提供的<code>rect</code>位于屏幕空间像素中，</li>
 <li>如果使用Vector3，则位于世界空间坐标中。</li>
 </ul>
-<p>默认情况下，可选索引为0，但它可以是任何内容，只要rect适合<code>VectorLine.points2</code>或<code>VectorLine.points3</code>。这允许在同一行中创建多个矩形，因为用于创建矩形的点从索引定义的值开始。VectorLine.points2的长度或VectorLine.points3如果该行创建为连续行，则必须至少为5；如果该行创建为离散线。</p>
+<p>默认情况下，可选索引为0，但它可以是任何内容，只要rect适合<code>VectorLine.points2</code>或<code>VectorLine.points3</code>。这允许在同一行中创建多个矩形，因为用于创建矩形的点从索引定义的值开始。VectorLine.points2的长度或VectorLine.points3如果该行创建为连续行，则必须至少为5；如果该行创建为离散线需要至少8个点在Vector3列表中。</p>
+<p>这是为了快速设置正方形或矩形，因为这是一个非常常见的事情来做的线条绘制(想想选择框之类的事情)。您可以通过提供一个Rect或两个描述左下角和右上角(坐标以屏幕像素为单位)的vector2来做到这一点。这适用于连续或离散的线，</p>
+<ul>
+<li>在连续的线中,你需要至少5个点在Vector3列表中，</li>
+<li>在离散的线中,你需要至少8个点在Vector3列表中，</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp">myLine<span class="token punctuation">.</span><span class="token function">MakeRect</span> <span class="token punctuation">(</span>Rect<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">var</span> squareLine <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span> <span class="token punctuation">(</span><span class="token string">"Square"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List<span class="token punctuation">.</span></span><span class="token operator">&lt;</span>Vector2<span class="token operator">></span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+squareLine<span class="token punctuation">.</span><span class="token function">MakeRect</span> <span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Rect</span><span class="token punctuation">(</span><span class="token number">300</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+squareLine<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 选择框的写法, index默认为0</span>
+selectionLine<span class="token punctuation">.</span><span class="token function">MakeRect</span> <span class="token punctuation">(</span>originalPos<span class="token punctuation">,</span> Input<span class="token punctuation">.</span>mousePosition<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>默认情况下, 矩形的绘制时从Vector3列表中的索引0处开始(选之后8个点进行绘制). 你可以选择指定的index. 通过Index可以在一条Line上绘制任意多个矩形. 这个方法适合用于不连续的line. (如果有24个点,可以绘制3个.index:0,8,16)</p>
+<h2 id="MakeRoundedRect"><a href="#MakeRoundedRect" class="headerlink" title="MakeRoundedRect"></a>MakeRoundedRect</h2><p>圆角矩形.</p>
+<ul>
+<li>cornerRadius 圆角半径,</li>
+<li>cornerSegments 段数, 越多越平滑</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp">myLine<span class="token punctuation">.</span><span class="token function">MakeRoundedRect</span> <span class="token punctuation">(</span>Rect<span class="token punctuation">,</span> cornerRadius<span class="token punctuation">,</span> cornerSegments<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+myLine<span class="token punctuation">.</span><span class="token function">MakeRoundedRect</span> <span class="token punctuation">(</span>Vector2<span class="token punctuation">,</span> Vector2<span class="token punctuation">,</span> cornerRadius<span class="token punctuation">,</span> cornerSegments<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>在大多数情况下，您不需要确切地知道创建一个圆角矩形需要多少个点，因为如果行中的points2或points3列表中没有足够的点，则需要添加更多的点。但有时它也很有用，比如使用索引在单个矢量线中创建多个圆角矩形。</p>
+<p>因此:圆角矩形使用的段数是4 * cornerSegments + 4.</p>
+<p>如何转换成点取决于线的类型; 线型连续的，是segments + 1, 线型离散的，是 segments * 2</p>
+<p>下面是一个制作圆角矩形的例子，圆角矩形从一个角的(50,50)开始，一直到另一个角的(45,250)，所以它是400像素宽，200像素高，半径为15像素，每个角使用5个线段:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">var</span> rectLine <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span> <span class="token punctuation">(</span><span class="token string">"RoundRect"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List<span class="token punctuation">.</span></span><span class="token operator">&lt;</span>Vector2<span class="token operator">></span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+rectLine<span class="token punctuation">.</span><span class="token function">MakeRoundedRect</span> <span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token number">450</span><span class="token punctuation">,</span> <span class="token number">250</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">15.0f</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+rectLine<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="MakeCircle"><a href="#MakeCircle" class="headerlink" title="MakeCircle"></a>MakeCircle</h2><p>您可以指定线段、原点、半径和线段数量，其中更多的线段可以形成光滑的圆。如果您只使用几个段，它可以用于形状，如八角形，甚至三角形，如果您只使用3段。您可以选择指定点旋转，这通常对设置低段形状的方向很有用(当使用大量段时，效果几乎是不可见的)。另外，与MakeRect和MakeRoundedRect一样，可以指定索引，这样就可以在一个VectorLine对象中创建多个圆。同样，这对于离散的线很有用，因为在一条连续的直线上的多个圆当然都是连接在一起的。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">myLine<span class="token punctuation">.</span><span class="token function">MakeCircle</span> <span class="token punctuation">(</span>origin<span class="token punctuation">,</span> up<span class="token punctuation">,</span> radius<span class="token punctuation">,</span> segments<span class="token punctuation">,</span> pointRotation<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 注意，其中一些参数是可选的，并且具有默认值。至少，你只需要原点和半径:</span>
+myLine<span class="token punctuation">.</span><span class="token function">MakeCircle</span> <span class="token punctuation">(</span>origin<span class="token punctuation">,</span> radius<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>在本例中，圆将使用VectorLine中的所有可用段，因此不必指定要使用的段数。</p>
+<p>用于此矢量线的points2或points3列表的大小必须至少为连续线的段数加1，或为离散线的段数的两倍。例如，如果您使用30段连续的线，则点列表必须至少有31个元素。对于一条离散的线使用30段需要点列表中的60个元素.</p>
+<p>“PointRotation”是可选的，默认值是0.0。它是一个浮点数，指定点绕圆顺时针旋转的角度。(负值表示逆时针方向。)这通常是有用的，使低段圆在一个期望的方向</p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109165812.png" alt=""></p>
+<blockquote>
+<p>“Index”也是可选的，默认值为0。它的用法与makerecting中的索引值一样。例如，一个包含120个条目的points2列表的离散线可能包含两个包含30个段的圆，一个在索引0处，另一个在索引60处。(记住，离散的直线需要两倍的点，因为圆中有段，每段用两个点。)</p>
+</blockquote>
+<p><strong>“Up”是一个可选指定的Up向量，它只有在您使用带有Vector3数组的MakeCircle时才有用。</strong> 默认情况下，在Vector3中绘制的圆是面向X/Y平面的。你可能更喜欢圆有不同的方向，比如<strong>X/Z平面</strong>，所以它们平行于“地面”。向上的向量是一个向量3，是一个根据圆指定向上的方向的方向。例如，要在X/Z平面上画一个圆，需要Y轴向上，所以可以使用Vector3(0,1,0)或<code>Vector.up</code>:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">myLine<span class="token punctuation">.</span><span class="token function">MakeCircle</span> <span class="token punctuation">(</span>Vector3<span class="token punctuation">.</span>zero<span class="token punctuation">,</span> Vector3<span class="token punctuation">.</span>up<span class="token punctuation">,</span> <span class="token number">15.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="MakeEllipse"><a href="#MakeEllipse" class="headerlink" title="MakeEllipse"></a>MakeEllipse</h2><p>这与MakeCircle几乎相同，只是使用了两个半径值而不是一个。<br>您可以指定x和y半径值，以生成不同宽度/高度的椭圆。MakeCircle实际上使用了这个例程，但是它为x和y都传递了一个半径值，完整的格式是:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">myLine<span class="token punctuation">.</span><span class="token function">MakeEllipse</span> <span class="token punctuation">(</span>origin<span class="token punctuation">,</span> up<span class="token punctuation">,</span> xRadius<span class="token punctuation">,</span> yRadius<span class="token punctuation">,</span> segments<span class="token punctuation">,</span> pointRotation<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+myLine<span class="token punctuation">.</span><span class="token function">MakeEllipse</span> <span class="token punctuation">(</span>origin<span class="token punctuation">,</span> xRadius<span class="token punctuation">,</span> yRadius<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="MakeArc"><a href="#MakeArc" class="headerlink" title="MakeArc"></a>MakeArc</h2><p>你可以用这个函数很容易地画出一个圆或椭圆的一部分。它与MakeEllipse非常相似，只是您可以用度数指定圆弧的起点和终点。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">myLine<span class="token punctuation">.</span><span class="token function">MakeArc</span> <span class="token punctuation">(</span>origin<span class="token punctuation">,</span> up<span class="token punctuation">,</span> xRadius<span class="token punctuation">,</span> yRadius<span class="token punctuation">,</span> startDegrees<span class="token punctuation">,</span> endDegrees<span class="token punctuation">,</span> segments<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 至少，你需要定义原点、半径、起始度和结束度:</span>
+myLine<span class="token punctuation">.</span><span class="token function">MakeArc</span> <span class="token punctuation">(</span>origin<span class="token punctuation">,</span> xRadius<span class="token punctuation">,</span> yRadius<span class="token punctuation">,</span> startDegrees<span class="token punctuation">,</span> endDegrees<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>例如，这里有两个弧，其中第一个弧是用90表示起始度，用270表示结束度。第二个定义使用270作为开始，90作为结束。使用450也可以<br>(270 + 180)为结尾。</p>
+<p><img src="/2019/11/08/Unity画线插件Vectrosity的API详解/QQ截图20191109170459.png" alt=""></p>
+<h2 id="MakeCurve"><a href="#MakeCurve" class="headerlink" title="MakeCurve"></a>MakeCurve</h2><p>这允许在现有的贝塞尔曲线的创建VectorLine对象。这些曲线由两个锚点和两个控制点构成。你可能已经了解了一般用法MakeRect /圈/椭圆部分。它的结果可能是这样的曲线，取决于锚点和控制点的位置:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">myLine<span class="token punctuation">.</span><span class="token function">MakeCurve</span> <span class="token punctuation">(</span>curvePoints<span class="token punctuation">,</span> segments<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+myLine<span class="token punctuation">.</span><span class="token function">MakeCurve</span> <span class="token punctuation">(</span>anchor1<span class="token punctuation">,</span> control1<span class="token punctuation">,</span> anchor2<span class="token punctuation">,</span> control2<span class="token punctuation">,</span> segments<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>在第一种情况下，curvePoints是一个由4个元素组成的Vector2或Vector3数组，其中元素0是第一个锚点，元素1是第一个控制点，元素2是第二个锚点，元素3是第二个控制点。在第二种情况下，锚点和控制点被写成单独的向量2或向量3。这些都使用屏幕像素作为坐标，或世界坐标的矢量3线。线段参数是int，其工作方式与MakeCircle/MakeEllipse类似:线段越多，曲线看起来就越平滑。同样，Vector2数组中的元素数应该是线段数加上连续线段数，或者是离散线段数的两倍。或者，您可以完全省略段，而MakeCurve将使用尽可能多的段来适应VectorLine，因此最短的形式是</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">myLine<span class="token punctuation">.</span><span class="token function">MakeCurve</span> <span class="token punctuation">(</span>curvePoints<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="MakeSpline"><a href="#MakeSpline" class="headerlink" title="MakeSpline"></a>MakeSpline</h2><p>这有点类似于MakeCurve，因为它在现有矢量线中生成曲线。主要区别在于，您可以传入一个包含任意数量点的数组，<strong>MakeSpline将创建一条曲线，该曲线将穿过该数组中的所有点</strong>。（如果您熟悉Catmull Rom样条曲线，您可能已经猜到MakeSpline使用的是这种方法。）样条曲线可以是开放的，就像MakeCurve一样，也可以是闭合的循环。</p>
+<p>在_Main相机对象上，您可以设置段的数量，以及切换曲线是否为闭合循环，以及是否使用直线或点。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">myLine<span class="token punctuation">.</span><span class="token function">MakeSpline</span> <span class="token punctuation">(</span>splinePoints<span class="token punctuation">,</span> segments<span class="token punctuation">,</span> index<span class="token punctuation">,</span> loop<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 实际上只需要第一个参数，所以最短的形式是:</span>
+myLine<span class="token punctuation">.</span><span class="token function">MakeSpline</span> <span class="token punctuation">(</span>splinePoints<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>“SplinePoints”是一个Vector2或Vector3数组，包含任意数量的元素。生成的曲线将直接通过所有提供的点，因此与MakeCurve中使用的bezier曲线不同，这里没有控制点。</p>
+<p>“循环”是指样线条是开的形状还是闭的形状。默认情况下这是false，所以如果你想要一个闭合循环，你必须指定true。</p>
+<h2 id="MakeText"><a href="#MakeText" class="headerlink" title="MakeText"></a>MakeText</h2><pre class="line-numbers language-csharp"><code class="language-csharp">myLine<span class="token punctuation">.</span><span class="token function">MakeText</span> <span class="token punctuation">(</span><span class="token string">"Vectrosity!"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">30.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>您可以在字符串中为新行使用“<code>\n</code>”。你不必担心文本需要多少行段……如果行点列表不够大，不能容纳所有的点，就需要调整大小。</p>
+<p>位置是在屏幕空间坐标中的向量2线和世界坐标的向量3线，同样大小是像素的向量2线和世界单位的向量3线。默认情况下字符间距和行间距分别为1.0和1.5，但是您可以通过自己指定来覆盖它们:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">myLine<span class="token punctuation">.</span><span class="token function">MakeText</span> <span class="token punctuation">(</span><span class="token string">"Hello world!"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">30.0f</span><span class="token punctuation">,</span> <span class="token number">0.8f</span><span class="token punctuation">,</span> <span class="token number">1.2f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>您还可以通过添加“true”或“false”来指定文本是否应该以大写形式打印;默认情况下这是true</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">myLine<span class="token punctuation">.</span><span class="token function">MakeText</span> <span class="token punctuation">(</span><span class="token string">"Hello world!"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">30.0f</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="MakeWireframe-线框"><a href="#MakeWireframe-线框" class="headerlink" title="MakeWireframe 线框"></a>MakeWireframe 线框</h2><p>这和你用LineMaker工具的效果是一样的,点击“连接所有点”按钮，但它在运行时与任意网格一起工作。如果网格中有任何使用四边形的网格，那么线就是由四边形构成的。</p>
+<p>要使用它，首先设置一条线，然后调用VectorLine.MakeWireframe和网格制作线框。这条线必须使用 Vector3点，并且必须是一条离散的线。不管 Vector3有多大——如果需要的话，列表的大小会被调整，以适应网格的所有线段。对于下面的示例，您可以将脚本附加到一个对象上，为“myMesh”变量选择某种类型的网格，当运行时，网格将显示为一个线框。你可以把它和VectorManager功能。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">var</span> myMesh <span class="token punctuation">:</span> Mesh<span class="token punctuation">;</span>
+function <span class="token function">Start</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token keyword">var</span> line <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span><span class="token string">"Wireframe"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List<span class="token punctuation">.</span></span><span class="token operator">&lt;</span>Vector3<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1.0f</span><span class="token punctuation">,</span> LineType<span class="token punctuation">.</span>Discrete<span class="token punctuation">)</span><span class="token punctuation">;</span>
+line<span class="token punctuation">.</span><span class="token function">MakeWireframe</span> <span class="token punctuation">(</span>myMesh<span class="token punctuation">)</span><span class="token punctuation">;</span>
+line<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="MakeCube"><a href="#MakeCube" class="headerlink" title="MakeCube"></a>MakeCube</h2><pre class="line-numbers language-c"><code class="language-c">function <span class="token function">MakeCube</span> <span class="token punctuation">(</span>
+      origin <span class="token punctuation">:</span> Vector3<span class="token punctuation">,</span>
+      xSize  <span class="token punctuation">:</span> <span class="token keyword">float</span><span class="token punctuation">,</span>
+      ySize  <span class="token punctuation">:</span> <span class="token keyword">float</span><span class="token punctuation">,</span>
+      zSize  <span class="token punctuation">:</span> <span class="token keyword">float</span><span class="token punctuation">,</span>
+      index  <span class="token punctuation">:</span> <span class="token keyword">int</span> <span class="token operator">=</span> <span class="token number">0</span>
+      <span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">void</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在<code>VectorLine</code>中创建一个立方体。</p>
+<ul>
+<li><code>VectorLine.points3</code>(必须有至少24个点数)。</li>
+<li><code>VectorLine</code>必须是<code>LineType.Discrete</code>。</li>
+<li><code>origin</code>是立方体中心的世界空间坐标。</li>
+<li><code>xSize</code>、<code>ySize</code>和<code>zSize</code>是浮点数，指示这些维度的立方体的大小。</li>
+<li>可选索引<code>index</code>默认为0，尽管可以为任意值，只要<code>VectorLine.points3</code>的<code>count</code>至少为24加索引即可。</li>
+</ul>
+<p>使用这个函数可以很容易地做出任意的立方体。与MakeWireframe一样，<strong>它需要一条由Vector3点构成的离散线。与MakeWireframe不同，列表的大小很重要——它必须包含至少24个点</strong>。当调用MakeCube，指定位置为Vector3, x、y、z维为3个浮动:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">var</span> line <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VectorLine</span><span class="token punctuation">(</span>“Cube”<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">List<span class="token punctuation">.</span></span><span class="token operator">&lt;</span>Vector3<span class="token operator">></span><span class="token punctuation">(</span><span class="token number">24</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+line<span class="token punctuation">.</span><span class="token function">MakeCube</span> <span class="token punctuation">(</span><span class="token function">Vector3</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">3.0f</span><span class="token punctuation">,</span> <span class="token number">4.5f</span><span class="token punctuation">,</span> <span class="token number">3.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+line<span class="token punctuation">.</span><span class="token function">Draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>还可以指定绘制多维数据集的数组的索引号(缺省值为0)。您可以使用它在一个向量行中拥有多个多维数据集，或者将多维数据集与其他线段组合在一起。只需记住，多维数据集需要从指定索引中计算出24个点，因此，如果从索引24开始计算，那么数组的总大小至少需要为48。这将使两个嵌套的立方体在一个矢量线:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">line<span class="token punctuation">.</span><span class="token function">MakeCube</span> <span class="token punctuation">(</span>Vector3<span class="token punctuation">.</span>zero<span class="token punctuation">,</span> <span class="token number">1.0f</span><span class="token punctuation">,</span> <span class="token number">1.0f</span><span class="token punctuation">,</span> <span class="token number">1.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+line<span class="token punctuation">.</span><span class="token function">MakeCube</span> <span class="token punctuation">(</span>Vector3<span class="token punctuation">.</span>zero<span class="token punctuation">,</span> <span class="token number">2.0f</span><span class="token punctuation">,</span> <span class="token number">2.0f</span><span class="token punctuation">,</span> <span class="token number">2.0f</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// index必须要有24个点</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="ObjectSetup"><a href="#ObjectSetup" class="headerlink" title="ObjectSetup"></a>ObjectSetup</h1><p>要将一个GameObject(游戏物体)转换成3D vector object(矢量对象)，你应该先建立一个描述你想要的形状的Vector3数组或列表，然后使用这个数组创建一个VectorLine对象,然后,调用<code>VectorManager.ObjectSetup</code>, 传递了GameObject、VectorLine对象、它应该具有的可视性控制类型和亮度控制类型:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">VectorManager<span class="token punctuation">.</span><span class="token function">ObjectSetup</span> <span class="token punctuation">(</span>gameObject<span class="token punctuation">,</span> vectorLine<span class="token punctuation">,</span> visibility<span class="token punctuation">,</span> brightness<span class="token punctuation">,</span> makeBounds<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>根据参数的不同，它会在运行时向GameObject添加一些脚本组件。然后你有一个3D向量对象它的行为就像GameObject(游戏物体)一样.</p>
+<p>注意，从现在开始，一切都是完全自动化的。你所要做的就是像往常一样移动所提供的GameObject(游戏物体)。它可以在物理控制下或直接控制你喜欢的任何东西。你可以把它想象成一个标准的GameObject(游戏对象)，渲染器被一个VectorLine对象代替。如果你不想要它，只要摧毁GameObject，矢量线也会被完全摧毁。不要使用<code>VectorLine.Destroy</code>。当游戏对象被销毁时，<code>VectorManager</code>将自动处理<code>line</code>销毁。如果你有多个GameObject(游戏对象)你想让它们成为VectorLine对象，那么每个GameObject(游戏对象)都应该调用<code>ObjectSetup</code>。</p>
+<p>对于相同的行和对象，可以再次调用ObjectSetup;例如，您可以使用Visibility.Static，然后切换到 Visibility.Dynamic。</p>
+<p>有几种类型的visibility控制:</p>
+<ul>
+<li><code>Visibility.Dynamic</code>:<ul>
+<li>当GameObject(游戏物体)是可见的时候，3D矢量对象总是在每一帧被绘制，而当它没有被任何相机看到时，3D矢量对象就不会被绘制，就像普通的GameObject(游戏物体)一样。这省去了计算不在视图中的线的麻烦，并且是通过使用普通的GameObject的渲染器来完成的——如果你禁用了GameObject的渲染器，那么vector对象也将被禁用。用它来移动物体。</li>
+</ul>
+</li>
+<li><code>Visibility.Static</code>:<ul>
+<li>类似Dynamic的，仅在可见时绘制。与动态不同，它只在相机移动时绘制(相机不动,就不需要重新绘制). 另外，绘图例程要快一些，因为它没有考虑对象的Transform。你可以把它用在不动的物体上。例如，在坦克区域演示包中，坦克、飞碟和炮弹使用可见性。动态的，而障碍则利用可见性。注意，与其他可见性选项不同，每个对象使用的点列表将自动成为一个新的惟一列表。这是因为对象的转换信息被放入列表中。</li>
+</ul>
+</li>
+<li><code>Visibility.Always</code>:<ul>
+<li>三维向量对象将总是绘制每一帧，没有优化从动态或静态的。如果你有一个总是在摄像头前面的物体，你可以用这个。如果你使用的GameObject(游戏物体)有一个网格渲染器，你应该禁用它，如果你只想看到矢量对象而不是GameObject(游戏物体)。(这不适用于Visibility.Dynamic或Visibility.Static。)</li>
+</ul>
+</li>
+<li><code>Visibility.None</code>:<ul>
+<li>不添加任何VisibilityControl脚本。如果在此对象之前使用过任何其他可见性选项，则可见性脚本将被删除。通常没有太多理由使用这个，除非你自己用VectorLine更新line 用Draw3D().</li>
+</ul>
+</li>
+</ul>
+<p>有两种类型的亮度控制:</p>
+<ul>
+<li><code>Brightness.Fog</code>:<ul>
+<li>这模拟了三维矢量对象的雾效果。你可以在 Tank Zone demo package,中看到这一点，在这里，物体在远处会变成黑色。对雾效果的控制已经完成<code>VectorManager.SetBrightnessParameters</code>(见下文)。注意，只支持单行颜色;也就是说, VectorLine.color。使用SetColor或SetColors设置的任何线段颜色都将被忽略。</li>
+</ul>
+</li>
+<li><code>Brightness.None</code>:<ul>
+<li>线段的颜色保持不变。如果ObjectSetup已与亮度一起使用。雾对于这个物体来说，以前的亮度。雾脚本将被删除。</li>
+</ul>
+</li>
+<li><p><code>MakeBounds</code>:</p>
+<ul>
+<li>默认情况下这是true，因此只需要在您不想使用它时提供它。在这种情况下，你应该在结尾加上“false”:</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp">VectorManager<span class="token punctuation">.</span><span class="token function">ObjectSetup</span> <span class="token punctuation">(</span>gameObject<span class="token punctuation">,</span> myLine<span class="token punctuation">,</span> Visibility<span class="token punctuation">.</span>Static<span class="token punctuation">,</span> Brightness<span class="token punctuation">.</span>Fog<span class="token punctuation">)</span><span class="token punctuation">;</span>
+VectorManager<span class="token punctuation">.</span><span class="token function">ObjectSetup</span> <span class="token punctuation">(</span>gameObject<span class="token punctuation">,</span> myLine<span class="token punctuation">,</span> Visibility<span class="token punctuation">.</span>Always<span class="token punctuation">,</span> Brightness<span class="token punctuation">.</span>Fog<span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<p>What this does when true, is create an invisible bounds mesh for the GameObject that you’re using to control the vector object. Why would you want this? Well, remember Visibility.Dynamic and Visibility.Static, and how they optimize things by not updating lines when the objects aren’t visible—they do this by using OnBecameVisible and OnBecameInvisible. But these functions require mesh renderers to work. And you don’t actually want to see a mesh renderer, you just want to see the VectorLines.</p>
+<p>The invisible bounds mesh solves this by creating a “bounding cube mesh” that actually only consists of eight vertices that make up the object bounding box, and no triangles. But this is good enough for Unity! Even though you can’t see this mesh, it still allows OnBecameVisible and OnBecameInvisible to work just fine.</p>
+<p>This invisible bounds mesh is created automatically when you use Visibility.Dynamic or Visibility.Always. Whatever mesh renderer the GameObject might be using is replaced by the bounds mesh (don’t worry, not permanently — only at runtime). Note: as an optimization, only one bounds mesh is created per VectorLine name. So all VectorLines called “Enemy”, for example, will have the same bounds mesh. This means it’s highly recommended to use different names for different types of VectorLine objects, and not just call every line “X” or something. Of course, if you have a bunch of objects that all look alike, such as the tanks in the Tank Zone demo, it’s fine for them to use the same bounds mesh. So, why might you use false for makeBounds, anyway? You might if you’re using Visibility.Dynamic or Visibility.Always, and you actually don’t want the GameObject’s mesh to be replaced. For example, the Simple3D3 script in the VectrosityDemos package uses false for makeBounds, so that the cube mesh is still visible. This makes a solid-shaded cube with vector line highlights, for a nifty wireframe effect.</p>
+<h2 id="SetBrightnessParameters"><a href="#SetBrightnessParameters" class="headerlink" title="SetBrightnessParameters"></a>SetBrightnessParameters</h2><p>当你使用Brightness.Fog时, 你需要一些方法来控制外观。有五个参数:最小亮度距离，最大亮度距离，levels，距离检查频率，雾色。</p>
+<p>Total Fadeout Distance: The distance from the camera at which brightness will be faded out all the way. The default is 500. Anything beyond this distance will be drawn with only the fog color.</p>
+<p>Full Brightness Distance: The distance from the camera at which brightness will be at the maximum. The<br>default is 250. Anything closer than this distance will be drawn at max brightness. Anything between the full brightness and total fadeout distances will be proportionally lerped between the line color and the fog color.</p>
+<p>Levels: The number of brightness levels, with the default being 32. This simulates limited color precision, where there are visible “steps” between each level. For a smoother fade, use a higher number.</p>
+<p>Distance Check Frequency: How often the brightness control routine is run on objects that use Brightness.Fog. The default is .2, which is 5 times per second. You might want this to run more often if you have more brightness levels, or fast-moving objects.</p>
+<p>Fog Color: The color which objects fade to as they approach the maximum brightness distance. This is black by default. Usually you want this to be the same as the background color.</p>
+<p>An example where the minimum brightness distance is 600, the max is 200, there are 64 brightness levels, the routine runs 10 times per second, and fades to a dark blue</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">VectorManager<span class="token punctuation">.</span><span class="token function">SetBrightnessParameters</span> <span class="token punctuation">(</span><span class="token number">600.0</span><span class="token punctuation">,</span> <span class="token number">200.0</span><span class="token punctuation">,</span> <span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">0.1</span><span class="token punctuation">,</span> <span class="token function">Color</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0.25</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="GetBrightnessValue"><a href="#GetBrightnessValue" class="headerlink" title="GetBrightnessValue"></a>GetBrightnessValue</h2><p>If you are doing some effects where it would be useful to know what brightness a 3D vector object should be at a certain distance, then you can use VectorManager.GetBrightnessValue (Tank Zone uses it in a couple of places). If you pass in a Vector3 in world space, typically from a GameObject’s transform.position, it returns a value between 0.0 and 1.0, where 1.0 would be 100% brightness and 0.0 would be 0% brightness.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Debug<span class="token punctuation">.</span><span class="token function">Log</span> <span class="token punctuation">(</span>VectorManager<span class="token punctuation">.</span><span class="token function">GetBrightnessValue</span> <span class="token punctuation">(</span>transform<span class="token punctuation">.</span>position<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><p>Q: I can’t see any lines!<br>A: If you’re supplying your own color, make sure the alpha value is non-zero, or else the line will be transparent.<br>If you’re using VectorManager for 3D shapes, be aware that the scene view camera can interfere with the<br>Visibility scripts. To avoid this, just make sure the scene view isn’t active when running. The easiest way to do<br>that is to use Maximize On Play.<br>If you’re using a line material that reacts to lighting, you should set the vector canvas to OverlayCamera. The<br>easiest way to do that is by using VectorLine.SetCanvasCamera with the appropriate camera.<br>Q: I get error messages when I try to import Vectrosity into my project.<br>A: Make sure you’re using Unity 5.2 or later, since Vectrosity 5 uses some features not available in earlier<br>versions of Unity. Also, make sure you haven’t imported both the Vectrosity .dll and the source code—you<br>can only import one or the other.<br>Q: How can I get the best speed?<br>A: Make sure you don’t recreate lines unnecessarily. Don’t destroy and remake lines every frame. For the<br>most part, you should only create lines once in Start or Awake, and then manipulate the lines by changing<br>already-existing points. For dynamic lines such as those used in touchscreen line-drawing routines, make<br>use of VectorLine.endPointsUpdate to update only the last part of the line as needed, rather than constantly<br>redrawing the entire line. See the DrawLinesTouch or DrawLinesMouse example scripts in the<br>VectrosityDemos package for examples of this.<br>For the absolute best speed, stick to Draw rather than Draw3D. Remember that Draw can still draw lines<br>made with Vector3 points, though they will be drawn on top of everything else. Only use Draw3D when the<br>line really has to be drawn “inside” the scene along with other objects. Also, continuous lines are a little more<br>efficient than discrete lines, so use continuous where possible, and if you’re drawing thick lines, use Joins.Fill<br>instead of Joins.Weld if it’s feasible.<br>Finally, only call Draw when you actually need to. For example, there’s no reason to put Draw in an Update<br>function if the line only changes occasionally. However, note that 3D lines do need to be updated whenever<br>the camera moves (unlike standard lines), so you can usually use Draw3DAuto for those.<br>Q: I get error messages when I try to build for mobile.<br>A: Make sure you haven’t included any scripts from Tank Zone. The Tank Zone demo scripts use dynamic<br>typing, which isn’t available for iOS or Android builds.<br>Q: I get an error when compiling for iOS.<br>A: Make sure the Vectrosity .dll in Unity is named “Vectrosity.dll” exactly; if it’s renamed it won’t work.<br>TIPS AND TROUBLESHOOTING 49<br>Q: I’m using VectorLine.rectTransform, and it’s messing up the lines.<br>A: In most cases you shouldn’t use rectTransform unless you have a very good understanding of how<br>Vectrosity works. Consider it an “advanced” feature, which can be used for optimization in certain<br>circumstances, but it’s usually not necessary, and most things in Vectrosity can be accomplished without<br>using it. Typically you would pass in the transform of an object using .drawTransform, and then manipulate<br>that transform, instead of using rectTransform.<br>Q: I get an error about an unknown identifier when I try to do anything.<br>A: Make sure you import the Vectrosity namespace in your scripts. That’s “import Vectrosity;” for Unityscript,<br>and “using Vectrosity;” for C#.<br>Q: My lines look weird and don’t seem to be facing the camera.<br>A: Vectrosity is probably using a different camera than the one you want. It can happen that you accidentally<br>have a duplicate camera somewhere, in which case getting rid of it will fix the problem (and make your<br>project run faster too). If you have a multi-camera setup and are using 3D lines, be sure to use<br>VectorLine.SetCamera3D with the correct camera.<br>Q: I tried using GetPoint but it’s not working right.<br>A: Make sure you call SetDistances first, before calling GetPoint, if you’ve changed the VectorLine.</p>
 
         
             <div class="donate-container">
