@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        ILRuntime热更新详解 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#从零开始"><span class="toc-text">从零开始</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#热更域AppDomain-Hotfix-dll"><span class="toc-text">热更域AppDomain: Hotfix.dll</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第一步加载热更域中的程序集"><span class="toc-text">第一步加载热更域中的程序集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第二步初始化ILRuntime"><span class="toc-text">第二步初始化ILRuntime</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#调用热更域中程序集里的方法"><span class="toc-text">调用热更域中程序集里的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#主工程调用热更工程中的方法"><span class="toc-text">主工程调用热更工程中的方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#委托"><span class="toc-text">委托</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#非跨域调用委托"><span class="toc-text">非跨域调用委托</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#跨域调用委托"><span class="toc-text">跨域调用委托</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#委托总结"><span class="toc-text">委托总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#继承"><span class="toc-text">继承</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#跨域继承"><span class="toc-text">跨域继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#继承总结"><span class="toc-text">继承总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#反射"><span class="toc-text">反射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#反射总结"><span class="toc-text">反射总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CLR重定向"><span class="toc-text">CLR重定向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CLR绑定"><span class="toc-text">CLR绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#协程"><span class="toc-text">协程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#值类型绑定"><span class="toc-text">值类型绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-text">其他</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ET中的热更执行顺序"><span class="toc-text">ET中的热更执行顺序</span></a></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        ILRuntime热更新详解
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-11-20 15:04:09</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#ILRuntime热更新" title="ILRuntime热更新">ILRuntime热更新</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="从零开始"><a href="#从零开始" class="headerlink" title="从零开始"></a>从零开始</h1><p>源码目录复制到Unity工程的Assets目录：</p>
+<ul>
+<li><code>LitJson</code></li>
+<li><code>Mono.Cecil</code></li>
+<li><code>ILRuntime</code></li>
+</ul>
+<blockquote>
+<p>需要注意的是，需要删除这些目录里面的bin、obj、Properties子目录，以及.csproj文件。此外，由于ILRuntime使用了unsafe代码来优化执行效率，所以你需要在Unity中开启unsafe模式</p>
+<p>以及symbols里的2个AssemblyInfo文件</p>
+</blockquote>
+<h2 id="热更域AppDomain-Hotfix-dll"><a href="#热更域AppDomain-Hotfix-dll" class="headerlink" title="热更域AppDomain: Hotfix.dll"></a>热更域AppDomain: Hotfix.dll</h2><p>正常项目中应该是自行从其他地方下载dll，或者打包在AssetBundle中读取.</p>
+<ul>
+<li><code>HotFix.dll</code></li>
+<li><code>HotFix.pdb</code><ul>
+<li>PDB文件是调试数据库，如需要在日志中显示报错的行号，则必须提供PDB文件，不过由于会额外耗用内存，正式发布时请将PDB去掉.</li>
+</ul>
+</li>
+</ul>
+<p>读取这2个文件转换成内存流,</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> dll <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>bytes<span class="token punctuation">;</span>
+<span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> pdb <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>bytes<span class="token punctuation">;</span>
+fs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MemoryStream</span><span class="token punctuation">(</span>dll<span class="token punctuation">)</span><span class="token punctuation">;</span>
+p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MemoryStream</span><span class="token punctuation">(</span>pdb<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="第一步加载热更域中的程序集"><a href="#第一步加载热更域中的程序集" class="headerlink" title="第一步加载热更域中的程序集"></a>第一步加载热更域中的程序集</h2><p>AppDomain是ILRuntime的入口</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 正式版 将p改为null</span>
+appdomain<span class="token punctuation">.</span><span class="token function">LoadAssembly</span><span class="token punctuation">(</span>fs<span class="token punctuation">,</span> p<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">ILRuntime<span class="token punctuation">.</span>Mono<span class="token punctuation">.</span>Cecil<span class="token punctuation">.</span>Pdb<span class="token punctuation">.</span>PdbReaderProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="第二步初始化ILRuntime"><a href="#第二步初始化ILRuntime" class="headerlink" title="第二步初始化ILRuntime"></a>第二步初始化ILRuntime</h2><p>进行一些ILRuntime的注册</p>
+<h2 id="调用热更域中程序集里的方法"><a href="#调用热更域中程序集里的方法" class="headerlink" title="调用热更域中程序集里的方法"></a>调用热更域中程序集里的方法</h2><pre class="line-numbers language-csharp"><code class="language-csharp">appdomain<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span><span class="token string">"HotFix_Project.InstanceClass"</span><span class="token punctuation">,</span> <span class="token string">"StaticFunTest"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="主工程调用热更工程中的方法"><a href="#主工程调用热更工程中的方法" class="headerlink" title="主工程调用热更工程中的方法"></a>主工程调用热更工程中的方法</h3><p>appdomain.Invoke</p>
+<h2 id="委托"><a href="#委托" class="headerlink" title="委托"></a>委托</h2><h3 id="非跨域调用委托"><a href="#非跨域调用委托" class="headerlink" title="非跨域调用委托"></a>非跨域调用委托</h3><p><code>主工程Invoke -&gt; 热更工程方法A -&gt; 使用热更工程内定义的委托.</code></p>
+<p>完全在热更dll内部使用的委托,直接可用, 不需要做任何处理.</p>
+<h3 id="跨域调用委托"><a href="#跨域调用委托" class="headerlink" title="跨域调用委托"></a>跨域调用委托</h3><p><code>主工程Invoke -&gt; 热更工程方法B -&gt; 在热更工程中引用了主工程,将hotfix的委托赋值给Model层的委托实例.</code></p>
+<p>如果需要跨域调用委托（将热更DLL里面的委托实例传到Unity主工程用）, 就需要注册<strong>适配器</strong>，不然就会像下面这样</p>
+<p><img src="/2019/11/20/ILRuntime热更新详解/QQ截图20191120171735.png" alt=""></p>
+<p>原因是: 这是因为iOS的IL2CPP模式下，不能动态生成类型，为了避免出现不可预知的问题，我们没有通过反射的方式创建委托实例，因此需要手动进行一些注册,首先需要注册<strong>委托适配器</strong>,刚刚的报错的错误提示中，有提示需要的注册代码;</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 下面这些注册代码，正式使用的时候，</span>
+<span class="token comment" spellcheck="true">// 应该写在InitializeILRuntime()中</span>
+
+<span class="token comment" spellcheck="true">//TestDelegateMethod, 这个委托类型为有个参数为int的方法，注册仅需要注册不同的参数搭配即可</span>
+appdomain<span class="token punctuation">.</span>DelegateManager<span class="token punctuation">.</span><span class="token generic-method function">RegisterMethodDelegate<span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//带返回值的委托的话需要用RegisterFunctionDelegate，返回类型为最后一个</span>
+appdomain<span class="token punctuation">.</span>DelegateManager<span class="token punctuation">.</span><span class="token generic-method function">RegisterFunctionDelegate<span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">string</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//Action&lt;string> 的参数为一个string</span>
+appdomain<span class="token punctuation">.</span>DelegateManager<span class="token punctuation">.</span><span class="token generic-method function">RegisterMethodDelegate<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注册完毕后再次运行会发现这次会报另外的错误:</p>
+<p><img src="/2019/11/20/ILRuntime热更新详解/QQ截图20191120173517.png" alt=""></p>
+<p>原因是: ILRuntime内部是用<code>Action</code>和<code>Func</code>这两个系统内置的委托类型来创建实例的，所以其他的委托类型都需要写<strong>转换器</strong>,将<code>Action</code>或者<code>Func</code>转换成目标委托类型</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 定义的委托</span>
+<span class="token keyword">public</span> <span class="token keyword">delegate</span> <span class="token keyword">void</span> <span class="token function">TestDelegateMethod</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">delegate</span> <span class="token keyword">string</span> <span class="token function">TestDelegateFunction</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> TestDelegateMethod TestMethodDelegate<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> TestDelegateFunction TestFunctionDelegate<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> System<span class="token punctuation">.</span>Action<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> TestActionDelegate<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//</span>
+appdomain<span class="token punctuation">.</span>DelegateManager<span class="token punctuation">.</span><span class="token generic-method function">RegisterDelegateConvertor<span class="token punctuation">&lt;</span>TestDelegateMethod<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">(</span>action<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//转换器的目的是把Action或者Func转换成正确的类型，这里则是把Action&lt;int>转换成TestDelegateMethod</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">TestDelegateMethod</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//调用委托实例</span>
+        <span class="token punctuation">(</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>Action<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">)</span>action<span class="token punctuation">)</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//对于TestDelegateFunction同理，只是是将Func&lt;int, string>转换成TestDelegateFunction</span>
+appdomain<span class="token punctuation">.</span>DelegateManager<span class="token punctuation">.</span><span class="token generic-method function">RegisterDelegateConvertor<span class="token punctuation">&lt;</span>TestDelegateFunction<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">(</span>action<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">TestDelegateFunction</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>Func<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">string</span><span class="token operator">></span><span class="token punctuation">)</span>action<span class="token punctuation">)</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//下面再举一个这个Demo中没有用到，但是UGUI经常遇到的一个委托，例如UnityAction&lt;float></span>
+appdomain<span class="token punctuation">.</span>DelegateManager<span class="token punctuation">.</span>RegisterDelegateConvertor<span class="token operator">&lt;</span>UnityEngine<span class="token punctuation">.</span>Events<span class="token punctuation">.</span>UnityAction<span class="token operator">&lt;</span><span class="token keyword">float</span><span class="token operator">></span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">(</span>action<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">UnityEngine<span class="token punctuation">.</span>Events<span class="token punctuation">.</span>UnityAction</span><span class="token operator">&lt;</span><span class="token keyword">float</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token punctuation">(</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>Action<span class="token operator">&lt;</span><span class="token keyword">float</span><span class="token operator">></span><span class="token punctuation">)</span>action<span class="token punctuation">)</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>再举一个例子UGUI经常遇到的一个委托，例如UnityAction<float></float></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">appdomain<span class="token punctuation">.</span>DelegateManager<span class="token punctuation">.</span>RegisterDelegateConvertor<span class="token operator">&lt;</span>UnityEngine<span class="token punctuation">.</span>Events<span class="token punctuation">.</span>UnityAction<span class="token operator">&lt;</span><span class="token keyword">float</span><span class="token operator">></span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">(</span>action<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">UnityEngine<span class="token punctuation">.</span>Events<span class="token punctuation">.</span>UnityAction</span><span class="token operator">&lt;</span><span class="token keyword">float</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+      <span class="token punctuation">{</span>
+          <span class="token punctuation">(</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>Action<span class="token operator">&lt;</span><span class="token keyword">float</span><span class="token operator">></span><span class="token punctuation">)</span>action<span class="token punctuation">)</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="委托总结"><a href="#委托总结" class="headerlink" title="委托总结"></a>委托总结</h3><ul>
+<li><strong>跨域调用委托</strong>: 将热更DLL里面的委托实例传到主工程用.</li>
+<li><strong>委托适配器</strong>: 不同参数类型的委托注册.(如果不是内置委托,需要写转换器)</li>
+<li><strong>委托转换器</strong>: 转换成<code>Action</code>或者<code>Func</code>.</li>
+</ul>
+<p>用<code>Action</code>或者<code>Func</code>当作委托类型的话，可以避免写转换器，所以项目中在不必要的情况下尽量只用<code>Action</code>和<code>Func</code>,另外应该尽量减少不必要的跨域委托调用，如果委托只在热更DLL中用，是不需要进行任何注册的.</p>
+<blockquote>
+<p>关于跨域交互：</p>
+<p>Model -&gt; Hotfix 使用事件，</p>
+<p>Hotfix -&gt; Moedel 使用引用。</p>
+</blockquote>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><h3 id="跨域继承"><a href="#跨域继承" class="headerlink" title="跨域继承"></a>跨域继承</h3><p>主工程中创建<code>hotfix.dll</code>中的继承主工程中基类的子类.  <strong>需要注册适配器.</strong></p>
+<ul>
+<li><code>TestClassBase</code>: 主工程中的基类.<ul>
+<li><code>TestInheritance</code>: 热更工程中继承主工程基类的子类.</li>
+</ul>
+</li>
+</ul>
+<p><code>appdomain.Instantiate&lt;TestClassBase&gt;(&quot;HotFix_Project.TestInheritance&quot;);</code></p>
+<p><img src="/2019/11/20/ILRuntime热更新详解/QQ截图20191120193812.png" alt=""></p>
+<p>报错了，因为跨域继承<strong>必须要注册适配器</strong>。</p>
+<p><a href="ILRuntime热更新详解/InheritanceAdapter.cs">&gt;&gt;&gt;&gt;注册需要被跨域继承的主工程中基类的适配器例子</a></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 注册适配器, 应该在InitializeILRuntime()完成</span>
+appdomain<span class="token punctuation">.</span><span class="token function">RegisterCrossBindingAdaptor</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InheritanceAdapter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="继承总结"><a href="#继承总结" class="headerlink" title="继承总结"></a>继承总结</h3><ul>
+<li><strong>跨域继承</strong>: 继承一个主工程里的类，或者实现一个主工程里的接口.</li>
+<li><strong>继承适配器</strong>: 在主工程中实现一个继承适配器。</li>
+</ul>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p>但是在脚本中使用反射其实是一个非常困难的事情。因为这需要把ILRuntime中的类型转换成一个真实的C#运行时类型，并把它们映射起来</p>
+<p>默认情况下，<code>System.Reflection</code>命名空间中的方法，并不可能得知ILRuntime中定义的类型，因此无法通过<code>Type.GetType</code>等接口取得热更DLL里面的类型。而且ILRuntime里的类型也并不是一个<code>System.Type</code>。</p>
+<p>为了解决这个问题，ILRuntime额外实现了几个用于反射的辅助类：<code>ILRuntimeType</code>，<code>ILRuntimeMethodInfo</code>，<code>ILRuntimeFieldInfo</code>等，来模拟系统的类型来提供部分反射功能.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// LoadedTypes返回的是IType类型，但是我们需要获得对应的System.Type才能继续使用反射接口</span>
+<span class="token keyword">var</span> it <span class="token operator">=</span> appdomain<span class="token punctuation">.</span>LoadedTypes<span class="token punctuation">[</span><span class="token string">"HotFix_Project.InstanceClass"</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 取得Type之后就可以按照我们熟悉的方式来反射调用了</span>
+<span class="token keyword">var</span> type <span class="token operator">=</span> it<span class="token punctuation">.</span>ReflectionType<span class="token punctuation">;</span>
+<span class="token keyword">var</span> obj <span class="token operator">=</span> ctor<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"打印一下结果"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"我们试一下用反射给字段赋值"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> fi <span class="token operator">=</span> type<span class="token punctuation">.</span><span class="token function">GetField</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">,</span> System<span class="token punctuation">.</span>Reflection<span class="token punctuation">.</span>BindingFlags<span class="token punctuation">.</span>NonPublic <span class="token operator">|</span> System<span class="token punctuation">.</span>Reflection<span class="token punctuation">.</span>BindingFlags<span class="token punctuation">.</span>Instance<span class="token punctuation">)</span><span class="token punctuation">;</span>
+fi<span class="token punctuation">.</span><span class="token function">SetValue</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> <span class="token number">111111</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"我们用反射调用属性检查刚刚的赋值"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> pi <span class="token operator">=</span> type<span class="token punctuation">.</span><span class="token function">GetProperty</span><span class="token punctuation">(</span><span class="token string">"ID"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"ID = "</span> <span class="token operator">+</span> pi<span class="token punctuation">.</span><span class="token function">GetValue</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><a href="ILRuntime热更新详解/InstanceClass.cs">&gt;&gt;&gt;&gt;Hotfix中的InstanceClass类</a></p>
+<h3 id="反射总结"><a href="#反射总结" class="headerlink" title="反射总结"></a>反射总结</h3><p><strong>主工程</strong> 中不能通过<code>new T()</code>的方式来创建<strong>hotfix热更工程</strong>中的类型实例, 要用<code>appdomain.Instantiate()</code>.</p>
+<p>在Hotfix.dll热更域中:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//-------------------获取类型---------------------</span>
+<span class="token comment" spellcheck="true">//在热更DLL中，以下两种方式均可以</span>
+Type t <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>TypeName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Type t2 <span class="token operator">=</span> Type<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token string">"TypeName"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//-------------------创建实例---------------------</span>
+<span class="token comment" spellcheck="true">//以下两种方式均可以创建实例</span>
+<span class="token keyword">object</span> instance <span class="token operator">=</span> Activator<span class="token punctuation">.</span><span class="token function">CreateInstance</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">object</span> instance <span class="token operator">=</span> Activator<span class="token punctuation">.</span><span class="token generic-method function">CreateInstance<span class="token punctuation">&lt;</span>TypeName<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//-------------------调用方法---------------------</span>
+<span class="token comment" spellcheck="true">// 通过反射调用方法跟通常C#用法没有任何区别</span>
+Type type <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>TypeName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">object</span> instance <span class="token operator">=</span> Activator<span class="token punctuation">.</span><span class="token function">CreateInstance</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span><span class="token punctuation">;</span>
+MethodInfo mi <span class="token operator">=</span> type<span class="token punctuation">.</span><span class="token function">GetMethod</span><span class="token punctuation">(</span><span class="token string">"foo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+mi<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在Model主工程中,</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//-------------------获取类型---------------------</span>
+<span class="token comment" spellcheck="true">// 无法通过Type.GetType来取得热更DLL内部定义的类，</span>
+<span class="token comment" spellcheck="true">// 而只能通过以下方式得到System.Type实例:</span>
+IType type <span class="token operator">=</span> appdomain<span class="token punctuation">.</span>LoadedTypes<span class="token punctuation">[</span><span class="token string">"TypeName"</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+Type t <span class="token operator">=</span> type<span class="token punctuation">.</span>ReflectedType<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//-------------------创建实例---------------------</span>
+<span class="token comment" spellcheck="true">// 无法通过Activator来创建热更DLL内类型的实例，必须通过AppDomain来创建实例</span>
+<span class="token comment" spellcheck="true">// 主工程中不能通过new T()的方式来创建热更工程中的类型实例</span>
+<span class="token keyword">object</span> instance <span class="token operator">=</span> appdomain<span class="token punctuation">.</span><span class="token function">Instantiate</span><span class="token punctuation">(</span><span class="token string">"TypeName"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//-------------------调用方法---------------------</span>
+<span class="token comment" spellcheck="true">// 可以通过C#通常用法来调用，也可以通过ILRuntime自己的接口来调用，</span>
+<span class="token comment" spellcheck="true">// 两个方式是等效的：</span>
+IType t    <span class="token operator">=</span> appdomain<span class="token punctuation">.</span>LoadedTypes<span class="token punctuation">[</span><span class="token string">"TypeName"</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+Type  type <span class="token operator">=</span> t<span class="token punctuation">.</span>ReflectedType<span class="token punctuation">;</span>
+
+<span class="token keyword">object</span> instance <span class="token operator">=</span> appdomain<span class="token punctuation">.</span><span class="token function">Instantiate</span><span class="token punctuation">(</span><span class="token string">"TypeName"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//系统反射接口</span>
+MethodInfo mi <span class="token operator">=</span> type<span class="token punctuation">.</span><span class="token function">GetMethod</span><span class="token punctuation">(</span><span class="token string">"foo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+mi<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//ILRuntime的接口</span>
+IMethod m <span class="token operator">=</span> t<span class="token punctuation">.</span><span class="token function">GetMethod</span><span class="token punctuation">(</span><span class="token string">"foo"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+appdomain<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span>m<span class="token punctuation">,</span> instance<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以下方式没有主工程和热更域使用的区别.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//----------------获取和设置Field的值------------------</span>
+<span class="token comment" spellcheck="true">// 在热更DLL和Unity主工程中获取和设置Field的值跟通常C#用法没有区别</span>
+Type t<span class="token punctuation">;</span>
+FieldInfo fi <span class="token operator">=</span> t<span class="token punctuation">.</span><span class="token function">GetField</span><span class="token punctuation">(</span><span class="token string">"field"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">object</span> val <span class="token operator">=</span> fi<span class="token punctuation">.</span><span class="token function">GetValue</span><span class="token punctuation">(</span>instance<span class="token punctuation">)</span><span class="token punctuation">;</span>
+fi<span class="token punctuation">.</span><span class="token function">SetValue</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//----------------获取Attribute标注------------------</span>
+<span class="token comment" spellcheck="true">// 在热更DLL和Unity主工程中获取Attribute标注跟通常C#用法没有区别</span>
+Type t<span class="token punctuation">;</span>
+FieldInfo fi <span class="token operator">=</span> t<span class="token punctuation">.</span><span class="token function">GetField</span><span class="token punctuation">(</span><span class="token string">"field"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> attributeArr <span class="token operator">=</span> fi<span class="token punctuation">.</span><span class="token function">GetCustomAttributes</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>SomeAttribute<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="CLR重定向"><a href="#CLR重定向" class="headerlink" title="CLR重定向"></a>CLR重定向</h2><p>没办法直接运行的是主工程中通过new T()创建热更DLL内类型的实例。</p>
+<p><code>Activator.CreateInstance();</code>这个明显内部是<code>new T();</code>的接口通过了CLR重定向来解决, IL解释器发现调用某个指定的方法时, 将实际调用重定向到另外一个一个方法进行挟持.</p>
+<p><a href="ILRuntime热更新详解/CLRRedirectionDemo.cs">&gt;&gt;&gt;&gt;编写重定向的例子</a></p>
+<h2 id="CLR绑定"><a href="#CLR绑定" class="headerlink" title="CLR绑定"></a>CLR绑定</h2><p>如果要从<code>热更DLL</code>中调用<code>主工程</code>接口，是需要通过反射接口来调用的.</p>
+<p><strong>ILRuntime通过CLR方法绑定机制，可以选择性的对经常使用的CLR接口进行直接调用，从而尽可能的消除反射调用开销以及额外的GC Alloc</strong>.</p>
+<p>CLR绑定借助了ILRuntime的CLR重定向机制来实现，<strong>因为实质上也是将对CLR方法的反射调用重定向到我们自己定义的方法里面来</strong>。</p>
+<p>ILRuntime提供了一个代码生成工具来自动生成CLR绑定代码。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span><span class="token function">MenuItem</span><span class="token punctuation">(</span><span class="token string">"ILRuntime/Generate CLR Binding Code"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">GenerateCLRBinding</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>Type<span class="token operator">></span> types <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Type<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//在List中添加你想进行CLR绑定的类型</span>
+    types<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    types<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    types<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token keyword">long</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    types<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token keyword">object</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    types<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    types<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Console<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    types<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Array<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    types<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Dictionary<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//所有ILRuntime中的类型，实际上在C#运行时中都是ILRuntime.Runtime.Intepreter.ILTypeInstance的实例，</span>
+    <span class="token comment" spellcheck="true">//因此List&lt;A> List&lt;B>，如果A与B都是ILRuntime中的类型，只需要添加List&lt;ILRuntime.Runtime.Intepreter.ILTypeInstance>即可</span>
+    types<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Dictionary<span class="token operator">&lt;</span>ILRuntime<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>Intepreter<span class="token punctuation">.</span>ILTypeInstance<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//第二个参数为自动生成的代码保存在何处</span>
+    ILRuntime<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>CLRBinding<span class="token punctuation">.</span>BindingCodeGenerator<span class="token punctuation">.</span><span class="token function">GenerateBindingCode</span><span class="token punctuation">(</span>types<span class="token punctuation">,</span> <span class="token string">"Assets/ILRuntime/Generated"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token comment" spellcheck="true">// 在CLR绑定代码生成之后，需要将这些绑定代码注册到AppDomain中才能使CLR绑定生效，</span>
+<span class="token comment" spellcheck="true">// 但是一定要记得将CLR绑定的注册写在CLR重定向的注册后面，因为同一个方法只能被重定向一次，只有先注册的那个才能生效。</span>
+ILRuntime<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>Generated<span class="token punctuation">.</span>CLRBindings<span class="token punctuation">.</span><span class="token function">Initialize</span><span class="token punctuation">(</span>appdomain<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>未绑定注册调用<code>RunTest</code></p>
+<ul>
+<li>5.7M的GC Alloc.</li>
+<li>方法执行了409ms</li>
+</ul>
+<p>使用自动绑定并且注册调用<code>RunTest</code></p>
+<ul>
+<li>28.3KB的GC Alloc</li>
+<li>方法执行了123ms<ul>
+<li>之所以有20字节的GC Alloc是因为Editor模式ILRuntime会有调试支持，正式发布（关闭Development Build）时这20字节也会随之消失</li>
+</ul>
+</li>
+</ul>
+<h2 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h2><p>热更工程中的协程让主工程去执行.</p>
+<p>使用Couroutine时，C#编译器会自动生成一个实现了IEnumerator，IEnumerator<object>，IDisposable接口的类，因为这是跨域继承，所以需要写CrossBindAdapter.</object></p>
+<h2 id="值类型绑定"><a href="#值类型绑定" class="headerlink" title="值类型绑定"></a>值类型绑定</h2><p><code>Vector3</code>等Unity常用值类型如果不做任何处理，在ILRuntime中使用会产生较多额外的CPU开销和GC Alloc</p>
+<p>我们通过值类型绑定可以解决这个问题，只有主工程的值类型在热更Dll中使用才需要此处理，热更DLL内定义的值类型不需要任何处理.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">void</span> <span class="token function">InitializeILRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//这里做一些ILRuntime的注册，这里我们注册值类型Binder，注释和解注下面的代码来对比性能差别</span>
+    appdomain<span class="token punctuation">.</span><span class="token function">RegisterValueTypeBinder</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Vector3<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector3Binder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    appdomain<span class="token punctuation">.</span><span class="token function">RegisterValueTypeBinder</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Quaternion<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">QuaternionBinder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    appdomain<span class="token punctuation">.</span><span class="token function">RegisterValueTypeBinder</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Vector2<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Vector2Binder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><a href="ILRuntime热更新详解/ValueTypeBinding.cs">&gt;&gt;&gt;&gt;值类型绑定</a></p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>不推荐在热更Dll中使用MonoBehaviour</li>
+<li>对LitJson进行注册<code>LitJson.JsonMapper.RegisterILRuntimeCLRRedirection(appdomain);</code></li>
+<li>防止IL2CPP剪裁,在主工程中，建立一个类，然后在里面定义用到的那些泛型实例的public变量</li>
+</ul>
+<h1 id="ET中的热更执行顺序"><a href="#ET中的热更执行顺序" class="headerlink" title="ET中的热更执行顺序"></a>ET中的热更执行顺序</h1><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// --------------------主工程---------------------</span>
+<span class="token comment" spellcheck="true">// 1. 获取热更dll</span>
+Game<span class="token punctuation">.</span>Hotfix<span class="token punctuation">.</span><span class="token function">LoadHotfixAssembly</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 1.1</span>
+Game<span class="token punctuation">.</span>Scene<span class="token punctuation">.</span><span class="token generic-method function">GetComponent<span class="token punctuation">&lt;</span>ResourcesComponent<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">LoadBundle</span><span class="token punctuation">(</span>$<span class="token string">"code.unity3d"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+GameObject code <span class="token operator">=</span> <span class="token punctuation">(</span>GameObject<span class="token punctuation">)</span>Game<span class="token punctuation">.</span>Scene<span class="token punctuation">.</span><span class="token generic-method function">GetComponent<span class="token punctuation">&lt;</span>ResourcesComponent<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetAsset</span><span class="token punctuation">(</span><span class="token string">"code.unity3d"</span><span class="token punctuation">,</span> <span class="token string">"Code"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 1.2 获取之后创建热更域 并通过反射获取热更域的入口方法</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>start <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ILStaticMethod</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>appDomain<span class="token punctuation">,</span> <span class="token string">"ETHotfix.Init"</span><span class="token punctuation">,</span> <span class="token string">"Start"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 1.3 获取热更域里的类型</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>hotfixTypes <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>appDomain<span class="token punctuation">.</span>LoadedTypes<span class="token punctuation">.</span>Values<span class="token punctuation">.</span><span class="token function">Select</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>ReflectionType<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 1.4</span>
+Game<span class="token punctuation">.</span>Scene<span class="token punctuation">.</span><span class="token generic-method function">GetComponent<span class="token punctuation">&lt;</span>ResourcesComponent<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">UnloadBundle</span><span class="token punctuation">(</span>$<span class="token string">"code.unity3d"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 2.0</span>
+Game<span class="token punctuation">.</span>Hotfix<span class="token punctuation">.</span><span class="token function">GotoHotfix</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 2.1  初始化热更域</span>
+ILHelper<span class="token punctuation">.</span><span class="token function">InitILRuntime</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>appDomain<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 2.2 执行热更域的入口方法,</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>start<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// --------------------热更工程---------------------</span>
+<span class="token comment" spellcheck="true">// 3.0 热更域的Init类Start方法入口</span>
+<span class="token comment" spellcheck="true">// 注册热更层回调, 这里用到了跨域委托 但是都是Action类型实例, 不需要注册和转换器</span>
+ETModel<span class="token punctuation">.</span>Game<span class="token punctuation">.</span>Hotfix<span class="token punctuation">.</span>Update <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+ETModel<span class="token punctuation">.</span>Game<span class="token punctuation">.</span>Hotfix<span class="token punctuation">.</span>FixedUpdate <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> <span class="token function">FixedUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+ETModel<span class="token punctuation">.</span>Game<span class="token punctuation">.</span>Hotfix<span class="token punctuation">.</span>LateUpdate <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> <span class="token function">LateUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+ETModel<span class="token punctuation">.</span>Game<span class="token punctuation">.</span>Hotfix<span class="token punctuation">.</span>OnApplicationQuit <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> <span class="token function">OnApplicationQuit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
