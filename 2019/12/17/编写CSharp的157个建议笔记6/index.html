@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        编写CSharp的157个建议笔记6 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#异步-多线程-任务和并行"><span class="toc-text">异步,多线程,任务和并行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议71-区分异步和多线程应用场景"><span class="toc-text">建议71:区分异步和多线程应用场景.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议72-在线程同步中使用信号量"><span class="toc-text">建议72 : 在线程同步中使用信号量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议73-避免锁定不恰当的同步对象"><span class="toc-text">建议73 : 避免锁定不恰当的同步对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议74-警惕线程的IsBackground"><span class="toc-text">建议74 : 警惕线程的IsBackground</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议75-警惕线程不会立即启动"><span class="toc-text">建议75 : 警惕线程不会立即启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议76-警惕线程的优先级"><span class="toc-text">建议76 : 警惕线程的优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议77-正确停止线程"><span class="toc-text">建议77 : 正确停止线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议78-应避免线程数量过多"><span class="toc-text">建议78 : 应避免线程数量过多</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议79-使用ThreadPool或BackgroundWorker代替Thread"><span class="toc-text">建议79 : 使用ThreadPool或BackgroundWorker代替Thread</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议80-用Task代替ThreadPool"><span class="toc-text">建议80 : 用Task代替ThreadPool</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议81-使用Parallel简化同步状态下Task的使用"><span class="toc-text">建议81 : 使用Parallel简化同步状态下Task的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议82-Parallel-简化但不等同于Task默认行为"><span class="toc-text">建议82 : Parallel 简化但不等同于Task默认行为</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议83-小心Parallel中的陷阱"><span class="toc-text">建议83 : 小心Parallel中的陷阱</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        编写CSharp的157个建议笔记6
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-12-17 20:38:24</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CSharp的157个建议" title="CSharp的157个建议">CSharp的157个建议</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="异步-多线程-任务和并行"><a href="#异步-多线程-任务和并行" class="headerlink" title="异步,多线程,任务和并行"></a>异步,多线程,任务和并行</h1><p>了解异步的实质,任务的实质,以及为什么有了任务还需要一个并行类(Parallel)等问题. 如何优雅地控制现场,并且处理任务和并行中的异常.</p>
+<h2 id="建议71-区分异步和多线程应用场景"><a href="#建议71-区分异步和多线程应用场景" class="headerlink" title="建议71:区分异步和多线程应用场景."></a>建议71:区分异步和多线程应用场景.</h2><p>初学者有时候会将<strong>异步</strong>和<strong>多线程</strong>混为一谈。如果对它们之间的区别不是很清楚，很容易写出下面这样的代码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">buttonGetPage_Click</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> EventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Thread t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+       <span class="token keyword">var</span> request <span class="token operator">=</span> HttpWebRequest<span class="token punctuation">.</span><span class="token function">Create</span><span class="token punctuation">(</span><span class="token string">"http://www.cnblogs.com/luminji"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token keyword">var</span> response <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">GetResponse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token keyword">var</span> stream <span class="token operator">=</span> response<span class="token punctuation">.</span><span class="token function">GetResponseStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token keyword">using</span><span class="token punctuation">(</span>StreamReader reader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StreamReader</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+          <span class="token keyword">var</span> content <span class="token operator">=</span> reader<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>textBoxPage<span class="token punctuation">.</span>InvokeRequired<span class="token punctuation">)</span>
+              textBoxPage<span class="token punctuation">.</span><span class="token function">BeginInvoke</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Action</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+              <span class="token punctuation">{</span>
+                  textBoxPage<span class="token punctuation">.</span>Text <span class="token operator">=</span> content<span class="token punctuation">;</span>
+              <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">else</span>
+              textBoxPage<span class="token punctuation">.</span>Text <span class="token operator">=</span> content<span class="token punctuation">;</span>
+
+       <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t<span class="token punctuation">.</span><span class="token function">Strat</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上面的代码模拟了在一个Winform窗体程序中，单击Button获取某个网页的内容并显示出来。可以预见，如果该网页的内容很多，或者当前的网络状况不太好，获取网页的过程会持续较长时间。于是，我们可能会想到用新起工作线程的方法来完成这项工作，这样在等待网页内容返回的过程中Winform界面就不会被阻滞了。是的，上面的程序解决了界面阻滞的问题，但是，它高效吗?答案是:不。要理解这一点，需要从“<code>IO操作的DMA (Direct Memory Access)模式</code>”开始讲起。<strong>DMA即直接内存访问，是一种不经过CPU而直接进行内存数据存储的数据交换模式</strong>。通过DMA的数据交换几乎可以不损耗CPU的资源。在硬件中，硬盘、网卡、声卡、显卡等都有DMA功能。CLR所提供的异步编程模型就是让我们充分利用硬件的DMA功能来释放CPU的压力。</p>
+<p>了解这一点，再来重新审视本建议开头的这个例子。其开头部分的示例代码可以用图6-1来阐述。</p>
+<p><img src="/2019/12/17/编写CSharp的157个建议笔记6/QQ截图20191218110127.png" alt=""></p>
+<p>为了获取网页，CLR新起了一个工作线程，然后在读取网页的整个过程中，该工作线程始终被阻滯，直到获取网页完毕为止。在整个过程中，工作线程被占用着，这意味着系统的资源始终被消耗着、等待着。如果我们修改一下代码，使用异步模式去实现，代码如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">buttonGetPage_Click</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> EventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">var</span> request <span class="token operator">=</span> HttpWebRequest<span class="token punctuation">.</span><span class="token function">Create</span><span class="token punctuation">(</span><span class="token string">"http://www.sina.com.cn"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    request<span class="token punctuation">.</span><span class="token function">BeginGetResponse</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>AsyncCallbackImpl<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">AsyncCallbackImpl</span><span class="token punctuation">(</span>IAsyncResult ar<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    WebRequest request <span class="token operator">=</span> ar<span class="token punctuation">.</span>AsyncState <span class="token keyword">as</span> WebRequest<span class="token punctuation">;</span>
+    <span class="token keyword">var</span> response <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">EndGetResponse</span><span class="token punctuation">(</span>ar<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> stream <span class="token operator">=</span> response<span class="token punctuation">.</span><span class="token function">GetResponseStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">using</span> <span class="token punctuation">(</span>StreamReader reader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StreamReader</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> content <span class="token operator">=</span> reader<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//textBoxPage.Text = content;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>textBoxPage<span class="token punctuation">.</span>InvokeRequired<span class="token punctuation">)</span>
+            textBoxPage<span class="token punctuation">.</span><span class="token function">BeginInvoke</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Action</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+            <span class="token punctuation">{</span>
+                textBoxPage<span class="token punctuation">.</span>Text <span class="token operator">=</span> content<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            textBoxPage<span class="token punctuation">.</span>Text <span class="token operator">=</span> content<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/12/17/编写CSharp的157个建议笔记6/QQ截图20191218110511.png" alt=""></p>
+<p>经过修改的示例采用了异步模式，它使用线程池进行管理。新起异步操作后，CLR会将工作丢给线程池中的某个工作线程来完成。<strong>当开始I/O操作的时候，异步会将工作线程还给线程池，这时候就相当于获取网页的这个工作不会再占用任何CPU资源了</strong>。直到异步完成，即获取网页完毕，异步才会通过回调的方式通知线程池，让CLR响应异步完毕。可见，异步模式借助于线程池，极大地节约了CPU的资源。</p>
+<p>明白了异步和多线程的区别后，我们来确定两者的应用场景:</p>
+<ul>
+<li>计算密集型工作, 采用多线程</li>
+<li>IO密集型工作, 采用异步机制</li>
+</ul>
+<h2 id="建议72-在线程同步中使用信号量"><a href="#建议72-在线程同步中使用信号量" class="headerlink" title="建议72 : 在线程同步中使用信号量"></a>建议72 : 在线程同步中使用信号量</h2><p>所谓线程同步，就是多个线程在某个对象.上执行等待(也可理解为锁定该对象)，直到该对象被解除锁定。C#中对象的类型分为引用类型和值类型。CLR在这两种类型上的等待是不一样的。我们可以简单地理解为在CLR中，值类型是不能被锁定的，即不能在一个值类型对象上执行等待。而在引用类型上的等待机制，又分为两类:<code>锁定</code>和<code>信号同步</code>。</p>
+<p>锁定使用关键字<code>lock</code>和<code>类型Monitor</code>。两者没有实质区别，前者其实是后者的语法糖。这是最常用的同步技术。</p>
+<p>本建议主要讨论信号同步。信号同步机制中涉及的类型都继承自抽象类<code>WaitHandle</code>,这些类型有<code>EventWaitHandle</code> (类型化为AutoResetEvent、ManualResetEvent)、 <code>Semaphore</code>以及<code>Mutex</code>。见类图6-3。</p>
+<p><img src="/2019/12/17/编写CSharp的157个建议笔记6/QQ截图20191218115356.png" alt=""></p>
+<p><code>EventWaitHandle</code> (子类为AutoResetEvent、ManualResetEvent)、 Semaphore以 及Mutex都继承自WaitHandle,所以它们底层的原理是一致的，维护的都是一个系统内核句柄。不过我们仍需简单地区分这三个类的类型。</p>
+<p><code>EventWaitHandle</code>维护一个由内核产生的布尔类型对象(称为“阻滞状态”)，如果其值为false,那么在它上面等待的线程就阻塞。可以调用类型的<code>Set</code>方法将其值设置为true,解除阻塞。<code>EventWaitHandle</code> 类型有两个子类AutoResetEvent和ManualResetEvent,它们的区别并不大，本建议接下来会针对它们阐述如何正确使用信号量。</p>
+<ul>
+<li><code>Semaphore</code>维护一个由内核产生的整型变量，如果其值为0,则在它上面等待的线程就会阻塞:如果其值大于0,则解除阻塞，同时，每解除一个线程阻塞，其值就减1。</li>
+</ul>
+<p><code>EventWaitHandle</code>和<code>Semaphore</code>提供的都是单应用程序域内的线程同步功能，<code>Mutex</code>则不同，它为我们提供了跨应用程序域阻塞和解除阻塞线程的能力。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 创建了一个同步类型对象, 设置自己的默认阻滞状态是false</span>
+<span class="token comment" spellcheck="true">// 这意味着任何在它上面进行等待的线程都将被阻滞</span>
+AutoResetEvent autoResetEvent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AutoResetEvent</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 此按钮负责开启一个线程</span>
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">buttonStartAThread_Click</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> EventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Thread tWork <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        label1<span class="token punctuation">.</span>Text <span class="token operator">=</span> <span class="token string">"线程启动..."</span> <span class="token operator">+</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">;</span>
+        label1<span class="token punctuation">.</span>Text <span class="token operator">+</span><span class="token operator">=</span> <span class="token string">"开始处理一些实际的工作"</span> <span class="token operator">+</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 省略工作代码</span>
+
+        label1<span class="token punctuation">.</span>Text <span class="token operator">+</span><span class="token operator">=</span> <span class="token string">"我开始等待别的线程给我信号，才愿意继续下去"</span> <span class="token operator">+</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 开始等待, 等待信号,</span>
+        autoResetEvent<span class="token punctuation">.</span><span class="token function">WaitOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        label1<span class="token punctuation">.</span>Text <span class="token operator">+</span><span class="token operator">=</span> <span class="token string">"我继续做一些工作，然后结束了！"</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 省略工作代码</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    tWork<span class="token punctuation">.</span>IsBackground <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    tWork<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 此按钮负责给刚开启的线程发送信号</span>
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">buttonSet_Click</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> EventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 给在autoResetEvent上等待的线程一个信号</span>
+    <span class="token comment" spellcheck="true">// 将阻滞状态设为true, 上述线程收到信号后开始继续工作</span>
+    autoResetEvent<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>AutoResetEvent和ManualResetEvent的区别是:前者在发送信号完毕后(即调用Set方法)，会自动将自己的阻滞状态设置为false,而后者则需要进行手动设定。通过一个例子来说明这种区别，如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">AutoResetEvent autoResetEvent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AutoResetEvent</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">buttonStartAThread_Click</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> EventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">StartThread1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">StartThread2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">StartThread1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Thread tWork1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        label1<span class="token punctuation">.</span>Text <span class="token operator">=</span> <span class="token string">"线程1启动..."</span> <span class="token operator">+</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">;</span>
+        label1<span class="token punctuation">.</span>Text <span class="token operator">+</span><span class="token operator">=</span> <span class="token string">"开始处理一些实际的工作"</span> <span class="token operator">+</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//省略工作代码</span>
+        label1<span class="token punctuation">.</span>Text <span class="token operator">+</span><span class="token operator">=</span> <span class="token string">"我开始等待别的线程给我信号，才愿意继续下去"</span> <span class="token operator">+</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">;</span>
+
+        autoResetEvent<span class="token punctuation">.</span><span class="token function">WaitOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        label1<span class="token punctuation">.</span>Text <span class="token operator">+</span><span class="token operator">=</span> <span class="token string">"我继续做一些工作，然后结束了！"</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//省略工作代码</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    tWork1<span class="token punctuation">.</span>IsBackground <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    tWork1<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">StartThread2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Thread tWork2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        label2<span class="token punctuation">.</span>Text <span class="token operator">=</span> <span class="token string">"线程2启动..."</span> <span class="token operator">+</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">;</span>
+        label2<span class="token punctuation">.</span>Text <span class="token operator">+</span><span class="token operator">=</span> <span class="token string">"开始处理一些实际的工作"</span> <span class="token operator">+</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//省略工作代码</span>
+        label2<span class="token punctuation">.</span>Text <span class="token operator">+</span><span class="token operator">=</span> <span class="token string">"我开始等待别的线程给我信号，才愿意继续下去"</span> <span class="token operator">+</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">;</span>
+
+        autoResetEvent<span class="token punctuation">.</span><span class="token function">WaitOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        label2<span class="token punctuation">.</span>Text <span class="token operator">+</span><span class="token operator">=</span> <span class="token string">"我继续做一些工作，然后结束了！"</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//省略工作代码</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    tWork2<span class="token punctuation">.</span>IsBackground <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    tWork2<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">buttonSet_Click</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> EventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//给在autoResetEvent上等待的线程一个信号</span>
+    autoResetEvent<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个例子的本意是要让新起的两个工作线程tWork1和tWork2都阻滞，直到收到主线程的信号再继续工作。而程序运行的结果是，只有一个工作线程继续工作，另外一个工作线程则继续保持阻滞状态。我想可能大家都已经猜到原因了，<strong>即AutoResetEvent发送信号完毕就在内核中自动将自己的状态设置回false了</strong>，所以另外一个工作线程相当于根本没有收到主线程的信号。要修正这个问题，可以使用ManualResetEvent。</p>
+<p>最后，再举一个需要用到线程同步的实际例子:模拟网络通信。客户端在运行过程中，服务器每隔一段的时间会给客户端发送心跳数据。实际工作中的服务器和客户端在网络中是两台不同的终端，不过在这个例子中我们将其进行了简化:工作线程tClient模拟客户端，主线程(UI线程)模拟服务器端。客户端每3秒检测是否收到服务器的心跳数据，如果没有心跳数据，则显示网络连接断开。代码如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Thread tClient <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">//等3秒，3秒没有信号，显示断开</span>
+       <span class="token comment" spellcheck="true">//有信号，则显示更新</span>
+       <span class="token keyword">bool</span> re <span class="token operator">=</span> autoResetEvent<span class="token punctuation">.</span><span class="token function">WaitOne</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token keyword">if</span> <span class="token punctuation">(</span>re<span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+           label1<span class="token punctuation">.</span>Text <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"时间：{0}，{1}"</span><span class="token punctuation">,</span> DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"保持连接状态"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+       <span class="token keyword">else</span>
+       <span class="token punctuation">{</span>
+           label1<span class="token punctuation">.</span>Text <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"时间：{0}，{1}"</span><span class="token punctuation">,</span> DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"断开，需要重启"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+tClient<span class="token punctuation">.</span>IsBackground <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+tClient<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议73-避免锁定不恰当的同步对象"><a href="#建议73-避免锁定不恰当的同步对象" class="headerlink" title="建议73 : 避免锁定不恰当的同步对象"></a>建议73 : 避免锁定不恰当的同步对象</h2><p>在C#中，让线程同步的另一种编码方式就是使用线程锁。线程锁的原理，就是锁住一个资源，使得应用程序在此刻只有一个线程访问该资源。通俗地讲，就是让多线程变成单线程。在C#中，可以将被锁定的资源理解成new出来的普通CLR对象。既然需要锁定的资源就是C#中的一个对象，我们就该仔细思考，到底什么样的对象能够成为一个锁对象(也叫同步对象)?在选择同步对象的时候，应当始终注意以下几点:</p>
+<ul>
+<li>1)同步对象在需要同步的多个线程中是可见的同一个对象。<ul>
+<li>2)在非静态方法中，静态变量不应作为同步对象。</li>
+</ul>
+</li>
+<li>3)值类型对象不能作为同步对象。</li>
+<li>4)避免将字符串作为同步对象。</li>
+<li>5)降低同步对象的可见性。</li>
+</ul>
+<p>第一个注意事项:需要锁定的对象在多个线程中是可见的，而且是同一个对象。“可见的”这是显而易见的，如果对象不可见，就不能被锁定。“同一个对象”，这也很容易理解，如果锁定的不是同一个对象，那又如何来同步两个对象呢?虽然理解起来简单，但不见得我们在这上面就不会犯错误。</p>
+<p>为了帮助大家理解本建议的内容，我们先模拟一个必须使用到锁的场景:在遍历一个集合的过程中，同时在另外一个线程中删除集合中的某项。下面这个例子中，如果没有lock语句，将会抛出异常InvalidOperationException :“集合已修改:可能无法执行枚举”;</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">AutoResetEvent autoSet <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AutoResetEvent</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+List<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> tempList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token string">"init0"</span><span class="token punctuation">,</span> <span class="token string">"init1"</span><span class="token punctuation">,</span> <span class="token string">"init2"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">buttonStartThreads_Click</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> EventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">object</span> syncObj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//确保等待t2开始之后才运行下面的代码</span>
+        autoSet<span class="token punctuation">.</span><span class="token function">WaitOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">lock</span> <span class="token punctuation">(</span>syncObj<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> tempList<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span>IsBackground <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Thread t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//通知t1可以执行代码</span>
+        autoSet<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//沉睡1秒是为了确保删除操作在t1的迭代过程中</span>
+        Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">lock</span> <span class="token punctuation">(</span>syncObj<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            tempList<span class="token punctuation">.</span><span class="token function">RemoveAt</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span>IsBackground <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这是一个Winform窗体应用程序，需要演示的功能在按钮的单击事件中。<strong>对象syncObj对于线程t1和12来说，在CLR中肯定是同一个对象</strong>。所以，上面的示例运行是没有问题的。</p>
+<p>现在，我们将此示例重构。将实际的工作代码移到一个类型SampleClass中，该示例要在多个SampleClass实例间操作一个静态字段，如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">buttonStartThreads_Click</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> EventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   SampleClass sample1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SampleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   SampleClass sample2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SampleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   sample1<span class="token punctuation">.</span><span class="token function">StartT1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   sample2<span class="token punctuation">.</span><span class="token function">StartT2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">SampleClass</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> List<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> TempList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token string">"init0"</span><span class="token punctuation">,</span> <span class="token string">"init1"</span><span class="token punctuation">,</span> <span class="token string">"init2"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+   <span class="token keyword">static</span> AutoResetEvent autoSet <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AutoResetEvent</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">object</span> syncObj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">StartT1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+       <span class="token punctuation">{</span>
+           <span class="token comment" spellcheck="true">//确保等待t2开始之后才运行下面的代码</span>
+           autoSet<span class="token punctuation">.</span><span class="token function">WaitOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token keyword">lock</span> <span class="token punctuation">(</span>syncObj<span class="token punctuation">)</span>
+           <span class="token punctuation">{</span>
+               <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> TempList<span class="token punctuation">)</span>
+               <span class="token punctuation">{</span>
+                   Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+               <span class="token punctuation">}</span>
+           <span class="token punctuation">}</span>
+       <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       t1<span class="token punctuation">.</span>IsBackground <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+       t1<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">StartT2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       Thread t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+       <span class="token punctuation">{</span>
+           <span class="token comment" spellcheck="true">//通知t1可以执行代码</span>
+           autoSet<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token comment" spellcheck="true">//沉睡1秒是为了确保删除操作在t1的迭代过程中</span>
+           Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token keyword">lock</span> <span class="token punctuation">(</span>syncObj<span class="token punctuation">)</span>
+           <span class="token punctuation">{</span>
+               TempList<span class="token punctuation">.</span><span class="token function">RemoveAt</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token punctuation">}</span>
+       <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       t2<span class="token punctuation">.</span>IsBackground <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+       t2<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>该示例运行起来会抛出异常InvalidOperationException:“集合已修改:可能无法执行枚举。”</p>
+<p>查看类型SampleClass的方法StartT1和StartT2，<strong>方法内部锁定的是SampleClass的实例变量syncObject。实例变量意味着，每创建一个SampleClass的实例都会生成一个syncObject对象</strong>。在本例中，调用者一共创建了两个SampleClass实例，继而分别调用:<code>sample1.StartT1(); samp1e2. .StartT2();</code></p>
+<p>也就是说，以上代码锁定的是两个不同的syncObject,这等于完全没有达到两个线程锁定同一个对象的目的。<del>要修正以上错误，<strong>只要将syncObject变成static</strong> 就可以了</del>。</p>
+<p>另外，思考一下lock(this)，我们同样不建议在代码中编写这样的代码。如果两个对象的实例分别执行了锁定的代码，实际锁定的也就会是两个对象，完全不能达到同步的目的。</p>
+<ul>
+<li>第二个注意事项: <strong>在非静态方法中，静态变量不应作为同步对象。也许有读者会问，前面曾说到，要修正第一个注意事项中的示例问题，需要将syncObject变成static.这似乎和本注意事项有矛盾</strong>。事实上，第一个注意事项中的示例代码仅仅出于演示的目的，在实际应用中，我们强烈建议不要编写此类代码。在编写多线程代码时，要遵循这样的一个原则:</li>
+</ul>
+<p><strong>类型的静态方法应当保证线程安全，非静态方法不需实现线程安全。</strong></p>
+<p>FCL中的绝大部分类都遵循了这个原则。像上一个示例中，如果将syncObject变成static,就相当于让非静态方法具备了线程安全性，这带来的一个问题是，如果应用程序中该类型存在多个实例，在遇到这个锁的时候，它们都会产生同步，而这可能不是开发者所愿意看到的。第二个注意事项实际也可以归纳到第一个注意事项中。</p>
+<ul>
+<li><p>第三个注意事项: 值类型对象不能作为同步对象。<strong>值类型在传递到另一个线程的时候，会创建一个副本，这相当于每个线程锁定的也是两个对象</strong>。因此，值类型对象不能作为同步对象。</p>
+</li>
+<li><p>第四个注意事项: 锁定字符串是完全没有必要的，而且相当危险。这整个过程看上去和值类型正好相反。字符串在CLR中会被暂存到内存里，<strong>如果有两个变量被分配了相同内容的字符串，那么这两个引用会被指向同一块内存。</strong> 所以，如果有两个地方同时使用了lock(“abc” ),那么它们实际锁定的是同一个对象，这会导致整个应用程序被阻滞。</p>
+</li>
+<li><p>第五个注意事项: 降低同步对象的可见性。可见范围最广的一种同步对象是typeof(SampleClass)。 typeof 方法所返回的结果(也就是类型的type)是SampleClass的所有实例所共有的，即:所有实例的type都指向typeof方法的结果。这样一来，如果我们lock(typeof(SampleClass))，当前应用程序中所有SampleClass的实例线程将会全部被同步。这样编码完全没有必要，而且这样的同步对象太开放了。</p>
+</li>
+</ul>
+<p>一般来说，同步对象也不应该是一个公共变量或属性。在FCL的早期版本中，一些常用的集合类型(如ArrayList)提供了公共属性SyncRoot,让我们锁定以便进行一些线程安全的操作。所以你一定会觉得我们刚才的结论不正确。其实不然，ArrayList 操作的大部分应用场景不涉及多线程同步，所以它的方法更多的是单线程应用场景。线程同步是一个非常耗时(低效)的操作。若ArrayList的所有非静态方法都要考虑线程安全，那么ArrayList完全可以将这个SyncRoot变成静态私有的。现在它将SyncRoot变为公开的，是让调用者自己去决定操作是否需要线程安全。我们在编写代码时，除非有这样的要求，否则就应该始终考虑降低同步对象的可见性，将同步对象藏起来，只开放给自己或自己的子类就够了(需要开放给子类的情况其实也不多)。</p>
+<h2 id="建议74-警惕线程的IsBackground"><a href="#建议74-警惕线程的IsBackground" class="headerlink" title="建议74 : 警惕线程的IsBackground"></a>建议74 : 警惕线程的IsBackground</h2><p>在CLR中，线程分为前台线程和后台线程，即每个线程都有一个IsBackground属性。两者在表现形式上的唯一区别是:如果前台线程不退出，应用程序的进程就会一直存在，必须所有的前台线程全部退出，应用程序才算退出。而后台进程则没有这方面的限制，如果应用程序退出，后台线程也会一并退出。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Thread t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+   <span class="token punctuation">{</span>
+      Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"线程结束"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true">//注意，默认就为false</span>
+   t<span class="token punctuation">.</span>IsBackground <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+   t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"主线程完毕"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>用Thread创建的线程默认是前台线程，也就是IsBackground 属性默认是false. 以上代码需等到工作结束(敲入一个按键)应用程序才会结束，而如果设置IsBackground为true,应用程序则会立刻结束。</p>
+<p>演示代码使用的是Thread,但我们要注意 <strong>线程池中的线程默认都是后台线程</strong>。基于前后台线程的区别，在实际编码中应该更多地使用后台线程。只有在非常关键的工作中，如线程正在执行事务或占有的某些非托管资源需要释放时，才使用前台线程。</p>
+<h2 id="建议75-警惕线程不会立即启动"><a href="#建议75-警惕线程不会立即启动" class="headerlink" title="建议75 : 警惕线程不会立即启动"></a>建议75 : 警惕线程不会立即启动</h2><p>现代的大多数操作系统都不是一个实时的操作系统，Windows系统也是如此。所以，不能奢望我们的线程能够立即启动。Windows内部会实现特殊的算法以进行线程之间的调度，在某个具体的时刻，它会决定当前应该运行哪个线程。这反映到最底层就是某个线程分配到了一定的CPU时间，可用来执行一小段工作(由于被分配的CPU时间很短，所以即使操作系统中运行了上千个线程，我们也会觉得这些应用程序是在同时执行的)。Windows会选择在适当的时间根据自己的算法决定下一段的CPU时间如何调度。</p>
+<p>线程的调度是一个复杂的过程，对于C#开发者来说，需要理解的就是: <strong>线程之间的调度占有一定的时间和空间开销，并且，它不实时</strong>。下面是一个测试的例子，本意是将0到9分别传给10个不同的线程，结果却事与愿违:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">int</span> _id <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">,</span> _id<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Thread t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0}:{1}"</span><span class="token punctuation">,</span> Thread<span class="token punctuation">.</span>CurrentThread<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> _id<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 给线程一个名称</span>
+        t<span class="token punctuation">.</span>Name <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"Thread{0}"</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        t<span class="token punctuation">.</span>IsBackground <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+        t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// Thread0:1</span>
+<span class="token comment" spellcheck="true">// Thread2:3</span>
+<span class="token comment" spellcheck="true">// Thread1:2</span>
+<span class="token comment" spellcheck="true">// Thread5:6</span>
+<span class="token comment" spellcheck="true">// Thread6:7</span>
+<span class="token comment" spellcheck="true">// Thread3:4</span>
+<span class="token comment" spellcheck="true">// Thread7:8</span>
+<span class="token comment" spellcheck="true">// Thread8:9</span>
+<span class="token comment" spellcheck="true">// Thread9:10</span>
+<span class="token comment" spellcheck="true">// Thread4:5</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这段代码的输出从两个方面印证了线程不是立即启动的。首先，我们看到线程并没有按照顺序启动。在代码逻辑中，<strong>前面Start的那个线程也许迟于后Start的那个线程执行</strong>。其次，<strong>传入线程内部的ID值，不再是for循环执行中当前的ID值</strong>。以Thread9为例，在for循环中，其当前的值为9，而Thread9真正得到执行的时候，ID却已经跳出循环，早已经变为10了。</p>
+<p>要让需求得到正确的编码，需要把上面的for循环修改成为一段同步代码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">int</span> _id <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">,</span> _id<span class="token operator">++</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token function">NewMethod1</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> _id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">NewMethod1</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">,</span> <span class="token keyword">int</span> realTimeID<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Thread t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+   <span class="token punctuation">{</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0}:{1}"</span><span class="token punctuation">,</span> Thread<span class="token punctuation">.</span>CurrentThread<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> realTimeID<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   t<span class="token punctuation">.</span>Name <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"Thread{0}"</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   t<span class="token punctuation">.</span>IsBackground <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+   t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// Thread0:0</span>
+<span class="token comment" spellcheck="true">// Thread3:3</span>
+<span class="token comment" spellcheck="true">// Thread6:6</span>
+<span class="token comment" spellcheck="true">// Thread7:7</span>
+<span class="token comment" spellcheck="true">// Thread8:8</span>
+<span class="token comment" spellcheck="true">// Thread9:9</span>
+<span class="token comment" spellcheck="true">// Thread4:4</span>
+<span class="token comment" spellcheck="true">// Thread1:1</span>
+<span class="token comment" spellcheck="true">// Thread2:2</span>
+<span class="token comment" spellcheck="true">// Thread5:5</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到，线程虽然保持了不会立即启动的特点，但是传入线程的ID值，由于在for循环内部变成了同步代码，所以能够正确传入。</p>
+<h2 id="建议76-警惕线程的优先级"><a href="#建议76-警惕线程的优先级" class="headerlink" title="建议76 : 警惕线程的优先级"></a>建议76 : 警惕线程的优先级</h2><p>线程在C#中有5个优先级: Highest. AboveNormal、 Normal, BelowNormal 和Lowest。讲到线程的优先级，就会涉及线程的调度。Windows 系统是一个基于优先级的抢占式调度系统。在系统中，如果有一个线程的优先级较高，并且它正好处在就绪状态，系统总是会优先运行该线程。换句话说，<strong>高优先级的线程总是在系统调度算法中获取更多的CPU执行时间</strong>.</p>
+<p><code>t1.Priority = ThreadPriority.Highest;</code></p>
+<p>在C#中，使用Thread和ThreadPool新起的线程，默认优先级都是Normal。虽然可以像上面的示例那样去修改线程的优先级，但是一般不建议这样做。当然，如果是一些非常关键的线程，我们还是可以提升线程的优先级的。这些关键线程应当具有运行时间短、能即刻进入等待状态等特征。</p>
+<h2 id="建议77-正确停止线程"><a href="#建议77-正确停止线程" class="headerlink" title="建议77 : 正确停止线程"></a>建议77 : 正确停止线程</h2><p>开发者总尝试对自己的代码有更多的控制。例如，“让那个还在工作的线程马上停止下来”。然而，并非我们想怎样就可以怎样的，这至少涉及两个问题。</p>
+<ul>
+<li><p>第一个问题正如线程不能立即启动一样，线程也并不是说停就停的。无论采用何种方式通知工作线程需要停止，工作线程都会忙完手头最紧要的活，然后在它觉得合适的时候退出。以最传统的Thread.Abort方法为例，如果线程当前正在执行的是一段非托管代码，那么CLR就不会抛出ThreadAbortException，只有当代码继续回到CLR中时，才会引发ThreadAbortException。当然，即便是在CLR环境中，ThreadAbortException也不会立即引发。</p>
+</li>
+<li><p>第二个问题要正确停止线程， 不在于调用者采取了什么行为(如最开始的Thread.Abort()方法)，而更多依赖于工作线程是否能主动响应调用者的停止请求。大体机制是，如果线程需要被停止，那么线程自身就应该负责给调用者开放这样的接口: Cancled。 线程在工作的同时，还要以某种频率检测Cancled标识，若检测到Cancled,线程自己才会负责退出。</p>
+</li>
+</ul>
+<p>FCL现在为我们提供了标准的取消模式:协作式取消(Cooperative Cancellation)。协作式取消的机制就是上文第二个问题中所提到的机制。下面是一个最基础的协作式取消的示例:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">CancellationTokenSource cts <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Thread t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>cts<span class="token punctuation">.</span>Token<span class="token punctuation">.</span>IsCancellationRequested<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"线程被终止！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>DateTime<span class="token punctuation">.</span>Now<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+cts<span class="token punctuation">.</span><span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>调用者使用CancellationTokenSource的Cancel方法通知工作线程退出。工作线程则以大约1000ms的频率一边 工作，一边检查是否有外界传人的Cancel信号，若有这样的信号，则退出。可以看到，在正确停止线程的机制中，真正起到主要作用的是线程本身。示例中的工作代码比较简单，但足以说明问题。更复杂的计算式工作，也应该以这样的一种方式， 妥善而正确地处理退出。</p>
+<p>协作式取消中的关键类型是CancellationTokenSource.它有一个关键属性<code>Token</code>,<strong>Token是一个名为CancellationToken的值类型</strong>。CancellationToken 继而进一步提供了布尔值的属性<code>IsCancellationRequested</code>作为需要取消工作的标识。CancellationToken 还有一个方法尤其值得注意，那就是<code>Register方法</code>。它负责传递一个<code>Action委托</code>，在线程停止的时候被回调，使用方法如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">cts<span class="token punctuation">.</span>Token<span class="token punctuation">.</span><span class="token function">Register</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"工作线程被终止了"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>后面还会讲到任务Task，它依赖于CancellationTokenSource和CancellationToken完成了所有的取消控制。</p>
+<h2 id="建议78-应避免线程数量过多"><a href="#建议78-应避免线程数量过多" class="headerlink" title="建议78 : 应避免线程数量过多"></a>建议78 : 应避免线程数量过多</h2><p>在多数情况下，创建过多的线程意味着应用程序的架构设计可能存在着缺陷。经常有人会问，一个应用程序中到底含有多少线程才是合理的。现在我们找一台PC机，打开Windows的任务管理器，看看操作系统中正在运行的程序有多少个线程。在笔者当前的PC机上，线程数最多的一个应用程序是某款杀毒软件，它一共拥有116个线程数:其次是Windows自身的System进程，当前共有104个线程:第三多的进程是Sqlservr.exe，锐减到了35个线程:剩下还有63个进程，估计它们平均约有10个线程。所以说，大多数应用程序的线程数不会太多。</p>
+<p>错误地创建过多线程的一个典型的例子是:为每一个Socket 连接建立一个线程去管理。每个连接一个线程，意味着在32位系统的服务器不能同时管理超过1000台的客户机。CLR为每个进程分配的内存会超过1MB。约1000个进程，加上.NET进程启动本身所占用的一些内存，即刻就耗尽了系统能分配给进程的最大可用地址空间2GB。即便应用程序在设计之初的需求设计书中说明，生产环境中客户端数目不会超过500台，在管理这500台客户端时进行线程上下文切换，也会损耗相当多的CPU时间。这类I/O密集型场合应该使用异步去完成(请参考建议71的相关阐述)。</p>
+<p><strong>过多的线程还会带来另外的问题:新起的线程可能需要等待相当长的时间才会真正运行</strong>。这是一个相当无奈的结果，在多数情况下，我们都不能忍受等待这么长时间。</p>
+<p>除了启动问题外，线程之间的切换也存在同样的问题，下一次执行，还会等待相当长的时间。所以，不要滥用线程，尤其不要滥用过多的线程。当新起线程的时候，需要仔细思考这项工作是否真的需要新起线程去完成。即使真的需要线程也应该考虑使用线程池技术。例如本建议所提到的Socket连接这样的I/O密集型场合，应当始终考虑使用异步来完成。异步会在后台使用线程池进行管理。1000 台客户端在使用了异步技术后，实际只要几个线程就能完成所有的管理工作(具体取决于“心跳频率”)。</p>
+<h2 id="建议79-使用ThreadPool或BackgroundWorker代替Thread"><a href="#建议79-使用ThreadPool或BackgroundWorker代替Thread" class="headerlink" title="建议79 : 使用ThreadPool或BackgroundWorker代替Thread"></a>建议79 : 使用ThreadPool或BackgroundWorker代替Thread</h2><p>使用线程能极大地提升用户体验度，但是作为开发者应该注意到，线程的开销是很大的。</p>
+<p>线程的空间开销来自:</p>
+<ul>
+<li>1)<code>线程内核对象(Thread Kermel Object)</code>。<ul>
+<li>每个线程都会创建一个这样的对象，它主要包含线程上下文信息，在32位系统中，它所占用的内存在700字节左右。</li>
+</ul>
+</li>
+<li>2)<code>线程环境块(Thread Environment Block)</code>。<ul>
+<li>TEB包括线程的异常处理链，32位系统中占用4KB内存。</li>
+</ul>
+</li>
+<li>3)<code>用户模式栈(User Mode Stack)，即线程栈</code>。<ul>
+<li>线程栈用于保存方法的参数、局部变量和返回值。每个线程栈占用1024KB的内存。要用完这些内存很简单，写一个不能结束的递归方法，让方法参数和返回值不停地消耗内存，很快就会发生OutOfMemoryException。</li>
+</ul>
+</li>
+<li>4)<code>内核模式栈(Kernel Mode Stack)</code>。<ul>
+<li>当调用操作系统的内核模式函数时，系统会将函数参数从用户模式栈复制到内核模式栈。在32位系统中，内核模式栈会占用12KB内存。</li>
+</ul>
+</li>
+</ul>
+<p>线程的时间开销来自:</p>
+<ul>
+<li>1)线程创建的时候，系统相继初始化以上这些内存空间。</li>
+<li>2)接着CLR会调用所有加载DLL的DLLMain方法，并传递连接标志(线程终止的时候，也会调用DLL的DLLMain方法，并传递分离标志)。</li>
+<li>3)线程上下文切换。<ul>
+<li>一个系统中会加载很多的进程，而一个进程又包含若干个线程。但是一个CPU在任何时候都只能有一个线程在执行。</li>
+</ul>
+</li>
+</ul>
+<p>为了让每个线程看上去都在运行，系统会不断地切换“线程上下文”:每个线程大概得到几十毫秒的执行时间片，然后就会切换到下一个线程了。这个过程大概又分为以下5个步骤:</p>
+<ul>
+<li>步骤1进入内核模式。</li>
+<li>步骤2将上下文信息 (主要是一些CPU寄存器信息)保存到正在执行的线程内核对象上。</li>
+<li>步骤3系统获取 一个Spinlock, 并确定下一个要执行的线程，然后释放Spinlock.</li>
+<li>如果下一个线程不在同一个进程内，则需要进行虚拟地址交换。</li>
+<li>步骤4从将 被执行的线程内核对象上载入上下文信息。</li>
+<li>步骤5离开内核模式。</li>
+</ul>
+<p>由于要进行如此多的工作，所以创建和销毁一-个线 程就意味着代价“昂贵”。为了避免程序员无节制地使用线程，微软开发了“<code>线程池</code>”技术。简单来说，线程池就是替开发人员管理工作线程。当一项工作完毕时，CLR不会销毁这个线程，而是会保留这个线程一段时间，看是否有别的工作需要这个线程。至于何时销毁或新起线程，由CLR根据自身的算法来做这个决定。所以，如果我们要多线程编码，不应想到直接<code>new Thread</code>, 而是首先想到:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">ThreadPool<span class="token punctuation">.</span><span class="token function">QueueUserWorkItem</span><span class="token punctuation">(</span><span class="token punctuation">(</span>objState<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">//...</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议80-用Task代替ThreadPool"><a href="#建议80-用Task代替ThreadPool" class="headerlink" title="建议80 : 用Task代替ThreadPool"></a>建议80 : 用Task代替ThreadPool</h2><p>ThreadPool相对于Thread来说具有很多优势，但是ThreadPool在使用上却存在一定的不方便。比如:</p>
+<ul>
+<li>ThreadPool不支持线程的取消、完成、失败通知等交互性操作。</li>
+<li>ThreadPool不支持线程执行的先后次序。</li>
+</ul>
+<p>以往，如果开发者要实现上述功能，需要完成很多额外的工作。现在，FCL中提供了一个功能更强大的概念: Task。 Task 在线程池的基础上进行了优化，并提供了更多的API。在FCL4.0中，如果我们要编写多线程程序，Task 显然已经优于传统的方式了。以下是一个简单的任务示例:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Task t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+   <span class="token punctuation">{</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"任务开始工作……"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token comment" spellcheck="true">//模拟工作过程</span>
+       Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   t<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+   <span class="token punctuation">{</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"任务完成，完成时候的状态为："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"IsCanceled={0}\tIsCompleted={1}\tIsFaulted={2}"</span><span class="token punctuation">,</span> task<span class="token punctuation">.</span>IsCanceled<span class="token punctuation">,</span> task<span class="token punctuation">.</span>IsCompleted<span class="token punctuation">,</span> task<span class="token punctuation">.</span>IsFaulted<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>任务Task具备以下属性，可以让我们查询任务完成时的状态:</p>
+<ul>
+<li>IsCanceled 因为被取消而完成</li>
+<li>IsCompleted 成功完成</li>
+<li>IsFaulted 因为发生异常而完成</li>
+</ul>
+<p>需要注意的是，任务并没有提供回调事件来通知完成(像BackgroundWorker一样)，它是通过启用一个新任务的方式来完成类似的功能。ContinueWith 方法可以在一个任务完成的时候发起一个新任务，这种方式天然就支持了任务的完成通知:我们可以在新任务中获取原任务的结果值。</p>
+<p>下面是一个稍微复杂的例子，同时支持完成通知、取消、获取任务返回值等功能:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    CancellationTokenSource cts <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 任务结果返回一个int</span>
+    Task<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">Add</span><span class="token punctuation">(</span>cts<span class="token punctuation">.</span>Token<span class="token punctuation">)</span><span class="token punctuation">,</span> cts<span class="token punctuation">.</span>Token<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span>TaskEnded<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//等待按下任意一个键取消任务</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cts<span class="token punctuation">.</span><span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">TaskEnded</span><span class="token punctuation">(</span>Task<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> task<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"任务完成，完成时候的状态为："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"IsCanceled={0}\tIsCompleted={1}\tIsFaulted={2}"</span><span class="token punctuation">,</span> task<span class="token punctuation">.</span>IsCanceled<span class="token punctuation">,</span> task<span class="token punctuation">.</span>IsCompleted<span class="token punctuation">,</span> task<span class="token punctuation">.</span>IsFaulted<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"任务的返回值为：{0}"</span><span class="token punctuation">,</span> task<span class="token punctuation">.</span>Result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 需要传入取消令牌对象CancellationToken</span>
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">Add</span><span class="token punctuation">(</span>CancellationToken ct<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"任务开始……"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> result <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 判断是否取消</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span>ct<span class="token punctuation">.</span>IsCancellationRequested<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        result<span class="token operator">++</span><span class="token punctuation">;</span>
+        Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 在任务开始后大概3秒的时候按下键盘，会得到如下的输出:</span>
+<span class="token comment" spellcheck="true">//任务开始……</span>
+<span class="token comment" spellcheck="true">//任务完成，完成时候的状态为：</span>
+<span class="token comment" spellcheck="true">//IsCanceled=False        IsCompleted=True        IsFaulted=False</span>
+<span class="token comment" spellcheck="true">//任务的返回值为：3</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>你也许会奇怪，我们的任务是通过Cancel的方式处理的，为什么完成的状态IsCanceled那一栏还是 False。因为在工作任务中，我们对<code>IsCancellationRequested</code>进行了业务逻辑上的处理，<strong>但是并没有通过<code>ThrowlfCancellationRequested方法</code>来处理。</strong></p>
+<p>如果采用<code>ThrowIfCancellationRequested</code>方法，则代码应如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">TaskEndedByCatch</span><span class="token punctuation">(</span>Task<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> task<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"任务完成，完成时候的状态为："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"IsCanceled={0}\tIsCompleted={1}\tIsFaulted={2}"</span><span class="token punctuation">,</span> task<span class="token punctuation">.</span>IsCanceled<span class="token punctuation">,</span> task<span class="token punctuation">.</span>IsCompleted<span class="token punctuation">,</span> task<span class="token punctuation">.</span>IsFaulted<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">try</span>
+   <span class="token punctuation">{</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"任务的返回值为：{0}"</span><span class="token punctuation">,</span> task<span class="token punctuation">.</span>Result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">AggregateException</span> e<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       e<span class="token punctuation">.</span><span class="token function">Handle</span><span class="token punctuation">(</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> err <span class="token keyword">is</span> OperationCanceledException<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">AddCancleByThrow</span><span class="token punctuation">(</span>CancellationToken ct<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"任务开始……"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">int</span> result <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+   <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       ct<span class="token punctuation">.</span><span class="token function">ThrowIfCancellationRequested</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       result<span class="token operator">++</span><span class="token punctuation">;</span>
+       Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在任务结束求值的方法TaskEndedByCatch中，如果任务是通过ThrowfCancellationRequested方法结束的，对任务求结果值将会抛出异常OperationCanceledException，而不是得到抛出异常前的结果值。这意味着任务是通过异常的方式被取消掉的，所以可以注意到上面代码的输出中，状态IsCanceled 为True.</p>
+<p>接着来看上面的输出，我们注意到取消是通过异常的方式实现的，而表示任务中发生了异常的IsFaulted状态却还是为False，为什么呢?这是因为ThrowIfCancellationRequested是协作式取消方式的类型CancellationTokenSource中的一个方法，CLR对其进行了特殊的处理。CLR知道这一行程序是开发者有意为之，所以不把它看做是一个异常(它被理解为取消)。要得到IsFaulted等于True的状态，我们可以修改While循环，模拟一个异常出来，具体方法如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// ct.ThrowIfCancellationRequested();</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>result <span class="token operator">==</span> <span class="token number">5</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+       <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token string">"error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    result<span class="token operator">++</span><span class="token punctuation">;</span>
+    Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 在任务开始后大概3秒的时候按下键盘，会得到如下的输出:</span>
+<span class="token comment" spellcheck="true">//任务开始……</span>
+<span class="token comment" spellcheck="true">//任务完成，完成时候的状态为：</span>
+<span class="token comment" spellcheck="true">//IsCanceled=False        IsCompleted=True        IsFaulted=True</span>
+<span class="token comment" spellcheck="true">//任务的返回值为：3</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Task还支持任务工厂的概念。任务工厂支持多个任务之间共享相同的状态，如取消类型CancellationTokenSource就是可以被共享的。通过使用任务工厂，可以同时取消一组任务.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   CancellationTokenSource cts <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CancellationTokenSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true">//等待按下任意一个键取消任务</span>
+   TaskFactory taskFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TaskFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Task<span class="token punctuation">[</span><span class="token punctuation">]</span> tasks <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">[</span><span class="token punctuation">]</span>
+       <span class="token punctuation">{</span>
+           taskFactory<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">Add</span><span class="token punctuation">(</span>cts<span class="token punctuation">.</span>Token<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+           taskFactory<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">Add</span><span class="token punctuation">(</span>cts<span class="token punctuation">.</span>Token<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+           taskFactory<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">Add</span><span class="token punctuation">(</span>cts<span class="token punctuation">.</span>Token<span class="token punctuation">)</span><span class="token punctuation">)</span>
+       <span class="token punctuation">}</span><span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true">//CancellationToken.None指示TasksEnded不能被取消</span>
+   taskFactory<span class="token punctuation">.</span><span class="token function">ContinueWhenAll</span><span class="token punctuation">(</span>tasks<span class="token punctuation">,</span> TasksEnded<span class="token punctuation">,</span> CancellationToken<span class="token punctuation">.</span>None<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   cts<span class="token punctuation">.</span><span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">TasksEnded</span><span class="token punctuation">(</span>Task<span class="token punctuation">[</span><span class="token punctuation">]</span> tasks<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"所有任务已完成！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>本建议演示了Task (任务)和TaskFactory (任务工厂)的使用方法。Task进一步优化了后台线程池的调度，加快了线程的处理速度。所以在FCL 4.0时代，如果要使用多线程，我们理应更多地使用Task。</p>
+<h2 id="建议81-使用Parallel简化同步状态下Task的使用"><a href="#建议81-使用Parallel简化同步状态下Task的使用" class="headerlink" title="建议81 : 使用Parallel简化同步状态下Task的使用"></a>建议81 : 使用Parallel简化同步状态下Task的使用</h2><p>在命名空间System.Threading.Tasks中，有一个静态类Parallel简化了在同步状态下的Task的操作。Parallel 主要提供3个有用的方法: For、 ForEach、 Invoke。</p>
+<p>For方法主要用于处理针对数组元素的并行操作:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    Parallel<span class="token punctuation">.</span><span class="token function">For</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> nums<span class="token punctuation">.</span>Length<span class="token punctuation">,</span> <span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"针对数组索引{0}对应的那个元素{1}的一些工作代码……"</span><span class="token punctuation">,</span> i<span class="token punctuation">,</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 针对数组索引3对应的那个元素4的一些工作代码……</span>
+<span class="token comment" spellcheck="true">// 针对数组索引1对应的那个元素2的一些工作代码……</span>
+<span class="token comment" spellcheck="true">// 针对数组索引0对应的那个元素1的一些工作代码……</span>
+<span class="token comment" spellcheck="true">// 针对数组索引2对应的那个元素3的一些工作代码……</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到，工作代码并未按照数组的索引次序进行遍历。这是因为我们的遍历是并行的，不是顺序的。所以，这里也可以引出一个小建议:<strong>如果我们的输出必须是同步的或者说必须是顺序输出的，则不应使用Parallel的方式</strong>。ForEach方法主要用于处理泛型集合元素的并行操作，如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   List<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> nums <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+   Parallel<span class="token punctuation">.</span><span class="token function">ForEach</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> <span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+   <span class="token punctuation">{</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"针对集合元素{0}的一些工作代码……"</span><span class="token punctuation">,</span> item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用For和ForEach方法，<strong>Parallel 类型会自动为我们分配Task来完成针对元素的一些工作</strong>。当然我们也可以直接使用Task,但是上面的这种形式在语法上更为简洁。</p>
+<p>Parallel的Invoke方法为我们简化了启动一组并行操作，它隐式启动的就是Task. 该方法接受Params Action[]参数，如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Parallel<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span>
+   <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+   <span class="token punctuation">{</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"任务1……"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token punctuation">,</span>
+   <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+   <span class="token punctuation">{</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"任务2……"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token punctuation">,</span>
+   <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+   <span class="token punctuation">{</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"任务3……"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同样,由于所有的任务都是并行的, 所以它不保证先后次序.</p>
+<h2 id="建议82-Parallel-简化但不等同于Task默认行为"><a href="#建议82-Parallel-简化但不等同于Task默认行为" class="headerlink" title="建议82 : Parallel 简化但不等同于Task默认行为"></a>建议82 : Parallel 简化但不等同于Task默认行为</h2><p>建议81说到了Parallel的使用方法，不知道大家是否注意到文中使用的字眼: 在同步状态下简化了Task的使用。也就是说，<strong>在运行Parallel中的For、ForEach 方法时，调用者线程(在示例中就是主线程)是被阻滞的</strong>。Parallel 虽然将任务交给Task去处理，即交给CLR线程池去处理，<strong>不过调用者会一直等到线程池中的相关工作全部完成</strong>。表示并行的静态类Parallel甚至只提供了Invoke方法，而没有同时提供一个BeginInvoke方法，这也从一定程度上说明了这个问题。</p>
+<p>在使用Task时，我们最常使用的是Start方法(Task 也提供了RunSynchronously),它不会阻滞调用者线程。如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// Task不会阻滞线程, 会输出主线程即将结束</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Task t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"主线程即将结束"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 这段代码永远也不会有输出, 因为主线程被阻滞</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">//在这里也可以使用Invoke方法</span>
+   Parallel<span class="token punctuation">.</span><span class="token function">For</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+
+       <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"主线程即将结束"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>并行编程</strong>，意味着运行时在后台将任务分配到尽量多的CPU上，<strong>虽然它在后台使用Task进行管理，但这并不意味着它等同于异步</strong>。</p>
+<h2 id="建议83-小心Parallel中的陷阱"><a href="#建议83-小心Parallel中的陷阱" class="headerlink" title="建议83 : 小心Parallel中的陷阱"></a>建议83 : 小心Parallel中的陷阱</h2><p>Parallel的For和ForEach方法还支持一些相对复杂的应用。在这些应用中，它允许我们在每个任务启动时执行一些初始化操作，在每个任务结束后，又执行一些后续工作，同时，还允许我们监视<del>任务</del>的状态。但是，记住上面这句话“允许我们监视<del>任务</del>的状态”是错误的 : 应该把其中的“任务”改成“线程”。这，就是陷阱所在。</p>
+<p>我们需要深刻理解这些具体的操作和应用，不然，极有可能陷入这个陷阱中去。下面体会这段代码的输出是什么，如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

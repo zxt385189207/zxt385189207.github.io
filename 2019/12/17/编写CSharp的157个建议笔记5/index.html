@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        编写CSharp的157个建议笔记5 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#异常与自定义异常"><span class="toc-text">异常与自定义异常</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议58-用抛出异常代替返回错误代码"><span class="toc-text">建议58 : 用抛出异常代替返回错误代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议59-不要在不恰当的场合下引发异常"><span class="toc-text">建议59 : 不要在不恰当的场合下引发异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议60-重新引发异常时使用Inner-Exception"><span class="toc-text">建议60 : 重新引发异常时使用Inner Exception</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议61-避免在finally内撰写无效代码"><span class="toc-text">建议61 : 避免在finally内撰写无效代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议62-避免嵌套异常"><span class="toc-text">建议62 : 避免嵌套异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议63-避免“吞噬”异常"><span class="toc-text">建议63 : 避免“吞噬”异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议64-为循环增加Tester-Doer模式而不是将try-catch置于循环内"><span class="toc-text">建议64 : 为循环增加Tester-Doer模式而不是将try-catch置于循环内</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议65-总是处理未捕获的异常"><span class="toc-text">建议65 : 总是处理未捕获的异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议66-正确捕获多线程中的异常"><span class="toc-text">建议66 : 正确捕获多线程中的异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议67-慎用自定义异常"><span class="toc-text">建议67 : 慎用自定义异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议68-从System-Exception或其他常见的基本异常中派生异常"><span class="toc-text">建议68 : 从System.Exception或其他常见的基本异常中派生异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议69-应使用finally避免资源泄露"><span class="toc-text">建议69 : 应使用finally避免资源泄露</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议70-避免在调用栈较低的位置记录异常"><span class="toc-text">建议70 : 避免在调用栈较低的位置记录异常</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        编写CSharp的157个建议笔记5
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-12-17 11:26:01</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CSharp的157个建议" title="CSharp的157个建议">CSharp的157个建议</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="异常与自定义异常"><a href="#异常与自定义异常" class="headerlink" title="异常与自定义异常"></a>异常与自定义异常</h1><p>CLR异常机制让人关注最多的一点就是“效率”问题。其实，这里存在认识上的误区，因为正常控制流程下的代码运行并不会出现问题，只有引发异常时才会带来效率问题。基于这一点，很多开发者已经达成共识:不应将异常机制用于正常控制流中。达成的另一个共识是: CLR异常机制带来的“效率”问题不足以“抵消”它带来的巨大收益。CLR异常机制至少有以下几个优点:</p>
+<ul>
+<li>正常控制流会被立即中止，无效值或状态不会在系统中继续传播。</li>
+<li>提供了统一处理错误的方法。</li>
+<li>提供了在构造函数、操作符重载及属性中报告异常的便利机制。</li>
+<li>提供了异常堆栈，便于开发者定位异常发生的位置。</li>
+</ul>
+<p>函数中写入异常，会降低性能，微软给出了2种模式来减小这种异常带来的烦恼，其中一种便是Tester-DoerPattern。另一种是Try-Parse Pattern.</p>
+<h2 id="建议58-用抛出异常代替返回错误代码"><a href="#建议58-用抛出异常代替返回错误代码" class="headerlink" title="建议58 : 用抛出异常代替返回错误代码"></a>建议58 : 用抛出异常代替返回错误代码</h2><p>在异常机制出现之前，应用程序普遍采用返回错误代码的方式来通知调用者发生了异常。本建议首先阐述为什么要用抛出异常的方式来代替返回错误代码的方式。对于一个成员方法而言，它要么执行成功，要么执行失败。成员方法执行成功的情况很容易理解，但是如果执行失败了却没有那么简单，因为我们需要将导致执行失败的原因通知调用者。<code>抛出异常</code>和<code>返回错误代码</code>都是用来通知调用者的手段。</p>
+<p>假设我们要实现这样一个简单的功能:应用程序需要完成一次保存新建用户的操作。这是一个分布式的操作，保存动作除了需要将用户保存在本地外，还需要通过WCF在远程服务器上保存数据。负责保存用户的成员方法如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">SaveUser1</span><span class="token punctuation">(</span>User user<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">SaveToFile</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">SaveToDataBase</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果单纯看此方法，似乎一切都还不错，在约定好了错误代码后，调用者只要接收到1或2，就知道到底是哪里出现了问题。但仔细研究会发现，如果方法执行失败，似乎还可以挖掘出更多的原因。在SaveToFile方法中，我们可能会遇到:</p>
+<ul>
+<li>程序无数据存储文件写权限导致的失败。</li>
+<li>硬盘空间不足导致的失败。</li>
+</ul>
+<p>在SaveToServer方法中，我们可能会遇到:</p>
+<ul>
+<li>服务不存在导致的失败。</li>
+<li>网络连接不正常导致的失败。</li>
+</ul>
+<p>当我们想要告诉调用者更多细节的时候，就需要与调用者约定更多的错误代码。于是我们很快就会发现，错误代码飞速膨胀，直到看起来似乎无法维护，因为我们总在查找并确认错误代码。采用接下来的方法，可能会省略很大一部分的错误代码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">bool</span> <span class="token function">SaveUser2</span><span class="token punctuation">(</span>User user<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token keyword">string</span> errorMsg<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">SaveToFile</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        errorMsg <span class="token operator">=</span> <span class="token string">"本地保存失败！"</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">SaveToDataBase</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        errorMsg <span class="token operator">=</span> <span class="token string">"远程保存失败！"</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这看上去不错，即使存在更多的错误也可以将失败信息呈现给调用者或者上层用户。然而，仅仅呈现失败信息就可以了吗?我们来看看这样一种情况:给失败通知增加稍微复杂一点的功能。如果本地保存失败，要完成“通知运行本段代码的客户机管理员”的功能。通常情况下，仅仅只需要显示类似的信息:“本地保存失败，请检查用户权限”。如果远程保存失败，应用程序需要“发送一封邮件给远程服务器的系统管理员”。这个增加的功能导致我们不能像处理“本地保存失败”那样来处理“远程保存失败”。一切仿佛又回到了起点，在没有异常处理机制之前，我们只能返回错误代码。但是，现在有了另一种选择，即使用异常机制。如果使用异常机制，那么最终的代码看起来应该是下面这样的:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">User user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">try</span>
+<span class="token punctuation">{</span>
+    <span class="token function">SaveUser</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//IO异常，通知当前用户</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">UnauthorizedAccessException</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//权限失败，通知客户端管理员</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">CommunicationException</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//网络异常，通知发送e-mail给网络管理员。</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用CLR异常机制后，我们会发现代码变得更清晰、更易于理解了。至于效率问题，还可以重新审视“效率”的立足点: throw exception 产生的那点效率损耗与等待网络连接异常相比，简直微不足道，而CLR异常机制带来的好处却是显而易见的。</p>
+<p>这里需要稍加强调的是，在<code>catch (CommunicationException)</code> 这个代码块中，代码所完成的功能是“通知发送”而不是“发送”本身，因为我们要确保在catch和finally中所执行的代码是可以被执行的。换句话说，<strong>尽量不要在catch和finally中再让代码“出错”</strong>，那会让异常堆栈信息变得复杂和难以理解。</p>
+<p>在本例的catch代码块中，不要真的编写发送邮件的代码，因为发送邮件这个行为可能会产生更多的异常，而“通知发送”这个行为稳定性更高(即不“出错”)。以上通过实际的案例阐述了抛出异常相比于返回错误代码的优越性，以及在某些情况下错误代码将无用武之地，如构造函数、操作符重载及属性。语法特性决定了其不能具备任何返回值，于是异常机制被当做取代错误代码的首要选择。</p>
+<h2 id="建议59-不要在不恰当的场合下引发异常"><a href="#建议59-不要在不恰当的场合下引发异常" class="headerlink" title="建议59 : 不要在不恰当的场合下引发异常"></a>建议59 : 不要在不恰当的场合下引发异常</h2><p>不管是初学者，还是有多年编程经验的程序员，常常会对在什么地方抛出异常感到疑惑。最常见的不易于引发异常的情况是对在可控范围内的输入和输出引发异常。如下面的代码所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">SaveUser3</span><span class="token punctuation">(</span>User user<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>user<span class="token punctuation">.</span>Age <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentOutOfRangeException</span><span class="token punctuation">(</span><span class="token string">"Age不能为负数。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 保存用户</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们不应设计出万能的方法，此方法起码有两个地方欠妥:</p>
+<ol>
+<li>判断Age为负数。这是一个正常的业务逻辑，它不应该被处理为一个异常。</li>
+<li>应该采用Tester-Doer来验证输人。</li>
+</ol>
+<p>针对以上所述，我们应该添加一个Tester方法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">bool</span> <span class="token function">CheckAge</span><span class="token punctuation">(</span><span class="token keyword">int</span> age<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token keyword">string</span> msg<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>age <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        msg <span class="token operator">=</span> <span class="token string">"Age不能为负数。"</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>age <span class="token operator">></span> <span class="token number">100</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        msg <span class="token operator">=</span> <span class="token string">"Age不能>100。"</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 使用方法</span>
+<span class="token keyword">string</span> msg <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">CheckAge</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span> <span class="token keyword">ref</span> msg<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token function">SaveUser4</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>程序员，尤其是类库开发人员，要掌握的两条首要原则是:</p>
+<ul>
+<li>正常的业务流程不应使用异常来处理。</li>
+<li>不要总是尝试去捕获异常或引发异常，而应该允许异常向调用堆栈往上传播。</li>
+</ul>
+<p>那么，到底应该在怎样的情况下引发异常呢?</p>
+<ul>
+<li>第一类情况如果运行代码后 会造成内存泄漏、资源不可用，或者应用程序状态不可恢复，则引发异常。</li>
+</ul>
+<p>我们来看似乎能马上推翻上述例子所得出的结论的一个应用场景。在微软提供的Console类中有很多类似这样的代码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">value</span> <span class="token operator">&lt;</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token punctuation">(</span><span class="token keyword">value</span> <span class="token operator">></span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentOutOfRangeException</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 或者</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">value</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentNullException</span><span class="token punctuation">(</span><span class="token string">"value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>而在本书所举的例子中，首先提到的就是:对在可控范围内的输入和输出不引发异常。没错，区别就在于“可控”这两个字。所谓“可控”，可定义为:发生异常后，系统资源仍可用，或资源状态可恢复。</p>
+<p>继续查看Console类，这个类调用了很多API,如果调用参数不准确，可能会导致内存泄漏、系统句柄占用等不可知状态。其次，Console 这个类虽然也提供了Tester-Doer模式，让调用者可以有更多的方法来验证输入，但是永远不要认为调用者对你的类有足够的了解，它有可能调用你的任何公开方法，而不会考虑先后顺序。SaveUser3方法与Console类提供的方法相比，后者会造成系统级别的严重错误。所以，两者虽然在表面上存在类似的语法形式，但是SaveUser3不建议对输入引发异常，而Console却必须要对输入引发异常。</p>
+<ul>
+<li>第二类情况在捕获异常的时候， 如果需要包装一些更有用的信息，则引发异常。</li>
+</ul>
+<p>这类异常的引发在UI层特别有用。系统引发的异常所带的信息往往更倾向于技术性的描述:而在UI层，面对异常的很可能是最终用户。如果需要将异常的信息呈现给最终用户，更好的做法是先包装异常，然后引发一个包含友好信息的新异常。</p>
+<ul>
+<li>第三类情况如果底层异 常在高层操作的上下文中没有意义，则可以考虑捕获这些底层异常，并引发新的有意义的异常。</li>
+</ul>
+<p>需要重点介绍的正确引发异常的典型例子就是捕获底层API错误代码，并抛出。查看Console这个类，还会发现很多地方有类似的代码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">int</span> errorCode <span class="token operator">=</span> Marshal<span class="token punctuation">.</span><span class="token function">GetLastwin32Error</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>errorCode <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidOperationException</span><span class="token punctuation">(</span>Envi ronment<span class="token punctuation">.</span><span class="token function">GetResourceString</span> <span class="token punctuation">(</span><span class="token string">"InvalidOperation_ Consol eKeyAvailableOnFile"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Console为我们封装了调用Windows API返回的错误代码，而让代码引发了一个新的异常。很显然，当需要调用Windows API或第三方API提供的接口时，如果对方的异常报告机制使用的是错误代码，最好重新引发该接口提供的错误，因为你需要让自己的团队更好地理解这些错误。</p>
+<h2 id="建议60-重新引发异常时使用Inner-Exception"><a href="#建议60-重新引发异常时使用Inner-Exception" class="headerlink" title="建议60 : 重新引发异常时使用Inner Exception"></a>建议60 : 重新引发异常时使用Inner Exception</h2><p>这是一条很好理解的建议，当捕获了某个异常，将其包装或重新引发异常的时候，如果其中包含了Inner Exception,则有助于程序员分析内部信息，方便代码调试。</p>
+<p>仍以一个分布式系统为例，在进行远程通信的时候，可能会发生的情况有:</p>
+<ol>
+<li>网卡被禁用或网线断开，此时会抛出SocketException，消息为:“由于目标计算机积极拒绝，无法连接。”</li>
+<li>网络正常，但是要连接的目标机没有端口没有处在侦听状态，此时，会抛出SocketException，消息为:“由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。”</li>
+<li>连接超时，此时需要通过代码实现关闭连接，并抛出一个SocketException,消息为:“连接超过约定的时长。”</li>
+</ol>
+<p>发生以上三种情况中的任何一种情况，在返回给最终用户的时候，我们都需要将异常信息包装成为“网络连接失败，请稍候再试”。</p>
+<p>所以，一个分布式系统的业务处理方法，看起来应该是这样的:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">try</span>
+<span class="token punctuation">{</span>
+  <span class="token function">SaveUser5</span> <span class="token punctuation">(</span>user<span class="token punctuation">)</span> <span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">SocketException</span> err<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">CommucationFailureException</span><span class="token punctuation">(</span><span class="token string">"网络连接失敗，请稍后再试"</span>，err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但是，在提示这条消息的时候，我们可能需要将原始异常信息记录到日志里，以供开发者分析具体的原因(因为如果这种情况频繁出现，这有可能是一个Bug)。那么，在记录日志的时候，就非常有必要记录导致此异常出现的内部异常或是堆栈信息。上文代码中的:<code>throw new CommucationFailureException(&quot;网络连接失敗，请稍后再试&quot;，err);</code> 就是将异常重新包装成为一个<code>CommucationFailureException</code>,<strong>并将<code>SocketException</code>作为Inner Exception (即err)向上传递</strong>。此外还有一个可以采用的技巧，如果不打算使用Inner Exception， 但是仍然想要返回一些额外信息的话，可以使用Exception的Data属性。如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">try</span>
+<span class="token punctuation">{</span>
+   <span class="token function">SaveUser5</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">SocketException</span> err<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  err<span class="token punctuation">.</span>Data<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token string">"SocketInfo"</span><span class="token punctuation">,</span><span class="token string">"网络连接失败,请稍后再试"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在上层进行捕获的时候，可以通过键值来得到异常信息:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">SocketException</span> err<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>err<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">"SocketInfo"</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议61-避免在finally内撰写无效代码"><a href="#建议61-避免在finally内撰写无效代码" class="headerlink" title="建议61 : 避免在finally内撰写无效代码"></a>建议61 : 避免在finally内撰写无效代码</h2><p>在阐述本建议之前，需要先提出一个问题:是否存在一种打破try-finally执行顺序的情况。答案是:不存在(除非应用程序本身因为某些很少出现的特殊情况在try块中退出，本建议最后会给出一个这样的例子)。<strong>你应该始终认为finally内的代码会在方法return之前执行，哪怕return是在try块中。</strong></p>
+<p>但是，正是这一点，可能会让你写出无效代码。有时候，这样的无效代码会是一个隐藏很深的Bug。以下代码没有问题、没有歧义、没有误解，返回值是2。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 结束完后i=2;</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">TestIntReturnBelowFinally</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+    <span class="token keyword">try</span>
+    <span class="token punctuation">{</span>
+        i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">finally</span>
+    <span class="token punctuation">{</span>
+        i <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"\t将int结果改为2，finally执行完毕"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 在返回前会先执行finally</span>
+    <span class="token keyword">return</span> i<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们知道，finally 先被执行，但是如果你以为下面的这段代码返回值也是2，那就错了。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 结束完后i=1;</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">TestIntReturnInTry</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+    <span class="token keyword">try</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 在返回前会先执行finally</span>
+        <span class="token keyword">return</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">finally</span>
+    <span class="token punctuation">{</span>
+        i <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"\t将int结果改为2，finally执行完毕"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>你应该始终认为finally内的代码会在方法return之前执行，哪怕return是在try块中。</strong></p>
+<p>最后，给出一个不执行finally直接在try中返回的例子。确切地说，这种异常不是导致不执行finally块，而是直接导致应用程序的退出。如下所示，用C++实现这样一个方法:</p>
+<p><img src="/2019/12/17/编写CSharp的157个建议笔记5/QQ截图20191217140105.png" alt=""></p>
+<p>我们可以看到，既然程序直接退出了，无论是catch代码块还是finally代码块，都没有运行。</p>
+<h2 id="建议62-避免嵌套异常"><a href="#建议62-避免嵌套异常" class="headerlink" title="建议62 : 避免嵌套异常"></a>建议62 : 避免嵌套异常</h2><p>在建议59中已经强调过，应该允许异常在调用堆栈中往上传播，不要过多使用catch,然后再throw。过多使用catch会带来两个问题:</p>
+<ol>
+<li>代码更多了。这看上去好像你根本不知道该怎么处理异常，所以你总在不停地catch。</li>
+<li>隐藏了堆栈信息，使你不知道真正发生异常的地方。</li>
+</ol>
+<p>可以看到，在error中已经看不到原始错误的位置了，调用堆栈被重置了。最糟糕的情况是: 方法捕获的是Exception。 所以也就是说，如果这个方法中还存在另外的异常，在UI层将永远不知道真正发生错误的地方。</p>
+<p>除了在建议59中提到的需要包装异常的情况外，无故地嵌套异常是我们要极力避免的。当然，如果真的需要捕获这个异常来恢复一些状态，然后重新抛出，代码看起来应该是这样的:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">try</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">NestedExceptionSample2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">MethodWithTry</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> err<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 工作代码</span>
+    <span class="token keyword">throw</span> <span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// throw err; 会重置堆栈信息.</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议63-避免“吞噬”异常"><a href="#建议63-避免“吞噬”异常" class="headerlink" title="建议63 : 避免“吞噬”异常"></a>建议63 : 避免“吞噬”异常</h2><p>阅读了建议62,你可能已经明白，嵌套异常是很危险的行为，一不小心就会将异常堆栈信息，也就是真正的Bug出处隐藏起来。但这还不是最严重的行为，最严重的就是“吞噬”异常，即捕获，然后不向上层throw抛出。</p>
+<p>避免“吞噬”异常，并不是说不应该“吞噬”异常，而是这里面有个重要原则:<strong>该异常可被预见，并且通常情况它不能算是一个Bug</strong>.</p>
+<p>想象你正在对上万份文件进行解密，这些文件来自不同的客户端，很有可能存在文件被破坏的现象，你的目标就是要将解密出来的数据插入数据库。这个时候，你不得不忽略那些解密失败的文件，让整个过程进行下去。当然，记录日志是必要的，因为后期你可能会对解密失败的文件做统一处理。</p>
+<p>另外一种情况，可能连记录日志都不需要。在对上千个受控端进行控制的分布式系统中，控制端需要发送心跳数据来判断受控端的在线情况。通常的做法是维护一个信号量，如果在一个可接受的阻滞时间内(如500ms)心跳数据发送失败，那么控制端线程将不会收到信号，即可以判断受控端的断线状态。在这种情况下，对每次SocketException进行记录，通常也是没有意义的。</p>
+<p>本建议的全部要素是:如果你不知道如何处理某个异常，那么千万不要“吞噬”异常，如果你一不小心“吞噬”了一个本该往上传递的异常，那么，这里可能诞生一个Bug，而且，解决它会很费周折。</p>
+<h2 id="建议64-为循环增加Tester-Doer模式而不是将try-catch置于循环内"><a href="#建议64-为循环增加Tester-Doer模式而不是将try-catch置于循环内" class="headerlink" title="建议64 : 为循环增加Tester-Doer模式而不是将try-catch置于循环内"></a>建议64 : 为循环增加Tester-Doer模式而不是将try-catch置于循环内</h2><p>如果需要在循环中引发异常，你需要特别注意，因为抛出异常是一个相当影响性能的过程。应该尽量在循环当中对异常发生的一些条件进行判断，然后根据条件进行处理。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 测试</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Stopwatch watch <span class="token operator">=</span> Stopwatch<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> j <span class="token operator">=</span> i <span class="token operator">/</span> x<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span>
+        <span class="token punctuation">{</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>watch<span class="token punctuation">.</span>ElapsedMilliseconds<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 871</span>
+
+    watch <span class="token operator">=</span> Stopwatch<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>x <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">continue</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">int</span> j <span class="token operator">=</span> i <span class="token operator">/</span> x<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>watch<span class="token punctuation">.</span>ElapsedMilliseconds<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 0</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对可预见的异常发生进行条件处理, 让效率得到了极大的提升.</p>
+<h2 id="建议65-总是处理未捕获的异常"><a href="#建议65-总是处理未捕获的异常" class="headerlink" title="建议65 : 总是处理未捕获的异常"></a>建议65 : 总是处理未捕获的异常</h2><p>处理未捕获的异常是每个应用程序应具备的基本功能，C#在AppDomain提供了UnhandledException事件来接收未捕获到的异常的通知。常见的应用如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    AppDomain<span class="token punctuation">.</span>CurrentDomain<span class="token punctuation">.</span>UnhandledException <span class="token operator">+</span><span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">UnhandledExceptionEventHandler</span><span class="token punctuation">(</span>CurrentDomain_UnhandledException<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">CurrentDomain_UnhandledException</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> UnhandledExceptionEventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Exception error <span class="token operator">=</span> <span class="token punctuation">(</span>Exception<span class="token punctuation">)</span>e<span class="token punctuation">.</span>ExceptionObject<span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"MyHandler caught : "</span> <span class="token operator">+</span> error<span class="token punctuation">.</span>Message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>未捕获的异常通常就是运行时期的Bug，我们可以在AppDomain.CurrentDomain. UnhandledException的注册事件方法CurrentDomain_UnhandledException中，将未捕获异常的信息记录在日志中。值得注意的是，UnhandledException 提供的机制并不能阻止应用程序终止，也就是说，执行CurrentDomain_UnhandledException 方法后，应用程序就会被终止。</p>
+<h2 id="建议66-正确捕获多线程中的异常"><a href="#建议66-正确捕获多线程中的异常" class="headerlink" title="建议66 : 正确捕获多线程中的异常"></a>建议66 : 正确捕获多线程中的异常</h2><p>多线程的异常处理需要采用特殊的方法。以下的处理方式会存在问题:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">try</span>
+<span class="token punctuation">{</span>
+    Thread t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span>ThreadStart<span class="token punctuation">)</span><span class="token keyword">delegate</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token string">"多线程异常"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> error<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    MessageBox<span class="token punctuation">.</span><span class="token function">Show</span><span class="token punctuation">(</span>error<span class="token punctuation">.</span>Message <span class="token operator">+</span> Environment<span class="token punctuation">.</span>NewLine <span class="token operator">+</span> error<span class="token punctuation">.</span>StackTrace<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>应用程序并不会在这里捕获线程t中的异常，而是会直接退出。从.NET 2.0开始，任何线程上未处理的异常，都会导致应用程序的退出(先会触发AppDomain的UnhandledException)。<strong>上面代码中的try-catch实际上:捕获的还是当前线程的异常，而t属于新起的异常</strong>，所以，正确的做法应该是:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Thread t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span>ThreadStart<span class="token punctuation">)</span><span class="token keyword">delegate</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">try</span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token string">"多线程异常"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> error<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       MessageBox<span class="token punctuation">.</span><span class="token function">Show</span><span class="token punctuation">(</span><span class="token string">"工作线程异常："</span> <span class="token operator">+</span> error<span class="token punctuation">.</span>Message <span class="token operator">+</span> Environment<span class="token punctuation">.</span>NewLine <span class="token operator">+</span> error<span class="token punctuation">.</span>StackTrace<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也就是说，新起的线程中异常的捕获，可以将线程内部代码全部try起来。原则上说，每个线程的业务异常应该在自己的内部处理完毕，不过，我们仍然需要一个办法，将线程内部的异常传递到主线程上。</p>
+<p>我们更建议使用事件回调的方式将工作线程的异常包装到主线程。用事件回调的方式处理异常的好处是提供了统一的入口进行异常的处理。这种方式我们统一在建议85阐述。</p>
+<h2 id="建议67-慎用自定义异常"><a href="#建议67-慎用自定义异常" class="headerlink" title="建议67 : 慎用自定义异常"></a>建议67 : 慎用自定义异常</h2><p>除非有充分的理由，否则-.般不要创建自定义异常。如果要对某类程序出错信息做特殊处理，那就自定义异常。需要自定义异常的理由如下:</p>
+<ol>
+<li>方便调试。通过抛出一个自定义的异常类型实例，我们可以使捕获代码精确地知道所发生的事情，并以合适的方式进行恢复。</li>
+<li>逻辑包装。自定义异常可包装多个其他异常，然后抛出-一个业务异常。</li>
+<li>方便调用者编码。在编写自己的类库或者业务层代码的时候，自定义异常可以让调用方更方便处理业务异常逻辑。例如，保存数据失败可以分成两个异常“数据库连接失败”和“网络异常”。</li>
+<li>引入新异常类。这使程序员能够根据异常类在代码中采取不同的操作。</li>
+</ol>
+<p>现在举一个需要使用自定义异常的例子，在一个抽象工厂中，可以将数据设置保存在SQLServer或SQLite中。业务层的代码片段如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">try</span>
+<span class="token punctuation">{</span>
+   dal<span class="token punctuation">.</span><span class="token function">GetOneUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span><span class="token punctuation">(</span>SQLiteException err<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 处理SQLite异常</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span><span class="token punctuation">(</span>SQLException err<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 处理SQLServer异常</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里虽然需要捕获两个异常，但是很显然，处理这两个异常的代码是一致的。另外，如果将来程序拓展成为数据存储在Oracle中，还需要为Oracle多设计一个Catch。所以，在各自的数据层中，可以创建一个自定义异常DataAccessException,然后让它们各自捕获自己的特定异常，抛出一个共同的<code>DataAccessException</code>。例如，在SQLServer的数据层中:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> User <span class="token function">GetOneUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">try</span>
+   <span class="token punctuation">{</span>
+      User user <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> user<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">catch</span><span class="token punctuation">(</span>SQLException<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 此处抛出共同的`DataAccessException`</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">DataAccessException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议68-从System-Exception或其他常见的基本异常中派生异常"><a href="#建议68-从System-Exception或其他常见的基本异常中派生异常" class="headerlink" title="建议68 : 从System.Exception或其他常见的基本异常中派生异常"></a>建议68 : 从System.Exception或其他常见的基本异常中派生异常</h2><p>这是一个标准的自定义异常类，它同时告诉你，你所创建的自定义异常类必须是可序列化的，因为你必须保证异常类是可以穿越AppDomain边界的。如果你需要从一个常见的基本异常派生自定义异常，则类声明处看起来应该如下</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span><span class="token keyword">global</span><span class="token punctuation">:</span><span class="token punctuation">:</span>System<span class="token punctuation">.</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PaperEncryptException</span> <span class="token punctuation">:</span> Exception<span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>一般来说，以上的描述已经满足你对于自定义异常的普通需求。但是，另一个需求是，你也许会想要格式化异常的Message.比如，为一个考试系统设计一个自定义的加密异常: PaperEncryptException, 我们需要格式化一些异常信息， 所以，必须重写(override)异常类的Message属性，如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span><span class="token keyword">global</span><span class="token punctuation">:</span><span class="token punctuation">:</span>System<span class="token punctuation">.</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PaperEncryptException</span> <span class="token punctuation">:</span> Exception<span class="token punctuation">,</span> ISerializable
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token keyword">string</span> _paperInfo<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">PaperEncryptException</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token function">PaperEncryptException</span><span class="token punctuation">(</span><span class="token keyword">string</span> message<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">base</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token function">PaperEncryptException</span><span class="token punctuation">(</span><span class="token keyword">string</span> message<span class="token punctuation">,</span> Exception inner<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">base</span><span class="token punctuation">(</span>message<span class="token punctuation">,</span> inner<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token function">PaperEncryptException</span><span class="token punctuation">(</span><span class="token keyword">string</span> message<span class="token punctuation">,</span> <span class="token keyword">string</span> paperInfo<span class="token punctuation">)</span>
+        <span class="token punctuation">:</span> <span class="token keyword">base</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        _paperInfo <span class="token operator">=</span> paperInfo<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token function">PaperEncryptException</span><span class="token punctuation">(</span><span class="token keyword">string</span> message<span class="token punctuation">,</span> <span class="token keyword">string</span> paperInfo<span class="token punctuation">,</span> Exception inner<span class="token punctuation">)</span>
+        <span class="token punctuation">:</span> <span class="token keyword">base</span><span class="token punctuation">(</span>message<span class="token punctuation">,</span> inner<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        _paperInfo <span class="token operator">=</span> paperInfo<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">protected</span> <span class="token function">PaperEncryptException</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>Serialization<span class="token punctuation">.</span>SerializationInfo info<span class="token punctuation">,</span> System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>Serialization<span class="token punctuation">.</span>StreamingContext context<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">base</span><span class="token punctuation">(</span>info<span class="token punctuation">,</span> context<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> Message
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">base</span><span class="token punctuation">.</span>Message <span class="token operator">+</span> <span class="token string">" "</span> <span class="token operator">+</span> _paperInfo<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">void</span> <span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span><span class="token string">"Args"</span><span class="token punctuation">,</span> _paperInfo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">GetObjectData</span><span class="token punctuation">(</span>info<span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>PaperEncryptException与本建议开头的MyException相比，至少有两个明显的不同:</p>
+<ul>
+<li>实现了接口ISerializable。</li>
+<li>重写了方法GetObjectData.</li>
+</ul>
+<p>这是因为我们给PaperEncryptException定义了一个新的字段_paperInfo。 为了确保新定义的字段也能被序列化，必须要让异常类型实现ISerializable接口，并且需要将字段加入到GetObjectData方法的SerializationInfo参数中。测试代码如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">try</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">PaperEncryptException</span><span class="token punctuation">(</span><span class="token string">"加密试卷失败"</span><span class="token punctuation">,</span> <span class="token string">"学生ID：123456"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">PaperEncryptException</span> err<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>err<span class="token punctuation">.</span>Message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议69-应使用finally避免资源泄露"><a href="#建议69-应使用finally避免资源泄露" class="headerlink" title="建议69 : 应使用finally避免资源泄露"></a>建议69 : 应使用finally避免资源泄露</h2><p>在建议63已经阐述过，除非发生让应用程序中断的异常，否则finally 总是会先于return执行。finally 的这个语言特性决定了资源释放的最佳位置就是在finally块中;</p>
+<p>另外，<strong>资源释放会随着调用堆栈由下往上执行</strong>。下面的代码验证了这点，先定义一个需要进行资源释放的类:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">Method3</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        ClassShouldDisposeBase c <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassShouldDisposeBase</span><span class="token punctuation">(</span><span class="token string">"Method1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">Method2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">finally</span>
+        <span class="token punctuation">{</span>
+            c<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Method2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        ClassShouldDisposeBase c <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassShouldDisposeBase</span><span class="token punctuation">(</span><span class="token string">"Method2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">finally</span>
+        <span class="token punctuation">{</span>
+            c<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Method3</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        ClassShouldDisposeBase c <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassShouldDisposeBase</span><span class="token punctuation">(</span><span class="token string">"Method3"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">Method4</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"在Method3中捕获了异常。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">finally</span>
+        <span class="token punctuation">{</span>
+            c<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Method4</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        ClassShouldDisposeBase c <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassShouldDisposeBase</span><span class="token punctuation">(</span><span class="token string">"Method4"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"在Method4中捕获了异常。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">throw</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">finally</span>
+        <span class="token punctuation">{</span>
+            c<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">ClassShouldDisposeBase</span> <span class="token punctuation">:</span> IDisposable
+<span class="token punctuation">{</span>
+    <span class="token keyword">string</span> _methodName<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">ClassShouldDisposeBase</span><span class="token punctuation">(</span><span class="token keyword">string</span> methodName<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        _methodName <span class="token operator">=</span> methodName<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        GC<span class="token punctuation">.</span><span class="token function">SuppressFinalize</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"在方法："</span> <span class="token operator">+</span> _methodName <span class="token operator">+</span> <span class="token string">"中被释放！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">protected</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">bool</span> disposing<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>disposing<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">//执行基本的清理代码</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token operator">~</span><span class="token function">ClassShouldDisposeBase</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在Method4中捕获了异常。</p>
+<p>在方法：Method4中被释放！</p>
+<p>在Method3中捕获了异常。</p>
+<p>在方法：Method3中被释放！</p>
+<h2 id="建议70-避免在调用栈较低的位置记录异常"><a href="#建议70-避免在调用栈较低的位置记录异常" class="headerlink" title="建议70 : 避免在调用栈较低的位置记录异常"></a>建议70 : 避免在调用栈较低的位置记录异常</h2><p>并不是所有的异常都要被记录到日志，一类情况是异常发生的场景需要被记录，还有一类就是未被捕获的异常。未被捕获的异常通常被视为一个Bug,所以，对于它的记录，应该视为一个系统的重要组成部分。最适合进行异常记录和报告的是应用程序的最上层，这通常是UI层。假设存在这样的一个应用程序，它的BLL层，即可能被一个Winform窗口程序调用，也可能被一个控制台应用程序调用，那么要在BLL模块向管理员报告异常的时候，你可能会不知该使用MessageBox方法还是Console.Write方法。如果异常在调用栈的较低位置被记录或报告，且还存在被包装后重新抛出的情况.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">void</span> <span class="token function">MethodLow</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">try</span>
+   <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">//</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">catch</span><span class="token punctuation">(</span>SomeException<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      Logger<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token string">"异常发生."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">throw</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 在调用栈较高位置也捕获并记录异常</span>
+<span class="token keyword">internal</span> <span class="token keyword">void</span> <span class="token function">MethodHigh</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  <span class="token keyword">try</span>
+  <span class="token punctuation">{</span>
+     <span class="token function">MethodLow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">catch</span><span class="token punctuation">(</span>SomeException<span class="token punctuation">)</span>
+  <span class="token punctuation">{</span>
+     Logger<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token string">"异常发生."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">throw</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这就会让记录重复出现。在调用栈较低的情况下，往往异常被捕获了也不能被完整的处理。所以，综合考虑，应用程序在设计初期，就应该为开发成员约定在何处记录和</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
