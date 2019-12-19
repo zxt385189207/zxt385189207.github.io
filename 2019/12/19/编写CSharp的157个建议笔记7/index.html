@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        编写CSharp的157个建议笔记7 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#成员设计"><span class="toc-text">成员设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议90-不要为抽象类提供公开的构造方法"><span class="toc-text">建议90 : 不要为抽象类提供公开的构造方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议91-可见字段应该重构为属性"><span class="toc-text">建议91 : 可见字段应该重构为属性</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        编写CSharp的157个建议笔记7
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-12-19 14:54:06</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CSharp的157个建议" title="CSharp的157个建议">CSharp的157个建议</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="成员设计"><a href="#成员设计" class="headerlink" title="成员设计"></a>成员设计</h1><p>所谓成员，是指类型的字段和方法。在成员设计时掌握一定的原则，可以规避一些陷阱。本章将从最通用的角度阐述一些开发人员在进阶过程中会遇到的瓶颈。这些瓶颈有一部分是设计原则方面的问题，有一部分则需要大家仔细体会并练习，否则代码中就会出现Bug。部分案例可能不常用，但有助于大家加深对面向对象成员设计的理解。</p>
+<h2 id="建议90-不要为抽象类提供公开的构造方法"><a href="#建议90-不要为抽象类提供公开的构造方法" class="headerlink" title="建议90 : 不要为抽象类提供公开的构造方法"></a>建议90 : 不要为抽象类提供公开的构造方法</h2><p>首先，抽象类可以有构造方法。即使没有为抽象类指定构造方法，编译器也会为我们生成一个默认的protected构造方法。</p>
+<p>其次，抽象类的构造方法不应该是public或internal的。<strong>抽象类设计的本意只能让子类继承</strong>，而不是用于生成实例对象的。如果抽象类是public或internal的，它对于其他类型来说就是可见的，而这是不必要的，也是多余的。换句话说，抽象类只需对子类可见就行了。</p>
+<h2 id="建议91-可见字段应该重构为属性"><a href="#建议91-可见字段应该重构为属性" class="headerlink" title="建议91 : 可见字段应该重构为属性"></a>建议91 : 可见字段应该重构为属性</h2><p>字段和属性有本质的区别。这个本质的区别就是:属性是方法。</p>
+<p>查看下面这个类型Person:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Person</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>经过编译器的编译后，针对属性Name,实际会生成一个静态字段和两个方法(get,set).</p>
+<p>从这里就可以知道，属性实际上是编译器抛给我们的语法糖。属性相比较于字段，具有如下优势:</p>
+<ul>
+<li>1)可以为属性添加代码。正因为属性是方法，所以可以在方法内对设置或获取属性的过程进行更多精细化的控制。常见的如:可以为属性添加NameChanged事件支持等。单凭字段本身是完成不了这样的功能的。</li>
+<li>2)可以让属性支持线程安全。要让属性变成线程安全的，可以让类型自身去实现。而要让字段支持线程安全，就只能靠调用者本身来实现了。</li>
+<li>3)属性得到了VS编辑器的支持，还得到了实现自动属性这种功能。自动属性的特点在LINQ中得到了广泛应用，尤其是匿名类型中，它只能实现只读的自动属性，而不支持字段。</li>
+<li>4)从设计的角度，也就是面向对象的角度来看，<strong>公开的字段也应该使用属性</strong>。改变字段的状态，类型不会被通知到:而改变属性的值，类型支持则会被通知。</li>
+</ul>
+<p>综上所述，如果一个类型存在一个可见字段，那么它应该被重构为属性。当然，如果某个属性仅仅对内部可见，而且不涉及上面这4点内容，则建议使用字段。</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

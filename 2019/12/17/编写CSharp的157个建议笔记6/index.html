@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#异步-多线程-任务和并行"><span class="toc-text">异步,多线程,任务和并行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议71-区分异步和多线程应用场景"><span class="toc-text">建议71:区分异步和多线程应用场景.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议72-在线程同步中使用信号量"><span class="toc-text">建议72 : 在线程同步中使用信号量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议73-避免锁定不恰当的同步对象"><span class="toc-text">建议73 : 避免锁定不恰当的同步对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议74-警惕线程的IsBackground"><span class="toc-text">建议74 : 警惕线程的IsBackground</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议75-警惕线程不会立即启动"><span class="toc-text">建议75 : 警惕线程不会立即启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议76-警惕线程的优先级"><span class="toc-text">建议76 : 警惕线程的优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议77-正确停止线程"><span class="toc-text">建议77 : 正确停止线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议78-应避免线程数量过多"><span class="toc-text">建议78 : 应避免线程数量过多</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议79-使用ThreadPool或BackgroundWorker代替Thread"><span class="toc-text">建议79 : 使用ThreadPool或BackgroundWorker代替Thread</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议80-用Task代替ThreadPool"><span class="toc-text">建议80 : 用Task代替ThreadPool</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议81-使用Parallel简化同步状态下Task的使用"><span class="toc-text">建议81 : 使用Parallel简化同步状态下Task的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议82-Parallel-简化但不等同于Task默认行为"><span class="toc-text">建议82 : Parallel 简化但不等同于Task默认行为</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议83-小心Parallel中的陷阱"><span class="toc-text">建议83 : 小心Parallel中的陷阱</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#异步-多线程-任务和并行"><span class="toc-text">异步,多线程,任务和并行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议71-区分异步和多线程应用场景"><span class="toc-text">建议71:区分异步和多线程应用场景.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议72-在线程同步中使用信号量"><span class="toc-text">建议72 : 在线程同步中使用信号量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议73-避免锁定不恰当的同步对象"><span class="toc-text">建议73 : 避免锁定不恰当的同步对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议74-警惕线程的IsBackground"><span class="toc-text">建议74 : 警惕线程的IsBackground</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议75-警惕线程不会立即启动"><span class="toc-text">建议75 : 警惕线程不会立即启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议76-警惕线程的优先级"><span class="toc-text">建议76 : 警惕线程的优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议77-正确停止线程"><span class="toc-text">建议77 : 正确停止线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议78-应避免线程数量过多"><span class="toc-text">建议78 : 应避免线程数量过多</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议79-使用ThreadPool或BackgroundWorker代替Thread"><span class="toc-text">建议79 : 使用ThreadPool或BackgroundWorker代替Thread</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议80-用Task代替ThreadPool"><span class="toc-text">建议80 : 用Task代替ThreadPool</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议81-使用Parallel简化同步状态下Task的使用"><span class="toc-text">建议81 : 使用Parallel简化同步状态下Task的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议82-Parallel-简化但不等同于Task默认行为"><span class="toc-text">建议82 : Parallel 简化但不等同于Task默认行为</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议83-小心Parallel中的陷阱"><span class="toc-text">建议83 : 小心Parallel中的陷阱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议84-使用PLINQ"><span class="toc-text">建议84 : 使用PLINQ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议85-Task中的异常处理"><span class="toc-text">建议85 : Task中的异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议86-Parallel-中的异常处理"><span class="toc-text">建议86 : Parallel 中的异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议87-区分WPF和WinForm的线程模型"><span class="toc-text">建议87 : 区分WPF和WinForm的线程模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议88-并行并不总是速度更快"><span class="toc-text">建议88 : 并行并不总是速度更快</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议89-在并行方法体中谨慎使用锁"><span class="toc-text">建议89 : 在并行方法体中谨慎使用锁</span></a></li></ol></li></ol>
 </div>
 
     
@@ -828,8 +828,326 @@ cts<span class="token punctuation">.</span><span class="token function">Cancel</
 <p><strong>并行编程</strong>，意味着运行时在后台将任务分配到尽量多的CPU上，<strong>虽然它在后台使用Task进行管理，但这并不意味着它等同于异步</strong>。</p>
 <h2 id="建议83-小心Parallel中的陷阱"><a href="#建议83-小心Parallel中的陷阱" class="headerlink" title="建议83 : 小心Parallel中的陷阱"></a>建议83 : 小心Parallel中的陷阱</h2><p>Parallel的For和ForEach方法还支持一些相对复杂的应用。在这些应用中，它允许我们在每个任务启动时执行一些初始化操作，在每个任务结束后，又执行一些后续工作，同时，还允许我们监视<del>任务</del>的状态。但是，记住上面这句话“允许我们监视<del>任务</del>的状态”是错误的 : 应该把其中的“任务”改成“线程”。这，就是陷阱所在。</p>
 <p>我们需要深刻理解这些具体的操作和应用，不然，极有可能陷入这个陷阱中去。下面体会这段代码的输出是什么，如下所示:</p>
-<pre class="line-numbers language-csharp"><code class="language-csharp">
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums  <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span>   total <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    Parallel<span class="token punctuation">.</span><span class="token generic-method function">For<span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>
+    <span class="token number">0</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 参数1: 起始索引</span>
+    nums<span class="token punctuation">.</span>Length<span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 参数2: 结束索引</span>
+    <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true">// 参数3: Func&lt;TLocal>,用于新起线程初始化任务体subtotal的值</span>
+    <span class="token punctuation">(</span>i<span class="token punctuation">,</span> loopState<span class="token punctuation">,</span> subtotal<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+        <span class="token punctuation">{</span>
+            subtotal <span class="token operator">+</span><span class="token operator">=</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> subtotal<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 参数4: 任务体本身Func&lt;int, ParallelLoopState, TLocal, TLocal></span>
+        <span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Interlocked<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">ref</span> total<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//参数5: Action&lt;TLocal> localFinally, 用于线程结束时的收尾工作total += subtotal;</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"total={0}"</span><span class="token punctuation">,</span> total<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// public static ParallelLoopResult For&lt;TLocal>(</span>
+<span class="token comment" spellcheck="true">//     int fromInclusive, int toExclusive,</span>
+<span class="token comment" spellcheck="true">//     Func&lt;TLocal> localInit,</span>
+<span class="token comment" spellcheck="true">//     Func&lt;int, ParallelLoopState, TLocal, TLocal> body,</span>
+<span class="token comment" spellcheck="true">//     Action&lt;TLocal> localFinally)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这段代码有可能输出11,较少的情况下输出12,虽然理论上有可能输出13和14,但是我们应该很少有机会观察到。要明白为什么会有这样的输出，首先必须详细了解For方法的各个参数。</p>
+<p>前面两个参数相对容易理解，分别是起始索引和结束索引。参数body也比较容易理解，即任务体本身。其中subtotal 为单个任务的返回值。locallnit和localFinally就比较难理解了，并且陷阱也在这里。要理解这两个参数，必须先理解Parallel.For方法的运作模式。</p>
+<p><strong>For方法采用并发的方式来启动循环体中的每个任务，这意味着，任务是交给线程池去管理的</strong>。在上面的代码中，循环次数共计4次, 实际运行时调度启动的后台线程也就只有一个或两个。这就是并发的优势，也是线程池的优势，Parallel 通过内部的调度算法，最大化地节约了线程的消耗。</p>
+<p>locallnit 的作用是如果Parallel为我们新起了一个线程，它就会执行一些初始化的任务在上面的例子中:<code>() =&gt; { return 1; },</code> <strong>它会将任务体的subtotal初始化为1.</strong></p>
+<p>localFinally的作用是,在每个线程结束的时候, 它执行一些收尾工作<code>(x) =&gt; Interlocked.Add(ref total, x)</code> 实际也就是 <code>total = total + subtotal;</code>其中的x，其实代表的就是任务体中的返回值，具体在这个例子中就是subtotal在返回时的值。使用Interlocked是对total使用原子操作，以避免并发所带来的问题。</p>
+<p>现在，我们应该很好理解为什么上面这段代码的输出会不确定了。Parallel一共启动了4个任务，但是我们不能确定Parallel到底为我们启动了多少个线程，那是运行时根据自己的调度算法决定的。如果所有的并发任务只用了一个线程，则输出为11 ;如果用了两个线程，那么根据程序的逻辑来看，输出就是12了。</p>
+<p>在这段代码中，如果让locallnit返回的值为0，也许你就永远不会注意到这个陷阱:<code>() =&gt; { return 0; }</code></p>
+<p>现在，为了更清晰地体会这个陷阱，我们使用下面这段更好理解的代码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> stringArr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token string">"aa"</span><span class="token punctuation">,</span> <span class="token string">"bb"</span><span class="token punctuation">,</span> <span class="token string">"cc"</span><span class="token punctuation">,</span> <span class="token string">"dd"</span><span class="token punctuation">,</span> <span class="token string">"ee"</span><span class="token punctuation">,</span> <span class="token string">"ff"</span><span class="token punctuation">,</span> <span class="token string">"gg"</span><span class="token punctuation">,</span> <span class="token string">"hh"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+   <span class="token keyword">string</span> result <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">;</span>
+   Parallel<span class="token punctuation">.</span><span class="token generic-method function">For<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> stringArr<span class="token punctuation">.</span>Length<span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 循环8次</span>
+   <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">"-"</span><span class="token punctuation">,</span>  <span class="token comment" spellcheck="true">// 如果新起一个线程, 则执行这个初始化, 设置subResult的初始值为"-"</span>
+   <span class="token punctuation">(</span>i<span class="token punctuation">,</span> loopState<span class="token punctuation">,</span> subResult<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">return</span> subResult <span class="token operator">+</span><span class="token operator">=</span> stringArr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token punctuation">,</span>  <span class="token comment" spellcheck="true">// 任务主体</span>
+   <span class="token punctuation">(</span>threadEndString<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token comment" spellcheck="true">// 线程结束时进行一些收尾工作</span>
+   <span class="token punctuation">{</span>
+       result <span class="token operator">+</span><span class="token operator">=</span> threadEndString<span class="token punctuation">;</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Inner:"</span> <span class="token operator">+</span> threadEndString<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 这段代码的一个可能的输出为:</span>
+<span class="token comment" spellcheck="true">//Inner:-aabbceddffgghh</span>
+<span class="token comment" spellcheck="true">//Inner:-ee</span>
+<span class="token comment" spellcheck="true">//- aabbccddf fgghh- ee</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议84-使用PLINQ"><a href="#建议84-使用PLINQ" class="headerlink" title="建议84 : 使用PLINQ"></a>建议84 : 使用PLINQ</h2><p>第2章已经介绍过LINQ. LINQ最基本的功能就是对集合进行遍历查询，并在此基础上对元素进行操作。仔细推敲会发现，并行编程简直就是专门为这一类应用准备的。因此，微软专门为LINQ拓展了一个类ParallelEnumerable (该类型也在命名空间System.Linq中)，它所提供的扩展方法会让LINQ支持并行计算，这就是所谓的PLINQ。传统的LINQ计算是单线程的，PLINQ 则是并发的、多线程的，我们通过下面这个示例就可以看出这个区别:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">List<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> intList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> query <span class="token operator">=</span> <span class="token keyword">from</span> p <span class="token keyword">in</span> intList <span class="token keyword">select</span> p<span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"以下是LINQ顺序输出："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">int</span> item <span class="token keyword">in</span> query<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"以下是PLINQ并行输出："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> queryParallel <span class="token operator">=</span> <span class="token keyword">from</span> p <span class="token keyword">in</span> intList<span class="token punctuation">.</span><span class="token function">AsParallel</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">select</span> p<span class="token punctuation">;</span>
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">int</span> item <span class="token keyword">in</span> queryParallel<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>LINQ的输出会按照intList中的索引顺序打印出来。而PLINQ的输出是杂乱无章的。</p>
+<p>并行输出还有另外一种方式可以处理，那就是对queryParallel求ForAll:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 但是这种方法会带来一个问题，如果要将并行输出后的结果进行排序，ForAll会忽略掉查询的AsOrdered请求。</span>
+<span class="token keyword">var</span> queryParallel <span class="token operator">=</span> <span class="token keyword">from</span> p <span class="token keyword">in</span> intList<span class="token punctuation">.</span><span class="token function">AsParallel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">AsOrdered</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">select</span> p<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// ForAll会忽略掉查询的AsOrdered请求。</span>
+queryParallel<span class="token punctuation">.</span><span class="token function">ForAll</span><span class="token punctuation">(</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+  Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 要保持AsOrdered方法的需求, 则需要使用如下方式</span>
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">int</span> item <span class="token keyword">in</span> queryParallel<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在并行查询后再进行排序，会牺牲掉一定的性能。一些扩展方法默认会对元素进行排序，这些方法包括: OrderBy、 OrderByDescending、 ThenBy 和ThenByDescending。在实际的使用中，一定要注意到各种方式之间的差别，以便程序按照我们的设想运行。</p>
+<p>还有一些其他的查询方法，比如Take.如果我们这样编码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">int</span> item <span class="token keyword">in</span> queryParallel<span class="token punctuation">.</span><span class="token function">Take</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在顺序查询中，会返回前5个元素。但是在PLINQ中，会选出5个无序的元素。建议在对集合中的元素项进行操作的时候使用PLINQ代替LINQ。但是要记住，不是所有并行查询的速度都会比顺序查询快，在对集合执行某些方法时，顺序查询的速度会更快一点，如方法ElementAt等。在开发中，我们应该仔细辨别这方面的需求，以便找到最佳的解决方案。</p>
+<h2 id="建议85-Task中的异常处理"><a href="#建议85-Task中的异常处理" class="headerlink" title="建议85 : Task中的异常处理"></a>建议85 : Task中的异常处理</h2><p>在任何时候，异常处理都是非常重要的一个环节。多线程与并行编程中尤其是这样。如果不处理这些后台任务中的异常，应用程序将会莫名其妙的退出。处理那些不是主线程(如果是窗体程序，那就是UI主线程)产生的异常，最终的办法都是将其包装到主线程上。</p>
+<p><strong>在任务并行库中，如果对任务运行Wait、WaitAny、 WaitAll等方法，或者求Result属性，都能捕获到AggregateException异常</strong>。可以将AggregateException异常看做是任务并行库编程中最上层的异常。在任务中捕获的异常，最终都应该包装到AggregateException中。一个任务并行库异常的简单处理示例如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 对于主工作任务采用Wait的方法，这是不可取的。因为主工作任务也许会持续一段较长的时间，那样会阻塞调用者</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Task t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token string">"任务并行编码中产生的未知异常"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token keyword">try</span>
+   <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">//若有Result，可求Result</span>
+       t<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">AggregateException</span> e<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> e<span class="token punctuation">.</span>InnerExceptions<span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+           Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"异常类型：{0}{1}来自于：{2}{3}异常内容：{4}"</span><span class="token punctuation">,</span> item<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">,</span> item<span class="token punctuation">.</span>Source<span class="token punctuation">,</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">,</span> item<span class="token punctuation">.</span>Message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"主线程马上结束"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 异常类型：System.Exception</span>
+<span class="token comment" spellcheck="true">// 来自于：Tip85</span>
+<span class="token comment" spellcheck="true">// 异常内容：任务并行编码中产生的未知异常</span>
+<span class="token comment" spellcheck="true">// 主线程马上结束</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>大家也许已经注意到，虽然运行Wait、WaitAny、 WaitAll 方法，或者求Result属性能得到任务的异常信息，但是这会阻滞当前线程。这往往不是我们所希望看到的，岂能为了得到一个异常就故意等待? 这时可以考虑任务并行库中Task类型的一个功能: <strong>新起一个后续任务，就可以解决等待的问题:</strong></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 虽然不阻塞主线程但是新任务只完成了处理异常,异常处理没有回到主线程中，它还是在线程池中</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Task t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token string">"任务并行编码中产生的未知异常"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Task tEnd <span class="token operator">=</span> t<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Exception item <span class="token keyword">in</span> task<span class="token punctuation">.</span>Exception<span class="token punctuation">.</span>InnerExceptions<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"异常类型：{0}{1}来自于：{2}{3}异常内容：{4}"</span><span class="token punctuation">,</span> item<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">,</span> item<span class="token punctuation">.</span>Source<span class="token punctuation">,</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">,</span> item<span class="token punctuation">.</span>Message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> TaskContinuationOptions<span class="token punctuation">.</span>OnlyOnFaulted<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"主线程马上结束"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 主线程马上结束</span>
+<span class="token comment" spellcheck="true">// 异常类型：System.Exception</span>
+<span class="token comment" spellcheck="true">// 来自于：Tip85</span>
+<span class="token comment" spellcheck="true">// 异常内容：任务并行编码中产生的未知异常</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以上方法解决了主线程等待的问题，但是仔细研究我们会发现，异常处理没有回到主线程中，它还是在线程池中。在某些场合，比如对于业务逻辑上特定异常的处理，需要采取这种方式，而且我们也鼓励这种用法。但很明显，更多时候我们还需要更进一步将异常处理封装到主线程。</p>
+<p>Task没有提供将任务中的异常包装到主线程的接口。一个可行的办法是，仍旧使用类似Wait的方法来达到此目的。<strong>在本建议一开始的代码中，我们对于主工作任务采用Wait的方法，这是不可取的。因为主工作任务也许会持续一段较长的时间，那样会阻塞调用者</strong>，并让调用者觉得不能忍受。<strong>而本建议的第二段代码中，新任务只完成了处理异常</strong>，这意味着新任务不会延续较长时间，所以，在这个新任务上维持等待对于调用者来说，是可以忍受的。所以，我们可以采用这个方法将异常包装到主线程中:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 对线程调用Wait方法(或者求Result)不是最好的办法，因为它会阻滞主线程，并且CLR在后台会新起线程池线程来完成额外的工作</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Task t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidOperationException</span><span class="token punctuation">(</span><span class="token string">"任务并行编码中产生的未知异常"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Task tEnd <span class="token operator">=</span> t<span class="token punctuation">.</span><span class="token function">ContinueWith</span><span class="token punctuation">(</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> <span class="token keyword">throw</span> task<span class="token punctuation">.</span>Exception<span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> TaskContinuationOptions<span class="token punctuation">.</span>OnlyOnFaulted<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 异常</span>
+        tEnd<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">AggregateException</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> err<span class="token punctuation">.</span>InnerExceptions<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"异常类型：{0}{1}来自于：{2}{3}异常内容：{4}"</span><span class="token punctuation">,</span> item<span class="token punctuation">.</span>InnerException<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">,</span> item<span class="token punctuation">.</span>InnerException<span class="token punctuation">.</span>Source<span class="token punctuation">,</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">,</span>
+                item<span class="token punctuation">.</span>InnerException<span class="token punctuation">.</span>Message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"主线程马上结束"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 异常类型：System.InvalidOperationException</span>
+<span class="token comment" spellcheck="true">// 来自于：Tip85</span>
+<span class="token comment" spellcheck="true">// 异常内容：任务并行编码中产生的未知异常</span>
+<span class="token comment" spellcheck="true">// 主线程马上结束</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>故事并没有到此结束。对线程调用Wait方法(或者求Result)不是最好的办法，因为它会阻滞主线程，并且CLR在后台会新起线程池线程来完成额外的工作。如果要包装异常到主线程，另外一个方法就是使用事件通知的方式:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">event</span> EventHandler<span class="token operator">&lt;</span>AggregateExceptionArgs<span class="token operator">></span> AggregateExceptionCatched<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AggregateExceptionArgs</span> <span class="token punctuation">:</span> EventArgs
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> AggregateException AggregateException <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    AggregateExceptionCatched <span class="token operator">+</span><span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventHandler</span><span class="token operator">&lt;</span>AggregateExceptionArgs<span class="token operator">></span><span class="token punctuation">(</span>Program_AggregateExceptionCatched<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Task t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidOperationException</span><span class="token punctuation">(</span><span class="token string">"任务并行编码中产生的未知异常"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> err<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            AggregateExceptionArgs errArgs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AggregateExceptionArgs</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>AggregateException <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AggregateException</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+            <span class="token function">AggregateExceptionCatched</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> errArgs<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"主线程马上结束"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Program_AggregateExceptionCatched</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> AggregateExceptionArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> e<span class="token punctuation">.</span>AggregateException<span class="token punctuation">.</span>InnerExceptions<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"异常类型：{0}{1}来自于：{2}{3}异常内容：{4}"</span><span class="token punctuation">,</span> item<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">,</span> item<span class="token punctuation">.</span>Source<span class="token punctuation">,</span>
+            Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">,</span> item<span class="token punctuation">.</span>Message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在这个例子中，我们声明了一个委托<code>AggregateExceptionCatchHandler</code>,它接受两个参数，一个是事件的通知者;另一个是事件变量AggregateExceptionArgs.</p>
+<p><code>AggregateExceptionArgs</code>是为了包装异常而新建的一个类型。在主线程中，我们为事件<code>AggregateExceptionCatched</code>注册了事件处理方法<code>Program_AggregateExceptionCatched</code>,当任务Task捕获到异常时，代码引发事件。</p>
+<p>这种方式完全没有阻滞主线程。如果是在Winform或WPF窗体程序中，要在事件处理方法中处理UI界面，还可以将异常信息交给窗体的线程模型去处理。所以，<strong>最终建议大家采用事件通知的模型处理Task中的异常</strong>。</p>
+<blockquote>
+<p>注意: 任务调度器TaskScheduler提供了这样一个功能，它有一个静态事件用于处理未捕获到的异常。一般不建议这样使用，因为事件回调是在进行垃圾回收的时候才发生的。</p>
+</blockquote>
+<h2 id="建议86-Parallel-中的异常处理"><a href="#建议86-Parallel-中的异常处理" class="headerlink" title="建议86 : Parallel 中的异常处理"></a>建议86 : Parallel 中的异常处理</h2><p>建议85阐述了如何处理Task中的异常。由于Task的Start方法是异步启动的，所以我们需要额外的技术来完成异常处理。Parallel 相对来说就要简单很多，因为Parallel的调用者线程会等到所有的任务全部完成后，再继续自己的工作。简单来说，它具有同步的特性，所以，用下面的这段代码就可以实现将并发异常包装到主线程中:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">try</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> parallelExceptions <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcurrentQueue</span><span class="token operator">&lt;</span>Exception<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Parallel<span class="token punctuation">.</span><span class="token function">For</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">try</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidOperationException</span><span class="token punctuation">(</span><span class="token string">"并行任务中出现的异常"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                parallelExceptions<span class="token punctuation">.</span><span class="token function">Enqueue</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>parallelExceptions<span class="token punctuation">.</span>Count <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">AggregateException</span><span class="token punctuation">(</span>parallelExceptions<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">AggregateException</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Exception item <span class="token keyword">in</span> err<span class="token punctuation">.</span>InnerExceptions<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"异常类型：{0}{1}来自于：{2}{3}异常内容：{4}"</span><span class="token punctuation">,</span> item<span class="token punctuation">.</span>InnerException<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">,</span> item<span class="token punctuation">.</span>InnerException<span class="token punctuation">.</span>Source<span class="token punctuation">,</span> Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">,</span>
+                item<span class="token punctuation">.</span>InnerException<span class="token punctuation">.</span>Message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"主线程马上结束"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在Parallel的异常处理中，我们使用了一个线程安全的泛型集合<code>ConcurentQueue&lt;T&gt;</code>来处理并发中有可能会遇到的集合线程安全性问题(参见建议22:确保集合的线程安全)。</p>
+<h2 id="建议87-区分WPF和WinForm的线程模型"><a href="#建议87-区分WPF和WinForm的线程模型" class="headerlink" title="建议87 : 区分WPF和WinForm的线程模型"></a>建议87 : 区分WPF和WinForm的线程模型</h2><p>WPF和WinForm窗体应用程序都有一个要求，那就是UI元素(如Button、TextBox等)必须由创建它的那个线程进行更新。WinForm在这方面的限制并不是很严格.</p>
+<p>理论上, WinForm和WPF的线程模型非常接近，它们最后都是调用API (GetMessage或PeekMessage)来处理其他线程发送过来的消息，这些消息存储在系统的一个消息队列中。在WinForm和WPF中，创建主界面的线程就是主线程，也就是UI线程，UI线程负责处理该消息队列。只是两者在处理消息队列的，上层机制上稍微有一些不同，这就造成了同样的代码得到不同的结果。</p>
+<p><strong>本建议中的异常没有传递到主线程。在实际编码中，应当始终考虑将异常包装到主线程。</strong></p>
+<h2 id="建议88-并行并不总是速度更快"><a href="#建议88-并行并不总是速度更快" class="headerlink" title="建议88 : 并行并不总是速度更快"></a>建议88 : 并行并不总是速度更快</h2><p>并行所带来的后台任务及任务的管理，都会带来一定的开销，<strong>如果一项工作本来就能很快完成，或者说循环体很小，那么并行的速度也许会比非并行要慢。</strong></p>
+<p>DoSomething方法中的循环体为10时,同步只用了0.55 毫秒，而并行则使用了3.3毫秒才完成工作。现在，为了模拟让循环体做更多事情，将DoSomething方法中的循环体由10变为10000000。运行的结果为:</p>
+<ul>
+<li>同步耗时: 00:00:01.3059138</li>
+<li>并行耗时: 00: 00:00.6560593</li>
+</ul>
+<p>当循环体需要做更多工作的时候，我们发现，同步需要1.3秒才能完成工作，而并行则仅使用0.6秒就完成了工作。</p>
+<h2 id="建议89-在并行方法体中谨慎使用锁"><a href="#建议89-在并行方法体中谨慎使用锁" class="headerlink" title="建议89 : 在并行方法体中谨慎使用锁"></a>建议89 : 在并行方法体中谨慎使用锁</h2><p>除了建议88所提到的场合，要谨慎使用并行的情况还包括:某些本身就需要同步运行的场合，或者需要较长时间锁定共享资源的场合。</p>
+<p>在对整型数据进行同步操作时，可以使用静态类Interlocked的Add方法，这就极大地避免了由于进行原子操作长时间锁定某个共享资源所带来的同步性能损耗。回顾建议83中的例子。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums  <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span>   total <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    Parallel<span class="token punctuation">.</span><span class="token generic-method function">For<span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> nums<span class="token punctuation">.</span>Length<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>i<span class="token punctuation">,</span> loopState<span class="token punctuation">,</span> subtotal<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+        <span class="token punctuation">{</span>
+            subtotal <span class="token operator">+</span><span class="token operator">=</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> subtotal<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Interlocked<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">ref</span> total<span class="token punctuation">,</span> x<span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"total={0}"</span><span class="token punctuation">,</span> total<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>理论上，针对total的加法操作，需要使用一个同步锁，否则就无法避免一次tornread (即两次mov操作所导致的字段内存地址边界对齐问题)。FCL通过提供Interlocked类型解决了这个问题。FCL用来解决简单类型的原子性操作还提供了volatile 关键字。不过这些都不是本建议所要讨论的重点。FCL现有的原子性操作为我们同步整型数据的时候，带来了性能上的提高。但是，在其他一些场合，我们却不得不考虑因为同步锁带来的损耗。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    SampleClass sample <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SampleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Parallel<span class="token punctuation">.</span><span class="token function">For</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">10000000</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> sample<span class="token punctuation">.</span><span class="token function">SimpleAdd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>sample<span class="token punctuation">.</span>SomeCount<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">SampleClass</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">long</span> SomeCount <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">private</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SimpleAdd</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        SomeCount<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 1269197</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>显然，这与我们的期待输出10000000有很大的差距。为了保证输出正确，必须为并行中的方法体加锁(假设SampleClass是外部提供的API,无权进行源码修改在其内部加锁) :</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">object</span> syncObj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Parallel<span class="token punctuation">.</span><span class="token function">For</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">10000000</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">lock</span> <span class="token punctuation">(</span>syncObj<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       sample<span class="token punctuation">.</span><span class="token function">SimpleAdd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>经过以上:修改后，代码输出就正确了。但是，这段代码也带来了另外的问题。由于锁的存在，系统的开销也增加了，同步带来的线程上下文切换，使我们牺牲了CPU时间与空间性能。简单地说，就是这段代码还不如不用并行。在建议73中曾经提到过，锁其实就是让多线程变成单线程( 因为同时只允许有一个线程访问资源)。所以，我们需要谨慎地对待并行方法中的同步问题。如果方法体的全部内容都需要同步运行，就完全不应该使用并行。</p>
 
         
             <div class="donate-container">
