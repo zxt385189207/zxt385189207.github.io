@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        编写CSharp的157个建议笔记4 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#资源管理和序列化"><span class="toc-text">资源管理和序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议46-显式释放资源需继承接口IDisposable"><span class="toc-text">建议46 : 显式释放资源需继承接口IDisposable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议47-即使提供了显式释放方法，也应该在终结器中提供隐式清理"><span class="toc-text">建议47 : 即使提供了显式释放方法，也应该在终结器中提供隐式清理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议48-Dispose方法应允许被多次调用"><span class="toc-text">建议48 : Dispose方法应允许被多次调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议49-在Dispose模式中应提取一个受保护的虚方法"><span class="toc-text">建议49 : 在Dispose模式中应提取一个受保护的虚方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议50-在Dispose模式中应区别对待托管资源和非托管资源"><span class="toc-text">建议50 : 在Dispose模式中应区别对待托管资源和非托管资源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议51-具有可释放字段的类型或拥有本机资源的类型应该是可释放的"><span class="toc-text">建议51 : 具有可释放字段的类型或拥有本机资源的类型应该是可释放的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议52-及时释放资源"><span class="toc-text">建议52 : 及时释放资源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议53-必要时应将不再使用的对象引用赋值为null"><span class="toc-text">建议53 : 必要时应将不再使用的对象引用赋值为null</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议54-为无用字段标注不可序列化"><span class="toc-text">建议54 : 为无用字段标注不可序列化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议55-利用定制特性减少可序列化的字段"><span class="toc-text">建议55 : 利用定制特性减少可序列化的字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议56-使用继承ISerializable接口更灵活地控制序列化过程"><span class="toc-text">建议56 : 使用继承ISerializable接口更灵活地控制序列化过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议57-实现ISerializable的子类型应负责父类的序列化"><span class="toc-text">建议57 : 实现ISerializable的子类型应负责父类的序列化</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        编写CSharp的157个建议笔记4
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-12-15 15:57:51</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CSharp的157个建议" title="CSharp的157个建议">CSharp的157个建议</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="资源管理和序列化"><a href="#资源管理和序列化" class="headerlink" title="资源管理和序列化"></a>资源管理和序列化</h1><p>资源管理(尤其是内存回收)曾经是程序员的噩梦，不过在.NET平台上这个噩梦似乎已经不复存在。CLR在后台为垃圾回收做了很多事情，使得我们现在谈起在.NET上进行开发时，都会说还是new一个对象吧!回收?有垃圾回收器呢。其实并没有这么简单，本章将会从资源管理的角度给出若干建议，以帮助大家构建一个更简洁、更高效的应用程序。</p>
+<p>另外，对象序列化是现代软件开发中的一项重要技术，无论是本地存储还是远程传输，都会使用序列化技术来保持对象状态。本章同时也会在对象序列化方面给出若干有用的建议。</p>
+<h2 id="建议46-显式释放资源需继承接口IDisposable"><a href="#建议46-显式释放资源需继承接口IDisposable" class="headerlink" title="建议46 : 显式释放资源需继承接口IDisposable"></a>建议46 : 显式释放资源需继承接口IDisposable</h2><p>在开始本建议之前，需要明确什么是C#程序(或者说.NET)中的资源。简单来说，C#中的每一个类型都代表一种资源， 而资源又分为两类:</p>
+<ul>
+<li>托管资源由CLR管理分配和释放的资源，即从CLR里new出来的对象。</li>
+<li>非托管资源不受CLR管理的对象，如Windows内核对象，或者文件、数据库连接、套接字、COM对象等。</li>
+</ul>
+<p>如果我们的类型使用到了非托管资源，或者需要显式地释放托管资源，那么就需要让类型继承<code>接口IDisposable</code>,这毫无例外。这相当于告诉调用者:类型对象是需要显式释放资源的，你需要调用类型的Dispose方法。</p>
+<p>不过，这一切并没有听上去的那么简单，一个标准的继承了IDisposable 接口的类型应该像下面这样去实现。这种实现我们称为<strong>Dispose 模式</strong>:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SampleClass</span> <span class="token punctuation">:</span> IDisposable
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//演示创建一个非托管资源</span>
+    <span class="token keyword">private</span> IntPtr nativeResource <span class="token operator">=</span> Marshal<span class="token punctuation">.</span><span class="token function">AllocHGlobal</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//演示创建一个托管资源</span>
+    <span class="token keyword">private</span> AnotherResource managedResource <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AnotherResource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">bool</span> disposed <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 实现IDisposable中的Dispose方法</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//必须为true</span>
+        <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//通知垃圾回收机制不再调用终结器（析构器）</span>
+        GC<span class="token punctuation">.</span><span class="token function">SuppressFinalize</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 必须，防止程序员忘记了显式调用Dispose方法</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token operator">~</span><span class="token function">SampleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//必须为false</span>
+        <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 非密封类修饰用protected virtual</span>
+    <span class="token comment" spellcheck="true">// 密封类修饰用private</span>
+    <span class="token keyword">protected</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">bool</span> disposing<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>disposed<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>disposing<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 清理托管资源</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>managedResource <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                managedResource<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                managedResource <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 清理非托管资源</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>nativeResource <span class="token operator">!=</span> IntPtr<span class="token punctuation">.</span>Zero<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Marshal<span class="token punctuation">.</span><span class="token function">FreeHGlobal</span><span class="token punctuation">(</span>nativeResource<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            nativeResource <span class="token operator">=</span> IntPtr<span class="token punctuation">.</span>Zero<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">//让类型知道自己已经被释放</span>
+        disposed <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SamplePublicMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>disposed<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ObjectDisposedException</span><span class="token punctuation">(</span><span class="token string">"SampleClass"</span><span class="token punctuation">,</span> <span class="token string">"SampleClass is disposed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">//省略</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">AnotherResource</span> <span class="token punctuation">:</span> IDisposable
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>如果类型需要显式释放资源，那么一定要继承IDispose接口。</strong></p>
+<p>继承IDispose接口也为实现语法糖using带来了便利。在C#编码中，如果使用using,编译器会自动为我们生成调用Dispose方法的IL代码.</p>
+<p>如果存在两个类型一致的对象, using还可以这样使用:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> <span class="token punctuation">(</span>sampleClass c1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SampleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> c2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SampleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果两个类型不一致，则可以这样使用:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">using</span> <span class="token punctuation">(</span>SampleClass c1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SampleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">using</span> <span class="token punctuation">(</span>Samp1eAnothorClass c2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SampleAnothorClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议47-即使提供了显式释放方法，也应该在终结器中提供隐式清理"><a href="#建议47-即使提供了显式释放方法，也应该在终结器中提供隐式清理" class="headerlink" title="建议47 : 即使提供了显式释放方法，也应该在终结器中提供隐式清理"></a>建议47 : 即使提供了显式释放方法，也应该在终结器中提供隐式清理</h2><p>提供终结器(<code>~类名() {}</code> )的意义在于:我们不能奢望类型的调用者肯定会主动调用Dispose方法，基于终结器会被垃圾回收器调用这个特点，它被用作资源释放的补救措施。</p>
+<p>在这里有必要对“终结器会被垃圾回收器调用”进行进一步的阐述。我们知道，在.NET中每次使用new操作符创建对象时，CLR都会为该对象在堆上分配内存，一旦这些对象不再被引用，就会回收它们的内存。</p>
+<ul>
+<li><strong>对于没有继承IDisposable接口的类型对象，垃圾回收器则会直接释放对象所占用的内存</strong>;</li>
+<li>而对于 <strong>实现了Dispose模式的类型</strong> ，在每次创建对象的时候，CLR都会将该对象的一个指针放到终结列表中，垃圾回收器在回收该对象的内存前，会首先将终结列表中的指针放到一个freachable队列中。同时，CLR还会分配专门的线程读取freachable队列，并调用对象的终结器，只有到这个时候，对象才会真正被标识为垃圾，并且在<strong>下一次进行垃圾回收</strong>时释放对象占用的内存。</li>
+</ul>
+<p>可以看到，实现了Dispose 模式的类型对象，起码要经过两次垃圾回收才能真正地被回收掉，因为垃圾回收机制会首先安排CLR调用终结器。基于这个特点，如果我们的类型提供了显式释放的方法来减少一次垃圾回收，同时也可以在终结器中提供隐式清理，以避免调用者忘记调用该方法而带来的资源泄漏。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 正常的垃圾回收</span>
+    <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 通知垃圾回收机制不再调用终结器</span>
+    <span class="token comment" spellcheck="true">// FCL提供的静态方法来通知垃圾回收器</span>
+    GC<span class="token punctuation">.</span><span class="token function">SuppressFinalize</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议48-Dispose方法应允许被多次调用"><a href="#建议48-Dispose方法应允许被多次调用" class="headerlink" title="建议48 : Dispose方法应允许被多次调用"></a>建议48 : Dispose方法应允许被多次调用</h2><p>一个类型的Dispose方法应该允许被多次调用而不抛异常。鉴于这个原因，类型内部维护了一个私有的布尔型变量disposed.</p>
+<p>对象被调用过Dispose方法，并不表示该对象已经被置为null,且被垃圾回收机制回收过内存，已经彻底不存在了。事实上，对象的引用可能还在。但是，对象被Dispose过，说明对象的正常状态已经不存在了，此时如果调用对象公开的方法，应该会为调用者抛出一个ObiectDisposedException。 方法SamplePublicMethod为我们演示</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SamplePublicMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">if</span><span class="token punctuation">(</span>disposed<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ObjectDisposedException</span><span class="token punctuation">(</span><span class="token string">"SampleClass"</span><span class="token punctuation">,</span> <span class="token string">"SampleClass is disposed!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>所以，在Dispose模式中，应该始终为类型创建-一个变量，用来表示对象是否已经Dispose过。</p>
+<h2 id="建议49-在Dispose模式中应提取一个受保护的虚方法"><a href="#建议49-在Dispose模式中应提取一个受保护的虚方法" class="headerlink" title="建议49 : 在Dispose模式中应提取一个受保护的虚方法"></a>建议49 : 在Dispose模式中应提取一个受保护的虚方法</h2><p>应该注意到:在标准的Dispose模式中，真正实现IDisposable接口的Dispose方法并没有做实际的清理工作，它其实是调用了下面这个带布尔参数且受保护的虚方法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 实现IDisposable中的Dispose方法</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//必须为true</span>
+    <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+
+<span class="token comment" spellcheck="true">/// 非密封类修饰用protected virtual</span>
+<span class="token comment" spellcheck="true">// 密封类修饰用private</span>
+<span class="token keyword">protected</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">bool</span> disposing<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>之所以提供这样一个受保护的虚方法，是因为考虑了这个类型会被其他类继承的情况。如果类型存在一个子类，子类也许会实现自己的Dispose模式。受保护的虚方法用来提醒子类:必须在实现自己的清理方法时注意到父类的清理工作，即子类需要在自已的释放方法中调用<code>base.Dispose</code>方法。查看下面这个标准的子类Dispose 模式中是如何调用<code>base.Dispose</code>方法的:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DerivedSampleClass</span> <span class="token punctuation">:</span> SampleClass
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//子类的非托管资源</span>
+    <span class="token keyword">private</span> IntPtr derivedNativeResource <span class="token operator">=</span> Marshal<span class="token punctuation">.</span><span class="token function">AllocHGlobal</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//子类的托管资源</span>
+    <span class="token keyword">private</span> AnotherResource derivedManagedResource <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AnotherResource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//定义自己的是否释放的标识变量</span>
+    <span class="token keyword">private</span> <span class="token keyword">bool</span> derivedDisposed <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 非密封类修饰用protected virtual</span>
+    <span class="token comment" spellcheck="true">// 密封类修饰用private</span>
+    <span class="token keyword">protected</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">bool</span> disposing<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>derivedDisposed<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>disposing<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 清理托管资源</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>derivedManagedResource <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                derivedManagedResource<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                derivedManagedResource <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 清理非托管资源</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>derivedNativeResource <span class="token operator">!=</span> IntPtr<span class="token punctuation">.</span>Zero<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Marshal<span class="token punctuation">.</span><span class="token function">FreeHGlobal</span><span class="token punctuation">(</span>derivedNativeResource<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            derivedNativeResource <span class="token operator">=</span> IntPtr<span class="token punctuation">.</span>Zero<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">//调用父类的清理代码</span>
+        <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span>disposing<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//让类型知道自己已经被释放</span>
+        derivedDisposed <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果不为类型提供这个受保护的虚方法，很有可能让开发者设计子类的时候忽略掉父类的清理工作。所以，基于继承体系的原因，要为类型的Dispose模式提供一个受保护的虚方法。</p>
+<h2 id="建议50-在Dispose模式中应区别对待托管资源和非托管资源"><a href="#建议50-在Dispose模式中应区别对待托管资源和非托管资源" class="headerlink" title="建议50 : 在Dispose模式中应区别对待托管资源和非托管资源"></a>建议50 : 在Dispose模式中应区别对待托管资源和非托管资源</h2><p>我们应该已经注意到:真正撰写资源释放代码的那个虚方法是带有一个布尔参数的。带着这个参数，是因为我们在资源释放时要区别对待托管资源和非托管资源。在供调用者调用的显式释放资源的无参Dispose方法中，调用参数是true,如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 手动调用,这表明，这个时候代码要同时处理托管资源和非托管资源。</span>
+<span class="token comment" spellcheck="true">// 实现IDisposable中的Dispose方法</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 必须为true</span>
+    <span class="token comment" spellcheck="true">// 清理托管资源,并告诉垃圾回收器不必再调用终结器</span>
+    <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//通知垃圾回收机制不再调用终结器（析构器）</span>
+    GC<span class="token punctuation">.</span><span class="token function">SuppressFinalize</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token comment" spellcheck="true">// 在供垃圾回收器调用的隐式清理资源的终结器中，调用参数是false</span>
+<span class="token comment" spellcheck="true">// 这表明，隐式清理时，只要处理非托管资源就可以了。</span>
+<span class="token operator">~</span><span class="token function">SampleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 必须为false</span>
+    <span class="token comment" spellcheck="true">// 不清理托管资源交给垃圾回收器处理</span>
+    <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>那么，为什么要区别对待托管资源和非托管资源呢?在仔细阐述这个问题之前，我们首先需要弄明白:<strong>托管资源需要手工清理吗?</strong></p>
+<p>不妨先将C#中的类型分为两类，</p>
+<ul>
+<li>一类继承了IDisposable接口; 暂且称为非普通类型</li>
+<li>一类则没有继承。暂且称为普通类型。</li>
+</ul>
+<p>非普通类型因为包含非托管资源，所以它需要继承IDisposable接口，但是，这里面包含非托管资源的类型本身，而它是一个托管资源。所以，对于刚才提出的问题，</p>
+<p>答案就是:托管资源中的普通类型不需要手动清理，而非普通类型是需要手动清理的(即调用Dispose方法)。</p>
+<p>Dispose模式设计的思路基于:如果调用者显式调用了Dispose方法，那么类型就该按部就班地将自己的资源全部释放。如果调用者忘记调用Dispose方法了，那么类型就假定自己的所有托管资源(哪怕是那些上段中阐述的非普通类型)会全部交给垃圾回收器回收，所以不进行手工清理。理解了这一点，我们就理解了为什么在Dispose方法中，虚方法传入的参数是true,而在终结器中，虚方法传入的参数是false.</p>
+<p><strong>不管调用Dispose方法传true还是false都会清理非托管资源. 并且还要调用基类的处理方法:base.Dispose(disposing);</strong></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">protected</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">bool</span> disposing<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>derivedDisposed<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>disposing<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 清理托管资源</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>derivedManagedResource <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            derivedManagedResource<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            derivedManagedResource <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 清理非托管资源</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>derivedNativeResource <span class="token operator">!=</span> IntPtr<span class="token punctuation">.</span>Zero<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Marshal<span class="token punctuation">.</span><span class="token function">FreeHGlobal</span><span class="token punctuation">(</span>derivedNativeResource<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        derivedNativeResource <span class="token operator">=</span> IntPtr<span class="token punctuation">.</span>Zero<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">//调用父类的清理代码</span>
+    <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span>disposing<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//让类型知道自己已经被释放</span>
+    derivedDisposed <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议51-具有可释放字段的类型或拥有本机资源的类型应该是可释放的"><a href="#建议51-具有可释放字段的类型或拥有本机资源的类型应该是可释放的" class="headerlink" title="建议51 : 具有可释放字段的类型或拥有本机资源的类型应该是可释放的"></a>建议51 : 具有可释放字段的类型或拥有本机资源的类型应该是可释放的</h2><p>在建议50中，我们将C#中的类型分为:普通类型和继承了IDisposable接口的非普通类型。非普通类型除了那些包含托管资源的类型外，还包括类型本身也包含一个非普通类型的字段的类型。</p>
+<p>在标准的Dispose模式中，我们对非普通类型举了一个例子:</p>
+<p>一个非普通类型AnotherResource。<strong>由于AnotherResource是一个非普通类型，所以如果现在有这么一个类型，它组合了AnotherResource,那么它就应该继承IDisposable接口</strong>，代码如下</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">AnotherSampleClass</span> <span class="token punctuation">:</span> IDisposable
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> AnotherResource managedResource <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AnotherResource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">bool</span> disposed <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        GC<span class="token punctuation">.</span><span class="token function">SuppressFinalize</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token operator">~</span><span class="token function">AnotherSampleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">protected</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token keyword">bool</span> disposing<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>disposed<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>disposing<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 清理托管资源</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>managedResource <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                managedResource<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                managedResource <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        disposed <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SamplePublicMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>disposed<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ObjectDisposedException</span><span class="token punctuation">(</span><span class="token string">"AnotherSampleClass"</span><span class="token punctuation">,</span> <span class="token string">"AnotherSampleClass is disposed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">//省略</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>类型AnotherSampleClass虽然没有包含任何显式的非托管资源，但是由于它本身包含了一个非普通类型，所以我们仍旧必须为它实现一个标准的Dispose模式。除此以外，类型拥有本机资源(即非托管类型资源)，它也应该继承IDisposable接口。</p>
+<h2 id="建议52-及时释放资源"><a href="#建议52-及时释放资源" class="headerlink" title="建议52 : 及时释放资源"></a>建议52 : 及时释放资源</h2><p>很多人会注意到:垃圾回收机制自动为我们隐式地回收了资源(垃圾回收器会自动调用终结器)，于是不禁会问:为什么还要主动释放资源呢?我们来看以下这个例子:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 如果连续单击打开文件按钮,则会报错,因为文件被另一进程使用中</span>
+<span class="token comment" spellcheck="true">// 如果先单击一次打开文件, 再点击清理按钮, 则运行正常</span>
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">btnOpen_Click</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   FileStream fileStream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileStream</span><span class="token punctuation">(</span><span class="token string">@"c:\test.txt"</span><span class="token punctuation">,</span>FileMode<span class="token punctuation">.</span>Open<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 强制回收所有"代"的垃圾</span>
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">btnGC_Click</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   System<span class="token punctuation">.</span>GC<span class="token punctuation">.</span><span class="token function">Collect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>现在来分析: 在打开文件的方法中，方法执行完毕后，由于局部变量fileStream在程序中已经没有任何地方引用了，所以它会在下一次垃圾回收时被运行时标记为垃圾。那么，什么时候会进行下一次垃圾回收呢，或者说垃圾回收器什么时候才开始真正进行回收工作呢?微软官方的解释是，当满足以下条件之一时将发生垃圾回收:</p>
+<ul>
+<li>系统具有低的物理内存</li>
+<li>由托管堆上已分配的对象使用的内存超出了可接受的范围</li>
+<li>调用GC.Collect方法。</li>
+</ul>
+<p>几乎在所有情况下，我们都不必调用GC.Collect方法，因为垃圾回收器会负责调用它。但在本实例中，为了体会一下不及时回收资源的危害，所以进行了一次GC.Collect方法的调用，大家可以仔细体会运行这个方法所带来的不同。</p>
+<p><strong>垃圾回收机制中还有一个“代”的概念。一共分为3代: 0代、1代、2代。第0代包含一些短期生存的对象，如示例代码中的局部变量fleStream就是一个短期生存对象。当btnOpen.Click退出时，fleStream 就被丢到了第0代，但此刻并不进行垃圾回收，当第0代满了的时候，运行时会认为现在低内存的条件已满足，那时才会进行垃圾回收。所以，我们永远不知道fleStream这个对象(或者说资源)什么时候才会被回收。在回收之前，它实际已经没有用处，却始终占据着内存(或者说资源)不放，这对应用系统来说是一种极大的浪费， 并且，这种浪费还会干扰程序的正常运行(如在本实例中，由于它始终占着文件资源，导致我们不能再次使用这个文件资源了)。</strong></p>
+<p>不及时释放资源还带来另外一个问题。在建议47中我们已经了解到，如果类型本身继承了IDisposable接口，垃圾回收机制虽然会自动帮我们释放资源，但是这个过程却延长了，因为它不是在一次回收中完成所有的清理工作。本实例中的代码因为filesStream继承了IDisposable接口，故第一次进行垃圾回收的时候，垃圾回收器会调用fleStream的终结器，然后等待下一次的垃圾回收，这时fileStream对象才有可能被真正的回收掉。</p>
+<p>改进上述代码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 问题版本</span>
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">btnOpen_Click</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   FileStream fileStream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileStream</span><span class="token punctuation">(</span><span class="token string">@"c:\test.txt"</span><span class="token punctuation">,</span>FileMode<span class="token punctuation">.</span>Open<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true">// 但是如果上句代码抛出异常,这句话就永远执行不到</span>
+   fileStream<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 正确版本</span>
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">btnOpen_Click</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// using就是try{}finally{ ..Dispose(); }的语法糖,生成的IL代码是一样的</span>
+   <span class="token keyword">using</span><span class="token punctuation">(</span>FileStream fileStream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileStream</span><span class="token punctuation">(</span><span class="token string">@"c:\test.txt"</span><span class="token punctuation">,</span>FileMode<span class="token punctuation">.</span>Open<span class="token punctuation">)</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">/</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>using(){}</code>就是<code>try{}finally{ ..Dispose(); }</code>的语法糖,生成的IL代码是一样的.</p>
+<h2 id="建议53-必要时应将不再使用的对象引用赋值为null"><a href="#建议53-必要时应将不再使用的对象引用赋值为null" class="headerlink" title="建议53 : 必要时应将不再使用的对象引用赋值为null"></a>建议53 : 必要时应将不再使用的对象引用赋值为null</h2><p>在建议52中，提到了需要及时释放资源，却并没有进一步细说明是否有必要让引用等于null。本建议将进一步阐述相关知识。</p>
+<p>可能有人会认为:等于null可以帮助垃圾回收机制早点发现并标识对象是垃圾。不过也有人会认为:这没有任何帮助。是否赋值为null的问题首先是在方法的内部被提起的。</p>
+<p>为了更好地阐述这个问题，我们编写-一个Winform窗体应用程序。该程序完成这样的功能:单击其中一个按钮，执行某些方法，单击另外一个按钮，强制执行一次垃圾回收。代码如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">button1_Click</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> EventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">Method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">Method2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">button2_Click</span><span class="token punctuation">(</span><span class="token keyword">object</span> sender<span class="token punctuation">,</span> EventArgs e<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    GC<span class="token punctuation">.</span><span class="token function">Collect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">Method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    SimpleClass s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleClass</span><span class="token punctuation">(</span><span class="token string">"method1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    s <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">Method2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    SimpleClass s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleClass</span><span class="token punctuation">(</span><span class="token string">"method2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">SimpleClass</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">string</span> m_text<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">SimpleClass</span><span class="token punctuation">(</span><span class="token keyword">string</span> text<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        m_text <span class="token operator">=</span> text<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token operator">~</span><span class="token function">SimpleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        MessageBox<span class="token punctuation">.</span><span class="token function">Show</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"SimpleClass Disposed, tag:{0}"</span><span class="token punctuation">,</span> m_text<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>先单击按钮1, 再单击按钮2, 会发现:</p>
+<ul>
+<li>方法Method2中的对象会先被释放, 虽然它在Method1之后被调用</li>
+<li>方法Method2中的对线先被释放,虽然它不像Method1那样将引用复制为null</li>
+</ul>
+<p>在CLR托管的应用程序中，存在一个“根”的概念，类型的<code>静态字段</code>、<code>方法参数</code>，以及<code>局部变量</code>都可以作为“根”存在(<strong>值类型不能作为“根”，只有引用类型的指针才能作为”根”</strong>).</p>
+<p>上面的两个方法中，各自的局部变量在代码运行过程中会分别在内存中创建一个“根”。在一次垃圾回收中，垃圾回收器会沿着<code>线程栈</code>上行(这也解释了为什么Method2中的对象先被释放)检查“根” (线程栈检查完毕后，还会检查所有引用类型对象的静态字段的根集合)。当检查到方法内的“根”时，如果发现没有任何一个地方引用了局部变量，则不管是否已经显式将其赋值为null,都意味着该“根”已经被停止。然后，垃圾回收器会发现该根的引用为空，同时标记该根可被释放，这也代表着Simple类型对象所占用的内存空间可以被释放。所以，在上面的这个例子中，为s指定为null丝毫没有意义(除了局部变量，方法的参数变量也是这种情况)。</p>
+<blockquote>
+<p>更进一步的事实是，JIT 编译器是一个优化过的编译器，所以无论我们是否在方法内部将局部变量赋值为null,该语句都会被忽略: <code>s = null;</code> 如果我们将项目设置为Release模式，这行代码根本不会被编译进运行时内。</p>
+</blockquote>
+<p>正是由于以上分析，很多人会认为将对象赋值为null完全没有必要。但是，在另外一种情况下，却要注意及时地将变量赋值为null,那就是类型的静态字段。将类型对象赋值为null,并不意味着同时将类型的静态字段赋值为null,代码如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">SimpleClass</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">static</span> AnotherSimpleClass asc <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AnotherSimpleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">string</span> m_text<span class="token punctuation">;</span>
+
+   <span class="token keyword">public</span> <span class="token function">SimpleClass</span><span class="token punctuation">(</span><span class="token keyword">string</span> text<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       m_text <span class="token operator">=</span> text<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token operator">~</span><span class="token function">SimpleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">//asc = null;</span>
+       MessageBox<span class="token punctuation">.</span><span class="token function">Show</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"SimpleClass Disposed, tag:{0}"</span><span class="token punctuation">,</span> m_text<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">AnotherSimpleClass</span>
+<span class="token punctuation">{</span>
+   <span class="token operator">~</span><span class="token function">AnotherSimpleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       MessageBox<span class="token punctuation">.</span><span class="token function">Show</span><span class="token punctuation">(</span><span class="token string">"AnotherSimpleClass Disposed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>查看以上代码运行的结果我们会发现，在执行垃圾回收时，当类型SimpleClass对象被回收时，类型的静态字段asc却并没有被回收。必须要将SimpleClass终结器中注释的那条代码启用:<code>asc = null;</code></p>
+<p>字段asc才能被正确释放(注意:要单击两次释放按钮。这是因为第一次垃圾回收仅仅执行了终结器)。之所以静态字段不被释放(同时赋值为null语句也不会像局部变量那样被运行时编译器优化)，是因为类型的静态字段一旦被创建，该“根”就一直存在。所以，垃圾回收器始终不会认为它是一个垃圾。非静态字段则不存在这个问题。将asc改为非静态，再次运行上面的代码，会发现asc随着类型的释放而被释放。</p>
+<p>上面的代码中，让<code>asc=null</code>是在终结器中完成的。</p>
+<p><strong>在实际工作中，一旦我们感觉到自己的静态引用类型参数占用的内存空间比较大，并且用完后不会再使用，便可以立刻将其赋值为null。这也许并不必要，但这绝对是一个好习惯</strong>。试想在一个系统中那些时不时在类型中出现的静态变量吧!它们就那样静静地待在内存里，一旦被创建，就永远不会离开.</p>
+<h2 id="建议54-为无用字段标注不可序列化"><a href="#建议54-为无用字段标注不可序列化" class="headerlink" title="建议54 : 为无用字段标注不可序列化"></a>建议54 : 为无用字段标注不可序列化</h2><p>序列化是指这样一种技术: 把对象转变成流。相反的过程，我们称为反序列化。在很多的场合都需要用到这项技术，例如:</p>
+<ul>
+<li>把对象保存到本地，在下次运行程序的时候，恢复这个对象。</li>
+<li>把对象传到网络中的另外一台终端上，然后在此终端还原这个对象。</li>
+<li>其他的场合，如:把对象复制到系统的粘贴板中，然后用快捷键Ctrl+V恢复这个对象。</li>
+</ul>
+<p>有以下几方面的原因，决定了要为无用字段标注不可序列化:</p>
+<ol>
+<li>节省空间。类型在序列化后往往会存储到某个地方，如数据库、硬盘或内存中，如果一个字段在反序列化后不需要保持状态，那它就不应该被序列化，这会占用宝贵的空间资源。</li>
+<li>反序列化后字段信息已经没有意义了。如Windows内核句柄，在反序列化后往往已经失去了意义，所以它就不应该被序列化。</li>
+<li>字段因为业务上的原因不允许被序列化。例如，明文密码不应该被序列化后一同保存在文件中。</li>
+<li>如果字段本身所对应的类型在代码中未被设定为可序列化，那它就该被标注不可序列化，否则运行时会抛出异常SerializationException.</li>
+</ol>
+<p><strong>类型被添加Serializable属性后，默认所有的字段全部能够被序列化</strong>。代码如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">class</span> <span class="token class-name">Person</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">string</span> name<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> Age <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> Name
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> name<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">set</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>NameChanged <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token function">NameChanged</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            name <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">event</span> EventHandler NameChanged<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一个序列化工具类</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BinarySerializer</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//将类型序列化为字符串</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">string</span> <span class="token generic-method function">Serialize<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span>T t<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">using</span> <span class="token punctuation">(</span>MemoryStream stream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MemoryStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            BinaryFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> System<span class="token punctuation">.</span>Text<span class="token punctuation">.</span>Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>stream<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//将类型序列化为文件</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token generic-method function">SerializeToFile<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span>T t<span class="token punctuation">,</span> <span class="token keyword">string</span> path<span class="token punctuation">,</span> <span class="token keyword">string</span> fullName<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>Directory<span class="token punctuation">.</span><span class="token function">Exists</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Directory<span class="token punctuation">.</span><span class="token function">CreateDirectory</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">string</span> fullPath <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">@"{0}\{1}"</span><span class="token punctuation">,</span> path<span class="token punctuation">,</span> fullName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">using</span> <span class="token punctuation">(</span>FileStream stream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileStream</span><span class="token punctuation">(</span>fullPath<span class="token punctuation">,</span> FileMode<span class="token punctuation">.</span>OpenOrCreate<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            BinaryFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            stream<span class="token punctuation">.</span><span class="token function">Flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//将字符串反序列化为类型</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> TResult <span class="token generic-method function">Deserialize<span class="token punctuation">&lt;</span>TResult<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">string</span> s<span class="token punctuation">)</span> <span class="token keyword">where</span> TResult <span class="token punctuation">:</span> <span class="token keyword">class</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bs <span class="token operator">=</span> System<span class="token punctuation">.</span>Text<span class="token punctuation">.</span>Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">using</span> <span class="token punctuation">(</span>MemoryStream stream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MemoryStream</span><span class="token punctuation">(</span>bs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            BinaryFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> formatter<span class="token punctuation">.</span><span class="token function">Deserialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span> <span class="token keyword">as</span> TResult<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//将文件反序列化为类型</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> TResult <span class="token generic-method function">DeserializeFromFile<span class="token punctuation">&lt;</span>TResult<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">string</span> path<span class="token punctuation">)</span> <span class="token keyword">where</span> TResult <span class="token punctuation">:</span> <span class="token keyword">class</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">using</span> <span class="token punctuation">(</span>FileStream stream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileStream</span><span class="token punctuation">(</span>path<span class="token punctuation">,</span> FileMode<span class="token punctuation">.</span>Open<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            BinaryFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> formatter<span class="token punctuation">.</span><span class="token function">Deserialize</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span> <span class="token keyword">as</span> TResult<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>从上面的代码可以看到，所有的字段都反序列化成功，包括事件。但是，事件往往并不需要被反序列化。反序列化的运行环境往往和序列化时的环境是不一致的，所以这时就失去了将事件序列化到文件中的意义。我们为上面例子中的Person类型增加一个字段Department,假设Department 也没有标识序列化，那么，最终Person类型看上去应该像如下的形式才是合理的:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 最终版Person</span>
+<span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">class</span> <span class="token class-name">Person</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+
+   <span class="token punctuation">[</span>NonSerialized<span class="token punctuation">]</span>
+   <span class="token keyword">private</span> Department department<span class="token punctuation">;</span>
+   <span class="token keyword">public</span> Department Department
+   <span class="token punctuation">{</span>
+       <span class="token keyword">get</span>
+       <span class="token punctuation">{</span>
+           <span class="token keyword">return</span> department<span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+       <span class="token keyword">set</span>
+       <span class="token punctuation">{</span>
+           department <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token punctuation">[</span>field<span class="token punctuation">:</span> NonSerialized<span class="token punctuation">]</span>
+   <span class="token keyword">public</span> <span class="token keyword">event</span> EventHandler NameChanged<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>由于属性本质上是方法，所以不能将NonSerialized特性应用于属性上，在标识某个属性不能被序列化时，自动实现的属性显然已经不能使用。</li>
+<li>要让事件不能被序列化，需使用改进的特性语法field: NonSerialized.</li>
+</ol>
+<h2 id="建议55-利用定制特性减少可序列化的字段"><a href="#建议55-利用定制特性减少可序列化的字段" class="headerlink" title="建议55 : 利用定制特性减少可序列化的字段"></a>建议55 : 利用定制特性减少可序列化的字段</h2><p>特性(attribute) 可以声明式地为代码中的目标元素添加注解。运行时可以通过查询这些托管模块中的元数据信息，达到改变目标元素运行时行为的目的。在System.Runtime.Serialization命名空间下，有4个这样的特性，下面是MSDN上对它们的解释: .</p>
+<ul>
+<li>OnDeserializedAttribute，当它应用于某方法时，会指定在对象反序列化后立即调用此方法。</li>
+<li>OnDeserializingAttribute，当它应用于某方法时，会指定在反序列化对象时调用此方法。</li>
+<li>OnSerializedAttribute，如果将对象图应用于某方法，则应指定在序列化该对象图后是否调用该方法。</li>
+<li>OnSerializingAttribute，当它应用于某个方法时，会指定在对象序列化前调用此方法.</li>
+</ul>
+<p>利用这些特性，可以更加灵活地处理序列化和反序列化过程，例如，我们可以利用这一点来进一步减少某些可序列化的字段。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">class</span> <span class="token class-name">Person</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> FirstName<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> LastName<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// ChineseName一般都是由FirstName和LastName推断出, 可以不需要序列化此字段</span>
+    <span class="token punctuation">[</span>NonSerialized<span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> ChineseName<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 提供一个方法在序列化完成后,计算ChineseName值</span>
+    <span class="token punctuation">[</span>OnDeserializedAttribute<span class="token punctuation">]</span>
+    <span class="token keyword">void</span> <span class="token function">OnSerialized</span><span class="token punctuation">(</span>StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        ChineseName <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0} {1}"</span><span class="token punctuation">,</span> LastName<span class="token punctuation">,</span> FirstName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议56-使用继承ISerializable接口更灵活地控制序列化过程"><a href="#建议56-使用继承ISerializable接口更灵活地控制序列化过程" class="headerlink" title="建议56 : 使用继承ISerializable接口更灵活地控制序列化过程"></a>建议56 : 使用继承ISerializable接口更灵活地控制序列化过程</h2><p>除了利用特性Serializable之外，我们还可以注意到在序列化的应用中，常常会出现一个<code>接口ISerializable</code>.</p>
+<p>接口ISerializable 的意义在于，如果特性Serializable,以及与其相配套的OnDeserializedAttribute、OnDeserializingAttribute、 OnSerializedAttribute.OnSerializingAttribute、NonSerialized 等特性不能完全满足自定义序列化的要求，那就需要继承ISerializable了。</p>
+<p>以下是格式化器的工作流程:如果格式化器在序列化一个对象的时候，发现对象继承了ISerializable接口，那它就会<strong>忽略掉类型所有的序列化特性</strong>，转而调用类型的GetObjectData方法来构造一 个<code>SerializationInfo对象</code>，方法内部负责向这个对象添加所有需要序列化的字段(“ 添加”这个词可能不太恰当，因为我们在添加前，可以随意处置这个字段)。</p>
+<p>以建议55中的例子为例，如果要为ChineseName构造对应的值，在类型继承ISerializable接口的情况下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">:</span> ISerializable
+<span class="token punctuation">{</span>
+     <span class="token keyword">public</span> <span class="token keyword">string</span> FirstName<span class="token punctuation">;</span>
+     <span class="token keyword">public</span> <span class="token keyword">string</span> LastName<span class="token punctuation">;</span>
+     <span class="token keyword">public</span> <span class="token keyword">string</span> ChineseName<span class="token punctuation">;</span>
+
+     <span class="token keyword">public</span> <span class="token function">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+     <span class="token punctuation">{</span>
+     <span class="token punctuation">}</span>
+
+     <span class="token comment" spellcheck="true">// 反序列化所需要的构造器</span>
+     <span class="token comment" spellcheck="true">// 虽然在接口ISerializable中没有地方指出需要这样一个构造器，但这确实是需要的</span>
+     <span class="token comment" spellcheck="true">// 除非我们在序列化流之后不打算再把它反序列化回来</span>
+     <span class="token keyword">protected</span> <span class="token function">Person</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+     <span class="token punctuation">{</span>
+         FirstName <span class="token operator">=</span> info<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span><span class="token string">"FirstName"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         LastName <span class="token operator">=</span> info<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span><span class="token string">"LastName"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         ChineseName <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0} {1}"</span><span class="token punctuation">,</span> LastName<span class="token punctuation">,</span> FirstName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+
+     <span class="token comment" spellcheck="true">// 我们在方法GetObjectData中处理序列化，然后在一个带参数的构造方法中处理反序列化。</span>
+     <span class="token keyword">void</span> ISerializable<span class="token punctuation">.</span><span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+     <span class="token punctuation">{</span>
+         info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span><span class="token string">"FirstName"</span><span class="token punctuation">,</span> FirstName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span><span class="token string">"LastName"</span><span class="token punctuation">,</span> LastName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>实现ISerializable接口与使用Serializable特性相比前者还能做到后者做不到的功能. 例子是:将Person对象序列化，然后在反序列化中将其变为另一个对象: PersonAnother类型对象。要实现这样的功能，需要类型Person和PersonAnother都实现ISerializable接口，原理其实很简单，那就是在Person类的GetObjectData方法中处理序列化，在PersonAnother的受保护构造方法中反序列化。如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+     Person luminji <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> FirstName <span class="token operator">=</span> <span class="token string">"Minji"</span><span class="token punctuation">,</span> LastName <span class="token operator">=</span> <span class="token string">"Lu"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+     BinarySerializer<span class="token punctuation">.</span><span class="token function">SerializeToFile</span><span class="token punctuation">(</span>luminji<span class="token punctuation">,</span> <span class="token string">@"c:\", "</span>person<span class="token punctuation">.</span>txt"<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     PersonAnother p <span class="token operator">=</span> BinarySerializer<span class="token punctuation">.</span><span class="token generic-method function">DeserializeFromFile<span class="token punctuation">&lt;</span>PersonAnother<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">@"c:\person.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">class</span> <span class="token class-name">PersonAnother</span> <span class="token punctuation">:</span> ISerializable
+<span class="token punctuation">{</span>
+     <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+     <span class="token comment" spellcheck="true">// 反序列时候会自动调用</span>
+     <span class="token comment" spellcheck="true">// 虽然在接口ISerializable中没有地方指出需要这样一个构造器，但这确实是需要的</span>
+     <span class="token comment" spellcheck="true">// 除非我们在序列化流之后不打算再把它反序列化回来</span>
+     <span class="token keyword">protected</span> <span class="token function">PersonAnother</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+     <span class="token punctuation">{</span>
+         Name <span class="token operator">=</span> info<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span><span class="token string">"Name"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+     <span class="token comment" spellcheck="true">// 我们在方法GetObjectData中处理序列化，然后在一个带参数的构造方法中处理反序列化。</span>
+     <span class="token keyword">void</span> ISerializable<span class="token punctuation">.</span><span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+     <span class="token punctuation">{</span>
+     <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">:</span> ISerializable
+<span class="token punctuation">{</span>
+     <span class="token keyword">public</span> <span class="token keyword">string</span> FirstName<span class="token punctuation">;</span>
+     <span class="token keyword">public</span> <span class="token keyword">string</span> LastName<span class="token punctuation">;</span>
+     <span class="token keyword">public</span> <span class="token keyword">string</span> ChineseName<span class="token punctuation">;</span>
+
+     <span class="token keyword">public</span> <span class="token function">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+     <span class="token punctuation">{</span>
+     <span class="token punctuation">}</span>
+     <span class="token comment" spellcheck="true">// 反序列化锁需要的构造器</span>
+     <span class="token keyword">protected</span> <span class="token function">Person</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+     <span class="token punctuation">{</span>
+     <span class="token punctuation">}</span>
+
+     <span class="token comment" spellcheck="true">// 我们在方法GetObjectData中处理序列化，然后在一个带参数的构造方法中处理反序列化。</span>
+     <span class="token keyword">void</span> ISerializable<span class="token punctuation">.</span><span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+     <span class="token punctuation">{</span>
+         info<span class="token punctuation">.</span><span class="token function">SetType</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>PersonAnother<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span><span class="token string">"Name"</span><span class="token punctuation">,</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0} {1}"</span><span class="token punctuation">,</span> LastName<span class="token punctuation">,</span> FirstName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>info.SetType(typeof(PersonAnother));</code> 这句话特别重要, 负责告诉序列化器: 我要被反序列化为PersonAnother, 而PersonAnother都不需要知道谁将会被反序列化成它, 不需要做任何特殊处理.</p>
+<p>ISerializable接口的这个特性很重要，如果运用得当，在版本升级中，它能处理类型因为字段变化而带来的问题。</p>
+<h2 id="建议57-实现ISerializable的子类型应负责父类的序列化"><a href="#建议57-实现ISerializable的子类型应负责父类的序列化" class="headerlink" title="建议57 : 实现ISerializable的子类型应负责父类的序列化"></a>建议57 : 实现ISerializable的子类型应负责父类的序列化</h2><p>我们将要实现的继承自ISerializable的类型Employee有一个父类Person，假设Person没有实现序列化，而现在子类Employee却要求能够满足序列化的场景。不过很遗憾，序列化器没有默认去处理Person类型对象，这些事情只能由我们自己去做。</p>
+<p>以下是一个不妥的实现，序列化器只发现和处理了Employee中的Salary字段:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 错误版本:</span>
+<span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Employee luminji <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Employee</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"luminji"</span><span class="token punctuation">,</span> Salary <span class="token operator">=</span> <span class="token number">2000</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+        BinarySerializer<span class="token punctuation">.</span><span class="token function">SerializeToFile</span><span class="token punctuation">(</span>luminji<span class="token punctuation">,</span> <span class="token string">@"c:\", "</span>person<span class="token punctuation">.</span>txt"<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Employee luminjiCopy <span class="token operator">=</span> BinarySerializer<span class="token punctuation">.</span><span class="token generic-method function">DeserializeFromFile<span class="token punctuation">&lt;</span>Employee<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">@"c:\person.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"姓名：{0}"</span><span class="token punctuation">,</span> luminjiCopy<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"薪水：{0}"</span><span class="token punctuation">,</span> luminjiCopy<span class="token punctuation">.</span>Salary<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 输出:</span>
+        <span class="token comment" spellcheck="true">// 姓名：</span>
+        <span class="token comment" spellcheck="true">// 薪水：2000</span>
+
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Person</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">:</span> Person<span class="token punctuation">,</span> ISerializable
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> Salary <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">Employee</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">protected</span> <span class="token function">Employee</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Salary <span class="token operator">=</span> info<span class="token punctuation">.</span><span class="token function">GetInt32</span><span class="token punctuation">(</span><span class="token string">"Salary"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span>  <span class="token keyword">void</span> <span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span><span class="token string">"Salary"</span><span class="token punctuation">,</span> Salary<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>输出:<br>姓名：<br>薪水：2000</p>
+<p>可见，Name字段并没有正确处理，要修正该问题。这需要我们去修改类型Employee中受保护的构造方法和GetObjectData方法，<strong>为它们加入父类字段的处理</strong>，如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">protected</span> <span class="token function">Employee</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Salary <span class="token operator">=</span> info<span class="token punctuation">.</span><span class="token function">GetInt32</span><span class="token punctuation">(</span><span class="token string">"Salary"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//新增</span>
+    Name <span class="token operator">=</span> info<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span><span class="token string">"Name"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span><span class="token string">"Salary"</span><span class="token punctuation">,</span> Salary<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//新增</span>
+    info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span><span class="token string">"Name"</span><span class="token punctuation">,</span> Name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在上面的例子中，Person 类型未被设置为支持序列化。现在，假设Person类型已经实现了ISerializable 接口，那么这个问题处理起来相对会比较容易，在子类Employee中，<strong>我们只需要调用父类受保护的构造方法和GetObjectData方法就可以了</strong>。子类和父类都实现接口的版本如下，请参考:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">:</span> ISerializable
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">protected</span> <span class="token function">Person</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Name <span class="token operator">=</span> info<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span><span class="token string">"Name"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span><span class="token string">"Name"</span><span class="token punctuation">,</span> Name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">:</span> Person<span class="token punctuation">,</span> ISerializable
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> Salary <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">Employee</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 先调用父类的反序列化构造, 再增加子类中新增的字段</span>
+    <span class="token keyword">protected</span> <span class="token function">Employee</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+        <span class="token punctuation">:</span> <span class="token keyword">base</span><span class="token punctuation">(</span>info<span class="token punctuation">,</span> context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Salary <span class="token operator">=</span> info<span class="token punctuation">.</span><span class="token function">GetInt32</span><span class="token punctuation">(</span><span class="token string">"Salary"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 重写父类的序列化类,</span>
+    <span class="token comment" spellcheck="true">// 先调用父类的序列化方法</span>
+    <span class="token comment" spellcheck="true">// 添加子类独有的字段序列化</span>
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">void</span> <span class="token function">GetObjectData</span><span class="token punctuation">(</span>SerializationInfo info<span class="token punctuation">,</span> StreamingContext context<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">GetObjectData</span><span class="token punctuation">(</span>info<span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        info<span class="token punctuation">.</span><span class="token function">AddValue</span><span class="token punctuation">(</span><span class="token string">"Salary"</span><span class="token punctuation">,</span> Salary<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

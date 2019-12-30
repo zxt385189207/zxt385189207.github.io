@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        编写CSharp的157个建议笔记8 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#类型设计"><span class="toc-text">类型设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议102-区分接口和抽象类的应用场合"><span class="toc-text">建议102 : 区分接口和抽象类的应用场合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议103-区分组合和继承的应用场合"><span class="toc-text">建议103 : 区分组合和继承的应用场合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议104-用多态代替条件语句"><span class="toc-text">建议104 : 用多态代替条件语句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议105-使用私有构造函数强化单例"><span class="toc-text">建议105 : 使用私有构造函数强化单例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议106-为静态类添加静态构造函数"><span class="toc-text">建议106 : 为静态类添加静态构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议107-区分静态类和单例"><span class="toc-text">建议107 : 区分静态类和单例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议108-将类型标识为sealed"><span class="toc-text">建议108 : 将类型标识为sealed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议109-谨慎使用嵌套类"><span class="toc-text">建议109 : 谨慎使用嵌套类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议110-用类来代替enum"><span class="toc-text">建议110 : 用类来代替enum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议111-避免双向耦合"><span class="toc-text">建议111 : 避免双向耦合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议112-将现实世界中的对象抽象为类，将可复用对象圈起来就是命名空间"><span class="toc-text">建议112 : 将现实世界中的对象抽象为类，将可复用对象圈起来就是命名空间</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安全性设计"><span class="toc-text">安全性设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议113-声明变量前考虑最大值"><span class="toc-text">建议113 : 声明变量前考虑最大值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议115-通过HASH来验证文件是否被篡改"><span class="toc-text">建议115 : 通过HASH来验证文件是否被篡改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议116-避免用非对称算法加密文件"><span class="toc-text">建议116 : 避免用非对称算法加密文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议117-使用SSL确保通信中的数据安全"><span class="toc-text">建议117 : 使用SSL确保通信中的数据安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议118-使用SecureString保存密钥等机密字符串"><span class="toc-text">建议118 : 使用SecureString保存密钥等机密字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议119-不要使用自己的加密算法"><span class="toc-text">建议119 : 不要使用自己的加密算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议120-为程序集指定强名称"><span class="toc-text">建议120 : 为程序集指定强名称</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议121-为应用程序设定运行权限"><span class="toc-text">建议121 : 为应用程序设定运行权限</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        编写CSharp的157个建议笔记8
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-12-21 12:21:47</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CSharp的157个建议" title="CSharp的157个建议">CSharp的157个建议</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="类型设计"><a href="#类型设计" class="headerlink" title="类型设计"></a>类型设计</h1><p>在编码过程中，编写类型是最基础的，即便是最著名的“Hello World”也是包含在类型(Class)中。所以，类型设计应该被充分关注。不恰当的类型设计会制造出恐怖的“代码森林”来。杂乱的类型、混沌的代码，会随着开发的发展变得越来越难以维护，随处滋生的Bug也会逐渐消耗开发人员的精力。</p>
+<p>当然，如果你一开始就遵循一些必要的准则，并且不间断地进行代码重构，以上的困扰将会越来越少。本章给出了类型设计中的部分建议，跟随这些建议，混沌的状况将会变得越来越有次序。</p>
+<h2 id="建议102-区分接口和抽象类的应用场合"><a href="#建议102-区分接口和抽象类的应用场合" class="headerlink" title="建议102 : 区分接口和抽象类的应用场合"></a>建议102 : 区分接口和抽象类的应用场合</h2><p>接口和抽象类具有一些显而易见的区别，它们是:</p>
+<ul>
+<li>1)接口支持多继承，抽象类则不能。</li>
+<li>2)接口可以包含方法、属性、索引器、事件的签名，但不能有实现，抽象类则可以。</li>
+<li>3)接口在增加新方法后，所有的继承者都必须重构，否则编译不会通过，而抽象类则不需要。</li>
+</ul>
+<p>这些区别导致两者的应用场景各有不同。如果用最简练的语言来概括，就是:</p>
+<ul>
+<li>1)如果对象存在多个功能相近且关系紧密的版本，则使用抽象类。</li>
+<li>2)如果对象关系不紧密，但是若干功能拥有共同的声明，则使用接口。</li>
+<li>3)抽象类适合于提供丰富功能的场合，接口则更倾向于提供单一的一组功能。</li>
+</ul>
+<p>要理解概念，最好的办法就是使用实例。查看FCL的继承体系可知，抽象类型Stream及其相关子类FileStream、MemoryStream、BufferedStream就是使用抽象类的典型。</p>
+<p>“流”可以有多个版本，比如文件流、内存流等。流在C#中可以表现为一个比特数组(byte[])， 所以可以预见到在流的多个版本之间，会涉及一些针对byte[]数组的共性操作。这便具备了多个流之间存在一个抽象基类的条件.</p>
+<p>从某种角度来看，抽象类比接口更具备代码的重用性。子类无需编写代码即可具备一个共性的行为。采用抽象基类的另一个好处是，</p>
+<ul>
+<li>如果为基类增加一个方法，则继承该基类的所有子类自然就会具备这个额外增加的方法，而接口却不能。</li>
+<li>如果要为接口增加一个方法，必须修改所有的子类。</li>
+</ul>
+<p><strong>所以，接口一旦被设计出来，就应该是不变的。抽象基类则可以随着版本的升级，增加一些功能。</strong></p>
+<p>在FCL的继承体系中，实现成接口的典型案例就是一系列的集合类。每个集合类都继承自一组接口(参考建议21)。接口的作用更倾向于说明类型有某个或某组功能。接口只负责声明，而抽象基类往往还要负责实现。</p>
+<p>接口的职责必须单一，在接口中的方法应该尽可能地简练。以FCL集合的继承体系为例，所有集合类型都继承的<code>IEnumerable&lt;T&gt;</code>接口，它甚至只有一个方法，那就是返回一个迭代器.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">IEnumerable</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">:</span> IEnumerable
+<span class="token punctuation">{</span>
+   IEnumerator<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token function">GetEnumerator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>到了<code>ICollection&lt;T&gt;</code>级别，它在继承<code>IEnumerable&lt;T&gt;</code>的基础上，同时增加了自己的若干方法声明:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">ICollection</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">:</span> IEnumerable<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">,</span> IEnumerable
+<span class="token punctuation">{</span>
+   <span class="token keyword">void</span> <span class="token function">Add</span><span class="token punctuation">(</span>T item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">void</span> <span class="token function">Clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">bool</span> <span class="token function">Contains</span><span class="token punctuation">(</span>T item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">void</span> <span class="token function">CopyTo</span><span class="token punctuation">(</span>T<span class="token punctuation">[</span><span class="token punctuation">]</span> array<span class="token punctuation">,</span> <span class="token keyword">int</span> arrayIndex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">bool</span> <span class="token function">Remove</span><span class="token punctuation">(</span>T item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">int</span> Count <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+   <span class="token keyword">bool</span> IsReadOnly <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当然，这些声明依然足够精练，依据集合类别的细分法则，在<code>ICollection&lt;T&gt;</code>之下又会衍生出若干接口，每个具体的集合类再各自继承对应的接口。接口的方法尽可能精练是有好处的，这可以让它们总是能被尽可多的类型使用到，并且，这些类型之间可以毫无关系。常用的只有一个方法的接口还有<code>ICloneable</code>,<code>IComparable&lt;T&gt;</code>, <code>IDisposable</code> 等。以<code>IDisposable</code>为例:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">IDisposable</span>
+<span class="token punctuation">{</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>它提供了一种行为方式上的契约，即类型需要被显式释放。仔细思考这个接口的应用场合就可以知道: Socket 需要被释放，DbConnection 需要被释放，但是显然，它们是两种完全不同的类型。而抽象类则不一样，我们不应设计出两个毫无关系却同时继承自某个抽象类的子类。所以，有关抽象类和接口的区别，最经典的一个总结是:抽象类解决的是”<code>Is a</code>“, 接口解决的是“<code>Can do</code>“。</p>
+<p>在本建议中，不妄下接口和抽象类哪个更好的结论。我们应该在实际的设计中，充分考虑到类型的应用场合，根据它所要完成的功能，再来决定是将类型设计为抽象类还是接口。</p>
+<h2 id="建议103-区分组合和继承的应用场合"><a href="#建议103-区分组合和继承的应用场合" class="headerlink" title="建议103 : 区分组合和继承的应用场合"></a>建议103 : 区分组合和继承的应用场合</h2><p>继承所带来的多态性虽然是面向对象的一个重要特性，但是这种特性不能在所有的应用场合中滥用。继承应该被当做设计架构的有用补充，而不是全部。组合相对于继承的一个最重要的劣势，就是组合不能用于多态。不过现状是，在大多数的开发场合下，组合使用的频率要远远高于继承。</p>
+<p>从设计的角度来看，继承代表的是“Is a”,组合则代表了“Has a”. FileStream 和MemoryStream都是(Is a) Stream， 而对于线程Thread来说，它拥有(Has a) 线程上下文Context和区域性信息CultureInfo。这是最重要的区别，任何时候，设计理念上的因素总是排在第一位的。</p>
+<p>当然，继承不仅仅指继承自某个类型(class), 也可以指继承自某个接口(interface)。如本建议开头所指，继承最大的优点就是多态，更进一步说，这也奠定了面向抽象编程的基础。</p>
+<p>如下面的这两个方法，第一个方法<code>返回值</code>既可被用作<code>FileStream</code>，也可被用作<code>MemoryStream</code>。而对于第二个方法，该方法既可处理FileStream类型的对象，也可用于处理MemoryStream类型对象，这无疑提高了代码的复用性。组合则显然不具备这种特性。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Stream <span class="token function">Samp1eMethod1</span> <span class="token punctuation">(</span><span class="token keyword">bool</span> condition<span class="token punctuation">)</span>
+<span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">Samp1eMethod2</span> <span class="token punctuation">(</span>Stream stream<span class="token punctuation">)</span>
+<span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>从语法角度来看，继承易于扩展。基类一旦扩展一个具有public. internal、 protected访问修饰符的接口，所有的子类都会自动拥有其接口，组合则不能。组合要拥有任何内部对象的行为，必须手动编码。以Thread为例，组合要拥有CultureInfo的行为，必须首先在自身内部包含一个Culturelnfo字段</p>
+<p>到目前为止，似乎一直在说继承的优点。事实上，继承以上的优点，正好又是它的缺点。子类天然具有基类的公开接口，而这正好破坏了面向对象中的“封装性”。我们显然不需要每一层的类型都具备上层类的所有接口。一个类，如果其继承体系达到了3层(当然，凡事都有特例，WPF体系中的控件继承体系，以Shape为例，多达7层)，就可以考虑停止了。如果不停止，对调用者来说，最底层的类型将会有多少公开的方法和属性呢?答案是最底层的类型会拥有所有上层类型的开放接口。随着项目的发展，组合的优势会逐渐体现出来，它良好的封装性使类型可以对外宣称:我只做一件事情。</p>
+<p>组合的另一个优势是，它可以组合多个其他类型。在Thread这个类中，它组合了上下文Context和区域信息CultureInfo。如果我们愿意，想组合多少个类型就可以组合多少个类型。不过，如果组合太多类型，就意味着当前的类很有可能做了太多的事情，它就需要被拆分为两个类了。继承不具有这种特性，在C#中，子类只能有一个基类(接口则放开这种限制，子类可以继承自多个接口)。</p>
+<p>应当根据实际情况考虑是使用继承还是组合。一般来讲，组合更能满足大部分的应用场景。不要为了让代码看起来像“面向对象的”，而滥用继承。</p>
+<h2 id="建议104-用多态代替条件语句"><a href="#建议104-用多态代替条件语句" class="headerlink" title="建议104 : 用多态代替条件语句"></a>建议104 : 用多态代替条件语句</h2><p>假设要开发一个自动驾驶系统。在设计之初，此自动驾驶系统拥有一个驾驶系统命令的枚举类型:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">DriverCommand command <span class="token operator">=</span> DriverCommand<span class="token punctuation">.</span>Start<span class="token punctuation">;</span>
+<span class="token function">Driver</span><span class="token punctuation">(</span>command<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Driver</span><span class="token punctuation">(</span>DriverCommand command<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>command <span class="token operator">==</span> DriverCommand<span class="token punctuation">.</span>Start<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">// 启动...</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>有些人可能喜欢用switch语句(当然，switch 本质上也是if语句)。</p>
+<p>随着更多的系统功能不断地被开发出来，我们考虑为车辆加入的命令也越来越多，随着DriveCommand元素的增加，采用if语句或switch语句将会带来可怕的混乱状态是显而易见的。在一个复杂的控制系统中，命令可能会多达上百条。每增加一个命令，我们首先必须修改Drive方法。Drive 方法将会极其膨胀，并且每行代码几乎是一模一样的.</p>
+<p>在这种情况下，我们不得不考虑重构原来的代码。原来的设计理念也是欠妥当的，它不遵守设计模式中的“开闭原则”。开闭原则指的是:对扩展开放，对修改关闭。遵从开闭原则的一次重构是，使用多态来规避不断膨胀的条件语句。首先，设计一个抽象类Commander:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       Commander commander <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StartCommander</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token function">Drive</span><span class="token punctuation">(</span>commander<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       commander <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StopCommander</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token function">Drive</span><span class="token punctuation">(</span>commander<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Drive</span><span class="token punctuation">(</span>Commander commander<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       commander<span class="token punctuation">.</span><span class="token function">Execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">Commander</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">Execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">StartCommander</span> <span class="token punctuation">:</span> Commander
+<span class="token punctuation">{</span>
+
+   <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">void</span> <span class="token function">Execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">//启动</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">StopCommander</span> <span class="token punctuation">:</span> Commander
+<span class="token punctuation">{</span>
+
+   <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">void</span> <span class="token function">Execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">//停止</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到，代码简洁了不少，并且，可扩展性增强了。即使未来还需要增加命令，扩充相应的子类就可以了。而且我们关闭了修改，即对于Drive方法，即使增加再多的命名，也不需要对其进行修改。</p>
+<h2 id="建议105-使用私有构造函数强化单例"><a href="#建议105-使用私有构造函数强化单例" class="headerlink" title="建议105 : 使用私有构造函数强化单例"></a>建议105 : 使用私有构造函数强化单例</h2><p>单例指一个类型只生成一个实例对象。单例的一个简单实现如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span> <span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Singleton<span class="token punctuation">.</span>Instance<span class="token punctuation">.</span><span class="token function">SampleMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 有问题版本</span>
+<span class="token comment" spellcheck="true">// 编译器为其默认创建了一个构造器,而该默认构造器的访问修饰符是public的</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Singleton</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">static</span> Singleton instance <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> Sing1eton Instance
+   <span class="token punctuation">{</span>
+      <span class="token keyword">get</span>
+      <span class="token punctuation">{</span>
+         <span class="token keyword">return</span> instance <span class="token operator">==</span> nu1l <span class="token operator">?</span> <span class="token keyword">new</span> <span class="token class-name">Singleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> instance<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SampleMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在Main方法中就是使用了一次单例类型Singleton。单例首先会提供一个private的自身类型变量。在Instance属性中，它是负责创建类型本身的唯一实例。而如果外部需要使用该类型，则必须通过Instance属性，要特别强调的就是“必须”两个字。</p>
+<p>上文代码中存在一个问题:虽然在调用者代码中，我们是通过Instance属性来获取类型实例的。但是，类型却没有防止自身在外部被创建。<strong>由于类型Singleton没有提供构造方法，所以编译器为其默认创建了一个构造器</strong>，<strong>而该默认构造器的访问修饰符是public的</strong>。这就无法避免下面这样的代码在外部被使用了,这显然失去了单例的意义。实际上，这会导致系统中可能存在多个单例对象。所以，要避免这种情况的发生，必须为单例类型添加一个 <strong>private 的构造方法</strong>。Singleton 的改进</p>
+<p><code>private Singleton(){}</code> 防止实例在外部被创建.</p>
+<p>注意最终的这个单例并不是线程安全的。 在多线程的情况下，它还是有可能产生第二个实例。关于单例的一个著名技术就是“双锁定”技术。采用双锁定后，单例的线程安全版本如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">Singleton</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> Singleton instance <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token keyword">readonly</span> <span class="token keyword">object</span> padlock <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token function">Singleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Singleton Instance
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>instance <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">lock</span> <span class="token punctuation">(</span>padlock<span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>instance <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+                    <span class="token punctuation">{</span>
+                        instance <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Singleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">return</span> instance<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>最后，要强调的一点是:单例应该同时是一个sealed类型。</strong></p>
+<h2 id="建议106-为静态类添加静态构造函数"><a href="#建议106-为静态类添加静态构造函数" class="headerlink" title="建议106 : 为静态类添加静态构造函数"></a>建议106 : 为静态类添加静态构造函数</h2><p>静态类可以拥有构造方法，这就是静态构造方法。静态构造方法与实例构造方法相比较，它有几个自己的特点:</p>
+<ul>
+<li>只被执行一次，且在第一次调用类成员之前被运行时执行。</li>
+<li>代码无法调用它，不像实例构造方法使用new关键字就可以被执行。</li>
+<li>没有访向标识符。</li>
+<li>不能带任何参数。</li>
+</ul>
+<p>使用静态构造方法的好处是，可以初始化静态成员并捕获在这过程中发生的异常。而使用静态成员初始化器则不能在类型内部捕获异常了。查看下面这段代码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 不能在类型内部捕获异常</span>
+<span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">SampleClass</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 初始化构造器</span>
+    <span class="token keyword">static</span> FileStream fileStream <span class="token operator">=</span> File<span class="token punctuation">.</span><span class="token function">Open</span><span class="token punctuation">(</span><span class="token string">@"c:\temp.txt"</span><span class="token punctuation">,</span> FileMode<span class="token punctuation">.</span>Open<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">SampleMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果文件<code>c:\temp.txt</code>不存在，这段代码将会抛出一个TypeInitializationException.比较理想的做法是，在类型SampleClass的内部对fileStream进行初始化。提供静态构造器的SampleClass应该如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">SampleClass</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> FileStream fileStream<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 静态构造器里进行操作可以捕获异常</span>
+    <span class="token keyword">static</span> <span class="token function">SampleClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            fileStream <span class="token operator">=</span> File<span class="token punctuation">.</span><span class="token function">Open</span><span class="token punctuation">(</span><span class="token string">@"c:\temp.txt"</span><span class="token punctuation">,</span> FileMode<span class="token punctuation">.</span>Open<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">FileNotFoundException</span> err<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>err<span class="token punctuation">.</span>Message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//处理异常</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">SampleMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在上面的代码中，如果类型初始化不成功，会在类型的内部处理完毕，并不会将异常抛给调用者。因为有时候调用者甚至都不知道类型需要初始化什么内容，所以将初始化失败的异常处理交给上层是不合理的。</p>
+<p>对静态引用类型的初始化应该使用静态构造方法。但是，如果一个静态类只有值类型的变量，则可以放宽这种限制。</p>
+<h2 id="建议107-区分静态类和单例"><a href="#建议107-区分静态类和单例" class="headerlink" title="建议107 : 区分静态类和单例"></a>建议107 : 区分静态类和单例</h2><p>有一种观点认为:静态类可以作为单件模式的一种实现方式。事实上，这是不妥当的。按照传统的观点来看，单例是一个实例对象，而静态类并不满足这一点。静态类也直接违反面向对象三大特性中的两项:继承和多态。</p>
+<p>无法让一个静态类从其他类型继承, 同时，也不能让静态类作为参数和返回值进行传递，</p>
+<p>从本质上讲，在C#中，静态类不会被认做是一个“真正的对象”。而单例，则不会存在任何这样的问题。单例，它是一个实例对象，仅仅因为特殊的要求，它被自己实现为在整个系统中只有一个对象。</p>
+<h2 id="建议108-将类型标识为sealed"><a href="#建议108-将类型标识为sealed" class="headerlink" title="建议108 : 将类型标识为sealed"></a>建议108 : 将类型标识为sealed</h2><p>sealed能够阻止类型被其他类型继承。将类型修饰为sealed能够有效控制继承的深度。一个类型如果确信没有必要被继承，应该及时将其变为密封类。顺便提醒大家:在密封类中申明protected方法也是没有必要的。</p>
+<h2 id="建议109-谨慎使用嵌套类"><a href="#建议109-谨慎使用嵌套类" class="headerlink" title="建议109 : 谨慎使用嵌套类"></a>建议109 : 谨慎使用嵌套类</h2><p>使用嵌套类的原则是:当某类型需要访问另一个 类型的私有成员时，才将它实现为嵌套类。一个典型的例子是在实现集合时(如ArrayList)，要为集合实现迭代器，这时用到了嵌套类</p>
+<p><img src="/2019/12/21/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记8/QQ截图20191221223343.png" alt=""></p>
+<p>我们可以注意到，嵌套类ArrayListEnumeratorSimple访问了若干外部类ArrayList的私有成员。</p>
+<p>另外需要强调的是，如果必须出现一个嵌套类，应该将其实现为private。也就是说，除了包含它的外部类以外，不应该让任何其他类型可以访问到它。嵌套类的服务对象应该仅限于当前类型。</p>
+<h2 id="建议110-用类来代替enum"><a href="#建议110-用类来代替enum" class="headerlink" title="建议110 : 用类来代替enum"></a>建议110 : 用类来代替enum</h2><p>枚举(enum) 用来表示一组固定的值。例如，为了表示星期信息，我们可以定义枚举Week</p>
+<p><strong>枚举最大的优点在于它的类型是值类型。相比较引用类型来说，它可以在关键算法中提升性能，因为它不需要创建在“堆”中</strong>。但是，如果不考虑这方便的因素，我们不妨让类(引用类型)来代替枚举。用类来实现上面的枚举，代码如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Week</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> Week Monday <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Week</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> Week Tuesday <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Week</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//省略</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">int</span> _infoType<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token function">Week</span><span class="token punctuation">(</span><span class="token keyword">int</span> infoType<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        _infoType <span class="token operator">=</span> infoType<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在这个示例中，我们将类型Week的构造方法实现为private,这有效阻止了在类型的外部生成类的实例，使它的行为更接近于枚举。<code>类Week</code>相比<code>枚举Week</code>的优点在于，它能够添加方法或重写基类的方法，以便提供更丰富的功能。</p>
+<p>以星期为例，如果要提供更有意义的字符串值，如指定Monday为星期一，对于枚举来说，这并不是天然支持的，甚至会大费周折。曾经有人实现过枚举的这种功能，这里不妨展示给大家:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>EnumHelper<span class="token punctuation">.</span><span class="token function">GetDescription</span><span class="token punctuation">(</span>Week<span class="token punctuation">.</span>Monday<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">enum</span> Week
+<span class="token punctuation">{</span>
+   <span class="token punctuation">[</span><span class="token function">EnumDescription</span><span class="token punctuation">(</span><span class="token string">"星期一"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+   Monday<span class="token punctuation">,</span>
+   <span class="token punctuation">[</span><span class="token function">EnumDescription</span><span class="token punctuation">(</span><span class="token string">"星期二"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+   Tuesday
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span><span class="token function">AttributeUsage</span><span class="token punctuation">(</span>AttributeTargets<span class="token punctuation">.</span>Field<span class="token punctuation">,</span> AllowMultiple <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">EnumDescriptionAttribute</span> <span class="token punctuation">:</span> Attribute
+<span class="token punctuation">{</span>
+   <span class="token keyword">private</span> <span class="token keyword">string</span> description<span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">string</span> Description
+   <span class="token punctuation">{</span>
+       <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>description<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token keyword">public</span> <span class="token function">EnumDescriptionAttribute</span><span class="token punctuation">(</span><span class="token keyword">string</span> description<span class="token punctuation">)</span>
+       <span class="token punctuation">:</span> <span class="token keyword">base</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">this</span><span class="token punctuation">.</span>description <span class="token operator">=</span> description<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">EnumHelper</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">string</span> <span class="token function">GetDescription</span><span class="token punctuation">(</span>Enum <span class="token keyword">value</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">value</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+           <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentNullException</span><span class="token punctuation">(</span><span class="token string">"value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+       <span class="token keyword">string</span> description <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       FieldInfo fieldInfo <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetField</span><span class="token punctuation">(</span>description<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       EnumDescriptionAttribute<span class="token punctuation">[</span><span class="token punctuation">]</span> attributes <span class="token operator">=</span> <span class="token punctuation">(</span>EnumDescriptionAttribute<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>fieldInfo<span class="token punctuation">.</span><span class="token function">GetCustomAttributes</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>EnumDescriptionAttribute<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token keyword">if</span> <span class="token punctuation">(</span>attributes <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> attributes<span class="token punctuation">.</span>Length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+           description <span class="token operator">=</span> attributes<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>Description<span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+       <span class="token keyword">return</span> description<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这段代码会打印出: 星期一</p>
+<p>而如果不为枚举元素加上EnumDescription特性，我们只能使用:<code>Console. WriteLine (Week . Monday) ;</code>打印出: Monday</p>
+<p>如果在类中，就不会有枚举的这种不方便了，因为可以通过重写object的ToString方法将问题完美解决:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>Week<span class="token punctuation">.</span>Monday<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Week</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> Week Monday <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Week</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> Week Tuesday <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Week</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//省略</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">int</span> _infoType<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token function">Week</span><span class="token punctuation">(</span><span class="token keyword">int</span> infoType<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        _infoType <span class="token operator">=</span> infoType<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>_infoType<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token number">0</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token string">"星期一"</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token number">1</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token string">"星期二"</span><span class="token punctuation">;</span>
+            <span class="token keyword">default</span><span class="token punctuation">:</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token string">"不正确的星期信息！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>相比较枚举而言，类能赋予类型更多的行为。当然，如果应用场合满足如下特性，我们就应该更多地考虑使用枚举:</p>
+<ul>
+<li>效率。这源于枚举是值类型。</li>
+<li>类型用于内部，不需要增加更多的行为和属性。</li>
+<li>类型元素不需要提供附加的特性。</li>
+</ul>
+<h2 id="建议111-避免双向耦合"><a href="#建议111-避免双向耦合" class="headerlink" title="建议111 : 避免双向耦合"></a>建议111 : 避免双向耦合</h2><p>双向耦合是指两个类型之间互相引用。</p>
+<p>双向耦合在同一个项目下，不会存在太多的问题，带来的只是设计的问题。不过，如果两个类在不同的项目中时，就必须考虑解耦了，因为.NET不允许项目之间互相引用。如果尝试对两个项目互相引用则会出现的错误提示.</p>
+<p>常见的解耦方式就是提炼出一个接口。如果A、B类型分别在两个项目中，则提炼出来的这个接口要放置到一个新起的项目中，然后让A、B所在的两个项目分别引用这个接口所在的项目。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">interface</span> <span class="token class-name">ISample</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">void</span> <span class="token function">MethodA</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">A</span> <span class="token punctuation">:</span> ISample
+<span class="token punctuation">{</span>
+   B b<span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">MethodA</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      b<span class="token punctuation">.</span><span class="token function">MethodB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">B</span>
+<span class="token punctuation">{</span>
+   ISample a<span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">MethodB</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      a<span class="token punctuation">.</span><span class="token function">MethodA</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>接口ISample规范了类型A的行为，同时让类型A继承自ISample。在类型B中，我们针对抽象编程，也就是说，在B中字段a不再是一个A类型，而是将其修改为ISample类型。</p>
+<p>一般来说，类型之间不应该存在双向耦合，如果有此类情况出现，则应考虑重构。有一些第三方的框架都支持对项目进行解耦，如微软企业库(Enterprise Library)中的Unity和Spring.NEt。在实际编码中，可以考虑使用这些框架设计我们的项目。</p>
+<h2 id="建议112-将现实世界中的对象抽象为类，将可复用对象圈起来就是命名空间"><a href="#建议112-将现实世界中的对象抽象为类，将可复用对象圈起来就是命名空间" class="headerlink" title="建议112 : 将现实世界中的对象抽象为类，将可复用对象圈起来就是命名空间"></a>建议112 : 将现实世界中的对象抽象为类，将可复用对象圈起来就是命名空间</h2><p>在我们身边的世界中，对象是什么?对象就是事物，俗称“东西”。那么，什么东西算得上是一个对象呢?对象有属性、有行为。以动物为例，比如猫(Cat)。 Cat 可以有Name，这就是属性: Cat 有个恶习ScratchSofa ( 挠沙发)，这就是行为。我们把这些属性和行为结合起来，就成为一个类型.</p>
+<p>当然，类型只是规范了某类对象，它提炼出了接口、规范了协议，而真正的对象，是要生产出来的。比如Tom猫，必须生产(即new)出来，才会在现实世界(可以理解为CLR运行时)中真正存在( 即分配内存)。</p>
+<p>常常会有人问，什么是“面向对象编程”，我的代码“面向对象吗”?现在我们有了一个最初步的答案:当我们编码时，将CLR当成一个现实世界，并时刻考虑将某些具有共同属性和行为的对象抽象成一个个类型，这时我们就迈出了面向对象的第一步。</p>
+<p>当然，面向对象编程绝不会只有这点概念。现在我们有了正确的起点，接下来的路就要好走很多。</p>
+<h1 id="安全性设计"><a href="#安全性设计" class="headerlink" title="安全性设计"></a>安全性设计</h1><p>安全性主要包括两个方面:数据安全和代码安全。从数据安全的角度来讲，我们发布的软件应能保证不会因为设计问题导致数据异常，或者应用程序数据不会被未经授权的人窥视或随意修改。而从代码安全的角度来讲，我们首先要确保的就是发布的软件没有被他人恶意篡改过。</p>
+<h2 id="建议113-声明变量前考虑最大值"><a href="#建议113-声明变量前考虑最大值" class="headerlink" title="建议113 : 声明变量前考虑最大值"></a>建议113 : 声明变量前考虑最大值</h2><p>假设正在开发一个工资系统，其中一个模块负责处理加薪。加薪的代码看起来如下 <code>ushort salary  = 65534;</code>通过代码我们知道，员工的基数工资是65534，第一次加薪他争取到了1元. 每一次加薪，我们都想当然地认为薪水是在增加，而不是在减少。不过，我们来看看此代码的运行结果是否如此:</p>
+<ol>
+<li>第一次加薪，工资总數: 65535</li>
+<li>第二次加薪，工资总數: 0</li>
+</ol>
+<p>工资被清零了。</p>
+<p>如果让一个刚入行的程序员来写工资系统，他很可能会给我们设计一个ushort字段来存储月薪。65535元?够多的了，谁的月薪会超过这个数?当然，这里举的是一个极端例子。在这个例子中，我们存在很多的机会去修正这个Bug.但是，即便是最有经验的程序员，也会犯这种错误。在一个千万级的数据表中统计历史数据，你认为某个字段的求和极值会是多少?</p>
+<p>上面的错误貌似愚蠢并且低级，可是一不留神，我们就有可能掉入这样的陷阱。所以，应当始终在声明变量时考虑最大值。在C#中，如果要避免犯类似的错误，有一个 补救措施，那就是为运算加上checked关键字。使用checked关键字作为一种补救措施，在运算溢出的时候会抛出一个异常，而不是让程序继续下去。代码如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">checked</span>
+<span class="token punctuation">{</span>
+   salary <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">ushort</span><span class="token punctuation">)</span><span class="token punctuation">(</span>salary <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>经过修正的代码在运行到第二次加薪的时候，会抛出 <strong>System.OverflowException:算术运算导致溢出。</strong></p>
+<p>##建议114 : MD5 不再安全</p>
+<p>MD5不再安全不是就算法本身而言的。如果从可逆性的角度出发，MD5值不存在被破解的可能性。MD5 的算法公式如下: R=H(S)</p>
+<p>该公式表示:对于给定的一个源内容S, H可以将其映射为R。这里要注意其中的几个特点。首先，S到R的映射是多对一的映射;其次，R作为目标内容，是一个无规律的定长的字符串:最后，映射H是一种压缩映射，即R的空间远远小于S。</p>
+<p>MD5的算法特性使其无法存在一个逆过程，即无法将R还原成S.</p>
+<p>正是基于以上的特点，MD5被广泛应用于密码验证和消息体完整性验证。相信大家对使用MD5算法进行密码验证都不陌生。假设新注册了一个用户，当注册用户的密码第一次被存储到数据库时，往往会将其转换为MD5值存储，如果MD5值存储在数据库中，当用户登录时，只需要校验MD5就可以检查用户输入的密码是否正确了。如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"请输入密码，按回车键结束……"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">string</span> source <span class="token operator">=</span> Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">VerifyMd5Hash</span><span class="token punctuation">(</span>source<span class="token punctuation">,</span> <span class="token string">"D3A8E4D76A0AEF23B65D9F6D6BCB358F"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"密码正确，准许登录系统。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"密码有误，拒绝登录。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">bool</span> <span class="token function">VerifyMd5Hash</span><span class="token punctuation">(</span><span class="token keyword">string</span> input<span class="token punctuation">,</span> <span class="token keyword">string</span> hash<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">string</span> hashOfInput <span class="token operator">=</span> <span class="token function">GetMd5Hash</span><span class="token punctuation">(</span>input<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    StringComparer comparer <span class="token operator">=</span> StringComparer<span class="token punctuation">.</span>OrdinalIgnoreCase<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> comparer<span class="token punctuation">.</span><span class="token function">Compare</span><span class="token punctuation">(</span>hashOfInput<span class="token punctuation">,</span> hash<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">?</span> <span class="token keyword">true</span> <span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">string</span> <span class="token function">GetMd5Hash</span><span class="token punctuation">(</span><span class="token keyword">string</span> input<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">using</span> <span class="token punctuation">(</span>MD5CryptoServiceProvider md5 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MD5CryptoServiceProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> BitConverter<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span>md5<span class="token punctuation">.</span><span class="token function">ComputeHash</span><span class="token punctuation">(</span>UTF8Encoding<span class="token punctuation">.</span>Default<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>input<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span><span class="token string">"-"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>或许有人会问:为什么不直接存储密码，而使用MD5值呢?我想更大程度上这是出于保护隐私的目的。即便是一个银行系统，我们也不想让银行的后台管理人员看到我们的密码。而通过MD5值来校验，就可以确保无人可以查看或破解我们的密码，也达到了密码验证的目的。虽然有人可能会质疑，MD5的算法不是多对一的映射吗?也就是说，很有可能存在一个另外的密码，求出来的MD5值和我的这个密码是一样的啊。但是，在实际应用场合中，这个概率会很小，小到可以忽略不计。</p>
+<p>既然到目前为止所说的都是MD5的优点，那么，为什么说MD5是不安全的呢?因为，这个世界上还有一个方法，叫做穷举法。由于使用软件产品的用户大多数不是计算机专家，安全意识相对比较薄弱，所以他们设置的密码很有可能是简单的数字组合。这种情况下如果破解密码，穷举法就会派上很大的用处。以密码“8888”为例，测试下我们的穷举算法可以多长时间破解掉密码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"开始穷举法破解用户密码……"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">string</span> key <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">;</span>
+Stopwatch watch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Stopwatch</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+watch<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">9999</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">VerifyMd5Hash</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"CF79AE6ADDBA60AD018347359BD144D2"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        key <span class="token operator">=</span> i<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">break</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+watch<span class="token punctuation">.</span><span class="token function">Stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"密码已破解，为：{0}，耗时{1}毫秒。"</span><span class="token punctuation">,</span> key<span class="token punctuation">,</span> watch<span class="token punctuation">.</span>ElapsedMilliseconds<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 开始穷举法破解用户密码……</span>
+<span class="token comment" spellcheck="true">// 密码已破解，为：8888，耗时41毫秒。</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可见，如果我们的密码过于简单，计算机甚至都不需要1秒的时间就能完成暴力破解。当然，这种算法不是针对MD5的可逆破解，而是非常愚笨的穷举。但是，即便是这样，穷举带来的危害仍然是巨大的。现在，<strong>已经有很多免费的或商业的MD5字典库</strong>，<strong>存储了相当数量字符串的MD5值，我们只要提交一个MD5值进去，立刻就可以得到它的原文</strong>，只要这个原文不是非常复杂。所以，从这个方面来说，MD5不再安全。</p>
+<p>明白了这一点，我们就需要找一个方法来改进MD5求值了。目前，最通用的做法是多次使用MD5值法。我们修改一下GetMd5Hash方法，代码如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 这种方法效果也不是很好</span>
+<span class="token comment" spellcheck="true">// 按照上述穷举法耗时119毫秒。</span>
+<span class="token keyword">static</span> <span class="token keyword">string</span> <span class="token function">GetMd5Hash</span><span class="token punctuation">(</span><span class="token keyword">string</span> input<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">string</span> hashKey <span class="token operator">=</span> <span class="token string">"Aa1@#$,.Klj+{>.45oP"</span><span class="token punctuation">;</span>
+   <span class="token keyword">using</span> <span class="token punctuation">(</span>MD5CryptoServiceProvider md5 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MD5CryptoServiceProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">string</span> hashCode <span class="token operator">=</span> BitConverter<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span>md5<span class="token punctuation">.</span><span class="token function">ComputeHash</span><span class="token punctuation">(</span>UTF8Encoding<span class="token punctuation">.</span>Default<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>input<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span><span class="token string">"-"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span> <span class="token operator">+</span> BitConverter<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span>md5<span class="token punctuation">.</span><span class="token function">ComputeHash</span><span class="token punctuation">(</span>UTF8Encoding<span class="token punctuation">.</span>Default<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>hashKey<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span><span class="token string">"-"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token keyword">return</span> BitConverter<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span>md5<span class="token punctuation">.</span><span class="token function">ComputeHash</span><span class="token punctuation">(</span>UTF8Encoding<span class="token punctuation">.</span>Default<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>hashCode<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span><span class="token string">"-"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在改进后的方法中，我们首先设计了一个足够复杂的密码hashKey,然后将它的MD5值和用户输人密码的MD5值相加，再求一次MD5值作为返回值。经过这个过程以后，密码的长度够了，复杂度也够了，想要通过穷举法来得到真正的密码值其成本也就大大增加了。</p>
+<h2 id="建议115-通过HASH来验证文件是否被篡改"><a href="#建议115-通过HASH来验证文件是否被篡改" class="headerlink" title="建议115 : 通过HASH来验证文件是否被篡改"></a>建议115 : 通过HASH来验证文件是否被篡改</h2><p>MD5算法作为一种最通用的HASH算法，也被广泛用于文件完整性的验证上。文件通过MD5-HASH算法求值，总能得到一个固定长度的MD5值。虽说MD5算法是一种压缩算法，以致可能存在多个样本空间会得到相同目标字符串的情况，但是这种概率很小。一个1GB的文件，哪怕只改动一字节的内容，得到的MD5值也会完全不同。正是由于这个特点，对文件求MDS值，可以用来验证文件是否被篡改过。</p>
+<p>文件的HASH值校验在网络传输中特别有用。网络双方事先通过约定的某种途径，由发送者告知接收者文件的HASH值是多少，接收者在收取到文件之后，对文件求HASH值，然后和事先被告知的那个HASH值做一下比较，如果是一致的，就可以确保文件在传输过程中没有被篡改过。</p>
+<h2 id="建议116-避免用非对称算法加密文件"><a href="#建议116-避免用非对称算法加密文件" class="headerlink" title="建议116 : 避免用非对称算法加密文件"></a>建议116 : 避免用非对称算法加密文件</h2><p>MD5值或者说HASH值是一种不可逆的算法。如果需要从密文还原成明文，那么就需要<code>对称</code>和<code>非对称</code>这两类可逆算法了。</p>
+<p>首先，简单介绍一下这两类算法。图9-1是对称算法的示意图。</p>
+<p><img src="/2019/12/21/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记8/QQ截图20191222140608.png" alt=""></p>
+<p>在对称算法中，首先需要发送方和接收方协定一个密钥K。K可以是一个密钥对，但必须是加密密钥和解密密钥之间能够互相推算出来的。在最简单也是最常用的对称算法中，加密和解密共享一个密钥。在图9-1中，为了简单起见，使用的就是一个密钥。密钥K为了防止被第三方获取，可以通过一个秘密通道由发送方传送给接收方。当然，这个秘密通道可以是任何形式的，如果觉得有必要，你甚至可以通过邮政寄送一封信函告诉对方密钥是什么。</p>
+<p>在对称加密中，明文通过对称加密变成密文，然后在公开通道中传输。这个时候，即便第三方截获了数据，由于他没有掌握密钥，也是解密不了密文的。</p>
+<p>简单介绍了对称加密，现在我们来看非对称加密。图9-2是一个非对称加密的示意图:</p>
+<p><img src="/2019/12/21/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记8/QQ截图20191222140633.png" alt=""></p>
+<p>在非对称算法中，首先应该有一个密钥对，这个密钥对含有两部分内容，分别称做公钥(PK) 和私钥(SK)，公钥通常用来加密，私钥则用来解密。在对称算法中，也讲到了可以有两个密钥(即加密密钥和解密密钥)。但是，对称算法中的加/解密密钥可以互相转换，而在非对称算法中，则不能从公钥推算出私钥。所以，我们完全可以将公钥公开到任何地方。</p>
+<p>如图9-2所示，发送者用接收方公开的公钥PK进行加密。接收方在收到密文后，再用与公钥对应的私钥SK进行解密。同样，密文可以被截获，但是由于截获者只有公钥，没有私钥，因此仍然不能进行解密。</p>
+<p>对称算法和非对称算法各有优缺点。非对称加密的突出优点是用于解密的密钥(私钥)永远不需要传递给对方。但是，它的缺点也很突出:非对称加密算法复杂，导致加/解密速度慢，因此只适用于数据量小的场合。而对称加密加/解密的优点是效率高，系统开销小，适合进行大数据量的加/解密。如果文件比较大，那么最适合的加密方式就是对称加密。下面是一个针对文件对称加密的实现:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">EncryptFile</span><span class="token punctuation">(</span><span class="token string">@"c:\temp.txt"</span><span class="token punctuation">,</span> <span class="token string">@"c:\tempcm.txt"</span><span class="token punctuation">,</span> <span class="token string">"123"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"加密成功！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">DecryptFile</span><span class="token punctuation">(</span><span class="token string">@"c:\tempcm.txt"</span><span class="token punctuation">,</span> <span class="token string">@"c:\tempm.txt"</span><span class="token punctuation">,</span> <span class="token string">"123"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"解密成功！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//缓冲区大小</span>
+<span class="token keyword">static</span> <span class="token keyword">int</span> bufferSize <span class="token operator">=</span> <span class="token number">128</span> <span class="token operator">*</span> <span class="token number">1024</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//密钥salt</span>
+<span class="token keyword">static</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> salt <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token number">134</span><span class="token punctuation">,</span> <span class="token number">216</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">36</span><span class="token punctuation">,</span> <span class="token number">88</span><span class="token punctuation">,</span> <span class="token number">164</span><span class="token punctuation">,</span> <span class="token number">91</span><span class="token punctuation">,</span> <span class="token number">227</span><span class="token punctuation">,</span> <span class="token number">174</span><span class="token punctuation">,</span> <span class="token number">76</span><span class="token punctuation">,</span> <span class="token number">191</span><span class="token punctuation">,</span> <span class="token number">197</span><span class="token punctuation">,</span> <span class="token number">192</span><span class="token punctuation">,</span> <span class="token number">154</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">248</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//初始化向量</span>
+<span class="token keyword">static</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> iv <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token number">134</span><span class="token punctuation">,</span> <span class="token number">216</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">36</span><span class="token punctuation">,</span> <span class="token number">88</span><span class="token punctuation">,</span> <span class="token number">164</span><span class="token punctuation">,</span> <span class="token number">91</span><span class="token punctuation">,</span> <span class="token number">227</span><span class="token punctuation">,</span> <span class="token number">174</span><span class="token punctuation">,</span> <span class="token number">76</span><span class="token punctuation">,</span> <span class="token number">191</span><span class="token punctuation">,</span> <span class="token number">197</span><span class="token punctuation">,</span> <span class="token number">192</span><span class="token punctuation">,</span> <span class="token number">154</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">248</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//初始化并返回对称加密算法</span>
+<span class="token keyword">static</span> SymmetricAlgorithm <span class="token function">CreateRijndael</span><span class="token punctuation">(</span><span class="token keyword">string</span> password<span class="token punctuation">,</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> salt<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    PasswordDeriveBytes pdb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PasswordDeriveBytes</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span> salt<span class="token punctuation">,</span> <span class="token string">"SHA256"</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    SymmetricAlgorithm sma <span class="token operator">=</span> Rijndael<span class="token punctuation">.</span><span class="token function">Create</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sma<span class="token punctuation">.</span>KeySize <span class="token operator">=</span> <span class="token number">256</span><span class="token punctuation">;</span>
+    sma<span class="token punctuation">.</span>Key <span class="token operator">=</span> pdb<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sma<span class="token punctuation">.</span>Padding <span class="token operator">=</span> PaddingMode<span class="token punctuation">.</span>PKCS7<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> sma<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">EncryptFile</span><span class="token punctuation">(</span><span class="token keyword">string</span> inFile<span class="token punctuation">,</span> <span class="token keyword">string</span> outFile<span class="token punctuation">,</span> <span class="token keyword">string</span> password<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">using</span> <span class="token punctuation">(</span>FileStream inFileStream <span class="token operator">=</span> File<span class="token punctuation">.</span><span class="token function">OpenRead</span><span class="token punctuation">(</span>inFile<span class="token punctuation">)</span><span class="token punctuation">,</span> outFileStream <span class="token operator">=</span> File<span class="token punctuation">.</span><span class="token function">Open</span><span class="token punctuation">(</span>outFile<span class="token punctuation">,</span> FileMode<span class="token punctuation">.</span>OpenOrCreate<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">using</span> <span class="token punctuation">(</span>SymmetricAlgorithm algorithm <span class="token operator">=</span> <span class="token function">CreateRijndael</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span> salt<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        algorithm<span class="token punctuation">.</span>IV <span class="token operator">=</span> iv<span class="token punctuation">;</span>
+        <span class="token keyword">using</span> <span class="token punctuation">(</span>CryptoStream cryptoStream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CryptoStream</span><span class="token punctuation">(</span>outFileStream<span class="token punctuation">,</span> algorithm<span class="token punctuation">.</span><span class="token function">CreateEncryptor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> CryptoStreamMode<span class="token punctuation">.</span>Write<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span>bufferSize<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token keyword">int</span> readSize <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>readSize <span class="token operator">=</span> inFileStream<span class="token punctuation">.</span><span class="token function">Read</span><span class="token punctuation">(</span>bytes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> bytes<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                cryptoStream<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span>bytes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> readSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            cryptoStream<span class="token punctuation">.</span><span class="token function">Flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">DecryptFile</span><span class="token punctuation">(</span><span class="token keyword">string</span> inFile<span class="token punctuation">,</span> <span class="token keyword">string</span> outFile<span class="token punctuation">,</span> <span class="token keyword">string</span> password<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">using</span> <span class="token punctuation">(</span>FileStream inFileStream <span class="token operator">=</span> File<span class="token punctuation">.</span><span class="token function">OpenRead</span><span class="token punctuation">(</span>inFile<span class="token punctuation">)</span><span class="token punctuation">,</span> outFileStream <span class="token operator">=</span> File<span class="token punctuation">.</span><span class="token function">OpenWrite</span><span class="token punctuation">(</span>outFile<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">using</span> <span class="token punctuation">(</span>SymmetricAlgorithm algorithm <span class="token operator">=</span> <span class="token function">CreateRijndael</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span> salt<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        algorithm<span class="token punctuation">.</span>IV <span class="token operator">=</span> iv<span class="token punctuation">;</span>
+        <span class="token keyword">using</span> <span class="token punctuation">(</span>CryptoStream cryptoStream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CryptoStream</span><span class="token punctuation">(</span>inFileStream<span class="token punctuation">,</span> algorithm<span class="token punctuation">.</span><span class="token function">CreateDecryptor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> CryptoStreamMode<span class="token punctuation">.</span>Read<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span>bufferSize<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token keyword">int</span> readSize <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token keyword">int</span> numReads <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>inFileStream<span class="token punctuation">.</span>Length <span class="token operator">/</span> bufferSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">int</span> slack <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>inFileStream<span class="token punctuation">.</span>Length <span class="token operator">%</span> bufferSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> numReads<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                readSize <span class="token operator">=</span> cryptoStream<span class="token punctuation">.</span><span class="token function">Read</span><span class="token punctuation">(</span>bytes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> bytes<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                outFileStream<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span>bytes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> readSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>slack <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                readSize <span class="token operator">=</span> cryptoStream<span class="token punctuation">.</span><span class="token function">Read</span><span class="token punctuation">(</span>bytes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>slack<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                outFileStream<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span>bytes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> readSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            outFileStream<span class="token punctuation">.</span><span class="token function">Flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>注意有必要解释一下上 面代码中的密钥salt和初始化向量iv。</p>
+<p>密钥salt在加密算法中主要是用来防止“字典攻击”的。字典攻击也是一种穷举的暴力破解法。字典中会假设有一定数量的密码值，攻击者会尝试用这些密码来解密密文。salt是在密钥导出之前在密码末尾引入的随机字节，它使这类攻击变得非常困难。</p>
+<p>初始化向量iv在加密算法中起到的也是增强破解难度的作用。在加密过程中，如果遇到相同的数据块，其加密的结果也一致，那么相对就会容易破解。加密算法在加密数据块的时候，往往会同时使用密码和上一个数据块的加密结果。因为要加密的第一个数据块显然不存在上一个数据块，所以这个初始化向量就是被设计用来当做初始数据块的加密结果的。</p>
+</blockquote>
+<p>我们在实际应用中，应该始终考虑使用对称加密的方式进行文件的加解密工作。当然，如果文件加密后要传给网络中的其他接收者，而接收者始终要对文件进行解密，也就是说密钥也需要传送给接收者，这个时候，非对称加密就可以派上用场了，它可以用于字符串的加/解密及安全传输场景。关于这一点，我们会在下一个建议中讲到。</p>
+<h2 id="建议117-使用SSL确保通信中的数据安全"><a href="#建议117-使用SSL确保通信中的数据安全" class="headerlink" title="建议117 : 使用SSL确保通信中的数据安全"></a>建议117 : 使用SSL确保通信中的数据安全</h2><p>SSL ( Secure Socket Layer)最初是由Netscape公司设计的，用于Web安全的网络协议。目前它已被广泛应用到各类网络传输通信中了。SSL 利用数字证书技术(非对称加密)，保证了通信过程中的唯一性、不可篡改性、不可抵赖性。本建议首先简要介绍SSL的原理，然后用代码模拟一个真实的SSL通道。</p>
+<p><img src="/2019/12/21/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记8/QQ截图20191222160817.png" alt=""></p>
+<p>通过上一个建议的阐述，我们知道在非对称加密中:</p>
+<ul>
+<li>密钥分为两个部分:公钥PK和私钥SK。</li>
+<li>公钥用于加密数据用，私钥用于解密。</li>
+<li>公钥可公开而且应该要公开，私钥则只属于创建者。</li>
+</ul>
+<p>基于这3个特点，可以得出这样的结论:经过公钥加密的数据只有证书创建者才能解密。这个结论也就构成了SSL通道所有的理论依据。</p>
+<p>在传统的网络传输过程中，我们将通信的双方定义为:服务器端和客户端。假定服务器端是数字证书创建者，它保存好自己的私钥，同时公布了自己的公钥给所有的客户端。满足了这个条件，我们来构建SSL通道。</p>
+<p>首先，客户端随机生成一个字符串作为密钥K，然后用公钥PK对这个密钥加密,并将加密后的密钥发送给服务器端。如果客户端曾经在服务器端注册过自己的信息，则还可以在这个密钥上加上自己的身份信息，从而向服务器端汇报自己的唯一性，但在本例中略去这一步。</p>
+<p>服务器端用私钥解密消息，获取了客户端的K，并确认了客户端的身份(不可抵赖性)，SSL通道建立。</p>
+<p>服务器端和客户端现在可以进行安全通信。过程是:发送方使用密钥K对要传输的消息进行对称加密，接收方则使用K进行解密。这就是传输过程中的不可篡改性。</p>
+<p>了解了SSL的原理，现在可以用代码来模拟SSL的通信了。 <a href="https://pan.baidu.com/s/1scVELEYY-E_6CrXrbrQ4ww" target="_blank" rel="external">例子代码工程</a></p>
+<p>客户端部分也包含两个按钮，在服务器部分按下“侦听”按钮之后，客户端可以按下“连接”按钮。这个过程，程序主要完成两件事情。首先，程序会根据服务器的IP地址连接上服务器:其次，一旦连接上服务器，客户端会立刻将自己用于加密的密钥发送给服务器。可对照图9-3来理解这个过程。.</p>
+<p>在完成这个步骤后，可以说，SSL 通道已经建立起来了，这个时候就可以随意发送加密数据而不担心被盗走了。我们可以看到，客户端的代码与服务器端一样，在发送之前，消息体要加密，而在接收到消息体之后，首先会解密。</p>
+<p>本建议也用到了两个工具类。类型RSAProcessor用于封装非对称加密算法，类型RijndaelProcessor则用于封装对称加密算法。</p>
+<h2 id="建议118-使用SecureString保存密钥等机密字符串"><a href="#建议118-使用SecureString保存密钥等机密字符串" class="headerlink" title="建议118 : 使用SecureString保存密钥等机密字符串"></a>建议118 : 使用SecureString保存密钥等机密字符串</h2><p>托管代码中的字符串是一类特殊的对象， 它们不可被改变。每次使用System.String类中的方法之一时，或者使用此类型进行运算时(如赋值、拼接等)，都要在内存中创建一个新的字符串对象，也就是为该新对象分配新的空间。这就带来了两个问题:</p>
+<ul>
+<li>1)原来的字符串是不是还在内存当中?</li>
+<li>2)如果在内存当中，那么机密数据( 如密码)该如何保存才足够安全?</li>
+</ul>
+<p>针对第一个问题，我们来看一段代码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">Method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment" spellcheck="true">//在此处打上断点</span>
+    Console<span class="token punctuation">.</span><span class="token function">ReadKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">string</span> str <span class="token operator">=</span> <span class="token string">"luminji"</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在这段代码中，我们在Method!方法调用处打上断点。在Visual Studio中让程序执行到此处，在“即时”窗口中相继运行命令:</p>
+<p><code>.load sos.dll</code>和<code>!dso</code></p>
+<p><img src="/2019/12/21/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记8/QQ截图20191222164429.png" alt=""></p>
+<p>打开调试菜单中的“查看”→“内存1”窗口，在图9-4中找到对应Object列的内存地址“019db820”，然后在内存窗口中输入。由于此时还没有进入Method1中，所以内存当中不存在字符串“luminji”. 接着让程序运行到方法内部，可以看到在内存中已经存在“luminji”了，如图9-5所示。</p>
+<p><img src="/2019/12/21/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记8/QQ截图20191222164549.png" alt=""></p>
+<p>让程序继续运行，退出方法Method1,发现“luminji” 依然留在内存当中，也就是说，使用过的字符串还留在内存当中。这就出现了一个问题，如果有人恶意扫描你的内存，程序中所保存的机密信息将无处可逃。幸好FCL中提供了<code>System.Security.SecureString</code>, <code>SecureString</code>表示一个应保密的文本，它在初始化时就已经被加密了。使用SecureString 的示例如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> System<span class="token punctuation">.</span>Security<span class="token punctuation">.</span>SecureString secureString <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">System<span class="token punctuation">.</span>Security<span class="token punctuation">.</span>SecureString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Method2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'l'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'u'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'m'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'i'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'n'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'j'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'i'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>用相同的调试手法可以发现，再次进人Method2后，已经找不到对应的字符串“luminji”了。但是，核心数据的保存问题已经解决了，可是文本总是要取出来用的，只要取出来不是就会被发现吗?没错，这个问题没法避免，但是我们可以做到文本使用完毕就释放掉，代码如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Method3</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'l'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'u'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'m'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'i'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'n'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'j'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    secureString<span class="token punctuation">.</span><span class="token function">AppendChar</span><span class="token punctuation">(</span><span class="token string">'i'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 这两行代码表示的就是将机密文本从secureString取出来，临时赋值给字符串</span>
+    <span class="token comment" spellcheck="true">// temp。这里存在两个问题:第一行实际调用的是非托管代码，它在内存中也会存储一个“luminji";</span>
+    <span class="token comment" spellcheck="true">// 第二行代码会在托管内存中存储一个“luminji".</span>
+    IntPtr addr <span class="token operator">=</span> Marshal<span class="token punctuation">.</span><span class="token function">SecureStringToBSTR</span><span class="token punctuation">(</span>secureString<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">string</span> temp <span class="token operator">=</span> Marshal<span class="token punctuation">.</span><span class="token function">PtrToStringBSTR</span><span class="token punctuation">(</span>addr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 这两段文本的释放方式是不一样的。</span>
+    <span class="token comment" spellcheck="true">// 前者可以通过使用如下代码进行释放:Marshal.ZeroFreeBSTR(addr);</span>
+    <span class="token comment" spellcheck="true">// 而托管内存中的文本，只能通过重写来完成(如上文中，就是重写成为无意义的“xxxxx”了)。</span>
+
+    <span class="token comment" spellcheck="true">//使用该机密文本做一些事情</span>
+    <span class="token comment" spellcheck="true">///=======开始清理内存</span>
+    <span class="token comment" spellcheck="true">//清理掉非托管代码中对应的内存的值</span>
+    Marshal<span class="token punctuation">.</span><span class="token function">ZeroFreeBSTR</span><span class="token punctuation">(</span>addr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//清理托管代码对应的内存的值（采用重写的方法）</span>
+    <span class="token keyword">int</span> id <span class="token operator">=</span> <span class="token function">GetProcessID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> writeBytes <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>Unicode<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span><span class="token string">"xxxxxx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    IntPtr intPtr <span class="token operator">=</span> <span class="token function">Open</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">unsafe</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">fixed</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span> c <span class="token operator">=</span> temp<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">WriteMemory</span><span class="token punctuation">(</span><span class="token punctuation">(</span>IntPtr<span class="token punctuation">)</span>c<span class="token punctuation">,</span> writeBytes<span class="token punctuation">,</span> writeBytes<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">///=======清理完毕</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> PROCESS_INFORMATION processInfo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PROCESS_INFORMATION</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">GetProcessID</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Process p <span class="token operator">=</span> Process<span class="token punctuation">.</span><span class="token function">GetCurrentProcess</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> p<span class="token punctuation">.</span>Id<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> IntPtr <span class="token function">Open</span><span class="token punctuation">(</span><span class="token keyword">int</span> processId<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    IntPtr hProcess <span class="token operator">=</span> IntPtr<span class="token punctuation">.</span>Zero<span class="token punctuation">;</span>
+    hProcess <span class="token operator">=</span> ProcessAPIHelper<span class="token punctuation">.</span><span class="token function">OpenProcess</span><span class="token punctuation">(</span>ProcessAccessFlags<span class="token punctuation">.</span>All<span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> processId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>hProcess <span class="token operator">==</span> IntPtr<span class="token punctuation">.</span>Zero<span class="token punctuation">)</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token string">"OpenProcess失º¡ì败ã¨¹"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    processInfo<span class="token punctuation">.</span>hProcess <span class="token operator">=</span> hProcess<span class="token punctuation">;</span>
+    processInfo<span class="token punctuation">.</span>dwProcessId <span class="token operator">=</span> processId<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> hProcess<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">WriteMemory</span><span class="token punctuation">(</span>IntPtr addressBase<span class="token punctuation">,</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> writeBytes<span class="token punctuation">,</span> <span class="token keyword">int</span> writeLength<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> reallyWriteLength <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>ProcessAPIHelper<span class="token punctuation">.</span><span class="token function">WriteProcessMemory</span><span class="token punctuation">(</span>processInfo<span class="token punctuation">.</span>hProcess<span class="token punctuation">,</span> addressBase<span class="token punctuation">,</span> writeBytes<span class="token punctuation">,</span> writeLength<span class="token punctuation">,</span> <span class="token keyword">out</span> reallyWriteLength<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> reallyWriteLength<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span><span class="token function">StructLayout</span><span class="token punctuation">(</span>LayoutKind<span class="token punctuation">.</span>Sequential<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">internal</span> <span class="token keyword">struct</span> PROCESS_INFORMATION
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> IntPtr hProcess<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> IntPtr hThread<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> dwProcessId<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> dwThreadId<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span>Flags<span class="token punctuation">]</span>
+<span class="token keyword">enum</span> ProcessAccessFlags <span class="token punctuation">:</span> <span class="token keyword">uint</span>
+<span class="token punctuation">{</span>
+    All <span class="token operator">=</span> <span class="token number">0x001F0FFF</span><span class="token punctuation">,</span>
+    Terminate <span class="token operator">=</span> <span class="token number">0x00000001</span><span class="token punctuation">,</span>
+    CreateThread <span class="token operator">=</span> <span class="token number">0x00000002</span><span class="token punctuation">,</span>
+    VMOperation <span class="token operator">=</span> <span class="token number">0x00000008</span><span class="token punctuation">,</span>
+    VMRead <span class="token operator">=</span> <span class="token number">0x00000010</span><span class="token punctuation">,</span>
+    VMWrite <span class="token operator">=</span> <span class="token number">0x00000020</span><span class="token punctuation">,</span>
+    DupHandle <span class="token operator">=</span> <span class="token number">0x00000040</span><span class="token punctuation">,</span>
+    SetInformation <span class="token operator">=</span> <span class="token number">0x00000200</span><span class="token punctuation">,</span>
+    QueryInformation <span class="token operator">=</span> <span class="token number">0x00000400</span><span class="token punctuation">,</span>
+    Synchronize <span class="token operator">=</span> <span class="token number">0x00100000</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ProcessAPIHelper</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token function">DllImport</span><span class="token punctuation">(</span><span class="token string">"kernel32.dll"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">extern</span> IntPtr <span class="token function">OpenProcess</span><span class="token punctuation">(</span>ProcessAccessFlags dwDesiredAccess<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token function">MarshalAs</span><span class="token punctuation">(</span>UnmanagedType<span class="token punctuation">.</span>Bool<span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token keyword">bool</span> bInheritHandle<span class="token punctuation">,</span> <span class="token keyword">int</span> dwProcessId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">[</span><span class="token function">DllImport</span><span class="token punctuation">(</span><span class="token string">"kernel32.dll"</span><span class="token punctuation">,</span> SetLastError <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">extern</span> <span class="token keyword">bool</span> <span class="token function">WriteProcessMemory</span><span class="token punctuation">(</span>IntPtr hProcess<span class="token punctuation">,</span> IntPtr lpBaseAddress<span class="token punctuation">,</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> lpBuffer<span class="token punctuation">,</span> <span class="token keyword">int</span> nSize<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token keyword">int</span> lpNumberOfBytesWritten<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">[</span><span class="token function">DllImport</span><span class="token punctuation">(</span><span class="token string">"kernel32.dll"</span><span class="token punctuation">,</span> SetLastError <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">extern</span> <span class="token keyword">bool</span> <span class="token function">ReadProcessMemory</span><span class="token punctuation">(</span>IntPtr hProcess<span class="token punctuation">,</span> IntPtr lpBaseAddress<span class="token punctuation">,</span> <span class="token punctuation">[</span>Out<span class="token punctuation">]</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> lpBuffer<span class="token punctuation">,</span> <span class="token keyword">int</span> dwSize<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token keyword">uint</span> lpNumberOfBytesRead<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">[</span><span class="token function">DllImport</span><span class="token punctuation">(</span><span class="token string">"kernel32.dll"</span><span class="token punctuation">,</span> SetLastError <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token punctuation">[</span><span class="token keyword">return</span><span class="token punctuation">:</span> <span class="token function">MarshalAs</span><span class="token punctuation">(</span>UnmanagedType<span class="token punctuation">.</span>Bool<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">extern</span> <span class="token keyword">bool</span> <span class="token function">CloseHandle</span><span class="token punctuation">(</span>IntPtr hObject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当然，没有绝对的安全， 因为即便如此，让关键字符串在内存中 像流星一样一闪而过，它也存在被捕获的可能性。但是我们通过这种方法降低了数据被破解的概率。</p>
+<h2 id="建议119-不要使用自己的加密算法"><a href="#建议119-不要使用自己的加密算法" class="headerlink" title="建议119 : 不要使用自己的加密算法"></a>建议119 : 不要使用自己的加密算法</h2><p>很多人认为自己写一个加密算法才是安全的，因为该算法只有“自己知道”。很遗憾，这是大错特错的。</p>
+<p>首先，我们不是密码学专家，如果我们随随便便写个算法都可以称得上是加密算法的话，那么这个世界上就不会存在“密码学”这个专门的学科了。</p>
+<p>其次，应当记住的是:让数据安全的不是加密算法本身，而是密钥。当今世界上有许多流行的加密算法都是公开源码和逻辑的，如DES、AES、RC4、RSA、TEA、MD5 等。妄图让算法保密是不可能的。各类源码分析工具和内存分析工具都可以通过程序的执行过程反编译出程序的算法与逻辑。所以，理论上来说，只要肯花时间，没有不可破解的算法。</p>
+<p>其实，<strong>密钥才是关键。</strong> 我们要始终确保密钥的安全，而不是徒劳地去创建算法。商业团队应该建立专门的机构和人员管理密钥。应用程序则应该负责保护并隐藏密钥，而不是将进入系统的密钥存储在随处可见的位置。</p>
+<h2 id="建议120-为程序集指定强名称"><a href="#建议120-为程序集指定强名称" class="headerlink" title="建议120 : 为程序集指定强名称"></a>建议120 : 为程序集指定强名称</h2><p>虽然强名称在设计之初有防止未被授权的第三方软件非法执行程序的作用，但是因为它的破解方法并不难，所以现在强名称更多的意义在于它可以避免出现“DLL HELL”现象。</p>
+<p>“DLL HELL”是指多个应用程序可能存在调用同一个DLL的情况。在应用程序的使用过程中，常常会碰到这样一种情况 :应用程序需要更新。在更新过程中，很有可能将会和别的应用程序公用的DLL也更新了。在以前，这可能会导致其他应用程序无法继续正常工作。</p>
+<p>强名称原则上扩大了DLL的唯一标识，这个标识包括:程序集名称、版本号、区域性信息、发行方公钥及数字签名。由于加密算法本身已保证不会生成相同的公钥，经过强名称标识后的程序集，也就不会存在相等性的问题。这意味着，哪怕存在相同名称的DLL,该DLL的内容也完全一致， 但是只要它们的强名称不同，就不会带来调用混乱的情况。</p>
+<p>生成强名称签名文件的命令如下: <code>sn -k yourprofile.snk</code></p>
+<p><img src="/2019/12/21/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记8/QQ截图20191222170152.png" alt=""></p>
+<h2 id="建议121-为应用程序设定运行权限"><a href="#建议121-为应用程序设定运行权限" class="headerlink" title="建议121 : 为应用程序设定运行权限"></a>建议121 : 为应用程序设定运行权限</h2><p>在某些情况下，可能存在这样的需求:只有系统管理员才能访问某应用程序中的若干功能。这个时候，可以结合.NET中提供的代码访问安全性(Code Access Security,CAS)和基于角色( Role-Based Security)的安全性去实现。</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

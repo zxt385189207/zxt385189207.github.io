@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        编写CSharp的157个建议笔记 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#基本语言要素"><span class="toc-text">基本语言要素</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议1-正确操作字符串"><span class="toc-text">建议1 : 正确操作字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议2-使用默认的转型方法"><span class="toc-text">建议2 : 使用默认的转型方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议3-区别对待强制转型与as与is"><span class="toc-text">建议3 : 区别对待强制转型与as与is</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议4-TryParse比Parse好"><span class="toc-text">建议4 : TryParse比Parse好</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议5-使用int-来确保值类型也可以为null"><span class="toc-text">建议5 : 使用int?来确保值类型也可以为null</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#区别readonly和const的使用方法"><span class="toc-text">区别readonly和const的使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议7-将0值作为枚举的默认值"><span class="toc-text">建议7 : 将0值作为枚举的默认值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议8-避免给枚举类型的元素提供显式的值"><span class="toc-text">建议8 : 避免给枚举类型的元素提供显式的值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议9-习惯重载运算符"><span class="toc-text">建议9 : 习惯重载运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议10-创建对象时需要考虑是否实现比较器"><span class="toc-text">建议10 : 创建对象时需要考虑是否实现比较器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议11-区别对待-和Equals"><span class="toc-text">建议11 : 区别对待 == 和Equals</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议12-重写Equals时也要重写GetHashCode"><span class="toc-text">建议12 : 重写Equals时也要重写GetHashCode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议13-为类型输出格式化字符串"><span class="toc-text">建议13 : 为类型输出格式化字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议14-正确实现浅拷贝和深拷贝"><span class="toc-text">建议14 : 正确实现浅拷贝和深拷贝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议15-使用dynamic来简化反射实现"><span class="toc-text">建议15 : 使用dynamic来简化反射实现</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        编写CSharp的157个建议笔记
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-12-10 10:20:48</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CSharp的157个建议" title="CSharp的157个建议">CSharp的157个建议</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="基本语言要素"><a href="#基本语言要素" class="headerlink" title="基本语言要素"></a>基本语言要素</h1><blockquote>
+<p>如何操作字符串? 如何进行转型? 什么是克隆?什么是相等型?为什么需要HashCode?</p>
+</blockquote>
+<h2 id="建议1-正确操作字符串"><a href="#建议1-正确操作字符串" class="headerlink" title="建议1 : 正确操作字符串"></a>建议1 : 正确操作字符串</h2><p>装箱所需要的步骤:</p>
+<ol>
+<li>会为值类型在托管堆中分配内存. (还需要加上类型对象指针和同步块索引所占用的内存)</li>
+<li>将值类型的值复制到新分配的堆内存中.</li>
+<li>返回已经成为引用类型的对象的地址.</li>
+</ol>
+<p>从以下两个方面来规避操作字符串额外的性能开销</p>
+<ul>
+<li>确保尽量少的装箱</li>
+<li>避免分配额外的内存空间</li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// -----------确保尽量少的装箱----------</span>
+<span class="token comment" spellcheck="true">// 会对Int32类型的9发生装箱</span>
+String str1 <span class="token operator">=</span> <span class="token string">"str1"</span><span class="token operator">+</span> <span class="token number">9</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 调用的是整型的ToString方法</span>
+String str2 <span class="token operator">=</span> <span class="token string">"str2"</span><span class="token operator">+</span> <span class="token number">9</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//----------解析----------</span>
+<span class="token comment" spellcheck="true">// ToString方法原型为</span>
+<span class="token keyword">return</span> Number<span class="token punctuation">.</span><span class="token function">FormatInt32</span><span class="token punctuation">(</span>m_value<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> NumberFormatInfo<span class="token punctuation">.</span>CurrentInfo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 此原型方法中不会发生装箱行为, 因为这是非托管方法,直接操作内存来完成int->String的转换</span>
+<span class="token comment" spellcheck="true">// 效率比装箱要高很多</span>
+<span class="token punctuation">[</span><span class="token function">MethodImplAttribute</span><span class="token punctuation">(</span>MethodImplOptions<span class="token punctuation">.</span>InternalCall<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">extern</span> String <span class="token function">FormatInt32</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token keyword">value</span><span class="token punctuation">,</span> String format<span class="token punctuation">,</span> NumberFormatInfo info<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//----------解析----------</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>因此在使用其他<code>值引用类型</code>到字符串的转换并完成拼接时, 避免使用+操作符来完成, 而应该使用<code>值引用类型</code>提供的ToString方法.</p>
+<blockquote>
+<p>FCL方法内部也许会存在装箱的行为, 但是指导原则: 在自己编写的代码中, 应当尽可能避免编写不必要的装箱代码.</p>
+</blockquote>
+<p>第二个方面: 避免分配额外的内存空间, <strong>对CLR来说, String对象是个很特殊的对象, 一旦被赋值就不可改变.</strong> 在运行时调用String类中的任何方法或进行任何运算(=赋值,+拼接等), 都会在内存中创建一个新的字符串对象. 这也以为着要为该新对象分配新的内存空间.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//------------字符串操作---------------</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">NewMethod1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">string</span> s1 <span class="token operator">=</span> <span class="token string">"abc"</span><span class="token punctuation">;</span>
+    s1 <span class="token operator">=</span> <span class="token string">"123"</span> <span class="token operator">+</span> s1 <span class="token operator">+</span> <span class="token string">"456"</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//以上两行代码创建了3个字符串对象，并执行了一次string.Contact方法</span>
+    <span class="token comment" spellcheck="true">//    IL_0001:  ldstr      "abc"</span>
+    <span class="token comment" spellcheck="true">//    IL_0006:  stloc.0</span>
+    <span class="token comment" spellcheck="true">//    IL_0007:  ldstr      "123"</span>
+    <span class="token comment" spellcheck="true">//    IL_000c:  ldloc.0</span>
+    <span class="token comment" spellcheck="true">//    IL_000d:  ldstr      "456"</span>
+    <span class="token comment" spellcheck="true">//    IL_0012:  call       string [System.Runtime]System.String::Concat(string, string,string,)</span>
+
+
+    <span class="token keyword">string</span> s1 <span class="token operator">=</span> <span class="token string">"abc"</span><span class="token punctuation">;</span>
+    s1 <span class="token operator">=</span> <span class="token string">"123"</span> <span class="token operator">+</span> <span class="token string">"456"</span> <span class="token operator">+</span> s1<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//以上两行代码创建了2个字符串对象，并执行了一次string.Contact方法</span>
+    <span class="token comment" spellcheck="true">//    IL_0000:  nop</span>
+    <span class="token comment" spellcheck="true">//    IL_0001:  ldstr      "abc"</span>
+    <span class="token comment" spellcheck="true">//    IL_0006:  stloc.0</span>
+    <span class="token comment" spellcheck="true">//    IL_0007:  ldstr      "123456"</span>
+    <span class="token comment" spellcheck="true">//    IL_000c:  ldloc.0</span>
+    <span class="token comment" spellcheck="true">//    IL_000d:  call       string [System.Runtime]System.String::Concat(string,string)</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">NewMethod6</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//该代码发生一次装箱，并调用一次string.Contact方法</span>
+    <span class="token keyword">string</span> re6 <span class="token operator">=</span> <span class="token number">9</span> <span class="token operator">+</span> <span class="token string">"456"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">NewMethod2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//该代码等效于 string re2 = "123abc456";</span>
+    <span class="token comment" spellcheck="true">// 不会在运行时拼接字符串,而是在编译时直接生产一个</span>
+    <span class="token keyword">string</span> re2 <span class="token operator">=</span> <span class="token string">"123"</span> <span class="token operator">+</span> <span class="token string">"abc"</span> <span class="token operator">+</span> <span class="token string">"456"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">NewMethod9</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">const</span> <span class="token keyword">string</span> a   <span class="token operator">=</span> <span class="token string">"t"</span><span class="token punctuation">;</span>
+    <span class="token keyword">string</span>       re1 <span class="token operator">=</span> <span class="token string">"abc"</span> <span class="token operator">+</span> a<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//因为a是一个常量,因此</span>
+    <span class="token comment" spellcheck="true">//该代码等效于 string re1 = "abc" + "t";</span>
+    <span class="token comment" spellcheck="true">//最终等效于   string re1 = "abct";</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>StringBuilder</code>来弥补<code>String</code>的不足. 它的效率源于预先以<strong>非托管的方式分配内存</strong>. 需要定义长度,如果没有分配,默认是16, 当字符串长度超过16时会重新分配内存使之成为16的倍数.</p>
+<p>因此, 使用<code>StringBuilder</code>指定的长度要合适, 太小了会频繁分配内存, 太大了浪费空间.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"> <span class="token comment" spellcheck="true">// String.Format方法内部使用了StringBuilder进行字符串的格式化</span>
+ <span class="token keyword">string</span> a <span class="token operator">=</span> <span class="token string">"t"</span><span class="token punctuation">;</span>
+ <span class="token keyword">string</span> b <span class="token operator">=</span> <span class="token string">"e"</span><span class="token punctuation">;</span>
+ <span class="token keyword">string</span> c <span class="token operator">=</span> <span class="token string">"s"</span><span class="token punctuation">;</span>
+ <span class="token keyword">string</span> d <span class="token operator">=</span> <span class="token string">"t"</span><span class="token punctuation">;</span>
+ <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0}{1}{2}{3}"</span><span class="token punctuation">,</span> a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> c<span class="token punctuation">,</span> d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议2-使用默认的转型方法"><a href="#建议2-使用默认的转型方法" class="headerlink" title="建议2 : 使用默认的转型方法"></a>建议2 : 使用默认的转型方法</h2><blockquote>
+<p>如何正确地对类型实现转型?</p>
+</blockquote>
+<p>在上一个建议中, int转型为string使用的int类型的ToString方法. 大部分情况下, 当需要对FCL提供的类型进行转型时,都应该使用FCL提供的转型方法.</p>
+<ol>
+<li>使用类型的转换运算符<ol>
+<li>转换运算符分两类: 隐式转换和显示转换</li>
+<li>也可以通过重载转换运算符的方式来提供这一类转换.</li>
+</ol>
+</li>
+<li>使用类型内置的Parse,TryParse或者ToString,ToDouble等方法.</li>
+<li>使用帮助类提供的方法.<ol>
+<li><code>System.Convert</code>类支持任意自定义类型转换为任意基元类型,只要自定义类继承了<code>IConvertible接口</code>就可以.</li>
+</ol>
+</li>
+<li>使用CLR支持的转型<ol>
+<li>上溯转型和下溯转型.(实际上就是基类和子类之间的相互转换)</li>
+</ol>
+</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 1.重载转换运算符的方式来提供这一类转换.</span>
+<span class="token keyword">class</span> <span class="token class-name">Ip</span>
+<span class="token punctuation">{</span>
+    IPAddress <span class="token keyword">value</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">Ip</span><span class="token punctuation">(</span><span class="token keyword">string</span> ip<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">value</span> <span class="token operator">=</span> IPAddress<span class="token punctuation">.</span><span class="token function">Parse</span><span class="token punctuation">(</span>ip<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">implicit</span> <span class="token keyword">operator</span> <span class="token function">Ip</span><span class="token punctuation">(</span><span class="token keyword">string</span> ip<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Ip iptemp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Ip</span><span class="token punctuation">(</span>ip<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> iptemp<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">value</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 使用</span>
+Ip ip <span class="token operator">=</span> <span class="token string">"192.168.0.96"</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>ip<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+<span class="token comment" spellcheck="true">// 3. 使用帮助类提供的方法</span>
+<span class="token comment" spellcheck="true">// 可以使用System.Convert类,System.BitConverter类来进行类型转换.</span>
+<span class="token comment" spellcheck="true">// System.Convert类支持任意自定义类型转换为任意基元类型,只要自定义类继承了IConvertible接口就可以.</span>
+<span class="token keyword">class</span> <span class="token class-name">Ip</span> <span class="token punctuation">:</span> IConvertible
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 省略</span>
+   <span class="token keyword">public</span> <span class="token keyword">bool</span> <span class="token function">ToBoolean</span><span class="token punctuation">(</span>IFormatProvider provider<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidCastException</span><span class="token punctuation">(</span><span class="token string">"Ip-to-Boolean conversion is not supported."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token keyword">public</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span>IFormatProvider provider<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token keyword">value</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token comment" spellcheck="true">// 省略</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>继承IConvertible接口必须同时实现其他转型方法, 如上文中的ToBoolean, 如果不支持此类型,则应该抛出一个InvalidCastException,而不是NotImplementedException.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 4. 在进行子类向基类转型的时候可以隐式转换, dog显然就是一个Animal</span>
+<span class="token comment" spellcheck="true">// 当Animal转型为Dog时, 必须是显式转换, 因为还可能是一个Cat</span>
+Animal animal<span class="token punctuation">;</span>
+Dog dog <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dog</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+animal <span class="token operator">=</span> dog<span class="token punctuation">;</span>       <span class="token comment" spellcheck="true">//隐式转化，因为Dog就是Animal。</span>
+<span class="token comment" spellcheck="true">//dog = animal;     //编译不通过, animal可能会是一个cat</span>
+dog <span class="token operator">=</span> <span class="token punctuation">(</span>Dog<span class="token punctuation">)</span>animal<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//必须存在一个显式转换</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议3-区别对待强制转型与as与is"><a href="#建议3-区别对待强制转型与as与is" class="headerlink" title="建议3 : 区别对待强制转型与as与is"></a>建议3 : 区别对待强制转型与as与is</h2><p>首先要明确什么是强制转型, 以及强制转型意味着什么.</p>
+<p><code>secondType = (SecondType)firstType;</code></p>
+<p>强制转型可能意味着两件不同的事情:</p>
+<ol>
+<li>FirstType和SecondType彼此依靠转换操作符来完成两个类型之间的转型</li>
+<li>FirstType是SecondType的基类.</li>
+</ol>
+<p>它们之间的关系要么是第一种要么是第二种,不能同时既是继承又提供了转型符.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//------------------重载转换操作符----------------------</span>
+<span class="token keyword">class</span> <span class="token class-name">FirstType</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">SecondType</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">explicit</span> <span class="token keyword">operator</span> <span class="token function">SecondType</span><span class="token punctuation">(</span>FirstType firstType<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        SecondType secondType <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SecondType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"转型自："</span> <span class="token operator">+</span> firstType<span class="token punctuation">.</span>Name <span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> secondType<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 1.</span>
+<span class="token comment" spellcheck="true">// 想要转型成功则必须使用强制转型, 而不是使用as操作符.</span>
+FirstType firstType <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FirstType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"First Type"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+SecondType secondType <span class="token operator">=</span> <span class="token punctuation">(</span>SecondType<span class="token punctuation">)</span>firstType<span class="token punctuation">;</span>         <span class="token comment" spellcheck="true">//转型成功</span>
+<span class="token comment" spellcheck="true">//secondType = firstType as SecondType;     //编译期转型失败，编译不通过</span>
+
+<span class="token comment" spellcheck="true">// 2.</span>
+<span class="token comment" spellcheck="true">// 以下代码转型失败</span>
+<span class="token comment" spellcheck="true">// Object obj = firstType;</span>
+<span class="token comment" spellcheck="true">// SecondType secondType = (SecondType) obj;</span>
+
+<span class="token comment" spellcheck="true">// 3.</span>
+Object obj <span class="token operator">=</span> firstType<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 永远不会抛出异常</span>
+SecondType secondType <span class="token operator">=</span> obj <span class="token keyword">as</span> SecondType<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 如果类型不匹配, 既不是目标类型也不是其派生类型, 源对象或者为null</span>
+<span class="token comment" spellcheck="true">// 则转型之后的值为null</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>secondType <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第二段代码与第一段代码比仅仅多了一层转型, 实际上obj还是firsrType,为什么转型就失败了呢? 因为编译器还不够聪明,或者说我们欺骗了编译器. 针对<code>(SecondType) obj</code>, 编译器首先判断的是 <code>SecondType</code>和<code>object</code>之间是否有继承关系. C#中所有类型都继承自object的, 所以上述代码编译期没有问题, 但是编译器会自动生成代码来检查<code>obj</code>在<code>运行时</code>是不是<code>SecondType</code>, 这样就绕过了转换操作符, 所以会转换失败.</p>
+<blockquote>
+<p>用强制转型时, 在运行时调用重载的转换操作符方法.</p>
+<p>如果多一层Object转型, 在编译期判断存在继承关系, 则会自动生成代码来判断是不是, 这样就不经过转换操作符方法了.</p>
+</blockquote>
+<p>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</p>
+<p>因此这里的建议是:</p>
+<ul>
+<li>如果类型之间都上溯到某个共同的基类, 那么根据此基类进行的转换(即<strong>基类转型为子类本身</strong>)应该使用<code>as</code></li>
+<li><strong>子类与子类</strong> 之间的转型,则应该使用转换操作符,以便进行强制转型.</li>
+</ul>
+<blockquote>
+<p>转型操作符实际上就是一个方法, 类型的转换需要手工写代码完成.</p>
+</blockquote>
+<p>↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑</p>
+<p>第二种情况: FirstType是SecondType的基类: 既能使用强制转型, 也能使用as操作符. 从效率的角度来看,也建议大家使用as操作符.</p>
+<p>以上就是强制转型和as的区别, 再看一下is操作符.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 这个版本效率并不高, 进行了2次类型检测</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">DoWithSomeType</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>obj <span class="token keyword">is</span> SecondType<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        SecondType secondType <span class="token operator">=</span> obj <span class="token keyword">as</span> SecondType<span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//do something</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>as操作符存在一个问题, 即不能操作基元类型, 如果涉及基元类型的算法, 就需要通过is转型前的类型来进行判断,以免转型失败.</strong></p>
+<h2 id="建议4-TryParse比Parse好"><a href="#建议4-TryParse比Parse好" class="headerlink" title="建议4 : TryParse比Parse好"></a>建议4 : TryParse比Parse好</h2><p>除了String外的所有基元类型都有两个将<code>字符串</code>转化为<code>本身类型</code>的方法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">double</span> <span class="token function">Parse</span><span class="token punctuation">(</span><span class="token keyword">string</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">bool</span> <span class="token function">TryParse</span><span class="token punctuation">(</span><span class="token keyword">string</span> s<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token keyword">double</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>两者最大的区别是, 如果字符串不满足转换的要求, Parse方法将会引发一个异常; TryParse方法则不会引发异常, 会返回false,同时将result置为0.</p>
+<blockquote>
+<p>早期没有TryParse方法, 出现异常时需要捕捉并设定成一个初始值. 引发异常这个过程会对性能造成损耗. 因此才提供了TryParse方法</p>
+</blockquote>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">double</span> re<span class="token punctuation">;</span>
+    <span class="token keyword">long</span> ticks<span class="token punctuation">;</span>
+
+    Stopwatch sw <span class="token operator">=</span> Stopwatch<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">1000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            re <span class="token operator">=</span> <span class="token keyword">double</span><span class="token punctuation">.</span><span class="token function">Parse</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span>
+        <span class="token punctuation">{</span>
+            re <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    sw<span class="token punctuation">.</span><span class="token function">Stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ticks <span class="token operator">=</span> sw<span class="token punctuation">.</span>ElapsedTicks<span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"double.Parse() 成功，{0} ticks"</span><span class="token punctuation">,</span> ticks<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    sw <span class="token operator">=</span> Stopwatch<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">1000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">.</span><span class="token function">TryParse</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">,</span> <span class="token keyword">out</span> re<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token keyword">false</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            re <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    sw<span class="token punctuation">.</span><span class="token function">Stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ticks <span class="token operator">=</span> sw<span class="token punctuation">.</span>ElapsedTicks<span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"double.TryParse() 成功，{0} ticks"</span><span class="token punctuation">,</span> ticks<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    sw <span class="token operator">=</span> Stopwatch<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">1000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            re <span class="token operator">=</span> <span class="token keyword">double</span><span class="token punctuation">.</span><span class="token function">Parse</span><span class="token punctuation">(</span><span class="token string">"aaa"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span>
+        <span class="token punctuation">{</span>
+            re <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    sw<span class="token punctuation">.</span><span class="token function">Stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ticks <span class="token operator">=</span> sw<span class="token punctuation">.</span>ElapsedTicks<span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"double.Parse() 失败，{0} ticks"</span><span class="token punctuation">,</span> ticks<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    sw <span class="token operator">=</span> Stopwatch<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">1000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">.</span><span class="token function">TryParse</span><span class="token punctuation">(</span><span class="token string">"aaa"</span><span class="token punctuation">,</span> <span class="token keyword">out</span> re<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token keyword">false</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            re <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    sw<span class="token punctuation">.</span><span class="token function">Stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ticks <span class="token operator">=</span> sw<span class="token punctuation">.</span>ElapsedTicks<span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"double.TryParse() 失败，{0} ticks"</span><span class="token punctuation">,</span> ticks<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// double.Parse() 成功，1190 ticks</span>
+<span class="token comment" spellcheck="true">// double.TryParse() 成功，292 ticks</span>
+<span class="token comment" spellcheck="true">// double.Parse() 失败，101049 ticks</span>
+<span class="token comment" spellcheck="true">// double.TryParse() 失败，253 ticks</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>从上述结果可以看出, 效率<code>TryParse()</code>最好. 并不建议所有的类型都提供TryParse模式, 只有在考虑到Do方法会带来明显的性能损耗时,才建议使用TryParse.</p>
+<h2 id="建议5-使用int-来确保值类型也可以为null"><a href="#建议5-使用int-来确保值类型也可以为null" class="headerlink" title="建议5 : 使用int?来确保值类型也可以为null"></a>建议5 : 使用int?来确保值类型也可以为null</h2><p>基元类型为什么需要为null? 考虑以下2个场景:</p>
+<ol>
+<li><p>数据库中一个int字段可以被设置为null.   在C#中, 值从数据库被取出来后, 为了将它赋值给int类型, 不得不首先判断一下它是否为null, 如果直接赋值null给它会引发异常.</p>
+</li>
+<li><p>在一个分布式系统中, 服务器需要接受并解析来自客户端的数据. 一个Int型数据可能在传输过程中丢失或被篡改了, 转型失败后应该保存为null值, 而不是提供一个初始值.</p>
+</li>
+</ol>
+<p>所以从.NET 2.0开始,FCL中提供了一个额外的类型: 可空类型<code>Nullable&lt;T&gt;</code>, 它是一个结构体.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 两种写法, i的值的范围-2147483648~2147483647 再加上一个null值.</span>
+Nullable<span class="token operator">&lt;</span>Int32<span class="token operator">></span> i<span class="token punctuation">;</span>
+Int32<span class="token operator">?</span> i<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 可空类型与基元类型的互相转换. 基元类型提供了其对应的可空类型的隐式转换</span>
+<span class="token keyword">int</span><span class="token operator">?</span> i <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span>  j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+i <span class="token operator">=</span> j<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 默认提供了隐式转换</span>
+
+<span class="token comment" spellcheck="true">// 反过来, 需要以下的形式进行转换</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span>HasValue<span class="token punctuation">)</span>
+  j <span class="token operator">=</span> i<span class="token punctuation">.</span>Value<span class="token punctuation">;</span>
+elss
+  j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+
+<span class="token comment" spellcheck="true">// 使用??运算符, ??运算符最大的用处就是将可空类型的值赋值给对应的基元类型进行简化.</span>
+j <span class="token operator">=</span> i <span class="token operator">?</span><span class="token operator">?</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 如果i.HasValue为true,则将i.Value赋值给j,否则就赋值为0.</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>??运算符</code>最大的用处就是将<code>可空类型</code>的值赋值给对应的基元类型进行简化.</p>
+<h2 id="区别readonly和const的使用方法"><a href="#区别readonly和const的使用方法" class="headerlink" title="区别readonly和const的使用方法"></a>区别readonly和const的使用方法</h2><p>在作者看来, 要使用const的理由只有一个, 那就是效率. 但是在大部分应用情况下, 效率并没有那么高的地位,所以我更愿意采用readonly, 因为readonly赋予代码更多的灵活性.</p>
+<p>本质区别如下:</p>
+<ul>
+<li>const是一个编译期常量, readonly是一个运行时常量.<ul>
+<li>const是编译期常量所以天然就是static的,不能再添加static修饰符.</li>
+</ul>
+</li>
+<li>const只能修饰基元类型,枚举类型或字符串类型. readonly没有限制.</li>
+</ul>
+<p>const之所以效率高是因为经过编译器编译之后,引用const变量的地方会用实际值来代替.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">const</span> <span class="token keyword">int</span> ConstValue <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 以下两行代码生成的IL代码是一致的</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>ConstValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>readonly变量是运行时变量, 其赋值行为发生在运行时. 它的全部意义在于, 运行时第一次被赋值后将<code>不可以改变</code>.  此处有2个意思:</p>
+<ol>
+<li>对于值类型变量, 值本身不可改变(readonly 只读)</li>
+<li>对于引用类型变量, 引用本身(相当于指针)不可改变.<ol>
+<li>引用本身不可改变,引用所指的实例的值,却是可以改变的.</li>
+</ol>
+</li>
+</ol>
+<p>readonly所代表的运行时含义有一个重要的作用,就是可以为每个类的实例指定一个readonly变量. 以下面这个类为例, 可以在运行时生成多个实例, 而同时又可以为每个实例生成自己的readonly变量. 这就是readonly变量的灵活之处.</p>
+<p>误区: readonly变量不能被重新赋值时不正确的. 下面的代码表明了它可以被改变.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 在可以构造器方法内对readonly进行多次赋值.</span>
+<span class="token comment" spellcheck="true">// 实际上应该把初始化器也理解成构造方法的一部分, 它其实是一个语法糖.</span>
+<span class="token keyword">class</span> <span class="token class-name">Sample</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 初始化器: 赋值为100</span>
+   <span class="token keyword">public</span> <span class="token keyword">readonly</span> <span class="token keyword">int</span> ReadOnlyValue <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+
+   <span class="token comment" spellcheck="true">// 构造方法中又可以对readonly多次赋值</span>
+   <span class="token keyword">public</span> <span class="token function">Sample</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token keyword">value</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       ReadOnlyValue <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议7-将0值作为枚举的默认值"><a href="#建议7-将0值作为枚举的默认值" class="headerlink" title="建议7 : 将0值作为枚举的默认值"></a>建议7 : 将0值作为枚举的默认值</h2><p>允许使用枚举的类型有byte,sbyte,ushort,int,uint,long,ulong. 应该始终将0值作为枚举类型的默认值.</p>
+<p>例如,一个代表星期的枚举类Week,我们会想当然的认为它应该由7个元素.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">enum</span> Week
+<span class="token punctuation">{</span>
+    Monday <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    Tuesday <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    Wednesday <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    Thursday <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">,</span>
+    Friday <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">,</span>
+    Saturday <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">,</span>
+    Sunday <span class="token operator">=</span> <span class="token number">7</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果不小心编写了如下代码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> Week week<span class="token punctuation">;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 输出0</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>week<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token comment" spellcheck="true">// 如果枚举类型的元素类型为整型</span>
+   <span class="token comment" spellcheck="true">// 这段代码并不会出错, 输出:9</span>
+   week <span class="token operator">=</span> <span class="token punctuation">(</span>Week<span class="token punctuation">)</span><span class="token number">9</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Week看上去多了第8个值, 同时很不幸,这段代码没有引发异常. <strong>所有应该始终为枚举的0值指定默认值. 上述枚举的定义应该将显式为元素赋值去掉, 编译器会自动从0值开始计数, 然后逐个为元素的值+1.</strong></p>
+<h2 id="建议8-避免给枚举类型的元素提供显式的值"><a href="#建议8-避免给枚举类型的元素提供显式的值" class="headerlink" title="建议8 : 避免给枚举类型的元素提供显式的值"></a>建议8 : 避免给枚举类型的元素提供显式的值</h2><p>一般情况下, 没有必要给枚举类型的元素提供显式的值, 创建枚举的理由之一,就是为了代替使用实际的数值.</p>
+<p>不正确地为枚举类型的元素设定显式的值,会带来意想不到的错误.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">enum</span> Week
+<span class="token punctuation">{</span>
+    Monday <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    Tuesday <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    Temp<span class="token punctuation">,</span>
+    Wednesday <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    Thursday <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">,</span>
+    Friday <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">,</span>
+    Saturday <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">,</span>
+    Sunday <span class="token operator">=</span> <span class="token number">7</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 为week赋值为Temp,可是得到的结果却是Wednesday</span>
+<span class="token comment" spellcheck="true">// 因为没有为元素显式赋值,编译器会逐个为元素的值+1</span>
+<span class="token comment" spellcheck="true">// 因此Temp和Wednesday的值都是3</span>
+Week week <span class="token operator">=</span> Week<span class="token punctuation">.</span>Temp<span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>week<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// Wednesday</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>week <span class="token operator">==</span> Week<span class="token punctuation">.</span>Wednesday<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//True</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>枚举元素允许设定重复的值.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">enum</span> Temp
+<span class="token punctuation">{</span>
+     Value1 <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span>
+     Value2 <span class="token operator">=</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">NewMethod2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Temp temp1 <span class="token operator">=</span> Temp<span class="token punctuation">.</span>Value1<span class="token punctuation">;</span>
+    Temp temp2 <span class="token operator">=</span> Temp<span class="token punctuation">.</span>Value2<span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>temp1 <span class="token operator">==</span> temp2<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// true</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>temp1<span class="token punctuation">.</span><span class="token function">Equals</span><span class="token punctuation">(</span>temp2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// true</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>temp1<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>temp2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 0</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>temp1 <span class="token operator">==</span> Temp<span class="token punctuation">.</span>Value1<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// true</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>temp1 <span class="token operator">==</span> Temp<span class="token punctuation">.</span>Value2<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// true</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>本建议(避免给枚举类型的元素提供显式的值)也有例外, 就是指定<code>[Flag]</code>特性的枚举类, 就意味着可以对这些值执行AND,OR,NOT和XOR按位运算, 这样一来, 就要求枚举的每个元素的值都是2的若干次幂,指数依次递增.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Flags<span class="token punctuation">]</span>
+<span class="token keyword">enum</span> Week
+<span class="token punctuation">{</span>
+    None <span class="token operator">=</span> <span class="token number">0x0</span><span class="token punctuation">,</span>
+    Monday <span class="token operator">=</span> <span class="token number">0x1</span><span class="token punctuation">,</span>
+    Tuesday <span class="token operator">=</span> <span class="token number">0x2</span><span class="token punctuation">,</span>
+    Wednesday <span class="token operator">=</span> <span class="token number">0x4</span><span class="token punctuation">,</span>
+    Thursday <span class="token operator">=</span> <span class="token number">0x8</span><span class="token punctuation">,</span>
+    Friday <span class="token operator">=</span> <span class="token number">0x10</span><span class="token punctuation">,</span>
+    Saturday <span class="token operator">=</span> <span class="token number">0x20</span><span class="token punctuation">,</span>
+    Sunday <span class="token operator">=</span> <span class="token number">0x40</span>
+<span class="token punctuation">}</span>
+
+Week week <span class="token operator">=</span> Week<span class="token punctuation">.</span>Thursday <span class="token operator">|</span> Week<span class="token punctuation">.</span>Sunday<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议9-习惯重载运算符"><a href="#建议9-习惯重载运算符" class="headerlink" title="建议9 : 习惯重载运算符"></a>建议9 : 习惯重载运算符</h2><p>重载运算符之后可以看起来一目了然,可以让开发人员像是用内置基元类型一样是用该类型.</p>
+<p>通过operator关键字定义静态成员函数来重载运算符.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> y <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 方式一, 都喜欢看到这样的语法特性</span>
+<span class="token keyword">int</span> total <span class="token operator">=</span> x <span class="token operator">+</span> y<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 方式二</span>
+<span class="token keyword">int</span> total <span class="token operator">=</span> <span class="token keyword">int</span><span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+Salary mikeIncome <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Salary</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> RMB <span class="token operator">=</span> <span class="token number">22</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+Salary roseIncome <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Salary</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> RMB <span class="token operator">=</span> <span class="token number">33</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 方式一</span>
+Salary familyIncome <span class="token operator">=</span> Salary<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>mikeIncome<span class="token punctuation">,</span> roseIncome<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 方式二: 重载运算符</span>
+Salary familyIncome <span class="token operator">=</span> mikeIncome <span class="token operator">+</span> roseIncome<span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Salary</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> RMB <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Salary <span class="token keyword">operator</span> <span class="token operator">+</span><span class="token punctuation">(</span>Salary s1<span class="token punctuation">,</span> Salary s2<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        s2<span class="token punctuation">.</span>RMB <span class="token operator">+</span><span class="token operator">=</span> s1<span class="token punctuation">.</span>RMB<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> s2<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议10-创建对象时需要考虑是否实现比较器"><a href="#建议10-创建对象时需要考虑是否实现比较器" class="headerlink" title="建议10 : 创建对象时需要考虑是否实现比较器"></a>建议10 : 创建对象时需要考虑是否实现比较器</h2><p>有对象的地方就会存在比较, 比如, 有一个人的Salary列表, 根据排序需要, 列表要支持针对基本工资来罗列Salary, 这个时候接口IComparable就会起作用.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Salary</span> <span class="token punctuation">:</span> IComparable
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 基本工资</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> BaseSalary <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 奖金</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> Bonus <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">region</span> IComparable 成员</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">CompareTo</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Salary staff <span class="token operator">=</span> obj <span class="token keyword">as</span> Salary<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>BaseSalary <span class="token operator">></span> staff<span class="token punctuation">.</span>BaseSalary<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>BaseSalary <span class="token operator">==</span> staff<span class="token punctuation">.</span>BaseSalary<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 以上代码可以用Int自带默认的比较方法来处理.</span>
+        <span class="token comment" spellcheck="true">// return BaseSalary.CompareTo(staff.BaseSalary);</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 如果不想以基本工资进行排序, 而是以奖金属性进行排序</span>
+<span class="token comment" spellcheck="true">// 这个时候, 接口IComparer的作用就体现出来了. 可以实现一个自定义的比较器</span>
+<span class="token keyword">class</span> <span class="token class-name">BonusComparer</span> <span class="token punctuation">:</span> IComparer
+<span class="token punctuation">{</span>
+    <span class="token preprocessor property">#<span class="token directive keyword">region</span> IComparer 成员</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">Compare</span><span class="token punctuation">(</span><span class="token keyword">object</span> x<span class="token punctuation">,</span> <span class="token keyword">object</span> y<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Salary s1 <span class="token operator">=</span> x <span class="token keyword">as</span> Salary<span class="token punctuation">;</span>
+        Salary s2 <span class="token operator">=</span> y <span class="token keyword">as</span> Salary<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> s1<span class="token punctuation">.</span>Bonus<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>s2<span class="token punctuation">.</span>Bonus<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+<span class="token punctuation">}</span>
+
+
+<span class="token comment" spellcheck="true">// 排序使用</span>
+<span class="token comment" spellcheck="true">// 不建议使用非泛型集合类, 因为从上述代码发现, 会进行转型,影响性能,而泛型的出现可以避免运行时转型.</span>
+<span class="token comment" spellcheck="true">// ArrayList companySalary = new ArrayList();</span>
+<span class="token comment" spellcheck="true">// companySalary.Add(new Salary() { Name = "Mike", BaseSalary = 3000 });</span>
+<span class="token comment" spellcheck="true">// companySalary.Add(new Salary() { Name = "Rose", BaseSalary = 2000 });</span>
+<span class="token comment" spellcheck="true">// companySalary.Add(new Salary() { Name = "Jeffry", BaseSalary = 1000 });</span>
+<span class="token comment" spellcheck="true">// companySalary.Add(new Salary() { Name = "Steve", BaseSalary = 4000 });</span>
+<span class="token comment" spellcheck="true">// companySalary.Sort();</span>
+<span class="token comment" spellcheck="true">// companySalary.Sort(new BonusComparer());    //提供一个非默认的比较器</span>
+<span class="token comment" spellcheck="true">//foreach (Salary item in companySalary)</span>
+<span class="token comment" spellcheck="true">//{</span>
+<span class="token comment" spellcheck="true">//    Console.WriteLine(string.Format("Name:{0} \tBaseSalary:{1} \tBonus:{2}", item.Name, item.BaseSalary, item.Bonus));</span>
+<span class="token comment" spellcheck="true">//}</span>
+
+
+<span class="token comment" spellcheck="true">// 因此上述代码应缓存List&lt;T>,对应的,应该实现IComparable&lt;T>和IComparer&lt;T>接口</span>
+<span class="token keyword">class</span> <span class="token class-name">Salary</span> <span class="token punctuation">:</span> IComparable<span class="token operator">&lt;</span>Salary<span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> BaseSalary <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> Bonus <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">region</span> IComparable&lt;Salary> 成员</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">CompareTo</span><span class="token punctuation">(</span>Salary other<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> BaseSalary<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>other<span class="token punctuation">.</span>BaseSalary<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">BonusComparer</span> <span class="token punctuation">:</span> IComparer<span class="token operator">&lt;</span>Salary<span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token preprocessor property">#<span class="token directive keyword">region</span> IComparer&lt;Salary> 成员</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">Compare</span><span class="token punctuation">(</span>Salary x<span class="token punctuation">,</span> Salary y<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> x<span class="token punctuation">.</span>Bonus<span class="token punctuation">.</span><span class="token function">CompareTo</span><span class="token punctuation">(</span>y<span class="token punctuation">.</span>Bonus<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议11-区别对待-和Equals"><a href="#建议11-区别对待-和Equals" class="headerlink" title="建议11 : 区别对待 == 和Equals"></a>建议11 : 区别对待 == 和Equals</h2><p>在开始本建议之前,首先要明确概念”相等性”.  CLR将相等性分为两类: 值相等性,引用相等性.</p>
+<ul>
+<li>如果用来比较的两个变量所包含的数值相等, 那么将其定义为”值相等性”.</li>
+<li>如果比较的两个变量引用的是内存中同一个对象, 那么将其定义为”引用相等性”.</li>
+</ul>
+<p>无论”==”还是”Equals”都倾向于表达一个原则:</p>
+<ul>
+<li>对于值类型, 如果类型的值相等,就应该返回True</li>
+<li>对于引用类型,如果类型指向同一个对象, 则返回True</li>
+</ul>
+<p>同时这个两个操作符都是可以被重载的. 比如string这样一个特殊的引用类型,微软觉得它的现实意义更接近于值类型,所在,在FCL中string的比较重载为针对<code>类型的值</code>比较, 而不是针对<code>引用本身</code>的比较.</p>
+<p>从设计上来说, 很多自定义的类型(尤其是自定义的引用类型) 会存在和string类型比较接近的情况. 例如Person类, 如果两个Person对象的IDCode是相等的, 我们就认为两者是同一个人, 这时候就要重载Equals这个方法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Person</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> IDCode <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">private</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">Person</span><span class="token punctuation">(</span><span class="token keyword">string</span> idCode<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>IDCode <span class="token operator">=</span> idCode<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">bool</span> <span class="token function">Equals</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> IDCode <span class="token operator">==</span> <span class="token punctuation">(</span>obj <span class="token keyword">as</span> Person<span class="token punctuation">)</span><span class="token punctuation">.</span>IDCode<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 这里去比较2个person的对象</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">ReferenceTypeEquals</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">object</span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"NB123"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">object</span> b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"NB123"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//False</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>a <span class="token operator">==</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//True</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span><span class="token function">Equals</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一般来说, 要定义<code>值相等性</code>应该<strong>仅仅去重载Equals方法</strong>, 同时让<code>==</code>表示<code>引用相等性</code>.</p>
+<p>由于<code>==</code>和<code>Equals</code>都可以被重载表示<code>值相等性</code>和<code>引用相等性</code>, 所以,为了明确有一种方法肯定比较的是<code>引用相等性</code>,FCL中提供了<code>Object.ReferenceEquals</code>方法, 两个实例是否是同一个实例.</p>
+<h2 id="建议12-重写Equals时也要重写GetHashCode"><a href="#建议12-重写Equals时也要重写GetHashCode" class="headerlink" title="建议12 : 重写Equals时也要重写GetHashCode"></a>建议12 : 重写Equals时也要重写GetHashCode</h2><p>除非考虑到自定义类型会被用作基于Hash的集合的键值, 否则不建议重写Equals方法, 因为这会带来一系列的问题.</p>
+<p>如果重写Equals,没有重写GetHashCode, 在使用FCL中的Dictionary类时, Dictionary会根据Key值来查找Value值, CLR内部会优化这种查找, 实际上, 最终是根据Key值的HashCode来查找Value值.</p>
+<p>代码运行时, CLR会调用Key对象的GetHashCode方法, 会根据类型计算出一个哈希值, 如果没有重写GetHashCode方法, 那么即使你重写Equals创建了2个你认为值相等性的对象, Dictionary则不会这么认为, 因此要重写Equals时也要重写GetHashCode.</p>
+<p>同时,<strong>GetHashCode方法应该基于那些只读的属性或特性来生成HashCode</strong>, 如果改变Person的IDCode就相当于是另外一个人了.</p>
+<p>GetHashCode方法还存在另外一个问题, 它永远只返回一个整数类型, 而整数类型的容量显然无法满足字符串的容量. 以下例子就能产生两个同一的HashCode:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">string</span> st1 <span class="token operator">=</span> <span class="token string">"NB0903100006"</span><span class="token punctuation">;</span>
+<span class="token keyword">string</span> st2 <span class="token operator">=</span> <span class="token string">"NB0904140001"</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>st1<span class="token punctuation">.</span><span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// -1649519574</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>st2<span class="token punctuation">.</span><span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// -1649519574</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>为了减少两个不同类型之间根据字符串产生相同HashCode的几率, 要对GetHashCode方法进行改进</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 容易出相同HashCode的几率高</span>
+<span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">int</span> <span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>IDCode<span class="token punctuation">.</span><span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 改进后的方法</span>
+<span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">int</span> <span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>System<span class="token punctuation">.</span>Reflection<span class="token punctuation">.</span>MethodBase<span class="token punctuation">.</span><span class="token function">GetCurrentMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>DeclaringType<span class="token punctuation">.</span>FullName <span class="token operator">+</span> <span class="token string">"#"</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>IDCode<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>重写Equals方法时, 也应该实现一个类型安全的接口IEquatable<t></t></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 完整实现</span>
+<span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">:</span> IEquatable<span class="token operator">&lt;</span>Person<span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> IDCode <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">private</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">Person</span><span class="token punctuation">(</span><span class="token keyword">string</span> idCode<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>IDCode <span class="token operator">=</span> idCode<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">bool</span> <span class="token function">Equals</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> IDCode <span class="token operator">==</span> <span class="token punctuation">(</span>obj <span class="token keyword">as</span> Person<span class="token punctuation">)</span><span class="token punctuation">.</span>IDCode<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">int</span> <span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>System<span class="token punctuation">.</span>Reflection<span class="token punctuation">.</span>MethodBase<span class="token punctuation">.</span><span class="token function">GetCurrentMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>DeclaringType<span class="token punctuation">.</span>FullName <span class="token operator">+</span> <span class="token string">"#"</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>IDCode<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">bool</span> <span class="token function">Equals</span><span class="token punctuation">(</span>Person other<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> IDCode <span class="token operator">==</span> other<span class="token punctuation">.</span>IDCode<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议13-为类型输出格式化字符串"><a href="#建议13-为类型输出格式化字符串" class="headerlink" title="建议13 : 为类型输出格式化字符串"></a>建议13 : 为类型输出格式化字符串</h2><p>两种方法可以为类型提供给格式化的字符串输出.</p>
+<ol>
+<li>让类型继承接口IFormattable. 主动实现方式, 要求开发者可以预见类型在格式化方面的要求.</li>
+<li>类型的使用者为类型自定义格式化器. 这是很多时候要用的方式,也是最灵活多变的方法.</li>
+</ol>
+<p>最简单的字符串输出是为类型重写ToString方法, 如果没有为类型重写该方法, 默认会调用Object的ToString, 会返回当前类型的类型名称. 即使重写了ToString方法,字符串输出单一形式的字符串, 而通过实现IFormattable接口的ToString方法, 可以让类型根据用户的输入而格式化输出.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">:</span> IFormattable
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> IDCode <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> FirstName <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> LastName <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//实现接口IFormattable的方法ToString</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token keyword">string</span> format<span class="token punctuation">,</span> IFormatProvider formatProvider<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>format<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token string">"Ch"</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token string">"Eg"</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0} {1}"</span><span class="token punctuation">,</span> FirstName<span class="token punctuation">,</span> LastName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">default</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//重写Object.ToString()</span>
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0} {1}"</span><span class="token punctuation">,</span> LastName<span class="token punctuation">,</span> FirstName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+Person person <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> FirstName <span class="token operator">=</span> <span class="token string">"Jessica"</span><span class="token punctuation">,</span> LastName <span class="token operator">=</span> <span class="token string">"Hu"</span><span class="token punctuation">,</span> IDCode <span class="token operator">=</span> <span class="token string">"NB123"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>person<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Hu Jessica</span>
+PersonFomatter pFormatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PersonFomatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>pFormatter<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"Ch"</span><span class="token punctuation">,</span> person<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// Hu Jessica</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>pFormatter<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"Eg"</span><span class="token punctuation">,</span> person<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// Jessica Hu</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上面这种方法是在意识到类型会存在格式化字符串输出方面的需求时, 提前为类型继承了接口IFormattable.</p>
+<p>第二种方式: 加入Person类是如下所示的实现:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Person</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">string</span> IDCode <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">string</span> FirstName <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">string</span> LastName <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token comment" spellcheck="true">// 针对Person的格式化器的实现:</span>
+<span class="token keyword">class</span> <span class="token class-name">PersonFomatter</span> <span class="token punctuation">:</span> IFormatProvider<span class="token punctuation">,</span> ICustomFormatter
+<span class="token punctuation">{</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">region</span> IFormatProvider 成员</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">object</span> <span class="token function">GetFormat</span><span class="token punctuation">(</span>Type formatType<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>formatType <span class="token operator">==</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>ICustomFormatter<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">region</span> ICustomFormatter 成员</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">string</span> <span class="token function">Format</span><span class="token punctuation">(</span><span class="token keyword">string</span> format<span class="token punctuation">,</span> <span class="token keyword">object</span> arg<span class="token punctuation">,</span> IFormatProvider formatProvider<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Person person <span class="token operator">=</span> arg <span class="token keyword">as</span> Person<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>person <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>format<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token string">"Ch"</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0} {1}"</span><span class="token punctuation">,</span> person<span class="token punctuation">.</span>LastName<span class="token punctuation">,</span> person<span class="token punctuation">.</span>FirstName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token string">"Eg"</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0} {1}"</span><span class="token punctuation">,</span> person<span class="token punctuation">.</span>FirstName<span class="token punctuation">,</span> person<span class="token punctuation">.</span>LastName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token string">"ChM"</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0} {1} : {2}"</span><span class="token punctuation">,</span> person<span class="token punctuation">.</span>LastName<span class="token punctuation">,</span> person<span class="token punctuation">.</span>FirstName<span class="token punctuation">,</span> person<span class="token punctuation">.</span>IDCode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">default</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0} {1}"</span><span class="token punctuation">,</span> person<span class="token punctuation">.</span>FirstName<span class="token punctuation">,</span> person<span class="token punctuation">.</span>LastName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//一个典型的格式化器应该继承接口IFormatProvider和ICustomFormatter</span>
+<span class="token comment" spellcheck="true">// 应该以如下方式调用</span>
+Person person <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> FirstName <span class="token operator">=</span> <span class="token string">"Jessica"</span><span class="token punctuation">,</span> LastName <span class="token operator">=</span> <span class="token string">"Hu"</span><span class="token punctuation">,</span> IDCode <span class="token operator">=</span> <span class="token string">"NB123"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>person<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ConsoleApplication4.Person</span>
+PersonFomatter pFormatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PersonFomatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>pFormatter<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"Ch"</span><span class="token punctuation">,</span> person<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// Hu Jessica</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>pFormatter<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"Eg"</span><span class="token punctuation">,</span> person<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//Jessica Hu</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>pFormatter<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"ChM"</span><span class="token punctuation">,</span> person<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// Hu Jessica : NB 123</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述示例也演示了如果没有重写Object.ToString方法, 类型会输出类型名称.</p>
+<p>在第一个版本Person类型中,对IFormattable的ToString方法稍作修改, 就能让格式化输出在语法上支持更多的调用方式. 以下是最终版本:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">:</span> IFormattable
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> IDCode <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> FirstName <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> LastName <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//实现接口IFormattable的方法ToString</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token keyword">string</span> format<span class="token punctuation">,</span> IFormatProvider formatProvider<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>format<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token string">"Ch"</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token string">"Eg"</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0} {1}"</span><span class="token punctuation">,</span> FirstName<span class="token punctuation">,</span> LastName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">default</span><span class="token punctuation">:</span>
+                <span class="token comment" spellcheck="true">//return this.ToString();</span>
+                ICustomFormatter customFormatter <span class="token operator">=</span> formatProvider <span class="token keyword">as</span> ICustomFormatter<span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>customFormatter <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                <span class="token keyword">return</span> customFormatter<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span>format<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//重写Object.ToString()</span>
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0} {1}"</span><span class="token punctuation">,</span> LastName<span class="token punctuation">,</span> FirstName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 调用者的代码能够支持如下所示的语法</span>
+Person person <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> FirstName <span class="token operator">=</span> <span class="token string">"Jessica"</span><span class="token punctuation">,</span> LastName <span class="token operator">=</span> <span class="token string">"Hu"</span><span class="token punctuation">,</span> IDCode <span class="token operator">=</span> <span class="token string">"NB123"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>person<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+PersonFomatter pFormatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PersonFomatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//第一类格式化输出语法</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>pFormatter<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"Ch"</span><span class="token punctuation">,</span> person<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>pFormatter<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"Eg"</span><span class="token punctuation">,</span> person<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>pFormatter<span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"ChM"</span><span class="token punctuation">,</span> person<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//第二类格式化输出语法，也更简洁</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>person<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token string">"Ch"</span><span class="token punctuation">,</span> pFormatter<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>person<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token string">"Eg"</span><span class="token punctuation">,</span> pFormatter<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>person<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token string">"ChM"</span><span class="token punctuation">,</span> pFormatter<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议14-正确实现浅拷贝和深拷贝"><a href="#建议14-正确实现浅拷贝和深拷贝" class="headerlink" title="建议14 : 正确实现浅拷贝和深拷贝"></a>建议14 : 正确实现浅拷贝和深拷贝</h2><p>为对象创建副本的技术称为拷贝(也叫克隆). 拷贝分为浅拷贝和深拷贝.</p>
+<ul>
+<li>浅拷贝: 值类型字段复制到副本后, 在副本修改不会影响到源对象对应的值, 但是引用类型字段被复制的是引用,而不是引用的对象, 在副本中对引用类型的字段做修改会影响到源对象本身.</li>
+<li>深拷贝: 同样,将对象中的所有字段复制到新的对象中, 不过,无论是对象的值类型字段还是引用类型字段,都会被重新创建并赋值, 对副本的修改不会影响到源对象本身.</li>
+</ul>
+<p>无论是浅拷贝还是深拷贝, 微软都建议用类型继承<code>ICloneable</code>接口方式明确告诉调用者, 该类型可以被拷贝. 但是该接口只提供了一个<code>Clone</code>方法, 无法表明是浅拷贝还是深拷贝.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">:</span> ICloneable
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 理论上string是引用类型, 但是由于该引用类型的特殊性(实现和语义上)</span>
+    <span class="token comment" spellcheck="true">// MemberwiseClone仍旧为其创建了副本(而不是复制引用),</span>
+    <span class="token comment" spellcheck="true">// 也就是说,在浅拷贝过程中, 应该将字符串看成值类型</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> IDCode <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 值类型</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> Age <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 引用类型, 浅拷贝只拷贝引用</span>
+    <span class="token keyword">public</span> Department Department <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">region</span> ICloneable 成员</span>
+
+    <span class="token comment" spellcheck="true">// 如果修改Department成员,会影响所有用此方法克隆出来的浅表副本</span>
+    <span class="token comment" spellcheck="true">// 修改其余2个成员则不会.</span>
+    <span class="token keyword">public</span> <span class="token keyword">object</span> <span class="token function">Clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 创建当前object的浅表副本</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">MemberwiseClone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>深拷贝有多种实现方法:</p>
+<ol>
+<li>最简单的是手动对字段逐个进行赋值, 但是最容易出错, 如果类型的字段发生了变化或有增减, 那么该拷贝方法也需要发生相应的变化.</li>
+<li>建议使用序列化形式来进行深拷贝</li>
+</ol>
+<p>序列化方式如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">:</span> ICloneable
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">string</span> IDCode <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">int</span> Age <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+   <span class="token keyword">public</span> Department Department <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+   <span class="token preprocessor property">#<span class="token directive keyword">region</span> ICloneable 成员</span>
+
+   <span class="token keyword">public</span> <span class="token keyword">object</span> <span class="token function">Clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">using</span> <span class="token punctuation">(</span>Stream objectStream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MemoryStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+           IFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>objectStream<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           objectStream<span class="token punctuation">.</span><span class="token function">Seek</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> SeekOrigin<span class="token punctuation">.</span>Begin<span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token keyword">return</span> formatter<span class="token punctuation">.</span><span class="token function">Deserialize</span><span class="token punctuation">(</span>objectStream<span class="token punctuation">)</span> <span class="token keyword">as</span> Employee<span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+   <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>该接口只提供了一个<code>Clone</code>方法, 无法表明是浅拷贝还是深拷贝. 如果要在一个类中同时实现深拷贝和浅拷贝, 只能由我们自己实现两个额外的方法声明为DeepClone和Shallow, 因此, Employee的最终版本看起来应该像如下的形式:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span>Serializable<span class="token punctuation">]</span>
+ <span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">:</span> ICloneable
+ <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> IDCode <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> Age <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Department Department <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">region</span> ICloneable 成员</span>
+    <span class="token comment" spellcheck="true">// 浅拷贝</span>
+    <span class="token keyword">public</span> <span class="token keyword">object</span> <span class="token function">Clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">MemberwiseClone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+
+    <span class="token comment" spellcheck="true">// 深拷贝</span>
+    <span class="token keyword">public</span> Employee <span class="token function">DeepClone</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">using</span> <span class="token punctuation">(</span>Stream objectStream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MemoryStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            IFormatter formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BinaryFormatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            formatter<span class="token punctuation">.</span><span class="token function">Serialize</span><span class="token punctuation">(</span>objectStream<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            objectStream<span class="token punctuation">.</span><span class="token function">Seek</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> SeekOrigin<span class="token punctuation">.</span>Begin<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> formatter<span class="token punctuation">.</span><span class="token function">Deserialize</span><span class="token punctuation">(</span>objectStream<span class="token punctuation">)</span> <span class="token keyword">as</span> Employee<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 浅拷贝</span>
+    <span class="token keyword">public</span> Employee <span class="token function">ShallowClone</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">Clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> Employee<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+ <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议15-使用dynamic来简化反射实现"><a href="#建议15-使用dynamic来简化反射实现" class="headerlink" title="建议15 : 使用dynamic来简化反射实现"></a>建议15 : 使用dynamic来简化反射实现</h2><p>dynamic的出现让C#具有了弱语言类型的特性. 编译器在编译的时候不再对类型进行检查, 编译器默认dynamic对象支持开发者想要的任何特性. 例如:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 即使你对GetDynamicObject方法返回的对象一无所知, 也可以进行如下的调用, 编译器不会报错</span>
+<span class="token keyword">dynamic</span> dynamicObject <span class="token operator">=</span> <span class="token function">GetDynamicObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>dynamicObject<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>dynamicObject<span class="token punctuation">.</span><span class="token function">SamleMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当然,如果在运行时dynamicObject不包含指定的这些方法属性, 运行时会抛出<code>RuntimeBinderException</code>异常.</p>
+<blockquote>
+<p>有人会将var关键字与dynamic进行比较, 实际上完全是两个概念,var是编译期抛给我们的语法糖,一旦被编译,编译期会自动匹配var变量的实际类型, 并用实际类型来替换该变量的声明, 这看上去就是在编码的时候是用实际类型进行声明的.</p>
+<p>dynamic被编译后. 实际是一个object类型, 只不过编译期会对dynamic进行特殊的处理, 让它在编译期间不进行任何的类型检查, 而是将类型检查放到了运行期, 因此在vs中不支持智能感知, 而var是支持的</p>
+</blockquote>
+<p>利用dynamic的这个特性, 可以简化C#中的反射语法. 在dynamic出现之前. 假设存在类,代码如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DynamicSample</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们这样使用反射, 调用方代码如下:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">//-------------------普通反射用法-----------------------</span>
+      <span class="token keyword">int</span> times <span class="token operator">=</span> <span class="token number">1000000</span><span class="token punctuation">;</span>
+      DynamicSample reflectSample <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DynamicSample</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">var</span> addMethod <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>DynamicSample<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetMethod</span><span class="token punctuation">(</span><span class="token string">"Add"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment" spellcheck="true">//--------------测试1000000次反射调用的耗时-----------------------</span>
+      Stopwatch watch1 <span class="token operator">=</span> Stopwatch<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> times<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          <span class="token comment" spellcheck="true">// object参数拆箱成int类型</span>
+          addMethod<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span>reflectSample<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"反射耗时：{0} 毫秒"</span><span class="token punctuation">,</span> watch1<span class="token punctuation">.</span>ElapsedMilliseconds<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 反射耗时：275 毫秒</span>
+
+      <span class="token comment" spellcheck="true">//---------使用dynamic, 并且在可控的范围内减少一次拆箱的机会----</span>
+      <span class="token keyword">dynamic</span> dynamicSample <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DynamicSample</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      Stopwatch watch2 <span class="token operator">=</span> Stopwatch<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> times<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          dynamicSample<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"dynamic耗时：{0} 毫秒"</span><span class="token punctuation">,</span> watch2<span class="token punctuation">.</span>ElapsedMilliseconds<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// dynamic耗时：39 毫秒</span>
+
+
+      <span class="token comment" spellcheck="true">//-------------------------------优化反射调用-------</span>
+      <span class="token comment" spellcheck="true">// 利用委托来调用</span>
+      DynamicSample reflectSampleBetter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DynamicSample</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">var</span> addMethod2 <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>DynamicSample<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetMethod</span><span class="token punctuation">(</span><span class="token string">"Add"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token comment" spellcheck="true">// 创建一个返回int的委托func</span>
+      <span class="token keyword">var</span> delg <span class="token operator">=</span> <span class="token punctuation">(</span>Func<span class="token operator">&lt;</span>DynamicSample<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">)</span>Delegate<span class="token punctuation">.</span><span class="token function">CreateDelegate</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Func<span class="token operator">&lt;</span>DynamicSample<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">,</span> addMethod2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      Stopwatch watch3 <span class="token operator">=</span> Stopwatch<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> times<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          <span class="token function">delg</span><span class="token punctuation">(</span>reflectSampleBetter<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"优化的反射耗时：{0} 毫秒"</span><span class="token punctuation">,</span> watch3<span class="token punctuation">.</span>ElapsedMilliseconds<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 使用dynamic效率高于没有优化的反射的实现效果</span>
+<span class="token comment" spellcheck="true">// 对反射进行优化, 效率略高于dynamic,但是牺牲了代码的整洁度</span>
+<span class="token comment" spellcheck="true">// 反射耗时：275 毫秒</span>
+<span class="token comment" spellcheck="true">// dynamic耗时：39 毫秒</span>
+<span class="token comment" spellcheck="true">// 优化的反射耗时：3 毫秒</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>从上述结果来看, 建议大家始终使用dynamic来简化反射的实现. 如果使用优化后的反射, 会牺牲代码的整洁度.</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        编写CSharp的157个建议笔记2 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#集合和LINQ"><span class="toc-text">集合和LINQ</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议16-元素数量可变的情况下不应该使用数组"><span class="toc-text">建议16 : 元素数量可变的情况下不应该使用数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议17-多数情况下使用foreach进行循环遍历"><span class="toc-text">建议17 : 多数情况下使用foreach进行循环遍历</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议18-foreach不能代替for"><span class="toc-text">建议18 : foreach不能代替for</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#19-使用更有效的对象和集合初始化"><span class="toc-text">19 使用更有效的对象和集合初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议20-使用泛型集合代替非泛型集合"><span class="toc-text">建议20 : 使用泛型集合代替非泛型集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议21-选择正确的集合"><span class="toc-text">建议21 : 选择正确的集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议22-确保集合的线程安全"><span class="toc-text">建议22 : 确保集合的线程安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#避免将泛型List作为自定义集合类的基类"><span class="toc-text">避免将泛型List作为自定义集合类的基类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议24-迭代器应该是只读的"><span class="toc-text">建议24 : 迭代器应该是只读的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议25-谨慎集合属性的可写操作"><span class="toc-text">建议25 : 谨慎集合属性的可写操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议26-使用匿名类型存储LINQ查询结果"><span class="toc-text">建议26 : 使用匿名类型存储LINQ查询结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议27-在查询中使用Lambda表达式"><span class="toc-text">建议27 : 在查询中使用Lambda表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#理解延迟求值和主动求值之间的区别"><span class="toc-text">理解延迟求值和主动求值之间的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议30-使用LINQ取代集合中的比较器和迭代器"><span class="toc-text">建议30 : 使用LINQ取代集合中的比较器和迭代器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议31-LINQ查询中避免不必要的迭代"><span class="toc-text">建议31 : LINQ查询中避免不必要的迭代</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        编写CSharp的157个建议笔记2
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-12-12 21:12:45</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CSharp的157个建议" title="CSharp的157个建议">CSharp的157个建议</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="集合和LINQ"><a href="#集合和LINQ" class="headerlink" title="集合和LINQ"></a>集合和LINQ</h1><p>软件开发过程中不可避免会用到集合.C#中的集合表现为数组和若干集合类.  不管是数组还是集合类, 它们都有各自的优缺点. 利用好集合是我们在开发过程中必须掌握的技巧.</p>
+<p>LINQ(Language Integrated Query,语言集成查询) 提供类似SQL的语法, 能对集合进行遍历,筛选和投影. 一旦掌握LINQ, 你就发现在开发中再也离不开它.</p>
+<h2 id="建议16-元素数量可变的情况下不应该使用数组"><a href="#建议16-元素数量可变的情况下不应该使用数组" class="headerlink" title="建议16 : 元素数量可变的情况下不应该使用数组"></a>建议16 : 元素数量可变的情况下不应该使用数组</h2><p>C# 中数组一旦被创建, 长度就不能改变. 如果需要一个动态且可变长度的集合, 应该使用<code>List&lt;T&gt;</code>. 而数组本身, 尤其是一维数组, 也称为向量,遇到要求高效率时,会专门被优化提升效率, 其性能是最佳的. 在IL中使用了专门的指令来处理他们(newarr, ldelem,ldelema,ldlen,stelem).</p>
+<p>从内存使用的角度来讲, 数组在创建时被分配了一段固定长度的内存, 如果数组元素时值类型, 则每个元素的长度等于相应的值类型的长度; 如果是引用类型,则每个元素的长度为该引用类型的<code>IntPtr.Size</code>.</p>
+<p>ArrayList是链表结构, 可以动态的增减内存空间, 如果ArrayList存储的是值类型, 则会为每个元素增加12字节的空间, 其中4字节用于元素引用,8字节是元素装箱时引入的对象头. <code>List&lt;T&gt;</code>是ArrayList的泛型实现, 它省去了拆箱和装箱带来的开销.</p>
+<blockquote>
+<p>使用数组的过程中应该注意大对象的问题. 大对象指超过85000字节的对象, 它们被分配在大对象堆里. 大对象的分配和回收和小对象相比都不太一样, 尤其是回收过程会带来效率很低的问题. 不能对数组指定过大的长度,这会让数组称为一个大对象.</p>
+</blockquote>
+<p>如果要动态改变数组的长度, 如下所示:</p>
+<ul>
+<li>方式一: 将数组转换为<code>Array</code>或<code>List&lt;T&gt;</code></li>
+</ul>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> iArr <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//-------将数组转变为ArrayList----</span>
+ArrayList arrayListInt <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span>iArr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+arrayListInt<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//-------将数组转变为List&lt;T>------</span>
+List<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> listInt <span class="token operator">=</span> iArr<span class="token punctuation">.</span><span class="token generic-method function">ToList<span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+listInt<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>方式二: 用数组的复制功能, 数组继承自System.Array , 提供了Copy方法.</li>
+</ul>
+<p>无论哪种方法改变数组长度就相当于重新创建一个数组对象.</p>
+<p>可以创建一个名为ReSize的扩展方法的扩展方法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ClassForExtensions</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Array <span class="token function">ReSize</span><span class="token punctuation">(</span><span class="token keyword">this</span> Array array<span class="token punctuation">,</span> <span class="token keyword">int</span> newSize<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Type t <span class="token operator">=</span> array<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetElementType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Array newArray <span class="token operator">=</span> Array<span class="token punctuation">.</span><span class="token function">CreateInstance</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> newSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Array<span class="token punctuation">.</span><span class="token function">Copy</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> newArray<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> Math<span class="token punctuation">.</span><span class="token function">Min</span><span class="token punctuation">(</span>array<span class="token punctuation">.</span>Length<span class="token punctuation">,</span> newSize<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> newArray<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 使用方法</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> iArr <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+iArr <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>iArr<span class="token punctuation">.</span><span class="token function">ReSize</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>强调一下主题: <strong>在元素数量可变的情况下不应使用数组.</strong> 时间效率上要高100倍.</p>
+<ul>
+<li>ResizeArray: 00:00:00.0001183</li>
+<li>ResizeList: 00:00:00.0000016</li>
+</ul>
+<h2 id="建议17-多数情况下使用foreach进行循环遍历"><a href="#建议17-多数情况下使用foreach进行循环遍历" class="headerlink" title="建议17 : 多数情况下使用foreach进行循环遍历"></a>建议17 : 多数情况下使用foreach进行循环遍历</h2><p>关于集合的遍历, 假设存在一个数组,其遍历模式可能采用依据索引来进行遍历的方法. 又假设存在一个HashTable, 其遍历模式可能是按照键值来遍历. 无论哪个集合如果它们的遍历没有一个公共的接口, 那么客户端在进行调用的时候, 相当于是对具体类型进行编码. 这样一来,当需求变化时, 就必须修改我们的代码. 并且由于客户端代码过多地关注了集合内部的实现实现, 代码的可移植性会变得很差. <strong>于是迭代器模式就诞生了.</strong></p>
+<p>自己实现一个迭代器, 用来理解该模式:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 要求所有的迭代器全部实现该接口</span>
+<span class="token keyword">interface</span> <span class="token class-name">IMyEnumerator</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">bool</span> <span class="token function">MoveNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">object</span> Current <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 要求所有的集合实现该接口</span>
+<span class="token comment" spellcheck="true">// 这样一来，客户端就可以针对该接口编码，</span>
+<span class="token comment" spellcheck="true">// 而无须关注具体的实现</span>
+<span class="token keyword">interface</span> <span class="token class-name">IMyEnumerable</span>
+<span class="token punctuation">{</span>
+    IMyEnumerator <span class="token function">GetEnumerator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> Count <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// MyEnumerator就是一个迭代器的实现</span>
+<span class="token comment" spellcheck="true">//如果迭代需求有变化, 可以重新开发一个迭代器</span>
+<span class="token keyword">class</span> <span class="token class-name">MyEnumerator</span> <span class="token punctuation">:</span> IMyEnumerator
+<span class="token punctuation">{</span>
+   <span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+   MyList myList<span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token function">MyEnumerator</span><span class="token punctuation">(</span>MyList myList<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">this</span><span class="token punctuation">.</span>myList <span class="token operator">=</span> myList<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token keyword">public</span> <span class="token keyword">bool</span> <span class="token function">MoveNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">if</span> <span class="token punctuation">(</span>index <span class="token operator">+</span> <span class="token number">1</span> <span class="token operator">></span> myList<span class="token punctuation">.</span>Count<span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+           index <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+           <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+       <span class="token keyword">else</span>
+       <span class="token punctuation">{</span>
+           index<span class="token operator">++</span><span class="token punctuation">;</span>
+           <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token keyword">public</span> <span class="token keyword">object</span> Current
+   <span class="token punctuation">{</span>
+       <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> myList<span class="token punctuation">[</span>index <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 模拟一个集合类, 继承IMyEnumerable接口, 这样客户端进行调用的时候</span>
+<span class="token comment" spellcheck="true">// 可以直接使用IMyEnumerable来声明变量</span>
+<span class="token comment" spellcheck="true">// 例如 IMyEnumerable list = new MyList();</span>
+<span class="token keyword">class</span> <span class="token class-name">MyList</span> <span class="token punctuation">:</span> IMyEnumerable
+<span class="token punctuation">{</span>
+    <span class="token keyword">object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> items <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">object</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    IMyEnumerator myEnumerator<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">object</span> <span class="token keyword">this</span><span class="token punctuation">[</span><span class="token keyword">int</span> i<span class="token punctuation">]</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> items<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+        <span class="token keyword">set</span> <span class="token punctuation">{</span> <span class="token keyword">this</span><span class="token punctuation">.</span>items<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> Count
+    <span class="token punctuation">{</span>
+        <span class="token keyword">get</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> items<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> IMyEnumerator <span class="token function">GetEnumerator</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>myEnumerator <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            myEnumerator <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyEnumerator</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> myEnumerator<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果未来我们新增了其他的集合类, 那么针对List的编码即使不做修改也能运行良好. 以下用法都没有针对MyList编码,而是实现了对迭代器编码.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//使用接口IMyEnumerable代替MyList</span>
+IMyEnumerable list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//得到迭代器，在循环中针对迭代器编码，而不是集合MyList</span>
+IMyEnumerator enumerator <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">GetEnumerator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// for遍历</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> list<span class="token punctuation">.</span>Count<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">object</span> current <span class="token operator">=</span> enumerator<span class="token punctuation">.</span>Current<span class="token punctuation">;</span>
+    enumerator<span class="token punctuation">.</span><span class="token function">MoveNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// while遍历</span>
+<span class="token keyword">while</span> <span class="token punctuation">(</span>enumerator<span class="token punctuation">.</span><span class="token function">MoveNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">object</span> current <span class="token operator">=</span> enumerator<span class="token punctuation">.</span>Current<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// foreach</span>
+<span class="token keyword">foreach</span><span class="token punctuation">(</span><span class="token keyword">var</span> current <span class="token keyword">in</span> list<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 省略了object current = enumerator.Current;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到foreach最大限度地简化了代码. 它用于遍历一个继承了<code>IEmuerable</code>或<code>IEmuerable&lt;T&gt;</code>接口的集合元素.</p>
+<p>通过观察foreach的IL代码看出:</p>
+<ul>
+<li>运行时会调用集合类型的get_Current和MoveNext方法</li>
+<li>在调用完MoveNext方法后, 如果结果是true, 跳转到循环开始处<ul>
+<li>实际上,foreach循环和while是一样的</li>
+</ul>
+</li>
+<li>自动将代码置入try-finally块</li>
+<li>若类型实现了IDispose接口, 它会在循环结束后自动调用Dispose方法.</li>
+</ul>
+<p>如果用Reflector进行反编译,则对应的C#代码如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">List<span class="token operator">&lt;</span><span class="token keyword">object</span><span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span><span class="token keyword">object</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token keyword">object</span><span class="token operator">></span><span class="token punctuation">.</span>Enumerator CS$<span class="token number">5</span>$<span class="token number">000</span> <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">GetEnumerator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">while</span><span class="token punctuation">(</span>CS$<span class="token number">5</span>$<span class="token number">000</span><span class="token punctuation">.</span><span class="token function">MoveNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token keyword">object</span> current <span class="token operator">=</span> CS$<span class="token number">5</span>$<span class="token number">000</span><span class="token punctuation">.</span>Current<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>using是try-finally的语法糖, 等同于try{ 循环 } finally { CS$5$000.Dispose(); }</p>
+</blockquote>
+<h2 id="建议18-foreach不能代替for"><a href="#建议18-foreach不能代替for" class="headerlink" title="建议18 : foreach不能代替for"></a>建议18 : foreach不能代替for</h2><p>foreach两个优点:</p>
+<ul>
+<li>语法更简化</li>
+<li>默认调用Dispose方法</li>
+</ul>
+<p>但是不一定适合所有场景. <strong>存在的一个问题是: 它不支持循环时对集合进行<code>增删</code>操作.</strong> 取而代之应该使用for循环.</p>
+<p>因为foreach循环使用了迭代器进行集合的遍历, 它在FCL提供的迭代器内部维护了一个堆集合版本的控制. 什么是集合版本呢? 简单的说, 其实它就是一个整型的变量, <strong>任何对集合的增删操作都会使版本号加一</strong>. foreach循环会调用MoveNext方法来遍历元素, 在MoveNext方法内部会进行版本号检测,一旦检测到版本号有变动, 就会抛出<code>InvalidOperationException</code>异常.</p>
+<p>for就不会有这个问题, for直接使用索引器, 它不对集合版本号进行判断, 所以不存在因为集合的变动而带来的异常(当然, 超出索引长度这种情况除外).</p>
+<p>由于for循环和foreach循环在实现上有所不同(前者索引器, 后者迭代器), 两者性能上一直存在争议, 尤其针对泛型集合时, 两者的损耗(时间内存)是在同一数量级别上的.</p>
+<p>因为版本检测的缘故, foreach循环并不能代替for循环.</p>
+<h2 id="19-使用更有效的对象和集合初始化"><a href="#19-使用更有效的对象和集合初始化" class="headerlink" title="19 使用更有效的对象和集合初始化"></a>19 使用更有效的对象和集合初始化</h2><p>对象和集合初始化机制: 对象和集合初始化设定项.</p>
+<p>初始化设定项实际相当于编译器在对象生成后对属性进行了赋值.</p>
+<p><code>Person p = new Person(){ Name = &quot;A&quot;, Age = 20}</code></p>
+<p>使用集合的初始化设定项, <strong>编译器会在集合对象创建完毕后对集合调用Add方法</strong>.</p>
+<p>初始化设定项更重要的作用是为LINQ查询中的匿名类型进行属性的初始化, 由于LINQ查询返回的集合中匿名类型的属性都是只读的, 如果需要为匿名类型属性赋值, 或增加属性, 只能通过初始化设定项来进行, 还能为属性使用表达式.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 集合初始化设定项, 会在对象创建完毕后对集合调用Add方法</span>
+List<span class="token operator">&lt;</span>Person<span class="token operator">></span> personList2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Person<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Rose"</span><span class="token punctuation">,</span> Age <span class="token operator">=</span> <span class="token number">19</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Steve"</span><span class="token punctuation">,</span> Age <span class="token operator">=</span> <span class="token number">45</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Jessica"</span><span class="token punctuation">,</span> Age <span class="token operator">=</span> <span class="token number">20</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 创建一个新的匿名类型, 该类型含有属性Name和AgeScope, 而AgeScope需要通过计算Person的Age属性得到</span>
+<span class="token keyword">var</span> pTemp <span class="token operator">=</span> <span class="token keyword">from</span> p <span class="token keyword">in</span> personList2 <span class="token keyword">select</span> <span class="token keyword">new</span> <span class="token punctuation">{</span> p<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> AgeScope <span class="token operator">=</span> p<span class="token punctuation">.</span>Age <span class="token operator">></span> <span class="token number">20</span> <span class="token operator">?</span> <span class="token string">"Old"</span> <span class="token punctuation">:</span> <span class="token string">"Young"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> pTemp<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0}:{1}"</span><span class="token punctuation">,</span> item<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> item<span class="token punctuation">.</span>AgeScope<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议20-使用泛型集合代替非泛型集合"><a href="#建议20-使用泛型集合代替非泛型集合" class="headerlink" title="建议20 : 使用泛型集合代替非泛型集合"></a>建议20 : 使用泛型集合代替非泛型集合</h2><p>概括来讲, 如果大型集合进行循环访问,转型或拆箱装箱操作, 使用ArrayList这一的传统集合对效率影响会非常大. 鉴于此, 微软提供了对泛型的支持.</p>
+<p>下列示例比较了非泛型集合和泛型集合在运行中的效率:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 垃圾回收相关测试写法</span>
+<span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"开始测试ArrayList:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">TestBegin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">TestArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">TestEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"开始测试List&lt;T>:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">TestBegin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">TestGenericList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">TestEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">static</span> <span class="token keyword">int</span> collectionCount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> Stopwatch watch <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token keyword">int</span> testCount <span class="token operator">=</span> <span class="token number">10000000</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">TestBegin</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        GC<span class="token punctuation">.</span><span class="token function">Collect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">//强制对所有代码进行即时垃圾回收</span>
+        GC<span class="token punctuation">.</span><span class="token function">WaitForPendingFinalizers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//挂起线程，执行终结器队列中的终结器（即析构方法）</span>
+        GC<span class="token punctuation">.</span><span class="token function">Collect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">//再次对所有代码进行垃圾回收，主要包括从终结器队列中出来的对象</span>
+        collectionCount <span class="token operator">=</span> GC<span class="token punctuation">.</span><span class="token function">CollectionCount</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//返回在0代码中执行的垃圾回收次数</span>
+        watch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Stopwatch</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        watch<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">TestEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        watch<span class="token punctuation">.</span><span class="token function">Stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"耗时："</span> <span class="token operator">+</span> watch<span class="token punctuation">.</span>ElapsedMilliseconds<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"垃圾回收次数："</span> <span class="token operator">+</span> <span class="token punctuation">(</span>GC<span class="token punctuation">.</span><span class="token function">CollectionCount</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">-</span> collectionCount<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">TestArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        ArrayList al <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> temp <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> testCount<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            al<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            temp <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>al<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        al <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">TestGenericList</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        List<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> listT <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> temp <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> testCount<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            listT<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            temp <span class="token operator">=</span> listT<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        listT <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 开始测试ArrayList:</span>
+<span class="token comment" spellcheck="true">// 耗时：788</span>
+<span class="token comment" spellcheck="true">// 垃圾回收次数：25</span>
+<span class="token comment" spellcheck="true">// 开始测试List&lt;T>:</span>
+<span class="token comment" spellcheck="true">// 耗时：81</span>
+<span class="token comment" spellcheck="true">// 垃圾回收次数：3</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议21-选择正确的集合"><a href="#建议21-选择正确的集合" class="headerlink" title="建议21 : 选择正确的集合"></a>建议21 : 选择正确的集合</h2><p>要选择正确的集合, 首先要了解数据结构的知识, 所谓数据结构,就是相互之间存在一种或多种特定关系的数据元素的集合.</p>
+<p><img src="/2019/12/12/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记2/QQ截图20191213134418.png" alt=""></p>
+<p>集合总体上分为线性和非线性集合.</p>
+<ul>
+<li>线性集合: 指元素具有唯一的前驱和后驱的数据结构类型.</li>
+<li>非线性集合: 指具有多个前驱和后驱的数据结构类型.</li>
+</ul>
+<p>线性集合按存储方式又分直接存储和顺序存储.</p>
+<ul>
+<li>直接存储: 是指该类型的集合数据元素可以直接通过下标来访问<ul>
+<li>Array(包括数组和<code>List&lt;T&gt;</code>)</li>
+<li>string</li>
+<li>struct</li>
+<li>优点: 向数据结构中添加元素时很高效的, 直接放在数据末尾的第一个空位上就可以了.</li>
+<li>缺点: 向集合插入元素将会变得低效,它需要给插入的元素腾出位置并顺序移动后面的元素.</li>
+</ul>
+</li>
+</ul>
+<p>在<strong>直接存储</strong>的数据结构中, 需要区分的是数组和<code>List&lt;T&gt;</code>的选择: <strong>如果集合的数目固定且不涉及转型,使用数组效率高, 否则就是用<code>List&lt;T&gt;</code>.</strong></p>
+<ul>
+<li>顺序存储结构即线性表. 线性表可动态地扩大和缩小, 它在一片连续的区域中存储数据元素. 线性表不能按照索引进行查找, 它是通过对地址的引用来搜索元素的, 为了找到某个元素, 它必须遍历所有元素<ul>
+<li>优点: 插入和删除效率高</li>
+<li>缺点: 查找效率相对低一点</li>
+</ul>
+</li>
+</ul>
+<p>线性表又可以分为队列,栈及索引集群.</p>
+<ul>
+<li><code>Queue&lt;T&gt;</code>,<code>Stack&lt;T&gt;</code><ul>
+<li>队列: 先进先出, 可以用来处理并发命令等场景: 先让所有客户端的命令入队,然后由专门的工作先出来执行队列的命令, 在分布式中的消息队列就是一个典型的队列应用实例.</li>
+<li>栈: 先入后出</li>
+</ul>
+</li>
+<li>索引集群进一步泛化为: 字典类型<code>Dictionary&lt;TKey,TValue&gt;</code>和双向链表<code>LinkedList&lt;T&gt;</code><ul>
+<li>字典: 值基于键的Hash码基础上进行存储. 字典类对象由包含集合元素的存储桶组成, 每一个存储桶与基于该元素的键的Hash码关联. 根据键的值进行查找,使用字典将会使搜索和检索更快捷.</li>
+<li>双向链表: <code>LinkedList&lt;T&gt;</code>是一个类型为LinkedListNode的元素对象的集合. 当我们觉得在集合中插入和删除数据很慢时,可以考虑使用链表. 此类型没有其他集合普遍的Add方法,取而代之的是AddAfter,AddBefore,AddFirst,AddLast等方法.</li>
+</ul>
+</li>
+</ul>
+<p>非线性集合分为层次集合和组集合.</p>
+<ul>
+<li>层次集合: 树, 在FCL中没有实现.</li>
+<li>组集合: 分为集和图. 集在FCL中实现为<code>HashSet&lt;T&gt;</code>, 图则没有对应实现.<ul>
+<li>集的概念本意是指存放在集合中的元素是无序的且不能重复的</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2019/12/12/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记2/QQ截图20191213171912.png" alt=""></p>
+<p>还有几个需要掌握的集合类型, 它们是实际应用中发展而来的对以上基础类型的扩展, <strong>作用是将无序排列变成有序排列</strong>:</p>
+<ul>
+<li><code>SortedList&lt;T&gt;</code> 对应 <code>List&lt;T&gt;</code></li>
+<li><code>SortedDictionary&lt;TKey,TValue&gt;</code> 对应 <code>Dictionary&lt;TKey,TValue&gt;</code></li>
+<li><code>SortSet&lt;T&gt;</code> 对应 <code>HashSet&lt;T&gt;</code></li>
+</ul>
+<p>以及多线程集合类: 在命名空间System.Collections.Concurrent下, 主要是:</p>
+<ul>
+<li><code>ConcurrentBag&lt;T&gt;</code> 对应 <code>List&lt;T&gt;</code></li>
+<li><code>ConcurrentDictionary&lt;TKey,TValue&gt;</code> 对应 <code>Dictionary&lt;TKey,TValue&gt;</code></li>
+<li><code>ConcurrentQueue&lt;T&gt;</code> 对应 <code>Queue&lt;T&gt;</code></li>
+<li><code>ConcurrentStack&lt;T&gt;</code> 对应 <code>Stack&lt;T&gt;</code></li>
+</ul>
+<blockquote>
+<p>如果集合被应用于多线程应用中, 可以使用这几个集合类型</p>
+</blockquote>
+<p>FCL集合类图:</p>
+<p><img src="/2019/12/12/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记2/QQ截图20191213173147.png" alt=""></p>
+<h2 id="建议22-确保集合的线程安全"><a href="#建议22-确保集合的线程安全" class="headerlink" title="建议22 : 确保集合的线程安全"></a>建议22 : 确保集合的线程安全</h2><p>前面提到foreach不能替代for的一个原因是在迭代过程中对集合本身进行了增删操作. 这个场景移植到多线程场景中, 要确保集合的线程安全. 集合线程安全: 是指在多个线程上添加或删除元素时, 线程之间必须保持同步.</p>
+<p>以下模拟另一个线程对集合的元素进行删除:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> List<span class="token operator">&lt;</span>Person<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Person<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Rose"</span><span class="token punctuation">,</span> Age <span class="token operator">=</span> <span class="token number">19</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Steve"</span><span class="token punctuation">,</span> Age <span class="token operator">=</span> <span class="token number">45</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Jessica"</span><span class="token punctuation">,</span> Age <span class="token operator">=</span> <span class="token number">20</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// System.Threading命名空间提供了一个抽象基类WaitHandle。这个简单的类唯一的作用就是包装一个Windows内核对象句柄。</span>
+    <span class="token comment" spellcheck="true">// 类层次继承结构如下:</span>
+    <span class="token comment" spellcheck="true">//        WaitHandle</span>
+    <span class="token comment" spellcheck="true">//            EventWaitHandle</span>
+    <span class="token comment" spellcheck="true">//        AutoResetEvent</span>
+    <span class="token comment" spellcheck="true">//            ManualResetEvent</span>
+    <span class="token comment" spellcheck="true">//        Semaphore (信号量)</span>
+    <span class="token comment" spellcheck="true">//        Mutex (互斥体)</span>
+    <span class="token comment" spellcheck="true">// EventHandle(Event构造),事件实际上就是由内核维护的Boolean变量。</span>
+    <span class="token comment" spellcheck="true">// 事件为false在事件上等待的线程就阻塞, 为true就解除阻塞。</span>
+    <span class="token comment" spellcheck="true">// 有两种事件，即自动重置事件（AutoResetEvent）和手动重置事件（ManualResetEvent）</span>
+    <span class="token comment" spellcheck="true">// 区别就在于是否在解除第一个线程的阻塞后，将事件自动重置为false, 造成其余线程继续阻塞.</span>
+    <span class="token comment" spellcheck="true">// 而当手动重置事件为true时, 它解除正在等待它的所有线程的阻塞, 因为内核不将事件自动重置回false, 需要在代码中将事件手动重置回false</span>
+    <span class="token keyword">static</span> AutoResetEvent autoSet <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AutoResetEvent</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">//确保等待t2开始之后才运行下面的代码</span>
+            autoSet<span class="token punctuation">.</span><span class="token function">WaitOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> list<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"t1:"</span> <span class="token operator">+</span> item<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        t1<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Thread t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">//通知t1可以执行代码</span>
+            autoSet<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//沉睡1秒是为了确保删除操作在t1的迭代过程中</span>
+            Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            list<span class="token punctuation">.</span><span class="token function">RemoveAt</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 此处会报System.InvalidOperationException: 集合已修改；可能无法执行枚举操作。</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        t2<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Person</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> Age <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>早在泛型集合出现之前, 非泛型集合一般会提供一个SyncRoot属性, 要保证非泛型集合的线程安全, 通过锁定该属性来实现. 其线程安全则应该在迭代和删除的时候都加上lock.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">lock</span> <span class="token punctuation">(</span>list<span class="token punctuation">.</span>SyncRoot<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Person item <span class="token keyword">in</span> list<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"t1:"</span> <span class="token operator">+</span> item<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//省略部分代码</span>
+
+<span class="token comment" spellcheck="true">//通知t1可以执行代码</span>
+autoSet<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//沉睡1秒是为了确保删除操作在t1的迭代过程中</span>
+Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">lock</span> <span class="token punctuation">(</span>list<span class="token punctuation">.</span>SyncRoot<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   list<span class="token punctuation">.</span><span class="token function">RemoveAt</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"删除成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码不会抛出异常, 因为锁的互斥的机制保证了同一时刻只能有一个线程操作集合元素. 我们发现泛型集合没有这样的属性. 必须要自己创建一个锁对象来完成同步任务.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">object</span> sycObj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//确保等待t2开始之后才运行下面的代码</span>
+autoSet<span class="token punctuation">.</span><span class="token function">WaitOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">lock</span> <span class="token punctuation">(</span>sycObj<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Person item <span class="token keyword">in</span> list<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"t1:"</span> <span class="token operator">+</span> item<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 省略部分代码</span>
+
+<span class="token comment" spellcheck="true">//通知t1可以执行代码</span>
+autoSet<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//沉睡1秒是为了确保删除操作在t1的迭代过程中</span>
+Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">lock</span> <span class="token punctuation">(</span>sycObj<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    list<span class="token punctuation">.</span><span class="token function">RemoveAt</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"删除成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在建议21中,Concurrent命名空间下,有实现了多线程环境的线程安全的集合类, 可以根据需求选择这些集合类型.</p>
+<h2 id="避免将泛型List作为自定义集合类的基类"><a href="#避免将泛型List作为自定义集合类的基类" class="headerlink" title="避免将泛型List作为自定义集合类的基类"></a>避免将泛型List作为自定义集合类的基类</h2><p>要实现一个自定义的集合类不应该以FCL集合类为基类, 而是应该扩展想要的泛型接口, FCL集合类应该以组合的形式包含至自定义的集合类. 需要扩展的泛型接口通常是<code>IEnumerable&lt;T&gt;</code>和<code>ICollection&lt;T&gt;</code>(或者它的子接口例如: <code>IList&lt;T&gt;</code>).</p>
+<p><code>IEnumerable&lt;T&gt;</code>规范了集合类的迭代功能, <code>ICollection&lt;T&gt;</code>规范了一个集合通常会有的操作.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 以下2个实现的集合类都能完成默认的需求</span>
+<span class="token keyword">class</span> <span class="token class-name">Employees1</span> <span class="token punctuation">:</span> List<span class="token operator">&lt;</span>Employees<span class="token operator">></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Employees2</span> <span class="token punctuation">:</span> IEnumerable<span class="token operator">&lt;</span>Employees<span class="token operator">></span><span class="token punctuation">,</span> `ICollection<span class="token operator">&lt;</span>Employees<span class="token operator">></span>`<span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>遗憾的是, <code>List&lt;T&gt;</code>基本上没有提供可供子类使用的protected成员(从object继承来的Finalize方法和MemberwiseClone方法除外), 也就是说,继承<code>List&lt;T&gt;</code>并没有带来任何继承上的优势, 反而丧失了面向接口编程带来的灵活性. 而且容易出bug.</p>
+<p>以Employees1为例, 如果要在Add方法中加入某些变化, 比如为名字后面添加一个”Changed”后缀,</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Employees1 employees1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Employees1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">new</span> <span class="token class-name">Employee</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Mike"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token keyword">new</span> <span class="token class-name">Employee</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Rose"</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 出错的地方, 使用了IList里的Add方法导致输出没有达到预期</span>
+    IList<span class="token operator">&lt;</span>Employee<span class="token operator">></span> employees <span class="token operator">=</span> employees1<span class="token punctuation">;</span>
+    employees<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Employee</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Steve"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> employees1<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// Mike Changed</span>
+        <span class="token comment" spellcheck="true">// Rose Changed</span>
+        <span class="token comment" spellcheck="true">// Steve</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Employee</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Employees1</span> <span class="token punctuation">:</span> List<span class="token operator">&lt;</span>Employee<span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">new</span> <span class="token class-name">void</span> <span class="token function">Add</span><span class="token punctuation">(</span>Employee item<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        item<span class="token punctuation">.</span>Name <span class="token operator">+</span><span class="token operator">=</span> <span class="token string">" Changed!"</span><span class="token punctuation">;</span>
+        <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以上输出没有达到预期. 要正确使用应该如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Employees2 employees2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Employees2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">new</span> <span class="token class-name">Employee</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Mike"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+       <span class="token keyword">new</span> <span class="token class-name">Employee</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Rose"</span> <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span><span class="token punctuation">;</span>
+   ICollection<span class="token operator">&lt;</span>Employee<span class="token operator">></span> employees <span class="token operator">=</span> employees2<span class="token punctuation">;</span>
+   employees<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Employee</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Steve"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> employees2<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Employees2</span> <span class="token punctuation">:</span> IEnumerable<span class="token operator">&lt;</span>Employee<span class="token operator">></span><span class="token punctuation">,</span> ICollection<span class="token operator">&lt;</span>Employee<span class="token operator">></span>
+<span class="token punctuation">{</span>
+   List<span class="token operator">&lt;</span>Employee<span class="token operator">></span> items <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Employee<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token preprocessor property">#<span class="token directive keyword">region</span> IEnumerable&lt;Employee> 成员</span>
+
+   <span class="token keyword">public</span> IEnumerator<span class="token operator">&lt;</span>Employee<span class="token operator">></span> <span class="token function">GetEnumerator</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">return</span> items<span class="token punctuation">.</span><span class="token function">GetEnumerator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+
+   <span class="token preprocessor property">#<span class="token directive keyword">region</span> ICollection&lt;Employee> 成员</span>
+
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Add</span><span class="token punctuation">(</span>Employee item<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       item<span class="token punctuation">.</span>Name <span class="token operator">+</span><span class="token operator">=</span> <span class="token string">" Changed!"</span><span class="token punctuation">;</span>
+       items<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token comment" spellcheck="true">//省略</span>
+
+   <span class="token preprocessor property">#<span class="token directive keyword">endregion</span></span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议24-迭代器应该是只读的"><a href="#建议24-迭代器应该是只读的" class="headerlink" title="建议24 : 迭代器应该是只读的"></a>建议24 : 迭代器应该是只读的</h2><p>FCL中的迭代器只有GetEnumerator没有SetEnumerator方法. 原因有二:</p>
+<ul>
+<li>违背了设计模式中的开闭原则. 被设置到集合中的迭代器可能会直接导致集合的行为发生异常或变动. 一旦需要新的迭代需求,完全可以创建一个新的迭代器来满足需求,而不是设置该迭代器.</li>
+<li>现在, 我们有了LINQ使用LINQ可以不用创建任何新的类型就能满足任何迭代需求.(建议30)</li>
+</ul>
+<p>如果允许了SetEnumerator方法,会出现业务B中设置新的迭代器,在没通知A的情况下对业务A进行了干扰.</p>
+<p>所以迭代器模式的原则是, 不要为迭代器设置可写属性.</p>
+<h2 id="建议25-谨慎集合属性的可写操作"><a href="#建议25-谨慎集合属性的可写操作" class="headerlink" title="建议25 : 谨慎集合属性的可写操作"></a>建议25 : 谨慎集合属性的可写操作</h2><p>如果类型的属性中有集合属性, 那么应该保证属性对象是由类型本身产生的. 如果将属性设置为可写, 则会增加抛出异常的几率. 一般情况下, 如果集合属性没有值, 则它返回的Count等于,而不是集合属性的值为null. 以下代码将产生一个空指针异常:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 因为是引用类型, 2个线程都有针对该属性对象的引用</span>
+<span class="token comment" spellcheck="true">// 导致任何一个线程修改都会影响到所有引用</span>
+<span class="token keyword">static</span> List<span class="token operator">&lt;</span>Student<span class="token operator">></span> listStudent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Student<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Mike"</span><span class="token punctuation">,</span> Age <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Rose"</span><span class="token punctuation">,</span> Age <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    StudentTeamA teamA <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StudentTeamA</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 线程t1模拟对类型StudentTeamA的Students属性进行复制</span>
+    <span class="token comment" spellcheck="true">// Students这是一个可读/可写的属性</span>
+    Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        teamA<span class="token punctuation">.</span>Students <span class="token operator">=</span> listStudent<span class="token punctuation">;</span>
+        Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>listStudent<span class="token punctuation">.</span>Count<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//模拟对集合属性进行一些运算</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 线程t2是另外一个程序员写的,</span>
+    <span class="token comment" spellcheck="true">// 对listStudent修改会影响到t1线程中teamA.Students的引用</span>
+    Thread t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        listStudent <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">//模拟在别的地方对list1而不是属性本身赋值为null</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Student</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> Age <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 问题版本:</span>
+<span class="token keyword">class</span> <span class="token class-name">StudentTeamA</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> List<span class="token operator">&lt;</span>Student<span class="token operator">></span> Students <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对StudentTeamA改进:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 完善版本</span>
+<span class="token keyword">class</span> <span class="token class-name">StudentTeamA</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 设置为只读</span>
+   <span class="token keyword">public</span> List<span class="token operator">&lt;</span>Student<span class="token operator">></span> Students <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">private</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+   <span class="token keyword">public</span> <span class="token function">StudentTeamA</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       Students <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Student<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token comment" spellcheck="true">// 使用迭代器接口</span>
+   <span class="token keyword">public</span> <span class="token function">StudentTeamA</span><span class="token punctuation">(</span>IEnumerable<span class="token operator">&lt;</span>Student<span class="token operator">></span> studentList<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       Students<span class="token punctuation">.</span><span class="token function">AddRange</span><span class="token punctuation">(</span>studentList<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 用法如下:</span>
+ StudentTeamA teamA2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StudentTeamA</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ teamA2<span class="token punctuation">.</span>Students<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Steve"</span><span class="token punctuation">,</span> Age <span class="token operator">=</span> <span class="token number">3</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ teamA2<span class="token punctuation">.</span>Students<span class="token punctuation">.</span><span class="token function">AddRange</span><span class="token punctuation">(</span>listStudent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>teamA2<span class="token punctuation">.</span>Students<span class="token punctuation">.</span>Count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token comment" spellcheck="true">//也可以像下面这样实现</span>
+ StudentTeamA teamA3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StudentTeamA</span><span class="token punctuation">(</span>listStudent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议26-使用匿名类型存储LINQ查询结果"><a href="#建议26-使用匿名类型存储LINQ查询结果" class="headerlink" title="建议26 : 使用匿名类型存储LINQ查询结果"></a>建议26 : 使用匿名类型存储LINQ查询结果</h2><p>匿名类型 由var,赋值运算符和一个非空初始值(或者以new开头的初始化项)组成.</p>
+<p>以下基本特性:</p>
+<ul>
+<li>支持简单类型也支持复杂类型.<ul>
+<li>简单类型必须是一个非空初始值</li>
+<li>复杂类型则是一个以new开头的初始化项;</li>
+</ul>
+</li>
+<li>匿名类型的属性是只读的,没有属性设置器, 一旦被初始化就不可更改</li>
+<li>如果两个匿名类型的属性值相同, 那么就认为两个匿名类型相等</li>
+<li>匿名类型可以在循环中用作初始化器</li>
+<li>匿名类型支持智能感知</li>
+<li>不常用: 匿名类型确实也可以拥有方法</li>
+</ul>
+<p>将一些数据关联成一个新的类型. 临时需求需要创建很多临时类型, 如果全部使用普通的自定义类型, 代码将会膨胀而变得难以维护. 这个时候匿名类型就派上用场了.</p>
+<p>在类型仅仅被当前的代码使用，或者被用于存储某种查询结果的场景中，匿名类型将大有用途。匿名类型的这个特点使它成为保存LINQ查询结果的最佳搭档。</p>
+<p>例如数据库存储一下表格:</p>
+<p>Company表<br>CompanyID|Name<br>:—:|:—:<br>0|Micro<br>1|Sun</p>
+<p>Person表<br>Name|CompanyID<br>:—:|:—:<br>Mike|1<br>Rose|0<br>Steve|1  </p>
+<p>按照传统的做法，Company记录表和Person记录表在应用程序中都有对应的实体类。我们要创建的临时对象包括PersonName和CompanyName,满足该需求的一个示例:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">var</span> personWithCompanyList <span class="token operator">=</span> <span class="token keyword">from</span> person <span class="token keyword">in</span> personList
+                            <span class="token keyword">join</span> company <span class="token keyword">in</span> companyList
+                            on person<span class="token punctuation">.</span>CompanyID equals company<span class="token punctuation">.</span>ComanyID
+                            <span class="token keyword">select</span> <span class="token keyword">new</span>
+                            <span class="token punctuation">{</span>
+                              PersonName <span class="token operator">=</span> person<span class="token punctuation">.</span>Name<span class="token punctuation">,</span>
+                              CompanyName <span class="token operator">=</span> company<span class="token punctuation">.</span>Name
+                            <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> personWithCompanyList<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"{0}\t:{1}"</span><span class="token punctuation">,</span> item<span class="token punctuation">.</span>PersonName<span class="token punctuation">,</span> item<span class="token punctuation">.</span>CompanyName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>new之前的代码是LINQ关键字，new 之后的代码就是匿名类型的初始化项。</p>
+<p>该匿名类型包含两个属性:PersonName和CompanyName。将匿名类型中对应的属性重命名在有些时候是件很有必要的事情。本例中，如果不将Person中的Name重命名为PersonName,以及将Company中的Name重命名为CompanyName,会给我们的实际编码造成一定的困扰。</p>
+<p>匿名类型也派生自Object,查看上面代码的IL代码我们知道，匿名类型会在IL中发出一个类(也称为一个投影)，</p>
+<p>非匿名类型包括的Equals、GetHashcode、 ToString 等方法匿名类型都有。并且，编译器为我们重载了ToString方法，它返回的是类型的属性及对应的值。如果为上面的循环输出部分增加一条语句:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//则输出一下内容</span>
+<span class="token comment" spellcheck="true">// Mike    :Sun</span>
+<span class="token comment" spellcheck="true">// { PersonName = Mike, CompanyName = Sun }</span>
+<span class="token comment" spellcheck="true">// Rose    :Micro</span>
+<span class="token comment" spellcheck="true">// { PersonName = Rose, CompanyName = Micro }</span>
+<span class="token comment" spellcheck="true">// Steve   :Sun</span>
+<span class="token comment" spellcheck="true">// { PersonName = Steve, CompanyName = Sun }</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议27-在查询中使用Lambda表达式"><a href="#建议27-在查询中使用Lambda表达式" class="headerlink" title="建议27 : 在查询中使用Lambda表达式"></a>建议27 : 在查询中使用Lambda表达式</h2><p>LINQ实际上是基于扩展方法和Lambda表达式的，理解了这一点就不难理解LINQ。任何LINQ查询都能通过调用扩展方法的方式来替代.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">var</span> personWithCompanyList <span class="token operator">=</span> <span class="token keyword">from</span> person <span class="token keyword">in</span> personList
+                            <span class="token keyword">select</span> <span class="token keyword">new</span>
+                            <span class="token punctuation">{</span>
+                              PersonName <span class="token operator">=</span> person<span class="token punctuation">.</span>Name<span class="token punctuation">,</span>
+                              CompanyName <span class="token operator">=</span> person<span class="token punctuation">.</span>ComanyID <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">?</span> <span class="token string">"Micro"</span> <span class="token punctuation">:</span> <span class="token string">"Sun"</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个查询语句中, 通过命名初始化的方式投影出了一个新的类型, 它包含属性PersonName和CompanyName.</p>
+<p>另外一种用法, 直接调用扩展方法select,并且为select方法传入一个Lambda表达式.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">foreach</span><span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> personList<span class="token punctuation">.</span><span class="token function">Select</span><span class="token punctuation">(</span>person <span class="token operator">=</span><span class="token operator">></span>
+        <span class="token keyword">new</span> <span class="token punctuation">{</span>
+                PersonName <span class="token operator">=</span> person<span class="token punctuation">.</span>Name<span class="token punctuation">,</span>
+                CompanyName <span class="token operator">=</span> person<span class="token punctuation">.</span>ComanyID <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">?</span> <span class="token string">"Micro"</span> <span class="token punctuation">:</span> <span class="token string">"Sun"</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+      Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>        
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>针对LINQ设计的扩展方法大多数应用了委托泛型. System命名空间定义了泛型委托:</p>
+<ul>
+<li>Action<ul>
+<li>执行一个操作, 没有返回值</li>
+</ul>
+</li>
+<li>Func<ul>
+<li>执行一个操作并返回一个值</li>
+</ul>
+</li>
+<li>Predicate<ul>
+<li>用于定义一组条件并判断参数是否符合条件</li>
+</ul>
+</li>
+</ul>
+<p>Select扩展方法接收的就是一个Func委托. Lambda表达式就是一个简洁的委托.”=&gt;” 左边是方法的参数, 右边是方法体.</p>
+<p>调用Where扩展方法的例子:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">foreach</span><span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> personWithCompanyList<span class="token punctuation">.</span><span class="token function">Where</span><span class="token punctuation">(</span>p <span class="token operator">=</span><span class="token operator">></span> p<span class="token punctuation">.</span>CompanyName <span class="token operator">==</span> <span class="token string">"Sun"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span>PersonName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true">// 输出:</span>
+   <span class="token comment" spellcheck="true">// Mike</span>
+   <span class="token comment" spellcheck="true">// Steve</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>OrderByDescending扩展方法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">foreach</span><span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> personWithCompanyList<span class="token punctuation">.</span><span class="token function">OrderByDescending</span><span class="token punctuation">(</span>p <span class="token operator">=</span><span class="token operator">></span> p<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span>PersonName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true">// 输出:</span>
+   <span class="token comment" spellcheck="true">// Steve</span>
+   <span class="token comment" spellcheck="true">// Rose</span>
+   <span class="token comment" spellcheck="true">// Mike</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="理解延迟求值和主动求值之间的区别"><a href="#理解延迟求值和主动求值之间的区别" class="headerlink" title="理解延迟求值和主动求值之间的区别"></a>理解延迟求值和主动求值之间的区别</h2><p>要理解<code>延迟求值(lazy evaluation)</code>和<code>主动求值(eager evaluation)</code>，首先来看一个例子:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">List<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 只是定义了查询, 而且不是立刻执行.</span>
+<span class="token keyword">var</span> temp1 <span class="token operator">=</span> <span class="token keyword">from</span> c <span class="token keyword">in</span> list <span class="token keyword">where</span> c <span class="token operator">></span> <span class="token number">5</span> <span class="token keyword">select</span> c<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 对查询调用ToList, ToArray方法会立刻执行.</span>
+<span class="token comment" spellcheck="true">// 因此, 之后的list[0]修改对temp2无效</span>
+<span class="token keyword">var</span> temp2 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">from</span> c <span class="token keyword">in</span> list <span class="token keyword">where</span> c <span class="token operator">></span> <span class="token number">5</span> <span class="token keyword">select</span> c<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token generic-method function">ToList<span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+list<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">11</span><span class="token punctuation">;</span>
+Console<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token string">"temp1: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> temp1<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Console<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 11 6 7 8 9</span>
+<span class="token punctuation">}</span>
+Console<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token string">"\ntemp2: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> temp2<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Console<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 6 7 8 9</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>延迟求值: 不会立刻执行, 在使用LINQ to SQL时, 能够带来显著的性能提升.  例如: 如果定义了两个查询, 而且采用延迟求值,<strong>CLR则会合并两次并生成一个最终查询(第二次查询在第一次查询基础上的前提)</strong>:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 延迟求值</span>
+<span class="token keyword">var</span> temp1 <span class="token operator">=</span> <span class="token keyword">from</span> p <span class="token keyword">in</span> persons <span class="token keyword">where</span> p<span class="token punctuation">.</span>Age <span class="token operator">></span> <span class="token number">20</span> <span class="token keyword">select</span> p<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 但是因为temp1是延迟求值, CLR则会合并两次查询并生成一个最终SQL语句查询</span>
+<span class="token keyword">var</span> temp2 <span class="token operator">=</span> <span class="token keyword">from</span> p <span class="token keyword">in</span> temp1 <span class="token keyword">where</span> p<span class="token punctuation">.</span>Name<span class="token punctuation">.</span><span class="token function">IndexOf</span><span class="token punctuation">(</span><span class="token string">'e'</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span> <span class="token keyword">select</span> p<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 主动求值, 立即进行查询, 生成SQL语句</span>
+<span class="token keyword">var</span> temp1 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">from</span> p <span class="token keyword">in</span> persons <span class="token keyword">where</span> p<span class="token punctuation">.</span>Age <span class="token operator">></span> <span class="token number">20</span> <span class="token keyword">select</span> p<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token generic-method function">ToList<span class="token punctuation">&lt;</span>Person<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 从temp1结果中查找, 不会再生成下句代码的SQL查询</span>
+<span class="token keyword">var</span> temp2 <span class="token operator">=</span> <span class="token keyword">from</span> p <span class="token keyword">in</span> temp1 <span class="token keyword">where</span> p<span class="token punctuation">.</span>Name<span class="token punctuation">.</span><span class="token function">IndexOf</span><span class="token punctuation">(</span><span class="token string">'e'</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span> <span class="token keyword">select</span> p<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>事实上，应该仔细体会延迟求值和主动求值之间的区别，体会两者在应用中会带来什么样的输出结果:否则，很有可能会出现一些 我们意想不到的Bug。</p>
+<p>##建议29 : 区别LINQ查询中的IEnumerable和Queryable</p>
+<p>在System.Linq的命名空间下右两个静态类Enumerable和Queryable. 稍加观察我们会发现，接口<code>IQueryable&lt;T&gt;</code>实际也是继承了<code>IEnumerable&lt;T&gt;</code>接口的，所以，致使这两个接口的方法在很大程度上是一致的。那么，微软为什么要设计出两套扩展方法呢?</p>
+<p>LINQ查询从功能上来讲实际可分为三类:</p>
+<ul>
+<li>LINQ to object<ul>
+<li>使用<code>Enumerable</code>中的扩展方法对本地集合进行排序和查询等操作.</li>
+</ul>
+</li>
+<li>LINQ to SQL<ul>
+<li>使用<code>Queryable</code>中的扩展方法, 它接收的参数时<code>Expression&lt;&gt;</code>, 用于包装<code>Func&lt;&gt;</code>,引擎最终会将表达式树转化为响应的SQL语句,然后在数据库中执行.</li>
+</ul>
+</li>
+<li>LINQ to XML</li>
+</ul>
+<p>设计两套接口的原因正是为了区别对待LINQ to Object和LINQ to SQL, 两者对于查询的处理在内部使用的是完全不同的机制.</p>
+<p>到底什么时候使用<code>IQueryable&lt;T&gt;</code>,什么时候使用<code>IEnumerable&lt;T&gt;</code>呢? 简单的表示为:</p>
+<ul>
+<li>本地数据源使用<code>IEnumerable&lt;T&gt;</code></li>
+<li>远程数据源使用<code>IQueryable&lt;T&gt;</code></li>
+<li>在LINQ to SQL的查询中尽量使用<code>IQueryable&lt;T&gt;</code></li>
+</ul>
+<p>在使用<code>IQueryable&lt;T&gt;</code>和<code>IEnumerable&lt;T&gt;</code>的时候还需要注意一点，<code>IEnumerable&lt;T&gt;</code>查询的逻辑可以直接用我们自己所定义的方法，而<code>IQueryable&lt;T</code>&gt;则不能使用自定义的方法，它必须先生成表达式树，查询由LINQ to SQL引擎处理。在使用<code>IQueryable&lt;T&gt;</code>查询的时候，如果使用自定义的方法，则会抛出异常。</p>
+<p>但是如果将查询换成一个<code>IEnumerable&lt;T&gt;</code>查询,这种模式是支持的.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">List<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token number">19</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">21</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> temp <span class="token operator">=</span> <span class="token keyword">from</span> c <span class="token keyword">in</span> list <span class="token keyword">where</span> <span class="token function">OlderThan20</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token keyword">select</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="建议30-使用LINQ取代集合中的比较器和迭代器"><a href="#建议30-使用LINQ取代集合中的比较器和迭代器" class="headerlink" title="建议30 : 使用LINQ取代集合中的比较器和迭代器"></a>建议30 : 使用LINQ取代集合中的比较器和迭代器</h2><p>在建议10中为了满足BaseSalary的排序要求, 让类继承了<code>IComparable&lt;T&gt;</code>接口,实现了一个默认的<code>CompareTo</code>方法, 然后又接到第二个需求, 为Bonus排序, 由于<code>IComparable&lt;T&gt;</code>只提供一个<code>CompareTo</code>方法,因此需要创建一个比较器,在Sort排序时传入比较器.</p>
+<p>以上方式实现的排序至少存在2个问题:</p>
+<ul>
+<li>可扩展性太低, 有新的排序要求就需要实现新的比较器</li>
+<li>对代码的侵入太高,为类型继续接口,增加新的方法</li>
+</ul>
+<p>用LINQ就能实现即使类型只存在自动实现的属性,也能满足多方面的排序要求. LINQ提供了类似于SQL的语法来实现遍历,筛选与投影集合的功能.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">tatic <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>Salary<span class="token operator">></span> companySalary <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Salary<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">new</span> <span class="token class-name">Salary</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Mike"</span><span class="token punctuation">,</span> BaseSalary <span class="token operator">=</span> <span class="token number">3000</span><span class="token punctuation">,</span> Bonus <span class="token operator">=</span> <span class="token number">1000</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token keyword">new</span> <span class="token class-name">Salary</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Rose"</span><span class="token punctuation">,</span> BaseSalary <span class="token operator">=</span> <span class="token number">2000</span><span class="token punctuation">,</span> Bonus <span class="token operator">=</span> <span class="token number">4000</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token keyword">new</span> <span class="token class-name">Salary</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Jeffry"</span><span class="token punctuation">,</span> BaseSalary <span class="token operator">=</span> <span class="token number">1000</span><span class="token punctuation">,</span> Bonus <span class="token operator">=</span> <span class="token number">6000</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token keyword">new</span> <span class="token class-name">Salary</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> <span class="token string">"Steve"</span><span class="token punctuation">,</span> BaseSalary <span class="token operator">=</span> <span class="token number">4000</span><span class="token punctuation">,</span> Bonus <span class="token operator">=</span> <span class="token number">3000</span> <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//-----------------------------------------------    </span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"默认排序："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Salary item <span class="token keyword">in</span> companySalary<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"Name:{0} \tBaseSalary:{1} \tBonus:{2}"</span><span class="token punctuation">,</span> item<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> item<span class="token punctuation">.</span>BaseSalary<span class="token punctuation">,</span> item<span class="token punctuation">.</span>Bonus<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">//-----------------------------------------------</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"BaseSalary排序："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> orderByBaseSalary <span class="token operator">=</span> <span class="token keyword">from</span> s <span class="token keyword">in</span> companySalary <span class="token keyword">orderby</span> s<span class="token punctuation">.</span>BaseSalary <span class="token keyword">select</span> s<span class="token punctuation">;</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Salary item <span class="token keyword">in</span> orderByBaseSalary<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"Name:{0} \tBaseSalary:{1} \tBonus:{2}"</span><span class="token punctuation">,</span> item<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> item<span class="token punctuation">.</span>BaseSalary<span class="token punctuation">,</span> item<span class="token punctuation">.</span>Bonus<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">//-----------------------------------------------</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Bonus排序："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> orderByBonus <span class="token operator">=</span> <span class="token keyword">from</span> s <span class="token keyword">in</span> companySalary <span class="token keyword">orderby</span> s<span class="token punctuation">.</span>Bonus <span class="token keyword">select</span> s<span class="token punctuation">;</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Salary item <span class="token keyword">in</span> orderByBonus<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"Name:{0} \tBaseSalary:{1} \tBonus:{2}"</span><span class="token punctuation">,</span> item<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> item<span class="token punctuation">.</span>BaseSalary<span class="token punctuation">,</span> item<span class="token punctuation">.</span>Bonus<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>foreach实际隐含调用的是集合对象orderByBaseSalary里的迭代器, 以往如果我们要绕开集合的Sort方法对集合元素按照一定的顺序进行迭代, 则需要让类型继承IEnumerable接口, 实现一个或多个迭代器,现在从LINQ查询生成匿名类型来看, 相当于可以无限为集合增加迭代需求.</p>
+<p>LINQ相当于封装了FCL泛型集合的比较器,迭代器,索引器. 因此强烈建议你利用LINQ所带来的便利性,但我们仍需掌握比较器,迭代器,索引器的原理.</p>
+<h2 id="建议31-LINQ查询中避免不必要的迭代"><a href="#建议31-LINQ查询中避免不必要的迭代" class="headerlink" title="建议31 : LINQ查询中避免不必要的迭代"></a>建议31 : LINQ查询中避免不必要的迭代</h2><p>无论SQL查询还是LINQ查询,搜索到的结果立刻返回总比搜索完所有的结果再将结果返回的效率要高.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 第一种</span>
+<span class="token keyword">from</span> c <span class="token keyword">in</span> list <span class="token keyword">where</span> c<span class="token punctuation">.</span>Age <span class="token operator">==</span> <span class="token number">20</span> <span class="token keyword">select</span> c <span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 第二种</span>
+<span class="token keyword">from</span> <span class="token punctuation">(</span>c <span class="token keyword">in</span> list <span class="token keyword">where</span> c<span class="token punctuation">.</span>Age <span class="token operator">>=</span> <span class="token number">20</span> <span class="token keyword">select</span> c<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">First</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通常我们会认为第一种效率会高一些, 似乎返回的就是等于20的那两个元素, 第二种模式则需要查询所有大于20的元素. 实际情况不是这样的. 第一种查询集合迭代了5次, 第二种查询集合仅迭代了1次. 这是因为第二种查询时因为20正好放在List的首位. First方法实际完成的工作是: 搜索到满足条件的第一个元素就从集合中返回,如果没有符合条件的元素,也会遍历整个集合.</p>
+<p>与First方法类型的还有Take方法接收一个整型参数,然后为我们返回该参数指定的元素个数, 满足条件后会立即返回.</p>
+<p>如果一个集合包含了很多元素, 那么这种查询会为我们带来可观的时间效率.</p>
+<p>在实际的编码过程中, 要充分运用First和Take等方法,这样才能带来高效性, 不让时间浪费在一些无效的迭代中.</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

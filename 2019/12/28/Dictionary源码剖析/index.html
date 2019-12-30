@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Dictionary源码剖析 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#理论知识"><span class="toc-text">理论知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hash算法"><span class="toc-text">Hash算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hash桶算法"><span class="toc-text">Hash桶算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决冲突算法"><span class="toc-text">解决冲突算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Dictionary实现"><span class="toc-text">Dictionary实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Entry结构体"><span class="toc-text">Entry结构体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其它关键私有变量"><span class="toc-text">其它关键私有变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dictionary-–-Add操作"><span class="toc-text">Dictionary – Add操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dictionary-–-再谈Add操作"><span class="toc-text">Dictionary – 再谈Add操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dictionary-–-Find操作"><span class="toc-text">Dictionary – Find操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dictionary-–-Remove操作"><span class="toc-text">Dictionary – Remove操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dictionary-–-Resize操作-扩容"><span class="toc-text">Dictionary – Resize操作(扩容)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Collection版本控制"><span class="toc-text">Collection版本控制</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Dictionary源码剖析
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-12-28 15:09:25</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#源码剖析" title="源码剖析">源码剖析</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>对于C#中的<code>Dictionary</code>类相信大家都不陌生，这是一个<code>Collection</code>(集合)类型，可以通过<code>Key/Value</code>(键值对的形式来存放数据；该类最大的优点就是它查找元素的时间复杂度接近O(1)，实际项目中常被用来做一些数据的本地缓存，提升整体效率。</p>
+<p>那么是什么样的设计能使得Dictionary类能实现O(1)的时间复杂度呢？</p>
+<h1 id="理论知识"><a href="#理论知识" class="headerlink" title="理论知识"></a>理论知识</h1><p>对于Dictionary的实现原理，其中有两个关键的算法，</p>
+<ul>
+<li>Hash算法</li>
+<li>用于应对Hash碰撞冲突解决算法</li>
+</ul>
+<h2 id="Hash算法"><a href="#Hash算法" class="headerlink" title="Hash算法"></a>Hash算法</h2><p>Hash算法是一种 <strong>数字摘要</strong> 算法，它能 <strong>将不定长度的二进制数据集给映射到一个较短的二进制长度数据集</strong>，常见的MD5算法就是一种Hash算法，通过MD5算法可对任何数据生成数字摘要。而实现了Hash算法的函数我们叫它Hash函数。</p>
+<p>Hash函数有以下几点特征:</p>
+<ul>
+<li>相同的数据进行Hash运算，得到的结果一定相同。<code>HashFunc(key1) == HashFunc(key1)</code></li>
+<li>不同的数据进行Hash运算，其结果也可能会相同，(Hash会产生碰撞)。<code>key1 != key2 =&gt; HashFunc(key1) == HashFunc(key2)</code></li>
+<li>Hash运算是不可逆的.</li>
+</ul>
+<p>任意长度的数据通过HashFunc映射到一个较短的数据集中,如下图所示:</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228151737.png" alt=""></p>
+<p>关于Hash碰撞下图很清晰的就解释了，可从图中得知Sandra Dee 和 John Smith通过hash运算后都落到了02的位置，产生了碰撞和冲突。</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228151913.png" alt=""></p>
+<p>  常见的构造Hash函数的算法有以下几种。</p>
+<ol>
+<li>直接寻址法<ul>
+<li>取keyword或keyword的某个线性函数值为散列地址。即H(key)=key或H(key) = a•key + b，当中a和b为常数（这样的散列函数叫做自身函数）</li>
+</ul>
+<ol>
+<li>数字分析法</li>
+</ol>
+<ul>
+<li>分析一组数据，比方一组员工的出生年月日，这时我们发现出生年月日的前几位数字大体同样，这种话，出现冲突的几率就会非常大，可是我们发现年月日的后几位表示月份和详细日期的数字区别非常大，假设用后面的数字来构成散列地址，则冲突的几率会明显减少。因此数字分析法就是找出数字的规律，尽可能利用这些数据来构造冲突几率较低的散列地址。</li>
+</ul>
+<ol>
+<li>平方取中法</li>
+</ol>
+<ul>
+<li>取keyword平方后的中间几位作为散列地址。</li>
+</ul>
+<ol>
+<li>折叠法</li>
+</ol>
+<ul>
+<li>将keyword切割成位数同样的几部分，最后一部分位数能够不同，然后取这几部分的叠加和（去除进位）作为散列地址。</li>
+</ul>
+<ol>
+<li>随机数法</li>
+</ol>
+<ul>
+<li>选择一随机函数，取keyword的随机值作为散列地址，通经常使用于keyword长度不同的场合。</li>
+</ul>
+<ol>
+<li>除留余数法</li>
+</ol>
+<ul>
+<li>取keyword被某个不大于散列表表长m的数p除后所得的余数为散列地址。即 H(key) = key MOD p, p&lt;=m。不仅能够对keyword直接取模，也可在折叠、平方取中等运算之后取模。对p的选择非常重要，一般取素数或m，若p选的不好，容易产生碰撞.</li>
+</ul>
+</li>
+</ol>
+<h2 id="Hash桶算法"><a href="#Hash桶算法" class="headerlink" title="Hash桶算法"></a>Hash桶算法</h2><p>说到Hash算法大家就会想到Hash表，一个Key通过Hash函数运算后可快速的得到hashCode，通过hashCode的映射可直接Get到Value，但是hashCode一般取值都是非常大的，经常是2^32以上，不可能对每个hashCode都指定一个映射。</p>
+<p>因为这样的一个问题，所以人们就将生成的HashCode以分段的形式来映射，把每一段称之为一个Bucket（桶），一般常见的Hash桶就是直接对结果取余。</p>
+<p>假设将生成的hashCode可能取值有2^32个，然后将其切分成一段一段，使用8个桶来映射，那么就可以通过<code>bucketIndex = HashFunc(key1) % 8</code>这样一个算法来确定这个hashCode映射到具体的哪个桶中。</p>
+<p>大家可以看出来，通过hash桶这种形式来进行映射，所以会加剧hash的冲突。</p>
+<h2 id="解决冲突算法"><a href="#解决冲突算法" class="headerlink" title="解决冲突算法"></a>解决冲突算法</h2><p>对于一个hash算法，不可避免的会产生冲突，那么产生冲突以后如何处理，是一个很关键的地方，目前常见的冲突解决算法有</p>
+<ul>
+<li><code>拉链法(Dictionary实现采用的单链表)</code><ul>
+<li>这种方法的思路是将产生冲突的元素建立一个单链表，并将头指针地址存储至Hash表对应桶的位置。这样定位到Hash表桶的位置后可通过遍历单链表的形式来查找元素。</li>
+</ul>
+</li>
+<li><code>开放定址法</code></li>
+<li><code>再Hash法</code><ul>
+<li>顾名思义就是将key使用其它的Hash函数再次Hash，直到找到不冲突的位置为止。</li>
+</ul>
+</li>
+<li><code>公共溢出分区法</code></li>
+</ul>
+<p>本文只介绍<code>拉链法</code>与<code>再Hash法</code>，对于其它算法感兴趣的同学可参考文章最后的参考文献。</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228153056.png" alt=""></p>
+<h1 id="Dictionary实现"><a href="#Dictionary实现" class="headerlink" title="Dictionary实现"></a>Dictionary实现</h1><p><a href="https://referencesource.microsoft.com/#mscorlib/system/collections/generic/dictionary.cs,d3599058f8d79be0" target="_blank" rel="external">对照源码的版本是.Net Framwork 4.7</a></p>
+<h2 id="Entry结构体"><a href="#Entry结构体" class="headerlink" title="Entry结构体"></a>Entry结构体</h2><p>先我们引入<code>Entry</code>这样一个结构体，它的定义如下代码所示。这是Dictionary种存放数据的最小单位，调用<code>Add(Key,Value)</code>方法添加的元素都会被封装在这样的一个结构体中。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">struct</span> Entry
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> hashCode<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// 除符号位以外的31位hashCode值, 如果该Entry没有被使用，那么为-1</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> next<span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">// 下一个元素的下标索引，如果没有下一个就为-1</span>
+    <span class="token keyword">public</span> TKey key<span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">// 存放元素的键</span>
+    <span class="token keyword">public</span> TValue <span class="token keyword">value</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// 存放元素的值</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="其它关键私有变量"><a href="#其它关键私有变量" class="headerlink" title="其它关键私有变量"></a>其它关键私有变量</h2><p>除了Entry结构体外，还有几个关键的私有变量，其定义和解释如下代码所示。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buckets<span class="token punctuation">;</span>      <span class="token comment" spellcheck="true">// Hash桶</span>
+<span class="token keyword">private</span> Entry<span class="token punctuation">[</span><span class="token punctuation">]</span> entries<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// Entry数组，存放元素</span>
+<span class="token keyword">private</span> <span class="token keyword">int</span> count<span class="token punctuation">;</span>          <span class="token comment" spellcheck="true">// 当前entries的index位置</span>
+<span class="token keyword">private</span> <span class="token keyword">int</span> version<span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">// 当前版本，防止迭代过程中集合被更改</span>
+<span class="token keyword">private</span> <span class="token keyword">int</span> freeList<span class="token punctuation">;</span>       <span class="token comment" spellcheck="true">// 被删除Entry在entries中的下标index，这个位置是空闲的</span>
+<span class="token keyword">private</span> <span class="token keyword">int</span> freeCount<span class="token punctuation">;</span>      <span class="token comment" spellcheck="true">// 有多少个被删除的Entry，有多少个空闲的位置</span>
+<span class="token keyword">private</span> IEqualityComparer<span class="token operator">&lt;</span>TKey<span class="token operator">></span> comparer<span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// 比较器</span>
+<span class="token keyword">private</span> KeyCollection keys<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">// 存放Key的集合</span>
+<span class="token keyword">private</span> ValueCollection values<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">// 存放Value的集合</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上面代码中，需要注意的是buckets、entries这两个数组，这是实现Dictionary的关键。</p>
+<h2 id="Dictionary-–-Add操作"><a href="#Dictionary-–-Add操作" class="headerlink" title="Dictionary – Add操作"></a>Dictionary – Add操作</h2><p>经过上面的分析，相信大家还不是特别明白为什么需要这么设计，需要这么做。那我们现在来走一遍Dictionary的Add流程，来体会一下。</p>
+<p>首先我们用图的形式来描述一个Dictionary的数据结构，其中只画出了关键的地方。<strong>桶大小为4</strong> 以及 <strong>Entry大小也为4</strong> 的一个数据结构。</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228175921.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 假设需要执行一个Add操作，dictionary.Add("a","b")，其中key = "a",value = "b"。</span>
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">Insert</span><span class="token punctuation">(</span>TKey key<span class="token punctuation">,</span> TValue <span class="token keyword">value</span><span class="token punctuation">,</span> <span class="token keyword">bool</span> <span class="token keyword">add</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>key <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        ThrowHelper<span class="token punctuation">.</span><span class="token function">ThrowArgumentNullException</span><span class="token punctuation">(</span>ExceptionArgument<span class="token punctuation">.</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 初始化桶</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>buckets <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token function">Initialize</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 整个整数 0x7FFFFFFF 的二进制表示就是除了首位是 0，其余都是1</span>
+    <span class="token comment" spellcheck="true">// 就是说，这是最大的整型数 int（因为第一位是符号位，0 表示他是正数）</span>
+    <span class="token comment" spellcheck="true">// 获取HashCode，忽略符号位</span>
+    <span class="token keyword">int</span> hashCode     <span class="token operator">=</span> comparer<span class="token punctuation">.</span><span class="token function">GetHashCode</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">0x7FFFFFFF</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 计算出目标bucket下标</span>
+    <span class="token comment" spellcheck="true">// 通过对hashCode取余运算，计算出该hashCode落在哪一个buckets桶中。</span>
+    <span class="token comment" spellcheck="true">// 假设现在桶的长度（buckets.Length）为4，那么就是6 % 4最后落在index为2的桶中，也就是buckets[2]。</span>
+    <span class="token keyword">int</span> targetBucket <span class="token operator">=</span> hashCode <span class="token operator">%</span> buckets<span class="token punctuation">.</span>Length<span class="token punctuation">;</span>
+
+<span class="token preprocessor property">#<span class="token directive keyword">if</span> FEATURE_RANDOMIZED_STRING_HASHING</span>
+    <span class="token comment" spellcheck="true">// 记录碰撞</span>
+    <span class="token keyword">int</span> collisionCount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token preprocessor property">#<span class="token directive keyword">endif</span></span>
+
+    <span class="token comment" spellcheck="true">// 目标桶已经存在相同的key的情况:</span>
+    <span class="token comment" spellcheck="true">// 从目标哈希桶的地址开始遍历</span>
+    <span class="token comment" spellcheck="true">// entries[i].next下一个元素的下标索引，如果没有下一个就为-1</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> buckets<span class="token punctuation">[</span>targetBucket<span class="token punctuation">]</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">=</span> entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>next<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 判断桶内是否存在相同的key</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>hashCode <span class="token operator">==</span> hashCode <span class="token operator">&amp;&amp;</span> comparer<span class="token punctuation">.</span><span class="token function">Equals</span><span class="token punctuation">(</span>entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>key<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">add</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 如果是增加操作，遍历到了相同的元素，那么抛出异常</span>
+                ThrowHelper<span class="token punctuation">.</span><span class="token function">ThrowArgumentException</span><span class="token punctuation">(</span>ExceptionResource<span class="token punctuation">.</span>Argument_AddingDuplicate<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token comment" spellcheck="true">// 存在则覆盖旧的值, 重新写入</span>
+            <span class="token comment" spellcheck="true">// 如果不是增加操作，那可能是索引赋值操作 dictionary["foo"] = "foo"</span>
+            entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token keyword">value</span> <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 只有增加、替换和删除元素才会更新版本</span>
+            version<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+<span class="token preprocessor property">#<span class="token directive keyword">if</span> FEATURE_RANDOMIZED_STRING_HASHING</span>
+        <span class="token comment" spellcheck="true">// 每遍历一个元素，都是一次碰撞</span>
+        collisionCount<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token preprocessor property">#<span class="token directive keyword">endif</span></span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">int</span> index<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 如果有被删除的元素，那么将元素放到被删除元素的空闲位置</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>freeCount <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// //存在entries中存在空元素</span>
+        index    <span class="token operator">=</span> freeList<span class="token punctuation">;</span>
+        freeList <span class="token operator">=</span> entries<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+        freeCount<span class="token operator">--</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 接下来它会将hashCode、key、value等信息存入entries[count]中，</span>
+        <span class="token comment" spellcheck="true">// 因为count位置是空闲的；继续count++指向下一个空闲位置。</span>
+        <span class="token comment" spellcheck="true">// 上图中第一个位置，index=0就是空闲的，所以就存放在entries[0]的位置。</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>count <span class="token operator">==</span> entries<span class="token punctuation">.</span>Length<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 扩容：取大于count * 2的最小素数作为entries和bucket的新容量（即数组长度.Length）</span>
+            <span class="token function">Resize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            targetBucket <span class="token operator">=</span> hashCode <span class="token operator">%</span> buckets<span class="token punctuation">.</span>Length<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        index <span class="token operator">=</span> count<span class="token punctuation">;</span>
+        count<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 将hashCode、key、value等信息存入entries[count]中，</span>
+    entries<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">.</span>hashCode <span class="token operator">=</span> hashCode<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 桶中原先的entries[0], 做成单链表,将碰撞的哈希值用next指针记录下来</span>
+    entries<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">.</span>next     <span class="token operator">=</span> buckets<span class="token punctuation">[</span>targetBucket<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    entries<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">.</span>key      <span class="token operator">=</span> key<span class="token punctuation">;</span>
+    entries<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token keyword">value</span>    <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 将哈希桶的第一个entries指向新add的index</span>
+    buckets<span class="token punctuation">[</span>targetBucket<span class="token punctuation">]</span>   <span class="token operator">=</span> index<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 最后version++，集合发生了变化，所以版本需要+1。只有增加、替换和删除元素才会更新版本</span>
+    version<span class="token operator">++</span><span class="token punctuation">;</span>
+
+<span class="token preprocessor property">#<span class="token directive keyword">if</span> FEATURE_RANDOMIZED_STRING_HASHING</span>
+<span class="token preprocessor property">#<span class="token directive keyword">if</span> FEATURE_CORECLR</span>
+    <span class="token comment" spellcheck="true">// In case we hit the collision threshold we'll need to switch to the comparer which is using randomized string hashing</span>
+    <span class="token comment" spellcheck="true">// in this case will be EqualityComparer&lt;string>.Default.</span>
+    <span class="token comment" spellcheck="true">// Note, randomized string hashing is turned on by default on coreclr so EqualityComparer&lt;string>.Default will</span>
+    <span class="token comment" spellcheck="true">// be using randomized string hashing</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>collisionCount <span class="token operator">></span> HashHelpers<span class="token punctuation">.</span>HashCollisionThreshold <span class="token operator">&amp;&amp;</span> comparer <span class="token operator">==</span> NonRandomizedStringEqualityComparer<span class="token punctuation">.</span>Default<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        comparer <span class="token operator">=</span> <span class="token punctuation">(</span>IEqualityComparer<span class="token operator">&lt;</span>TKey<span class="token operator">></span><span class="token punctuation">)</span> EqualityComparer<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token punctuation">.</span>Default<span class="token punctuation">;</span>
+        <span class="token function">Resize</span><span class="token punctuation">(</span>entries<span class="token punctuation">.</span>Length<span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token preprocessor property">#<span class="token directive keyword">else</span></span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>collisionCount <span class="token operator">></span> HashHelpers<span class="token punctuation">.</span>HashCollisionThreshold <span class="token operator">&amp;&amp;</span> HashHelpers<span class="token punctuation">.</span><span class="token function">IsWellKnownEqualityComparer</span><span class="token punctuation">(</span>comparer<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 如果碰撞次数（单链表长度）大于设置的最大碰撞阈值, 那么触发Hash碰撞扩容</span>
+        comparer <span class="token operator">=</span> <span class="token punctuation">(</span>IEqualityComparer<span class="token operator">&lt;</span>TKey<span class="token operator">></span><span class="token punctuation">)</span> HashHelpers<span class="token punctuation">.</span><span class="token function">GetRandomizedEqualityComparer</span><span class="token punctuation">(</span>comparer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">Resize</span><span class="token punctuation">(</span>entries<span class="token punctuation">.</span>Length<span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token preprocessor property">#<span class="token directive keyword">endif</span> </span><span class="token comment" spellcheck="true">// FEATURE_CORECLR</span>
+
+<span class="token preprocessor property">#<span class="token directive keyword">endif</span></span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228180124.png" alt=""></p>
+<p>完成上面Add操作后，数据结构更新成了下图这样的形式。</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228180054.png" alt=""></p>
+<p>这样是理想情况下的操作，一个bucket中只有一个hashCode没有碰撞的产生，但是实际上是会经常产生碰撞；那么Dictionary类中又是如何解决碰撞的呢。</p>
+<p>我们继续执行一个Add操作，<code>dictionary.Add(&quot;c&quot;,&quot;d&quot;)</code>，假设<code>GetHashCode(“c”)=6</code>，最后<code>6 % 4 = 2</code>。最后桶的index也是2，按照之前的步骤1~3是没有问题的，执行完后数据结构如下图所示。</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228180255.png" alt=""></p>
+<p>如果继续执行步骤4那么<code>buckets[2] = 1</code>，然后原来的<code>buckets[2]=&gt;entries[0]</code>的关系就会丢失，这是我们不愿意看到的。现在Entry中的next就发挥大作用了。</p>
+<p>如果对应的<code>buckets[index]</code>有其它元素已经存在，那么会执行以下两条语句，让新的<code>entry.next</code>指向之前的元素，让<code>buckets[index]</code>指向现在的新的元素，就构成了一个单链表。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">entries<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">.</span>next     <span class="token operator">=</span> buckets<span class="token punctuation">[</span>targetBucket<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+buckets<span class="token punctuation">[</span>targetBucket<span class="token punctuation">]</span>   <span class="token operator">=</span> index<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>实际上步骤4也就是做一个这样的操作，并不会去判断是不是有其它元素，因为buckets中桶初始值就是-1，不会造成问题。经过上面的步骤以后，数据结构就更新成了下图这个样子。</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228180550.png" alt=""></p>
+<h2 id="Dictionary-–-再谈Add操作"><a href="#Dictionary-–-再谈Add操作" class="headerlink" title="Dictionary – 再谈Add操作"></a>Dictionary – 再谈Add操作</h2><p>在我们之前的Add操作步骤中，提到了这样一段话，这里提到会有一种其它的情况，那就是有元素被删除的情况。</p>
+<blockquote>
+<p>避开一种其它情况不谈，接下来它会将hashCode、key、value等信息存入entries[count]中，因为count位置是空闲的；继续count++指向下一个空闲位置。上图中第一个位置，index=0就是空闲的，所以就存放在entries[0]的位置。</p>
+</blockquote>
+<p>因为count是通过自增的方式来指向entries[]下一个空闲的entry，如果有元素被删除了，那么在count之前的位置就会出现一个空闲的entry；如果不处理，会有很多空间被浪费。</p>
+<p>这就是为什么Remove操作会记录freeList、freeCount，就是为了将删除的空间利用起来。实际上Add操作会优先使用freeList的空闲entry位置.</p>
+<h2 id="Dictionary-–-Find操作"><a href="#Dictionary-–-Find操作" class="headerlink" title="Dictionary – Find操作"></a>Dictionary – Find操作</h2><p>为了方便演示如何查找，我们继续Add一个元素<code>dictionary.Add(&quot;e&quot;,&quot;f&quot;)</code>，<code>GetHashCode(“e”) = 7</code>; <code>7% buckets.Length=3</code>,数据结构如下所示。</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228202229.png" alt=""></p>
+<p>假设我们现在执行这样一条语句<code>dictionary.GetValueOrDefault(&quot;a&quot;)</code>，会执行以下步骤.</p>
+<ol>
+<li>获取<code>key</code>的hashCode，计算出所在的桶位置。我们之前提到，<code>”a”</code>的<code>hashCode=6</code>，所以最后计算出来<code>targetBucket=2</code>。</li>
+<li>通过<code>buckets[2]=1</code>找到<code>entries[1]</code>,比较<code>key</code>的值是否相等，相等就返回<code>entryIndex</code><ul>
+<li>不相等就继续<code>entries[next]</code>查找，直到找到<code>key</code>相等元素或者<code>next == -1</code>的时候。这里我们找到了key == “a”的元素，返回<code>entryIndex=0</code>。</li>
+</ul>
+</li>
+<li>如果<code>entryIndex &gt;= 0</code>那么返回对应的<code>entries[entryIndex]</code>元素，否则返回<code>default(TValue)</code>。这里我们直接返回<code>entries[0].value</code>。</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">int</span> <span class="token function">FindEntry</span><span class="token punctuation">(</span>TKey key<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>key <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        ThrowHelper<span class="token punctuation">.</span><span class="token function">ThrowArgumentNullException</span><span class="token punctuation">(</span>ExceptionArgument<span class="token punctuation">.</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>buckets <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 获取HashCode，忽略符号位</span>
+        <span class="token keyword">int</span> hashCode <span class="token operator">=</span> comparer<span class="token punctuation">.</span><span class="token function">GetHashCode</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">0x7FFFFFFF</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 计算hashCode存在哪个哈希桶中, buckets[hashCode % buckets.Length]找到对应桶</span>
+        <span class="token comment" spellcheck="true">// 遍历entries[i].next直到key相等位置</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> buckets<span class="token punctuation">[</span>hashCode <span class="token operator">%</span> buckets<span class="token punctuation">.</span>Length<span class="token punctuation">]</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">=</span> entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>next<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>hashCode <span class="token operator">==</span> hashCode <span class="token operator">&amp;&amp;</span> comparer<span class="token punctuation">.</span><span class="token function">Equals</span><span class="token punctuation">(</span>entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>key<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> i<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// -1表示没找到</span>
+    <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">bool</span> <span class="token function">TryGetValue</span><span class="token punctuation">(</span>TKey key<span class="token punctuation">,</span> <span class="token keyword">out</span> TValue <span class="token keyword">value</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 大于等于0代表找到了元素位置，直接返回value</span>
+    <span class="token comment" spellcheck="true">// 否则返回该类型的默认值</span>
+    <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token function">FindEntry</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">value</span> <span class="token operator">=</span> entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token keyword">value</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">value</span> <span class="token operator">=</span> <span class="token keyword">default</span><span class="token punctuation">(</span>TValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Dictionary-–-Remove操作"><a href="#Dictionary-–-Remove操作" class="headerlink" title="Dictionary – Remove操作"></a>Dictionary – Remove操作</h2><p>前面已经向大家介绍了增加、查找，接下来向大家介绍Dictionary如何执行删除操作。我们沿用之前的Dictionary数据结构。</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228212548.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">bool</span> <span class="token function">Remove</span><span class="token punctuation">(</span>TKey key<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>key <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        ThrowHelper<span class="token punctuation">.</span><span class="token function">ThrowArgumentNullException</span><span class="token punctuation">(</span>ExceptionArgument<span class="token punctuation">.</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>buckets <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 忽略符号位获取hashcode</span>
+        <span class="token keyword">int</span> hashCode <span class="token operator">=</span> comparer<span class="token punctuation">.</span><span class="token function">GetHashCode</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">0x7FFFFFFF</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 找到对应桶</span>
+        <span class="token keyword">int</span> bucket   <span class="token operator">=</span> hashCode <span class="token operator">%</span> buckets<span class="token punctuation">.</span>Length<span class="token punctuation">;</span>    
+        <span class="token comment" spellcheck="true">// last用于确定是否当前bucket的单链表中最后一个元素</span>
+        <span class="token keyword">int</span> last     <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 遍历桶的单链表</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> buckets<span class="token punctuation">[</span>bucket<span class="token punctuation">]</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> last <span class="token operator">=</span> i<span class="token punctuation">,</span> i <span class="token operator">=</span> entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>next<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>hashCode <span class="token operator">==</span> hashCode <span class="token operator">&amp;&amp;</span> comparer<span class="token punctuation">.</span><span class="token function">Equals</span><span class="token punctuation">(</span>entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>key<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 找到元素后，如果last&lt; 0，代表当前是bucket中最后一个元素，</span>
+                <span class="token comment" spellcheck="true">// 那么直接让bucket内下标赋值为 entries[i].next即可</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>last <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    buckets<span class="token punctuation">[</span>bucket<span class="token punctuation">]</span> <span class="token operator">=</span> entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                <span class="token keyword">else</span>
+                <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">// last不小于0，代表当前元素处于bucket单链表中间位置，</span>
+                    <span class="token comment" spellcheck="true">// 需要将该元素的头结点和尾节点相连起来,防止链表中断</span>
+                    entries<span class="token punctuation">[</span>last<span class="token punctuation">]</span><span class="token punctuation">.</span>next <span class="token operator">=</span> entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+
+                entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>hashCode <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+                entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>next     <span class="token operator">=</span> freeList<span class="token punctuation">;</span>
+                entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>key      <span class="token operator">=</span> <span class="token keyword">default</span><span class="token punctuation">(</span>TKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                entries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token keyword">value</span>    <span class="token operator">=</span> <span class="token keyword">default</span><span class="token punctuation">(</span>TValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment" spellcheck="true">// 关键的代码，freeList等于当前的entry位置，下一次Add元素会优先Add到该位置</span>
+                freeList            <span class="token operator">=</span> i<span class="token punctuation">;</span>
+                freeCount<span class="token operator">++</span><span class="token punctuation">;</span>
+                version<span class="token operator">++</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>执行完上面代码后，数据结构就更新成了下图所示。需要注意varsion、freeList、freeCount的值都被更新了。</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228212623.png" alt=""></p>
+<h2 id="Dictionary-–-Resize操作-扩容"><a href="#Dictionary-–-Resize操作-扩容" class="headerlink" title="Dictionary – Resize操作(扩容)"></a>Dictionary – Resize操作(扩容)</h2><p>有细心的小伙伴可能看过了Add操作以后就想问了，buckets、entries不就是两个数组么，那万一数组放满了怎么办？接下来就是我所要介绍的Resize（扩容）这样一种操作，对我们的<code>buckets</code>、<code>entries</code>进行扩容。</p>
+<p>首先我们需要知道在什么情况下，会发生扩容操作；</p>
+<p><strong>第一种情况自然就是数组已经满了</strong>，没有办法继续存放新的元素。如下图所示的情况。</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228214214.png" alt=""></p>
+<p>从上文中大家都知道，Hash运算会不可避免的产生冲突，Dictionary中使用拉链法来解决冲突的问题，但是大家看下图中的这种情况。</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228214223.png" alt=""></p>
+<p>所有的元素都刚好落在buckets[3]上面，结果就是导致了时间复杂度<code>O(n)</code>，查找性能会下降；</p>
+<p><strong>所以第二种，Dictionary中发生的碰撞次数太多</strong>，会严重影响性能，也会触发扩容操作。</p>
+<p>目前.Net Framwork 4.7中设置的碰撞次数阈值为100. <code>public const int HashCollisionThreshold = 100;</code></p>
+<p>为了给大家演示的清楚，模拟了以下这种数据结构，大小为2的Dictionary，假设碰撞的阈值为2；现在触发Hash碰撞扩容。</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228214410.png" alt=""></p>
+<p>开始扩容操作。</p>
+<ol>
+<li>申请两倍于现在大小的buckets、entries</li>
+<li>将现有的元素拷贝到新的entries</li>
+</ol>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228214446.png" alt=""></p>
+<ol>
+<li>如果是Hash碰撞扩容，使用新HashCode函数重新计算Hash值</li>
+</ol>
+<p>上文提到了，这是发生了Hash碰撞扩容，所以需要使用新的Hash函数计算Hash值。新的Hash函数并一定能解决碰撞的问题，有可能会更糟，像下图中一样的还是会落在同一个bucket上。</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228214626.png" alt=""></p>
+<ol>
+<li><p>对entries每个元素<code>bucket = newEntries[i].hashCode % newSize</code>确定新buckets位置</p>
+</li>
+<li><p>重建hash链，<code>newEntries[i].next=buckets[bucket]; buckets[bucket]=i;</code></p>
+</li>
+</ol>
+<p>因为buckets也扩充为两倍大小了，所以需要重新确定hashCode在哪个bucket中；最后重新建立hash单链表.</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228214724.png" alt=""></p>
+<p>这就完成了扩容的操作，如果是达到<code>Hash碰撞阈值</code>触发的扩容可能扩容后结果会更差。</p>
+<blockquote>
+<p>在JDK中，HashMap如果碰撞的次数太多了，那么会将单链表转换为红黑树提升查找性能。目前.Net Framwork中还没有这样的优化，.Net Core中已经有了类似的优化，以后有时间在分享.Net Core的一些集合实现。</p>
+</blockquote>
+<p>每次扩容操作都需要遍历所有元素，会影响性能。所以创建Dictionary实例时最好设置一个预估的初始大小</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">Resize</span><span class="token punctuation">(</span><span class="token keyword">int</span> newSize<span class="token punctuation">,</span> <span class="token keyword">bool</span> forceNewHashCodes<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Contract<span class="token punctuation">.</span><span class="token function">Assert</span><span class="token punctuation">(</span>newSize <span class="token operator">>=</span> entries<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 1. 申请新的Buckets和entries</span>
+    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> newBuckets                                          <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span>newSize<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> newBuckets<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> newBuckets<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    Entry<span class="token punctuation">[</span><span class="token punctuation">]</span> newEntries                                        <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Entry</span><span class="token punctuation">[</span>newSize<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 2. 将entries内元素拷贝到新的entries中</span>
+    Array<span class="token punctuation">.</span><span class="token function">Copy</span><span class="token punctuation">(</span>entries<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> newEntries<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 3. 如果是Hash碰撞扩容，使用新HashCode函数重新计算Hash值</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>forceNewHashCodes<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> count<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>newEntries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>hashCode <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 重新计算hashcode</span>
+                newEntries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>hashCode <span class="token operator">=</span> <span class="token punctuation">(</span>comparer<span class="token punctuation">.</span><span class="token function">GetHashCode</span><span class="token punctuation">(</span>newEntries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>key<span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">0x7FFFFFFF</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 4. 确定新的bucket位置</span>
+    <span class="token comment" spellcheck="true">// 5. 重建Hahs单链表</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> count<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>newEntries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>hashCode <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> bucket <span class="token operator">=</span> newEntries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>hashCode <span class="token operator">%</span> newSize<span class="token punctuation">;</span>
+            newEntries<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>next <span class="token operator">=</span> newBuckets<span class="token punctuation">[</span>bucket<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            newBuckets<span class="token punctuation">[</span>bucket<span class="token punctuation">]</span> <span class="token operator">=</span> i<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    buckets <span class="token operator">=</span> newBuckets<span class="token punctuation">;</span>
+    entries <span class="token operator">=</span> newEntries<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Collection版本控制"><a href="#Collection版本控制" class="headerlink" title="Collection版本控制"></a>Collection版本控制</h2><p>在上文中一直提到了version这个变量，在每一次新增、修改和删除操作时，都会使version++；那么这个version存在的意义是什么呢？</p>
+<p>首先我们来看一段代码，这段代码中首先实例化了一个Dictionary实例，然后通过<code>foreach</code>遍历该实例，在<code>foreach</code>代码块中使用<code>dic.Remove(kv.Key)</code>删除元素。</p>
+<p>结果就是抛出了<code>System.InvalidOperationException:&quot;Collection was modified...&quot;</code>这样的异常，<strong>迭代过程中不允许集合出现变化</strong>。如果在Java中遍历直接删除元素，会出现诡异的问题，所以.Net中就使用了version来实现版本控制。</p>
+<p>那么如何在迭代过程中实现版本控制的呢？我们看一看源码就很清楚的知道</p>
+<p><img src="/2019/12/28/Dictionary源码剖析/QQ截图20191228220011.png" alt=""></p>
+<p>在迭代器初始化时，就会记录dictionary.version版本号，之后每一次迭代过程都会检查版本号是否一致，如果不一致将抛出异常。这样就避免了在迭代过程中修改了集合，造成很多诡异的问题。</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

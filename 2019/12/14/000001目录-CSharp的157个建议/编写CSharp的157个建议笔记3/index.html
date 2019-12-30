@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        编写CSharp的157个建议笔记3 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#泛型-委托和事件"><span class="toc-text">泛型,委托和事件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议32-总是优先考虑泛型"><span class="toc-text">建议32 : 总是优先考虑泛型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议33-避免在泛型类型中声明静态成员"><span class="toc-text">建议33 : 避免在泛型类型中声明静态成员</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议34-为泛型参数设定约束"><span class="toc-text">建议34 : 为泛型参数设定约束</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议35-使用default为泛型类型变量指定初始值"><span class="toc-text">建议35 : 使用default为泛型类型变量指定初始值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议36-使用FCL中的委托声明"><span class="toc-text">建议36 : 使用FCL中的委托声明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议37-使用Lambda表达式代替方法和匿名方法"><span class="toc-text">建议37 : 使用Lambda表达式代替方法和匿名方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议38-小心闭包中的陷阱"><span class="toc-text">建议38 : 小心闭包中的陷阱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议39-了解委托的实质"><span class="toc-text">建议39 : 了解委托的实质</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议40-使用event关键字为委托施加保护"><span class="toc-text">建议40 : 使用event关键字为委托施加保护</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议41-实现标准的事件模型"><span class="toc-text">建议41 : 实现标准的事件模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议42-使用泛型参数兼容泛型接口的不可变性"><span class="toc-text">建议42 : 使用泛型参数兼容泛型接口的不可变性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议43-让接口中的泛型参数支持协变"><span class="toc-text">建议43 : 让接口中的泛型参数支持协变</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议44-理解委托中的协变"><span class="toc-text">建议44 : 理解委托中的协变</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议45-为泛型类型参数指定逆变"><span class="toc-text">建议45:为泛型类型参数指定逆变</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        编写CSharp的157个建议笔记3
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-12-14 17:29:27</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CSharp的157个建议" title="CSharp的157个建议">CSharp的157个建议</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="泛型-委托和事件"><a href="#泛型-委托和事件" class="headerlink" title="泛型,委托和事件"></a>泛型,委托和事件</h1><p>基于泛型, 我们得以将类型参数化, 以便更大范围地进行代码复用. 同时减少了泛型类及泛型方法中的转型, 确保了类型安全. 委托本身是一种音乐类型, 它保存的也是托管堆中对象的引用, 只不过这个引用比较特殊, 它是对方法的引用. 事件本身也是委托, 它是委托组, 用关键字event来对事件进行区分.</p>
+<h2 id="建议32-总是优先考虑泛型"><a href="#建议32-总是优先考虑泛型" class="headerlink" title="建议32 : 总是优先考虑泛型"></a>建议32 : 总是优先考虑泛型</h2><p>泛型的优点是多方面的，无论是泛型类还是泛型方法都同时具备可重用性、类型安全和高效率等特性，这都是非泛型类和非泛型方法无法具备的。本建议将从可重用性、类型安全和高效率三个方面来阐述:在实际的编码过程中为何总是应该优先考虑泛型。</p>
+<ul>
+<li><p>可重用性<br>T理解为一个占位符, C#泛型编译生成的IL代码中, T就是一个占位符的角色.在运行时, 即时编译器JIT会用实际代码中输入的T类型来代替T. <code>MyList&lt;string&gt;</code>和<code>MyList&lt;int&gt;</code>是2个完全不同的类型, 但是对本地代码而言只有一个泛型<code>MyList&lt;T&gt;</code>类.</p>
+</li>
+<li><p>类型安全<br>如果针对object编写代码, 则会出现类型安全性的问题,<code>list[0] = 123; list[1] = &quot;123&quot;;</code>都能编译通过.</p>
+</li>
+<li><p>高效<br>转型的效率损耗,尤其是值类型,会带来装箱和拆箱的性能损耗.</p>
+</li>
+</ul>
+<h2 id="建议33-避免在泛型类型中声明静态成员"><a href="#建议33-避免在泛型类型中声明静态成员" class="headerlink" title="建议33 : 避免在泛型类型中声明静态成员"></a>建议33 : 避免在泛型类型中声明静态成员</h2><p><code>MyList&lt;string&gt;</code>和<code>MyList&lt;int&gt;</code>是2个完全不同的类型, 所以不应该将<code>MyList&lt;T&gt;</code>中的静态成员理解成<code>MyList&lt;string&gt;</code>和<code>MyList&lt;int&gt;</code>的共有的成员. <strong>它们之间是不共享静态成员的. 但是如果数据类型是一致的(T类型相同),那么还是可以共享静态成员的</strong>.</p>
+<p>上面举的例子是基于泛型类型的, 但是, <strong>非泛型类型中的泛型方法并不会在运行时的本地代码中生成不同的类型。</strong></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>MyList<span class="token punctuation">.</span><span class="token generic-method function">Func<span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 0</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>MyList<span class="token punctuation">.</span><span class="token generic-method function">Func<span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 1</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>MyList<span class="token punctuation">.</span><span class="token generic-method function">Func<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 2</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">MyList</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">int</span> count<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token generic-method function">Func<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> count<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议34-为泛型参数设定约束"><a href="#建议34-为泛型参数设定约束" class="headerlink" title="建议34 : 为泛型参数设定约束"></a>建议34 : 为泛型参数设定约束</h2><p>“约束”这个词可能会引起歧义，有些人可能认为对泛型参数设定约束是限制參数的使用，实际情况正好相反。没有约束的泛型参数作用很有限，倒是“约束”让泛型参数具有了更多的行为和属性。</p>
+<p>我们会发现参数t1或参数t2仅仅具有object的属性和行为，所以几乎不能在方法中对它们做任何的操作:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">SalaryComputer</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token generic-method function">Compare<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span>T t1<span class="token punctuation">,</span> T t2<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      retrun <span class="token number">0</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但是，在加了约束之后，我们会发现参数t1和t2变成了一个有用的对象。由于为其指定了对应的类型，t1 和t2现在就是一个Salary了，在方法的内部，它拥有了属性BaseSalary和Bonus,代码如下所示。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">SalaryComputer</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token generic-method function">Compare<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span>T t1<span class="token punctuation">,</span> T t2<span class="token punctuation">)</span> <span class="token keyword">where</span> T <span class="token punctuation">:</span> Salary
+   <span class="token punctuation">{</span>
+       <span class="token keyword">if</span> <span class="token punctuation">(</span>t1<span class="token punctuation">.</span>BaseSalary <span class="token operator">></span> t2<span class="token punctuation">.</span>BaseSalary<span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+          retrun <span class="token number">1</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以为泛型指定的约束:</p>
+<ul>
+<li>指定参数时值类型(Nullable除外)<ul>
+<li>where T : struct</li>
+</ul>
+</li>
+<li>指定参数时引用类型<ul>
+<li>where T : class</li>
+<li>where T : Salary</li>
+<li>object不能用来作为约束</li>
+</ul>
+</li>
+<li>指定参数具有无参数的公共构造方法<ul>
+<li>where T : new()</li>
+<li>CLR目前直只支持无参构造方法约束</li>
+</ul>
+</li>
+<li>指定参数必须是指定的基类, 或派生自指定的基类</li>
+<li>指定的参数必须是指定的接口, 或者实现指定的接口</li>
+<li>指定T提供的类型参数必须是为U提供的参数, 或者派生自为U提供的参数<ul>
+<li>where T : U</li>
+</ul>
+</li>
+<li>可以对同一个类型的参数应用多个约束, 并且约束自身可以使泛型类型</li>
+</ul>
+<p>在编码过程中，应该始终考虑为泛型参数设定约束。正像本建议开始的时候所说，约束使泛型参数成为-一个实实在在的“对象”，让它具有了我们想要的行为和属性，而不仅仅是一个object。</p>
+<h2 id="建议35-使用default为泛型类型变量指定初始值"><a href="#建议35-使用default为泛型类型变量指定初始值" class="headerlink" title="建议35 : 使用default为泛型类型变量指定初始值"></a>建议35 : 使用default为泛型类型变量指定初始值</h2><p>在泛型方法中,为T赋值初始值, 因为值类型初始值是0, 引用类型是null,因此要使用<code>default(T)</code>关键字来初始化.</p>
+<h2 id="建议36-使用FCL中的委托声明"><a href="#建议36-使用FCL中的委托声明" class="headerlink" title="建议36 : 使用FCL中的委托声明"></a>建议36 : 使用FCL中的委托声明</h2><ul>
+<li>Action<ul>
+<li>执行一个操作, 没有返回值</li>
+<li>有17个重载</li>
+<li><code>Action&lt;T&gt;</code></li>
+</ul>
+</li>
+<li>Func<ul>
+<li>执行一个操作并返回一个值</li>
+<li>有17个重载</li>
+<li><code>Func&lt;T, TResult&gt;</code></li>
+</ul>
+</li>
+<li>Predicate<ul>
+<li>用于定义一组条件并判断参数是否符合条件</li>
+</ul>
+</li>
+</ul>
+<p>除了Action、Func 和Predicate外，FCL中还有用于表示特殊含义的委托声明。如用于表示注册事件方法的委托声明:</p>
+<p><code>public delegate void EventHandler (object sender, EventArgs e) ;</code><br><code>public delegate void EventHandler&lt;TEventArgs&gt; lobject sender, TEventArgs e) ;</code></p>
+<p>表示线程方法的委托声明:</p>
+<p><code>public delegate void Threadstart() ;</code><br><code>public delegate void ParameterizedThreadstart (object obj) ;</code></p>
+<p>表示异步回调的委托声明:</p>
+<p><code>public delegate void AsyncCallback (IAsyncResult ar);</code></p>
+<p>在FCL中每一类委托声明都代表一类特殊的用途，虽然可以使用自己的委托声明来代替，但是这样做不仅没有必要，而且会让代码失去简洁性和标准性。在我们实现自己的委托声明前，应该首先查看MSDN,确信有必要之后才这样做。</p>
+<h2 id="建议37-使用Lambda表达式代替方法和匿名方法"><a href="#建议37-使用Lambda表达式代替方法和匿名方法" class="headerlink" title="建议37 : 使用Lambda表达式代替方法和匿名方法"></a>建议37 : 使用Lambda表达式代替方法和匿名方法</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 示例程序</span>
+Func<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span> <span class="token keyword">add</span> <span class="token operator">=</span> Add<span class="token punctuation">;</span>
+Action<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> print <span class="token operator">=</span> Print<span class="token punctuation">;</span>
+<span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">,</span> <span class="token keyword">int</span> j<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> i <span class="token operator">+</span> j<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Print</span><span class="token punctuation">(</span><span class="token keyword">string</span> msg<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>实际上要完成相同的功能，还有多种编码方式。先来看一个最中规中矩的，同时也是最烦琐的写法:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Func<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span> <span class="token keyword">add</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Func</span><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">(</span>Add<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Action<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> print    <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Action</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token punctuation">(</span>Print<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>从以上写法中注意到: Add方法和Print方法实际上都只有一条语句，因此，使用匿名方法也许是一种更好的选择:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Func<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span> <span class="token keyword">add</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Func</span><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token keyword">delegate</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">,</span> <span class="token keyword">int</span> j<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">return</span> i <span class="token operator">+</span> j<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Action<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> print <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Action</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token keyword">delegate</span><span class="token punctuation">(</span><span class="token keyword">string</span> msg<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用匿名方法以后，我们不需要在Main方法外部声明两个方法了，可以直接在Main这个工作方法中完成所有的代码编写，而且不会影响代码清晰性。实际上，所有代码行数不超过3行的方法(条件是它不被重用)，我们都建议采用这种方式来编写。上面版本的改进版是:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Func<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span> <span class="token keyword">add</span> <span class="token operator">=</span> <span class="token keyword">delegate</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">,</span> <span class="token keyword">int</span> j<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">return</span> i <span class="token operator">+</span> j<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+Action<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> print <span class="token operator">=</span> <span class="token keyword">delegate</span><span class="token punctuation">(</span><span class="token keyword">string</span> msg<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以上代码看上去更简化了，不过，最终极的改进是使用Lambda表达式:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Func<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span> <span class="token keyword">add</span> <span class="token operator">=</span> <span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> i <span class="token operator">+</span> j<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+Action<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> print <span class="token operator">=</span> <span class="token punctuation">(</span>msg<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+<span class="token punctuation">{</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Lambda表达式<code>=&gt;</code>左侧是方法的参数,右侧是方法体, 本质是匿名方法.</p>
+<p>以下是以<code>List&lt;T&gt;</code>的Find的一个例子:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//第一种写法</span>
+<span class="token comment" spellcheck="true">//return this.Find(new Predicate&lt;Student>(delegate(Student target)</span>
+<span class="token comment" spellcheck="true">//{</span>
+<span class="token comment" spellcheck="true">//    if (target.Name == name)</span>
+<span class="token comment" spellcheck="true">//    {</span>
+<span class="token comment" spellcheck="true">//        return true;</span>
+<span class="token comment" spellcheck="true">//    }</span>
+<span class="token comment" spellcheck="true">//    else</span>
+<span class="token comment" spellcheck="true">//    {</span>
+<span class="token comment" spellcheck="true">//        return false;</span>
+<span class="token comment" spellcheck="true">//    }</span>
+<span class="token comment" spellcheck="true">//}));</span>
+
+<span class="token comment" spellcheck="true">//第二种写法</span>
+<span class="token comment" spellcheck="true">//return this.Find(new Predicate&lt;Student>((target) =></span>
+<span class="token comment" spellcheck="true">//    {</span>
+<span class="token comment" spellcheck="true">//        if (target.Name == name)</span>
+<span class="token comment" spellcheck="true">//        {</span>
+<span class="token comment" spellcheck="true">//            return true;</span>
+<span class="token comment" spellcheck="true">//        }</span>
+<span class="token comment" spellcheck="true">//        else</span>
+<span class="token comment" spellcheck="true">//        {</span>
+<span class="token comment" spellcheck="true">//            return false;</span>
+<span class="token comment" spellcheck="true">//        }</span>
+<span class="token comment" spellcheck="true">//    }));</span>
+
+
+<span class="token comment" spellcheck="true">//第三种写法</span>
+<span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span> target <span class="token operator">=</span><span class="token operator">></span> target<span class="token punctuation">.</span>Name <span class="token operator">==</span> name <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议38-小心闭包中的陷阱"><a href="#建议38-小心闭包中的陷阱" class="headerlink" title="建议38 : 小心闭包中的陷阱"></a>建议38 : 小心闭包中的陷阱</h2><pre class="line-numbers language-csharp"><code class="language-csharp">List<span class="token operator">&lt;</span>Action<span class="token operator">></span> lists <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Action<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Action t <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    lists<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span>Action t <span class="token keyword">in</span> lists<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">t</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 输出</span>
+<span class="token comment" spellcheck="true">// 5</span>
+<span class="token comment" spellcheck="true">// 5</span>
+<span class="token comment" spellcheck="true">// 5</span>
+<span class="token comment" spellcheck="true">// 5</span>
+<span class="token comment" spellcheck="true">// 5</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>观察这段代码的IL代码会发现,编译器默默的为我们创建了一个类, 会和下面这段代码是一致的:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   List<span class="token operator">&lt;</span>Action<span class="token operator">></span> lists <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Action<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   TempClass tempClass <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TempClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">for</span> <span class="token punctuation">(</span>tempClass<span class="token punctuation">.</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> tempClass<span class="token punctuation">.</span>i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> tempClass<span class="token punctuation">.</span>i<span class="token operator">++</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       Action t <span class="token operator">=</span> tempClass<span class="token punctuation">.</span>TempFuc<span class="token punctuation">;</span>
+       lists<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Action t <span class="token keyword">in</span> lists<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token function">t</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">TempClass</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">TempFuc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这段代码所演示的就是闭包对象<code>tempClass</code>, <strong>如果匿名方法(Lambda)表达式引用了某个局部变量, 编译器就会自动将该引用提升到该闭包对象中. 即for循环中的变量i修改成了引用闭包的UI性的公共变量i.</strong> 这样一来,即使代码执行后离开了原局部变量i的作用域, 包含该闭包对象的作用域也还在.</p>
+<p>要实现预期输出01234,可以将闭包对象的产生放在for循环内部:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   List<span class="token operator">&lt;</span>Action<span class="token operator">></span> lists <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Action<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">int</span> temp <span class="token operator">=</span> i<span class="token punctuation">;</span>
+       Action t <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+       <span class="token punctuation">{</span>
+           Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>temp<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span><span class="token punctuation">;</span>
+       lists<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Action t <span class="token keyword">in</span> lists<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token function">t</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 和下段代码一致</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   List<span class="token operator">&lt;</span>Action<span class="token operator">></span> lists <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Action<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       TempClass tempClass <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TempClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       tempClass<span class="token punctuation">.</span>i <span class="token operator">=</span> i<span class="token punctuation">;</span>
+       Action t <span class="token operator">=</span> tempClass<span class="token punctuation">.</span>TempFuc<span class="token punctuation">;</span>
+       lists<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">foreach</span> <span class="token punctuation">(</span>Action t <span class="token keyword">in</span> lists<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token function">t</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">TempClass</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">TempFuc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议39-了解委托的实质"><a href="#建议39-了解委托的实质" class="headerlink" title="建议39 : 了解委托的实质"></a>建议39 : 了解委托的实质</h2><ul>
+<li>委托是方法指针</li>
+<li>委托是一个类, 当对其进行实例化的时候, 要将引用方法作为它的构造方法的参数</li>
+</ul>
+<p>调用委托方法<code>FileUploaded(fileProgress);</code>,其实是调用 <code>FileUploaded.Invoke(fileProgress);</code></p>
+<h2 id="建议40-使用event关键字为委托施加保护"><a href="#建议40-使用event关键字为委托施加保护" class="headerlink" title="建议40 : 使用event关键字为委托施加保护"></a>建议40 : 使用event关键字为委托施加保护</h2><p>防止外部直接调用委托, 因为什么时候通知调用者, 应该是类自己的职责,而不是调用者本身来决定.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 以下情况在使用了event关键字后编译会出现错误警告</span>
+fl<span class="token punctuation">.</span>FileUploaded <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+fl<span class="token punctuation">.</span>FileUploaded <span class="token operator">=</span> Progress<span class="token punctuation">;</span>
+fl<span class="token punctuation">.</span><span class="token function">FileUploaded</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议41-实现标准的事件模型"><a href="#建议41-实现标准的事件模型" class="headerlink" title="建议41 : 实现标准的事件模型"></a>建议41 : 实现标准的事件模型</h2><p>微软为事件模型设定的几个规范</p>
+<ul>
+<li>委托类型的名称以EventHandler结束;</li>
+<li>委托原型返回值为void;</li>
+<li>委托原型具有两个参数: sender 表示事件触发者，e表示事件参数;</li>
+<li>事件参数的名称以EventArgs 结束。</li>
+</ul>
+<h2 id="建议42-使用泛型参数兼容泛型接口的不可变性"><a href="#建议42-使用泛型参数兼容泛型接口的不可变性" class="headerlink" title="建议42 : 使用泛型参数兼容泛型接口的不可变性"></a>建议42 : 使用泛型参数兼容泛型接口的不可变性</h2><p><strong>让返回值类型返回比声明的类型派生程度更大的类型，就是“协变”</strong>。</p>
+<p>协变不是一种新出现的技术，在以往的编码中，我们已经在不自觉地使用协变。以下的代码就是一个不自觉应用协变的例子.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> Employee <span class="token function">GetAEmployee</span><span class="token punctuation">(</span><span class="token keyword">string</span> name<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// Programmers是Employee的子类, 也就相当于返回了一个Employee对象</span>
+   <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Programmer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> Name <span class="token operator">=</span> name<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>只要泛型参数在一个接口声明中不被用来作为方法的输入参数, 我们都可姑且把它看成是”返回值”类型的.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    ISalary<span class="token operator">&lt;</span>Programmer<span class="token operator">></span> s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BaseSalaryCounter</span><span class="token operator">&lt;</span>Programmer<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 我们可能认为ISalary&lt;Programmer>必然也可以被此方法使用</span>
+    <span class="token comment" spellcheck="true">// 方法参数如果不是泛型或out标识,就会报错</span>
+    <span class="token function">PrintSalary</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 错误的写法</span>
+<span class="token comment" spellcheck="true">// 我们可能认为ISalary&lt;Programmer>必然也可以被此方法使用</span>
+<span class="token comment" spellcheck="true">// 实际是会发生错误的</span>
+<span class="token comment" spellcheck="true">// static void PrintSalary(ISalary&lt;Employee> s)</span>
+<span class="token comment" spellcheck="true">// {</span>
+<span class="token comment" spellcheck="true">//     s.Pay();</span>
+<span class="token comment" spellcheck="true">// }</span>
+
+<span class="token comment" spellcheck="true">// 正确写法</span>
+<span class="token comment" spellcheck="true">// 使用泛型类型参数</span>
+<span class="token comment" spellcheck="true">// 用泛型参数兼容泛型接口的不可变性</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token generic-method function">PrintSalary<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span>ISalary<span class="token operator">&lt;</span>T<span class="token operator">></span> s<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    s<span class="token punctuation">.</span><span class="token function">Pay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">ISalary</span><span class="token operator">&lt;</span>T<span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">Pay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">BaseSalaryCounter</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">:</span> ISalary<span class="token operator">&lt;</span>T<span class="token operator">></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Pay</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Pay base salary"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议43-让接口中的泛型参数支持协变"><a href="#建议43-让接口中的泛型参数支持协变" class="headerlink" title="建议43 : 让接口中的泛型参数支持协变"></a>建议43 : 让接口中的泛型参数支持协变</h2><p>除了建议42中提到的使用泛型参数兼容泛型接口的不可变性外, 还有一种办法就是为接口中的泛型声明加上out关键字来支持协变.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    ISalary<span class="token operator">&lt;</span>Programmer<span class="token operator">></span> s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BaseSalaryCounter</span><span class="token operator">&lt;</span>Programmer<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ISalary<span class="token operator">&lt;</span>Manager<span class="token operator">></span> t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BaseSalaryCounter</span><span class="token operator">&lt;</span>Manager<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 因为接口使用out支持协变, 此处就可以使用比ISalary&lt;Employee>参数的派生类型</span>
+    <span class="token function">PrintSalary</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">PrintSalary</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">PrintSalary</span><span class="token punctuation">(</span>ISalary<span class="token operator">&lt;</span>Employee<span class="token operator">></span> s<span class="token punctuation">)</span>    <span class="token comment" spellcheck="true">//用法正确</span>
+<span class="token punctuation">{</span>
+    s<span class="token punctuation">.</span><span class="token function">Pay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">ISalary</span><span class="token operator">&lt;</span><span class="token keyword">out</span> T<span class="token operator">></span>    <span class="token comment" spellcheck="true">//使用out关键字</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">Pay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>out可以在泛型接口和委托中使用, 用来让类型参数支持协变性, 通过协变, 可以使用比声明的参数派生类型更大的参数.</strong></p>
+<p>在我们自己的代码中，如果要编写泛型接口，除非确定该接口中的泛型参数不涉及变体，否则都建议加上out关键字。协变增大了接口的使用范围，而且几乎不会带来什么副作用。</p>
+<h2 id="建议44-理解委托中的协变"><a href="#建议44-理解委托中的协变" class="headerlink" title="建议44 : 理解委托中的协变"></a>建议44 : 理解委托中的协变</h2><p>委托中的泛型变量天然是部分支持协变的。为什么说是“部分支持协变”呢?来看下面的例子:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">delegate</span> T <span class="token generic-method function">GetEmployeeHanlder<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">string</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 委托定义中的泛型参数是Employee, 实际赋值时返回的是Manager</span>
+        GetEmployeeHanlder<span class="token operator">&lt;</span>Employee<span class="token operator">></span> getEmployee <span class="token operator">=</span> GetManager<span class="token punctuation">;</span>
+        Employee e <span class="token operator">=</span> <span class="token function">getEmployee</span><span class="token punctuation">(</span><span class="token string">"Mike"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> Manager <span class="token function">GetManager</span><span class="token punctuation">(</span><span class="token keyword">string</span> name<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"我是经理: "</span> <span class="token operator">+</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Manager</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> name <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> Employee <span class="token function">GetEmployee</span><span class="token punctuation">(</span><span class="token keyword">string</span> name<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"我是雇员: "</span> <span class="token operator">+</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Employee</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> Name <span class="token operator">=</span> name <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+
+<span class="token keyword">class</span> <span class="token class-name">Employee</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">string</span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Programmer</span> <span class="token punctuation">:</span> Employee
+<span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Manager</span> <span class="token punctuation">:</span> Employee
+<span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>委托定义中的泛型参数是Employee, 实际赋值时返回的是Manager. 我们也许会认为委托中的泛型变量不再需要out关键字，这是错误的理解。因为存在下面这样一种情况，所以编译通不过:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">GetEmployeeHanlder<span class="token operator">&lt;</span>Manager<span class="token operator">></span> getManager <span class="token operator">=</span> GetAManager<span class="token punctuation">;</span>
+GetEmployeeHanlder<span class="token operator">&lt;</span>Employee<span class="token operator">></span> getEmployee <span class="token operator">=</span> getManager<span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 编译通不过</span>
+<span class="token comment" spellcheck="true">// 需要在委托的泛型参数中添加out关键字, 上句话才能编译通过</span>
+<span class="token keyword">public</span> <span class="token keyword">delegate</span> T <span class="token generic-method function">GetEmployeeHanlder<span class="token punctuation">&lt;</span><span class="token keyword">out</span> T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">string</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>除非考虑到该委托声明肯定不会用于可变性，否则，为委托中的泛型参数指定out关键字将会拓展该委托的应用，建议在实际的编码工作中永远这样使用。实际上，FCL 4.0中的一些委托声明已经用out关键字来让委托支持协变了，如我们常常会使用到的:</p>
+<p><code>public delegate TResult Func&lt;out TResult&gt; ()</code></p>
+<p><code>public delegate TOutput Converter&lt;in TInput, out TOutput&gt; (TInput input)</code></p>
+<h2 id="建议45-为泛型类型参数指定逆变"><a href="#建议45-为泛型类型参数指定逆变" class="headerlink" title="建议45:为泛型类型参数指定逆变"></a>建议45:为泛型类型参数指定逆变</h2><p>逆变是指方法的参数可以是委托或泛型接口的参数类型的基类。FCL 4.0中支持逆变的常用委托有:</p>
+<p><code>Func&lt;in T, out TResult&gt;</code></p>
+<p><code>Predicatec&lt;in T&gt;</code></p>
+<p>常用的泛型接口 <code>IComparer&lt;in T&gt;</code></p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        编写CSharp的157个建议笔记9 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#命名规范"><span class="toc-text">命名规范</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议122-以Company-Component为命名空间命名"><span class="toc-text">建议122 : 以Company.Component为命名空间命名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议123-程序集不必与命名空间同名"><span class="toc-text">建议123 : 程序集不必与命名空间同名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议124-考虑在命名空间中使用复数"><span class="toc-text">建议124 : 考虑在命名空间中使用复数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议125-避免用FCL的类型名称命名自己的类型"><span class="toc-text">建议125 : 避免用FCL的类型名称命名自己的类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议126-用名词和名词组给类型命名"><span class="toc-text">建议126 : 用名词和名词组给类型命名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议127-用形容词组给接口命名"><span class="toc-text">建议127 : 用形容词组给接口命名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议128-考虑让派生类的名字以基类名字作为后缀"><span class="toc-text">建议128 : 考虑让派生类的名字以基类名字作为后缀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议129-泛型类型参数要以T作为前缀"><span class="toc-text">建议129 : 泛型类型参数要以T作为前缀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议130-以复数命名枚举类型，以单数命名枚举元素"><span class="toc-text">建议130 : 以复数命名枚举类型，以单数命名枚举元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议131-用PascalCasing命名公开元素"><span class="toc-text">建议131 : 用PascalCasing命名公开元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议132-考虑用类名作为属性名"><span class="toc-text">建议132 : 考虑用类名作为属性名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议133-用camelCasing命名私有字段和局部变量"><span class="toc-text">建议133 : 用camelCasing命名私有字段和局部变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议134-有条件地使用前缀"><span class="toc-text">建议134 : 有条件地使用前缀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议135-考虑使用肯定性的短语命名布尔属性"><span class="toc-text">建议135 : 考虑使用肯定性的短语命名布尔属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议136-优先使用后缀表示已有类型的新版本"><span class="toc-text">建议136 : 优先使用后缀表示已有类型的新版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议137-委托和事件类型应添加上级后缀"><span class="toc-text">建议137 : 委托和事件类型应添加上级后缀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议138-事件和委托变量使用动词或形容词短语命名"><span class="toc-text">建议138 : 事件和委托变量使用动词或形容词短语命名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议139-事件处理器命名采用组合方式"><span class="toc-text">建议139:事件处理器命名采用组合方式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码整洁"><span class="toc-text">代码整洁</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议140-使用默认的访问修饰符"><span class="toc-text">建议140 : 使用默认的访问修饰符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议141-不知道该不该用大括号时，就用"><span class="toc-text">建议141 : 不知道该不该用大括号时，就用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议142-总是提供有意义的命名"><span class="toc-text">建议142 : 总是提供有意义的命名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议143-方法抽象级别应在同一层次"><span class="toc-text">建议143 : 方法抽象级别应在同一层次</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议144-一个方法只做一件事"><span class="toc-text">建议144 : 一个方法只做一件事</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议145-避免过长的方法和过长的类"><span class="toc-text">建议145 : 避免过长的方法和过长的类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议146-只对外公布必要的操作"><span class="toc-text">建议146 : 只对外公布必要的操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议147-重构多个相关属性为一个类"><span class="toc-text">建议147 : 重构多个相关属性为一个类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议148-不重复代码"><span class="toc-text">建议148:不重复代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议149-使用表驱动法避免过长的if-和switch分支"><span class="toc-text">建议149 : 使用表驱动法避免过长的if 和switch分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议150-使用匿名方法、Lambda表达式代替方法"><span class="toc-text">建议150 : 使用匿名方法、Lambda表达式代替方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议151-使用事件访问器替换公开的事件成员变量"><span class="toc-text">建议151 : 使用事件访问器替换公开的事件成员变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议152-最少，甚至是不要注释"><span class="toc-text">建议152 : 最少，甚至是不要注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议153-若抛出异常，则必须要注释"><span class="toc-text">建议153 : 若抛出异常，则必须要注释</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#规范开发行为"><span class="toc-text">规范开发行为</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议154-不要过度设计，在敏捷中体会重构的乐趣"><span class="toc-text">建议154 : 不要过度设计，在敏捷中体会重构的乐趣</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议155-随生产代码一起提交单元测试代码"><span class="toc-text">建议155 : 随生产代码一起提交单元测试代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议156-利用特性为应用程序提供多个版本"><span class="toc-text">建议156 : 利用特性为应用程序提供多个版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议157-从写第一个界面开始，就进行自动化测试"><span class="toc-text">建议157 : 从写第一个界面开始，就进行自动化测试</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        编写CSharp的157个建议笔记9
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-12-22 17:04:02</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CSharp的157个建议" title="CSharp的157个建议">CSharp的157个建议</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h1><p>代码之所以优美是因为撲写它们的人经过长期的锻炼而形成了良好的编码规范及习惯。每一个刚入行的程序员都应该会从公司内部得到-一个编码规范文档，建议选取其中的精要打印出来，放在案头以备时刻查阅。</p>
+<p>不过，编码规范也是时刻在变的，十年前我们遵循匈牙利命名法，而现在我们被告知，不要对名字本身进行注释，要让命名看上去更像自然语言。规范之所以会演变，正是因为它始终被全体程序员关注着，大家总是在追求更好的标准。记住:没有规矩，不成方圆。</p>
+<h2 id="建议122-以Company-Component为命名空间命名"><a href="#建议122-以Company-Component为命名空间命名" class="headerlink" title="建议122 : 以Company.Component为命名空间命名"></a>建议122 : 以Company.Component为命名空间命名</h2><p>建议以<code>&lt;Company&gt;.&lt;Component&gt;</code>为程序集命名，比如<code>Microsoft. Windows.Design</code>.</p>
+<p>另外一种有效并且肯定是唯一的表示命名空间的方式是使用域名。假设我们的域名是<code>www.microsoft.com</code>,那么命名空间应该命名为<code>Com.Microsoft.&lt;Component&gt;</code>。使用域名命名自己的程序的方法在Java世界中一直很流行，现在不妨把这种习惯带到.NET世界中来。如果是个人在开发软件，则更建议采用这种方式。去申请一个城名吧，这很有意义。</p>
+<h2 id="建议123-程序集不必与命名空间同名"><a href="#建议123-程序集不必与命名空间同名" class="headerlink" title="建议123 : 程序集不必与命名空间同名"></a>建议123 : 程序集不必与命名空间同名</h2><p>程序集一般会和命名空间同名，但这并不是必需的。事实上，不同名的程序集和命名空间是很常见的。</p>
+<h2 id="建议124-考虑在命名空间中使用复数"><a href="#建议124-考虑在命名空间中使用复数" class="headerlink" title="建议124 : 考虑在命名空间中使用复数"></a>建议124 : 考虑在命名空间中使用复数</h2><p>如果有一组功能相近的类型被分组到了同一个命名空间下，可以考虑为命名空间使用复数。</p>
+<h2 id="建议125-避免用FCL的类型名称命名自己的类型"><a href="#建议125-避免用FCL的类型名称命名自己的类型" class="headerlink" title="建议125 : 避免用FCL的类型名称命名自己的类型"></a>建议125 : 避免用FCL的类型名称命名自己的类型</h2><p>应该尽量避免在可见的范围内命名重复的类型，尤其是要避免与FCL中的类型重名。当然，这很大程度上依赖于我们对FCL类型的熟悉程度。如果对某个类型的命名没有把握，应当首先查询一下MSDN。记住，如果出现疑问，MSDN是释疑的首选位置。</p>
+<h2 id="建议126-用名词和名词组给类型命名"><a href="#建议126-用名词和名词组给类型命名" class="headerlink" title="建议126 : 用名词和名词组给类型命名"></a>建议126 : 用名词和名词组给类型命名</h2><p>类型是什么?面向对象方面的先驱者会告诉我们，类型对应着现实世界中的实际对象。对象在语言学中意味它是一个名词。所以，类型也应该以名词或名词组去命名。类型定义了属性和行为。虽然它包含行为，但不是行为本身。</p>
+<h2 id="建议127-用形容词组给接口命名"><a href="#建议127-用形容词组给接口命名" class="headerlink" title="建议127 : 用形容词组给接口命名"></a>建议127 : 用形容词组给接口命名</h2><p>接口规范的是“Can do”，也就是说它规范的是类型可以具有哪些行为。所以，接口的命名应该是一个形容词组，如:</p>
+<p>IDisposable表示类型可以被释放。IEnumerable表示类型含有Items，可以被迭代。</p>
+<p>正是因为接口表示的是类型的行为，所以从语义上可以让类型继承多个接口.</p>
+<h2 id="建议128-考虑让派生类的名字以基类名字作为后缀"><a href="#建议128-考虑让派生类的名字以基类名字作为后缀" class="headerlink" title="建议128 : 考虑让派生类的名字以基类名字作为后缀"></a>建议128 : 考虑让派生类的名字以基类名字作为后缀</h2><p>派生类的名字可以考虑以基类名字作为后缀。这带来的好处是，从类型的名字上我们就知道它包含在哪一个继承体系中。</p>
+<p>Exception及其子类就是这样-一个典型的例子。从第5章我们知道，所有的异常类都应该继承自System. Exception，而所有的异常类也应该命名为CustomedException。</p>
+<h2 id="建议129-泛型类型参数要以T作为前缀"><a href="#建议129-泛型类型参数要以T作为前缀" class="headerlink" title="建议129 : 泛型类型参数要以T作为前缀"></a>建议129 : 泛型类型参数要以T作为前缀</h2><p>作为一种约定，泛型类型的参数命名要以T作为前缀。如委托声明:<code>Action&lt;T1, T2&gt;</code></p>
+<p>其中，泛型类型参数的命名<strong>不应该</strong>处理成:<code>Action&lt;Arg1，Arg2&gt;</code></p>
+<p>当然，这仅仅是约定的一种习惯，如果使用第二种命名方式，编译器并不会报错，但是作为调用者，也许不能立刻意识到这里是一个泛型类型参数。这个问题在为类型指定泛型的时候尤其明显，因为为类型指定泛型类型参数的声明不会出现在公开的接口中.</p>
+<p>不应该为泛型指定一个模棱两可的命名。记住，只要是泛型，就应该以T作为前缀命名。</p>
+<h2 id="建议130-以复数命名枚举类型，以单数命名枚举元素"><a href="#建议130-以复数命名枚举类型，以单数命名枚举元素" class="headerlink" title="建议130 : 以复数命名枚举类型，以单数命名枚举元素"></a>建议130 : 以复数命名枚举类型，以单数命名枚举元素</h2><p>枚举类型应该具有复数形式，它表达的是将一组 相关元素组合起来的语义。</p>
+<h2 id="建议131-用PascalCasing命名公开元素"><a href="#建议131-用PascalCasing命名公开元素" class="headerlink" title="建议131 : 用PascalCasing命名公开元素"></a>建议131 : 用PascalCasing命名公开元素</h2><p>开放给调用者的属性、字段和方法都应该采用PascalCasing命名方式，比如:</p>
+<p><code>public string FirstName;</code></p>
+<p><code>public string LastName;</code></p>
+<p>它主要的特点是将描述变量作用所有单词的首字母大写，然后直接连接起来，单词之间没有连接符.</p>
+<h2 id="建议132-考虑用类名作为属性名"><a href="#建议132-考虑用类名作为属性名" class="headerlink" title="建议132 : 考虑用类名作为属性名"></a>建议132 : 考虑用类名作为属性名</h2><p>一般来说，如果属性对应一个类型，则应该直接用类型名命名属性名。当然，除非我们的类型当中有多个Company类型的属性，这样，就必须为我们的属性重构成不同的命名，例如:</p>
+<p><code>public Company Company { get; set; }</code></p>
+<p><code>public Company SecondCompany { get; set;}</code></p>
+<h2 id="建议133-用camelCasing命名私有字段和局部变量"><a href="#建议133-用camelCasing命名私有字段和局部变量" class="headerlink" title="建议133 : 用camelCasing命名私有字段和局部变量"></a>建议133 : 用camelCasing命名私有字段和局部变量</h2><p>私有字段和局部变量只对本类型负责，它们在命名方式也采用和开放的属性及字段不同的方法。camelCasing 很适合这类命名。<strong>camelCasing和PascalCasing的区别是它的首字母是小写的</strong>。之所以要采用两种不同的命名规则，是为了便于开发者自己快速地区分它们。</p>
+<h2 id="建议134-有条件地使用前缀"><a href="#建议134-有条件地使用前缀" class="headerlink" title="建议134 : 有条件地使用前缀"></a>建议134 : 有条件地使用前缀</h2><p>在.NET的设计规范中，不建议使用前缀。但是，即便是微软自己提供的FCL 4.0版本，依然广泛地使用着前缀。</p>
+<p>最典型的前缀是使用<code>m_</code>，这种命名一方面是考虑到历史沿革中的习惯问题:另一方面，也许我们确实有必要这么做。</p>
+<p>在一个不是很庞大的类型中，我们确实不应该使用任何前缀。各类设计规范也总建议我们保持一个娇小的类型，但往往事与愿违，大类型常常存在。以Task为例，使用微软提供的源码查看，可知它有2202行代码。在这种类型中，如果不使用前缀，我们将很难区分一个类型是实例变量还是静态变量，或者是一个const变量。</p>
+<p>最常见的做法:</p>
+<ul>
+<li>前缀<code>m_</code>，表示这是一个实例变量。</li>
+<li>前缀<code>s_</code>，表示这是一个静态变量。</li>
+</ul>
+<p>注意，有时候，如果类型中只有实例变量或者只有静态变量，我们也直接使用前缀，以区别该变量不是一个局部变量。</p>
+<p>而const变量则常常使用名词加下划线的表示方法，如:</p>
+<p><code>internal const int TASK_ STATE_ CANCELED = 0x400000 ;</code></p>
+<p>记住，前缀仅限于此，匈牙利命名法中的其他规则(如用类型名做前缀)是绝对要禁止的。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">int</span> s_price<span class="token punctuation">;</span>
+<span class="token keyword">int</span> m_price<span class="token punctuation">;</span>
+<span class="token keyword">int</span> _price<span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> BASED_PRICE<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>int int_price;</code>在这个例子中，开发者尝试为price指定一个前缀int,试图通过命名指出变量是int</p>
+<h2 id="建议135-考虑使用肯定性的短语命名布尔属性"><a href="#建议135-考虑使用肯定性的短语命名布尔属性" class="headerlink" title="建议135 : 考虑使用肯定性的短语命名布尔属性"></a>建议135 : 考虑使用肯定性的短语命名布尔属性</h2><p>布尔值无非就是True和False,所以，应该用肯定性的短语来表示它，例如，以Is、Can、Has 作为前缀。</p>
+<h2 id="建议136-优先使用后缀表示已有类型的新版本"><a href="#建议136-优先使用后缀表示已有类型的新版本" class="headerlink" title="建议136 : 优先使用后缀表示已有类型的新版本"></a>建议136 : 优先使用后缀表示已有类型的新版本</h2><p>加后缀在某些情况下是很奇怪的形式，我们都不愿意看到OrderProcessor2这样的类型。但是，有的时候仍旧有必要这样做。最典型的是FCL中关于数字证书操作的X509Certificate和X509Certificate2这两个类型。</p>
+<p>记住，当不得不出现一个类型的新版本时，应该加后缀，而不是前缀。这不仅仅是习惯问题，这还有助于Intellisense发现这个新版本的类。</p>
+<h2 id="建议137-委托和事件类型应添加上级后缀"><a href="#建议137-委托和事件类型应添加上级后缀" class="headerlink" title="建议137 : 委托和事件类型应添加上级后缀"></a>建议137 : 委托和事件类型应添加上级后缀</h2><p>委托类型本身是一个类，所以，这满足“建议128:考虑让派生类的名字以基类名字作为后缀”。事件类型是一类特殊的委托，所以事件类型也遵循本建议。</p>
+<p>如果用传统的方式，我们可能看不出来这些类型是有基类的，但是委托和事件的关键字delegate和event已经指明了后面类型的基类是Delegate。委托按照委托类型的作用又单纯分为以Delegate结尾和CallBack结尾，我们在声明委托类型的时候一定要注意区分这一点。如果委托用于回调性质，则使用CallBack结尾。</p>
+<h2 id="建议138-事件和委托变量使用动词或形容词短语命名"><a href="#建议138-事件和委托变量使用动词或形容词短语命名" class="headerlink" title="建议138 : 事件和委托变量使用动词或形容词短语命名"></a>建议138 : 事件和委托变量使用动词或形容词短语命名</h2><p>在建议137中，首先确定了事件和委托类型的命名，那么本建议就是关于事件和委托变量的命名。事件和委托的使用场景是调用某个方法，只不过这个方法由调用者赋值。这决定了对应的变量应该以动词或形容词短语命名。</p>
+<h2 id="建议139-事件处理器命名采用组合方式"><a href="#建议139-事件处理器命名采用组合方式" class="headerlink" title="建议139:事件处理器命名采用组合方式"></a>建议139:事件处理器命名采用组合方式</h2><p>阐述完毕委托和事件类型，委托和事件变量，最后就是委托和事件处理器的命名。所谓事件处理器，就是实际被委托执行的那个方法。</p>
+<p><code>事件变量所属对象+下划线+事件变量名</code></p>
+<p>这种命名方式用于以注册的方法(即“+=”操作符)添加的事件处理器。如果我们要为委托或委托中的回调编写处理器，则应该使用如下的命名规则:</p>
+<p><code>委托变量所属对象+ On+委托变量名</code></p>
+<h1 id="代码整洁"><a href="#代码整洁" class="headerlink" title="代码整洁"></a>代码整洁</h1><h2 id="建议140-使用默认的访问修饰符"><a href="#建议140-使用默认的访问修饰符" class="headerlink" title="建议140 : 使用默认的访问修饰符"></a>建议140 : 使用默认的访问修饰符</h2><p>代码整洁的要求之一，就是尽量减少代码，这里，我们从使用默认的访向限制符开始。</p>
+<p><strong>类型成员的修饰符默认是private</strong></p>
+<p><strong>类或接口的默认修饰符为internal</strong></p>
+<h2 id="建议141-不知道该不该用大括号时，就用"><a href="#建议141-不知道该不该用大括号时，就用" class="headerlink" title="建议141 : 不知道该不该用大括号时，就用"></a>建议141 : 不知道该不该用大括号时，就用</h2><p>如if条件语句下只有一行语句，要不要使用大括号? 答案是:建议使用。没有不使用的道理，一个括号不会增加多少代码，但是却让代码看上去增加了一致性。</p>
+<h2 id="建议142-总是提供有意义的命名"><a href="#建议142-总是提供有意义的命名" class="headerlink" title="建议142 : 总是提供有意义的命名"></a>建议142 : 总是提供有意义的命名</h2><p>除非有特殊原因，否则永远不要为自己的代码提供无意义的命名。害怕需要过长的命名才能提供足够的意义?不要怕，其实我们更介意的是在读代码的时候出现一个iTemp。</p>
+<p><code>int i</code>这样的命名方式只应该出现在循环中( 如for循环)，除此之外，我们找不到任何理由在代码的其他地方出现这样的无意义命名。</p>
+<h2 id="建议143-方法抽象级别应在同一层次"><a href="#建议143-方法抽象级别应在同一层次" class="headerlink" title="建议143 : 方法抽象级别应在同一层次"></a>建议143 : 方法抽象级别应在同一层次</h2><p>方法抽象级别应在同-一个层次上，我们来看下面的代码:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">SampleClass</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Init</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">//本地初始化代码1</span>
+      <span class="token comment" spellcheck="true">//本地初始化代码2</span>
+      <span class="token function">RemoteInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">void</span> <span class="token function">RemoteInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">//远程初始化代码1</span>
+      <span class="token comment" spellcheck="true">//远程初始化代码2</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Init方法本意要完成初始化动作，而初始化包括本地初始化和远程初始化。在这段代码中，Init 方法内部代码的组织结构是本地初始化代码直接运行在方法内部，而远程初始化代码却被封装为一个方法在这里被调用。这显然是不妥当的，因为本地初始化和远程初始化的地方是相当的。作为方法来讲，如果远程初始化代码作为方法存在，则本地初始化代码也应该作为方法存在。</p>
+<p>所以，上面的代码应该重构为:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">SampleClass</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Init</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token function">LocalInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token function">RemoteInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">void</span> <span class="token function">LocalInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">//本地初始化代码1</span>
+      <span class="token comment" spellcheck="true">//本地初始化代码2</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">void</span> <span class="token function">RemoteInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">//远程初始化代码1</span>
+      <span class="token comment" spellcheck="true">//远程初始化代码2</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="建议144-一个方法只做一件事"><a href="#建议144-一个方法只做一件事" class="headerlink" title="建议144 : 一个方法只做一件事"></a>建议144 : 一个方法只做一件事</h2><p>“单一职责原则”(SRP)要求每个类型只负责- -件事情。我们将此概念扩展到方法上，就变成了:一个方法只做一件事。</p>
+<p>什么样的代码才能“做同一件事”?回顾上一个建议中的代码，其中，Locallnit方法和RemoteInit方法是两件事情，但是在同一抽象层次上，在类型这个层次对外又可以将其归并为“初始化”这一件事情上。所以，“同一件事”要看抽象所处的地位。</p>
+<h2 id="建议145-避免过长的方法和过长的类"><a href="#建议145-避免过长的方法和过长的类" class="headerlink" title="建议145 : 避免过长的方法和过长的类"></a>建议145 : 避免过长的方法和过长的类</h2><p>如果违反“一个方法只做一件事”及类型的“单一职责原则”，往往会产生过长的方法和过长的类。</p>
+<p>如果方法过长，意味着可以站在更高的层次上重构出若千个更小的方法。那么，有没有具体的指标提示方法是否过长?有，是以行数做指标的，有人建议一个方法不要超过10行，有人建议不要超过30行。当然，这没有唯一标准，在我看来，如果一个方法在Visual Studio中需要滚屏才能阅读完，那么就肯定有些过长了，必须想法重构它。</p>
+<p>对于类型，除非有非常特殊的理由，类型的代码不要超过300行。如果行数太多了，则要考虑能否重构。</p>
+<h2 id="建议146-只对外公布必要的操作"><a href="#建议146-只对外公布必要的操作" class="headerlink" title="建议146 : 只对外公布必要的操作"></a>建议146 : 只对外公布必要的操作</h2><p>那些不是很有必要公开的方法和属性，private之。如果需要公开的方法和属性超过9个，在Visual Studio默认的设置下，就需要滚屏才能显示在Intellisense中.</p>
+<h2 id="建议147-重构多个相关属性为一个类"><a href="#建议147-重构多个相关属性为一个类" class="headerlink" title="建议147 : 重构多个相关属性为一个类"></a>建议147 : 重构多个相关属性为一个类</h2><p>若存在多个相关属性，就该考虑是否将其重构为一个类。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Person</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">string</span> Address <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">int</span> ZipCode <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">string</span> Mobile<span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">string</span> Hotmail <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+   <span class="token comment" spellcheck="true">//略</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上面代码中的这四个属性全部跟联系方式有关，所以，我们应该重构一个Contact类型</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">Person</span>
+<span class="token punctuation">{</span>
+   Contact Contact<span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Contact</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">string</span> Address <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">int</span> ZipCode <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">string</span> Mobile<span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">string</span> Hotmail <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+   <span class="token comment" spellcheck="true">//略</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>记住，类型中的相关属性超过3个，就可以考虑将其重构为一个类了。</p>
+<h2 id="建议148-不重复代码"><a href="#建议148-不重复代码" class="headerlink" title="建议148:不重复代码"></a>建议148:不重复代码</h2><p>如果发现重复的代码，则意味着我们需要整顿一下，再继续前进。重复代码让我们的软件行为变得不一致。举例来说，如果存在两处相同的加密代码.结果在某一天，我们发现加密代码有个小Bug,然后修改之，却又忘记了角落里的某处存在着一份相同的代码，那么这个Bug就有会被隐藏起来。</p>
+<h2 id="建议149-使用表驱动法避免过长的if-和switch分支"><a href="#建议149-使用表驱动法避免过长的if-和switch分支" class="headerlink" title="建议149 : 使用表驱动法避免过长的if 和switch分支"></a>建议149 : 使用表驱动法避免过长的if 和switch分支</h2><p>随着代码变得复杂，我们很容易被过长的if和switch分支困扰。本书中反复用到的一个枚举类型是Week,代码如下所示:</p>
+<p>如果要把Week的元素值用中文输出，简单而丑陋的方法也许是封装一个GetChineseWeek</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">string</span> <span class="token function">GetChineseWeek</span> <span class="token punctuation">(</span>Week week<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">case</span> Week<span class="token punctuation">.</span>Monday<span class="token punctuation">:</span>
+     <span class="token keyword">return</span> <span class="token string">"星期一"</span>
+     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+   <span class="token keyword">default</span><span class="token punctuation">:</span>
+     <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentOutOfRangeException</span><span class="token punctuation">(</span><span class="token string">"week"</span><span class="token punctuation">,</span><span class="token string">"星期值超出范围"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>之所以说这种方法是丑陋的，原因在于两点:</p>
+<ul>
+<li>1)分支太长了，而且出现了重复代码。</li>
+<li>2)不利于扩展。如果出现星期八、星期九怎么办?当然，星期制已经是固定的了，应该不会出现扩展的情况。但是，换种情景来考虑，假设我们正在渲染动画怎么办?谁知道下一秒美工会提交我多少个动画呢?</li>
+</ul>
+<p>一种解决方案是使用多态，它很好地符合了“开闭”原则。如果增加条件分支，不必修改原有代码，直接增加子类就可以了。利用多态来避免多分支，这里暂且不表，本建议要采用的是 <strong>“表驱动法”</strong> 。可以把表驱动法简单理解为查字典。代码如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token function">GetChineseWeekInTable</span><span class="token punctuation">(</span>Week<span class="token punctuation">.</span>Friday<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">static</span> <span class="token keyword">string</span> <span class="token function">GetChineseWeekInTable</span><span class="token punctuation">(</span>Week week<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> chineseWeek <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"星期一"</span><span class="token punctuation">,</span><span class="token string">"星期二"</span><span class="token punctuation">,</span><span class="token string">"星期三"</span><span class="token punctuation">,</span><span class="token string">"星期四"</span><span class="token punctuation">,</span><span class="token string">"星期五"</span><span class="token punctuation">,</span><span class="token string">"星期六"</span><span class="token punctuation">,</span><span class="token string">"星期日"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+   <span class="token keyword">return</span> chineseWeek<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>week<span class="token punctuation">]</span> <span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这是一种按照索引值驱动的表驱动法。枚举元素所代表的整型值，很容易和字符串数组索引组合起来了，用两行语句就可以完美地替代原先的GetChineseWeek方法。但是，这种方法有局限性，完成的功能也很有效，如果将需求换成:星期一Mike打扫卫生、星期二Rose清理衣柜、星期三Mike和Rose没事可以吵吵架、星期四Rose要去Shopin…..也就是说需求由静态属性变成了动态行为，那么事情就变得复杂了。</p>
+<p>遇上这种情况，我们可能会想到使用多态，在这里仍然使用表驱动法并加上一点反射来实现这类动态的行为，代码如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   SampleClass sample <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Samp1eClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">;</span>
+   <span class="token keyword">var</span> addMethod <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span>SampleClass<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetMethod</span><span class="token punctuation">(</span><span class="token function">ActionInTable</span><span class="token punctuation">(</span>Week<span class="token punctuation">.</span>Monday<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   addMethod<span class="token punctuation">.</span><span class="token function">Invoke</span> <span class="token punctuation">(</span>sample<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">static</span> <span class="token keyword">string</span> <span class="token function">ActionInTable</span> <span class="token punctuation">(</span>Week week<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> methods <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token string">"Cleaning"</span><span class="token punctuation">,</span> <span class="token string">"CleanCloset"</span>， <span class="token string">"Quarre1"</span><span class="token punctuation">,</span> <span class="token string">" shopping"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+   <span class="token keyword">return</span> methods <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>week<span class="token punctuation">]</span> <span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">SampleClass</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Cleaning</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      Console<span class="token punctuation">.</span> <span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"打扫"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">CleanCloset</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+      Console<span class="token punctuation">.</span> <span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"清理表柜"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>表驱动法是一种设计思路， 也可以称为模式。在实际编码中，不应局限于用索引去驱动行为，而应当根据实际情况灵活运用。</p>
+<h2 id="建议150-使用匿名方法、Lambda表达式代替方法"><a href="#建议150-使用匿名方法、Lambda表达式代替方法" class="headerlink" title="建议150 : 使用匿名方法、Lambda表达式代替方法"></a>建议150 : 使用匿名方法、Lambda表达式代替方法</h2><p>方法体如果过小(如小于3行)，专门为此定义一个方法就会显得过于烦琐。</p>
+<p>我们还有更好的方法简化匿名方法，那就是Lambda表达式。Lambda 表达式由符号<code>“=&gt;”</code>连接(读作“goes to”)，符号左边是参数列表，右边是方法体。Lambda表达式进一步简化了匿名方法的语法.</p>
+<h2 id="建议151-使用事件访问器替换公开的事件成员变量"><a href="#建议151-使用事件访问器替换公开的事件成员变量" class="headerlink" title="建议151 : 使用事件访问器替换公开的事件成员变量"></a>建议151 : 使用事件访问器替换公开的事件成员变量</h2><p>事件访问器包含两部分内容:添加访问器和删除访问器。如果涉及公开的事件字段，应该始终使用事件访问器。代码如下所示:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">class</span> <span class="token class-name">SampleClass</span>
+<span class="token punctuation">{</span>
+   EventHandlerList events <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventHandlerList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">event</span> EventHandler Click
+   <span class="token punctuation">{</span>
+      <span class="token keyword">add</span>
+      <span class="token punctuation">{</span>
+         events<span class="token punctuation">.</span><span class="token function">AddHandler</span><span class="token punctuation">(</span>nu11<span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">remove</span>
+      <span class="token punctuation">{</span>
+         events<span class="token punctuation">.</span><span class="token function">RemoveHandler</span><span class="token punctuation">(</span>nu11，<span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用事件访问器的好处是，提供对赋值更多细粒度的控制。这就好比应该使用属性而不使用字段一样。访问器本质上是方法，而成员变量，它仅仅是成员变量。</p>
+<h2 id="建议152-最少，甚至是不要注释"><a href="#建议152-最少，甚至是不要注释" class="headerlink" title="建议152 : 最少，甚至是不要注释"></a>建议152 : 最少，甚至是不要注释</h2><p>以往，我们在代码中不写上几行注释，就会被认为是种不负责任的态度。现在，这种观点正在改变。试想，如果我们所有的命名全部采用有意义的单词或词组，注释还有多少存在的价值。</p>
+<p>即便再详细的注释也不能优化糟糕的代码。并且注释往往不会随着代码的重构自动更新，有的时候我们可能会在修改代码后忘记更新那段用来表达最初意图的文字了。所以，尽量抛弃注释吧，除非我们觉得只有良好的代码逻辑和命名仍旧不足以表达意图。</p>
+<p>当然，有些注释可能不得不加，如一.些版权信息。另外，如果我们正在开发公共API，保持一份良好的严格按照格式要求所写的注释有利于生成API参考手册。</p>
+<p>当前有一种主张是:不要写注释，或者尽量保持最少的注释。</p>
+<h2 id="建议153-若抛出异常，则必须要注释"><a href="#建议153-若抛出异常，则必须要注释" class="headerlink" title="建议153 : 若抛出异常，则必须要注释"></a>建议153 : 若抛出异常，则必须要注释</h2><p>有一种必须加注释的场景，就是异常。如果API抛出异常，则必须给出注释。调用者必须通过注释才能知道如何处理那些专有的异常。通常，即便良好的命名也不可能告诉我们方法会抛出哪些异常，在这种情况下，使用注释是最好的手段。</p>
+<h1 id="规范开发行为"><a href="#规范开发行为" class="headerlink" title="规范开发行为"></a>规范开发行为</h1><p>而对于测试，本章给出的建议就是，<strong>写测试代码应作为开发人员的日常工作，如果某个功能没有测试代码，则意味着我们根本没有完成开发任务。</strong></p>
+<h2 id="建议154-不要过度设计，在敏捷中体会重构的乐趣"><a href="#建议154-不要过度设计，在敏捷中体会重构的乐趣" class="headerlink" title="建议154 : 不要过度设计，在敏捷中体会重构的乐趣"></a>建议154 : 不要过度设计，在敏捷中体会重构的乐趣</h2><p><img src="/2019/12/22/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记9/QQ截图20191222192638.png" alt=""></p>
+<h2 id="建议155-随生产代码一起提交单元测试代码"><a href="#建议155-随生产代码一起提交单元测试代码" class="headerlink" title="建议155 : 随生产代码一起提交单元测试代码"></a>建议155 : 随生产代码一起提交单元测试代码</h2><p>在开始这个建议之前，首先提出一个问题:我们害怕修改代码吗?是否曾经有无数次面对乱糟槽的代码，下定决心进行重构， 然后在1个月后的某个周一，却收到来自测试部的报告:新的版本没有之前版本稳定，性能也更差了，Bug似乎也变多了。也就是说，重构的代码看上去质量更高了，可是实际测试结果却不尽如人意。</p>
+<p>几乎每个程序员都因为此类问题纠结过。我们要修改的代码也许来自某些不负责任或经验欠佳的程序员，也许这些代码是自己一年前写的，但是现在看上去已经惨不忍睹。我们想要修改这些代码，却担心重构出别的问题。即便是在一个开发周期中的产品，也会有这样的选择出现。某个模块可能已经提交测试并确认过，不过现在发现有更优的算法和逻辑时，改还是不改，成了一个问题。</p>
+<p><code>“单元测试”</code>减轻甚至消除了开发者的这种恐惧。如果项目没有测试代码，说明我们只是在生产“定时炸弹”。很多人将生产代码和测试代码分别对待，这是一种过时的做法。<strong>程序员在提交自己的生产代码时，必须同时提交自己的单元测试代码</strong>。很多现代化的版本管理工具可以在后台制订项目构建计划，自动运行测试项目，统计代码覆盖率,并生成相应报告。我们应该在早上一边喝着咖啡，一边读取这样的报告。</p>
+<p>有了测试代码做保证，在很大程度上我们可以放心地去重构了。如果某个功能偏离了既有成果，那就准备接受一个醒目的“红色”吧。</p>
+<p>将单元测试放在首要地位的一种开发模式是TDD模式。TDD (Test Driven Development,测试驱动开发)有三条严格的定律:</p>
+<ul>
+<li>在编写不能通过的单元测试前，不要编写任何生产代码。</li>
+<li>只编写恰好无法通过的单元测试，不能编译也算不通过。</li>
+<li>只可编写刚好足以通过当前失败测试的生产代码。</li>
+</ul>
+<p>即便我们的团队没有完全采用TDD的开发模式，也可以借鉴这些定律来编写我们自己的测试代码。我们无需一次性编写完 全部的测试代码，那没有必要。这跟过度设计一样，也不可能实现。事实上，我们应该逐步地编写测试代码，而且按如下步骤来编写:</p>
+<p><code>测试代码→生产代码→测试代码</code></p>
+<p>另外，不要害怕为UI编写测试代码。针对UI的单元测试，并不要求有很高的代码覆盖率。通常我们不需要对页面布局、视觉感官进行测试，因为代码无法告诉我们:没错，这就是我想要的界面:但是，我们需要对UI的逻辑部分进行测试。</p>
+<p><img src="/2019/12/22/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记9/QQ截图20191222193815.png" alt=""></p>
+<p><img src="/2019/12/22/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记9/QQ截图20191222193834.png" alt=""></p>
+<p>可以看到，测试结果窗口对于我们编写的测试方法的正确性进行了呈现。不过，VisualStudio的这个可视化测试工具太重量级了，导致开发的过程中运行测试代码太烦琐也太耗时。这里给大家介绍一个有效简化单元测试的运行步骤的武器，那就是<code>TestDriven.NET</code>. <code>TestDriven.NET</code> 安装完毕后，会在Visual Studio的编辑窗口的右键菜单中增加如下所示的菜单项:</p>
+<p><img src="/2019/12/22/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记9/QQ截图20191222194004.png" alt=""></p>
+<p>如果我们要单独运行某个测试方法，只要将光标移到方法内，然后选择<code>Test With -&gt; Debugger</code>,就会以Debug的形式运行当前的测试方法。我们可以在输出窗口看到最终的测试结果，如果设置了断点的话，程序将会在断点处停下来，以备我们进行调试。TestDriven.NET的更多快捷功能大家可以在开发过程中慢慢体会。</p>
+<p>至此，我们已经初步理解了架构模式的目的，以及简单的单元测试方法的编写。本建议最后还要强调在单元测试中非常重要的几个观点，了解之后，你将清楚什么才是真正的单元测试。</p>
+<ul>
+<li><strong>首先，单元测试不应引入任何人机交互的内容。如测试过程中不应弹出对话框，等待用户输入或确认。单元测试不应该是被阻滞的。</strong></li>
+<li>其次，多线程也不属于单元测试范畴，单元测试应该是快速被执行的，而不是需要等待的。</li>
+<li>最后，单元测试不应跨应用程序域，例如，数据访问或者远程通信属于集成测试范畴，而不是单元测试。</li>
+</ul>
+<p>虽然以上所述这些模块不属于单元测试范畴，但是软件逻辑几乎总是需要和这些模块进行交互，如果失去了这些交互，那么单元测试所发挥的作用就不大。</p>
+<p>单元测试总体分为两大类:<code>基于状态的测试(State-based testing)</code>和<code>基于交互的测试(Interaction-based testing)</code>。</p>
+<p>基于状态的测试相对来说较为简单，如我们演示的Add方法:而基于交互的测试，就相对较为复杂，但是其基本思想则无非就是将操作方法提炼成接口，然后让测试替身(test doubles)去实现这些接口，用来代替同样实现了这些接口的实际方法。目前在.NET世界中，出现了越来越多的动态模拟库供我们使用，如Moq、RhinoMocks， 它们简化了测试替身的生成，如果我们想快速编写基于交互的单元测试，则应该掌握至少一种这样的动态模拟库。</p>
+<h2 id="建议156-利用特性为应用程序提供多个版本"><a href="#建议156-利用特性为应用程序提供多个版本" class="headerlink" title="建议156 : 利用特性为应用程序提供多个版本"></a>建议156 : 利用特性为应用程序提供多个版本</h2><p>基于如下的理由，需要为应用程序提供多个版本:</p>
+<ul>
+<li>应用程序有体验版和完整功能版。</li>
+<li>应用程序在迭代过程中需要屏蔽一些不成熟的功能。</li>
+</ul>
+<p>无论是什么理由，所谓应用程序的多个版本，就是出于某种理由，不对用户开放应用程序的全部功能。</p>
+<p>假设我们的应用程序共有两类功能:第一类功能属于单机版，而第二类的完整版还提供了在线功能。那么，在功能上，需要定制两个属性“ONLINE”和“OFFLINE”。在体验版中，我们只开放“OFFLINE”功能。</p>
+<p>要实现此目的，不应该提供两套应用程序，而应该通过最小设置，为一个应用程序输出两个发布版本。这一切，可以通过.NET中的特性(Atribute)来实现。</p>
+<p>输出两个发布版本。这一一切，可以通过.NET中的特性(Atribute)来实现。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token punctuation">[</span><span class="token function">Conditional</span><span class="token punctuation">(</span><span class="token string">"ONLINE"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Testing</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"完整版"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token punctuation">[</span><span class="token function">Conditional</span><span class="token punctuation">(</span><span class="token string">"ONLINE"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token function">Conditional</span><span class="token punctuation">(</span><span class="token string">"OFFLINE"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Gey</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"单机版"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>要实现两个不同的功能，需要在程序入口这个文件中定义:</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token preprocessor property">#<span class="token directive keyword">define</span> ONLINE</span>
+<span class="token comment" spellcheck="true">//#define OFFLINE</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>记住，<strong>这个条件编译符号一定要在文件的最开头处。同时，该定义只对本文件有效</strong>。如果要想定义全局条件编译符号，则必须在项目属性中定义，如图12-9所示。</p>
+<p>如果想定义多个全局宏定义，则用逗号隔开，如“ONLINE,OFFLINE”。</p>
+<p>接下来的问题就比较简单了，如果要发布所有功能，就输入条件编译符号<code>#define ONLINE</code></p>
+<p>如果要发布离线版功能，就注释掉<code>#define ONLINE</code>,然后定义OFFLINE就行了。</p>
+<p><img src="/2019/12/22/000001目录-CSharp的157个建议/编写CSharp的157个建议笔记9/QQ截图20191222195008.png" alt=""></p>
+<h2 id="建议157-从写第一个界面开始，就进行自动化测试"><a href="#建议157-从写第一个界面开始，就进行自动化测试" class="headerlink" title="建议157 : 从写第一个界面开始，就进行自动化测试"></a>建议157 : 从写第一个界面开始，就进行自动化测试</h2><p>如果说单元测试是白盒测试，那么本建议所讲的自动化测试，更多意义上指的是黑盒测试。黑盒测试要求捕捉界面上控件的句柄，并对其进行编码，以达到模拟人工操作的目的。</p>
+<p>以往，黑盒测试需要调用Windows底层的API去实现，但是，在Visual Studio 2010出现后，我们不妨去看看Code UI Automation这个好东西。本建议着重演示如下两点:</p>
+<ul>
+<li>1)使用Code UI Automation录制手工操作UI的动作，让VS根据这些操作自动生成测试代码。</li>
+<li>2)新建Winform项目(黑盒工具)，在该项目中调用这些自动生成的代码。</li>
+</ul>
+<p>第一点之所以要让VS自动生成代码，是为了免去我们手工编写测试代码的繁杂工作;第二点则是为了让我们的测试工具可以脱离VS。</p>
+<p>借助Code UI Automation自动生成的代码，繁杂而细致的测试代码编写工作就交给VS的测试引擎去实现了，我们可以更多地将细节放在测试的业务逻辑上，而不是努力地去获取各种控件的句柄并操作它们。</p>
+<p>当然，如果要应付GUI频繁发生变化的情况，手写那些生成的代码比较好，这取决于我们对Code UI Automation类库的熟悉度。不过，为了让应用程序更健壮，花点时间学习Code UI Automation是很值得的。</p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
