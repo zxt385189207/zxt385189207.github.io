@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Stack源码剖析 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Stack源码剖析"><span class="toc-text">Stack源码剖析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Stack-基本成员"><span class="toc-text">Stack 基本成员</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stack-构造函数"><span class="toc-text">Stack 构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stack-入栈"><span class="toc-text">Stack 入栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stack-出栈"><span class="toc-text">Stack 出栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stack-空间压缩-amp-遍历"><span class="toc-text">Stack 空间压缩&遍历</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Stack源码剖析
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2020-01-01 12:08:39</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#源码剖析" title="源码剖析">源码剖析</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="Stack源码剖析"><a href="#Stack源码剖析" class="headerlink" title="Stack源码剖析"></a>Stack源码剖析</h1><p>Stack（栈）表示对象的后进先出 (LIFO) 集合。实现了ICollection接口。</p>
+<p>定义：限定仅在<code>表尾</code>进行 <strong>插入或删除操作</strong> 的线性表，表尾对应栈顶，表头对应栈底，不含元素的栈称为空栈。</p>
+<ul>
+<li>入栈：往栈顶插入一个元素。</li>
+<li>出栈：在栈顶删除一个元素</li>
+</ul>
+<p>元素的操作只能在栈顶进行，最后入栈的元素最先出栈，结构图如下：</p>
+<p><img src="/2020/01/01/Stack源码剖析/QQ截图20200101121803.png" alt=""></p>
+<h2 id="Stack-基本成员"><a href="#Stack-基本成员" class="headerlink" title="Stack 基本成员"></a>Stack 基本成员</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> T<span class="token punctuation">[</span><span class="token punctuation">]</span> _array<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">// 用于存储栈元素的数组</span>
+<span class="token keyword">private</span> <span class="token keyword">int</span> _size<span class="token punctuation">;</span>      <span class="token comment" spellcheck="true">// 栈元素的数量</span>
+<span class="token keyword">private</span> <span class="token keyword">const</span> <span class="token keyword">int</span> _defaultCapacity <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 默认初始容量</span>
+<span class="token keyword">static</span> T<span class="token punctuation">[</span><span class="token punctuation">]</span> _emptyArray <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 空数组，用于赋默认值</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Stack-构造函数"><a href="#Stack-构造函数" class="headerlink" title="Stack 构造函数"></a>Stack 构造函数</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 不推荐使用（原因是动态扩容需要额外的计算与开辟新的内存空间，</span>
+<span class="token comment" spellcheck="true">// 动态扩容应该发生在超出预期容量值范围的情况下，抑制溢出）；</span>
+<span class="token keyword">public</span> <span class="token function">Stack</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    _array <span class="token operator">=</span> _emptyArray<span class="token punctuation">;</span>
+    _size <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    _version <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 荐使用（给定一个预期的容量值，若预期值小了，会自动扩容，也不担心溢出）</span>
+<span class="token keyword">public</span> <span class="token function">Stack</span><span class="token punctuation">(</span><span class="token keyword">int</span> capacity<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>capacity <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        ThrowHelper<span class="token punctuation">.</span><span class="token function">ThrowArgumentOutOfRangeException</span><span class="token punctuation">(</span>ExceptionArgument<span class="token punctuation">.</span>capacity<span class="token punctuation">,</span> ExceptionResource<span class="token punctuation">.</span>ArgumentOutOfRange_NeedNonNegNumRequired<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    _array <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">[</span>capacity<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    _size <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    _version <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 使用一个现有的非空引用集合进行填充初始化Stack，</span>
+<span class="token comment" spellcheck="true">// Stack具有与该集合相同的长度，并且按照集合元素的存储顺序</span>
+<span class="token comment" spellcheck="true">// （推荐使用实现了Collection泛型接口的集合，可以获得一些性能上的提升）。</span>
+<span class="token keyword">public</span> <span class="token function">Stack</span><span class="token punctuation">(</span>IEnumerable<span class="token operator">&lt;</span>T<span class="token operator">></span> collection<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>collection<span class="token operator">==</span><span class="token keyword">null</span><span class="token punctuation">)</span>
+        ThrowHelper<span class="token punctuation">.</span><span class="token function">ThrowArgumentNullException</span><span class="token punctuation">(</span>ExceptionArgument<span class="token punctuation">.</span>collection<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    ICollection<span class="token operator">&lt;</span>T<span class="token operator">></span> c <span class="token operator">=</span> collection <span class="token keyword">as</span> ICollection<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span> c <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//实现了ICollection泛型接口的集合，简单粗暴，分配空间，数组复制</span>
+        <span class="token keyword">int</span> count <span class="token operator">=</span> c<span class="token punctuation">.</span>Count<span class="token punctuation">;</span>
+        _array <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">[</span>count<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        c<span class="token punctuation">.</span><span class="token function">CopyTo</span><span class="token punctuation">(</span>_array<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        _size <span class="token operator">=</span> count<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>    
+    <span class="token keyword">else</span> <span class="token punctuation">{</span>                
+        _size <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//没有实现ICollection泛型接口的，默认初始容量为4，空间不够还需动态扩容        </span>
+        _array <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">[</span>_defaultCapacity<span class="token punctuation">]</span><span class="token punctuation">;</span>       
+
+        <span class="token comment" spellcheck="true">//遍历元素 执行入栈操作</span>
+        <span class="token keyword">using</span><span class="token punctuation">(</span>IEnumerator<span class="token operator">&lt;</span>T<span class="token operator">></span> en <span class="token operator">=</span> collection<span class="token punctuation">.</span><span class="token function">GetEnumerator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">while</span><span class="token punctuation">(</span>en<span class="token punctuation">.</span><span class="token function">MoveNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">Push</span><span class="token punctuation">(</span>en<span class="token punctuation">.</span>Current<span class="token punctuation">)</span><span class="token punctuation">;</span>                                    
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Stack-入栈"><a href="#Stack-入栈" class="headerlink" title="Stack 入栈"></a>Stack 入栈</h2><p>入栈是Stack最核心的方法之一，将元素从栈顶插入到Stack中。触发动态扩容的条件当且仅当元素数量等于内部存储元素的数组长度时，开辟一个新的内存空间，原来的2倍，原来的内存空间将被GC回收并释放资源.</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Push</span><span class="token punctuation">(</span>T item<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//动态扩容</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>_size <span class="token operator">==</span> _array<span class="token punctuation">.</span>Length<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        T<span class="token punctuation">[</span><span class="token punctuation">]</span> newArray <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">[</span><span class="token punctuation">(</span>_array<span class="token punctuation">.</span>Length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">?</span> _defaultCapacity <span class="token punctuation">:</span> <span class="token number">2</span><span class="token operator">*</span>_array<span class="token punctuation">.</span>Length<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        Array<span class="token punctuation">.</span><span class="token function">Copy</span><span class="token punctuation">(</span>_array<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> newArray<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> _size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        _array <span class="token operator">=</span> newArray<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">//将元素存于栈顶位置</span>
+    _array<span class="token punctuation">[</span>_size<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> item<span class="token punctuation">;</span>
+    _version<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Stack-出栈"><a href="#Stack-出栈" class="headerlink" title="Stack 出栈"></a>Stack 出栈</h2><p>出栈是Stack最核心的方法之一，获取位于栈顶的元素，空栈不具备出栈功能（强制使用将会引发异常）。分为两种</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 只获取不移除</span>
+<span class="token keyword">public</span> T <span class="token function">Peek</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>_size<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span>
+        ThrowHelper<span class="token punctuation">.</span><span class="token function">ThrowInvalidOperationException</span><span class="token punctuation">(</span>ExceptionResource<span class="token punctuation">.</span>InvalidOperation_EmptyStack<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> _array<span class="token punctuation">[</span>_size<span class="token number">-1</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//获取栈顶元素</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 获取并将其移除</span>
+<span class="token keyword">public</span> T <span class="token function">Pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>_size <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        ThrowHelper<span class="token punctuation">.</span><span class="token function">ThrowInvalidOperationException</span><span class="token punctuation">(</span>ExceptionResource<span class="token punctuation">.</span>InvalidOperation_EmptyStack<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    _version<span class="token operator">++</span><span class="token punctuation">;</span>
+    T item <span class="token operator">=</span> _array<span class="token punctuation">[</span><span class="token operator">--</span>_size<span class="token punctuation">]</span><span class="token punctuation">;</span>       <span class="token comment" spellcheck="true">// 获取栈顶元素，同时栈顶指针前移一位</span>
+    _array<span class="token punctuation">[</span>_size<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">default</span><span class="token punctuation">(</span>T<span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">// 释放栈顶的内存空间</span>
+    <span class="token keyword">return</span> item<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Stack-空间压缩-amp-遍历"><a href="#Stack-空间压缩-amp-遍历" class="headerlink" title="Stack 空间压缩&amp;遍历"></a>Stack 空间压缩&amp;遍历</h2><p>如果实际元素数量小于当前容量的 90%，将容量设置为 Stack中的实际元素数。推荐在确定不会再有太多的入栈元素时并且初始化容量相比预期值大得多时使用。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 将容量设置为 Stack中的实际元素数</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">TrimExcess</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> threshold <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span>_array<span class="token punctuation">.</span>Length<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.9</span><span class="token punctuation">)</span><span class="token punctuation">;</span>             
+    <span class="token keyword">if</span><span class="token punctuation">(</span> _size <span class="token operator">&lt;</span> threshold <span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        T<span class="token punctuation">[</span><span class="token punctuation">]</span> newarray <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">[</span>_size<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        Array<span class="token punctuation">.</span><span class="token function">Copy</span><span class="token punctuation">(</span>_array<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> newarray<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> _size<span class="token punctuation">)</span><span class="token punctuation">;</span>    
+        _array <span class="token operator">=</span> newarray<span class="token punctuation">;</span>
+        _version<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token comment" spellcheck="true">// 遍历</span>
+<span class="token comment" spellcheck="true">// Stack实现了IEnumerable泛型接口的GetEnumerator()，返回一个结构体：</span>
+<span class="token keyword">public</span> <span class="token keyword">struct</span> Enumerator <span class="token punctuation">:</span> IEnumerator<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">,</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">.</span>IEnumerator
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Stack<span class="token operator">&lt;</span>T<span class="token operator">></span> _stack<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//遍历的当前栈</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> _index<span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">// 遍历标识</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> _version<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> T currentElement<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//当前栈元素</span>
+
+    <span class="token comment" spellcheck="true">//初始化方法</span>
+    <span class="token keyword">internal</span> <span class="token function">Enumerator</span><span class="token punctuation">(</span>Stack<span class="token operator">&lt;</span>T<span class="token operator">></span> stack<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        _stack <span class="token operator">=</span> stack<span class="token punctuation">;</span>
+        _version <span class="token operator">=</span> _stack<span class="token punctuation">.</span>_version<span class="token punctuation">;</span>
+        _index <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">;</span>
+        currentElement <span class="token operator">=</span> <span class="token keyword">default</span><span class="token punctuation">(</span>T<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+     <span class="token comment" spellcheck="true">//指针移动，遍历必须的方法</span>
+    <span class="token keyword">public</span> <span class="token keyword">bool</span> <span class="token function">MoveNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">bool</span> retval<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>_version <span class="token operator">!=</span> _stack<span class="token punctuation">.</span>_version<span class="token punctuation">)</span> ThrowHelper<span class="token punctuation">.</span><span class="token function">ThrowInvalidOperationException</span><span class="token punctuation">(</span>ExceptionResource<span class="token punctuation">.</span>InvalidOperation_EnumFailedVersion<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>_index <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>  <span class="token comment" spellcheck="true">// 开始遍历</span>
+            _index <span class="token operator">=</span> _stack<span class="token punctuation">.</span>_size<span class="token number">-1</span><span class="token punctuation">;</span>
+            retval <span class="token operator">=</span> <span class="token punctuation">(</span> _index <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>retval<span class="token punctuation">)</span>
+                currentElement <span class="token operator">=</span> _stack<span class="token punctuation">.</span>_array<span class="token punctuation">[</span>_index<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> retval<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>_index <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  <span class="token comment" spellcheck="true">// 结束遍历</span>
+            <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        retval <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">--</span>_index <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>retval<span class="token punctuation">)</span>
+            currentElement <span class="token operator">=</span> _stack<span class="token punctuation">.</span>_array<span class="token punctuation">[</span>_index<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            currentElement <span class="token operator">=</span> <span class="token keyword">default</span><span class="token punctuation">(</span>T<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> retval<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//获取遍历的当前元素，与MoveNext结合使用，即遍历必须的属性</span>
+    <span class="token keyword">public</span> T Current <span class="token punctuation">{</span>
+        <span class="token keyword">get</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>_index <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">)</span> ThrowHelper<span class="token punctuation">.</span><span class="token function">ThrowInvalidOperationException</span><span class="token punctuation">(</span>ExceptionResource<span class="token punctuation">.</span>InvalidOperation_EnumNotStarted<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>_index <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> ThrowHelper<span class="token punctuation">.</span><span class="token function">ThrowInvalidOperationException</span><span class="token punctuation">(</span>ExceptionResource<span class="token punctuation">.</span>InvalidOperation_EnumEnded<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> currentElement<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>

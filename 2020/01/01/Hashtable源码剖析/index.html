@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="闭关修仙の小弟的博客">
+    <meta name="keyword"  content="闭关修仙">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Hashtable源码剖析 - 闭关修仙的小弟
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Hello World </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>闭关修仙的小弟</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Hashtable源码剖析"><span class="toc-text">Hashtable源码剖析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#哈希冲突解决"><span class="toc-text">哈希冲突解决:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#双重散列法（DoubleHashing）-再哈希"><span class="toc-text">双重散列法（DoubleHashing）(再哈希?)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hashtable的实现"><span class="toc-text">Hashtable的实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hashtable-Add操作"><span class="toc-text">Hashtable Add操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HashTable-获取值-设置值"><span class="toc-text">HashTable 获取值/设置值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HashTable-移除元素"><span class="toc-text">HashTable 移除元素</span></a></li></ol></li></ol>
+</div>
+
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Hello World </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Hashtable源码剖析
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2020-01-01 12:46:06</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#源码剖析" title="源码剖析">源码剖析</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="Hashtable源码剖析"><a href="#Hashtable源码剖析" class="headerlink" title="Hashtable源码剖析"></a>Hashtable源码剖析</h1><p>Hashtable实现一个哈希表（也叫散列表），将键映射到相应的值。任何非 null 对象都可以用作键。</p>
+<p>哈希表是根据关键码值进行访问的数据结构，它是通过把关键码值映射到表中对应的一个位置来访问记录值，以加快查询速度（给定表M，存在函数f(key)，对任意给定的关键字值key，代入函数后若能得到包含该关键字的记录在表中的地址，则称表M为哈希(Hash）表，函数f(key)为哈希(Hash) 函数。）。</p>
+<p>Hash，一般翻译做“散列”，也有直接音译为“哈希”的，就是把任意长度的输入（又叫做预映射），通过散列算法，变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，而不可能从散列值来唯一的确定输入值。简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数。</p>
+<p>我们使用一个下标范围比较大的数组来存储元素。可以设计一个函数（哈希函数， 也叫做散列函数），使得每个元素的关键字都与一个函数值（即数组下标）相对应，于是用这个数组单元来存储这个元素。哈希函数的目标是尽量减少冲突，但实际应用中冲突是无法避免的，所以在冲突发生时，必须有相应的解决方案。而发生冲突的可能性又跟以下两个因素有关：</p>
+<ol>
+<li><p>装填因子α：所谓装填因子是指合希表中已存入的记录数n与哈希地址空间大小m的比值，即 α=n / m ，α越小，冲突发生的可能性就越小；α越大，冲突发生的可能性就越大（α取值范围0.1f ~ 1.0f）。这很容易理解，因为α越小，哈希表中空闲单元的比例就越大，所以待插入记录同已插入的记录发生冲突的可能性就越小；反之，α越大，哈希表中空闲单元的比例就越小，所以待插入记录同已插入记录冲突的可能性就越大；另一方面，α越小，存储桶的利用率就越低；反之，存储桶的利用率就越高。为了既兼顾减少冲突的发生，又兼顾提高存储空间的利用率，通常把α控制在0.6～0.9的范围之内，C#的HashTable类把α的值定为0.72。  </p>
+<ol>
+<li>与所采用的哈希函数有关。若哈希函数选择得当，就可使哈希地址尽可能均匀地分布在哈希地址空间上，从而减少冲突的发生；否则，就可能使哈希地址集中于某些区域，从而加大冲突发生的可能性。</li>
+</ol>
+</li>
+</ol>
+<h2 id="哈希冲突解决"><a href="#哈希冲突解决" class="headerlink" title="哈希冲突解决:"></a>哈希冲突解决:</h2><p> 冲突解决技术可分为两大类：<strong>开散列法（又称为链地址法）</strong> 和 <strong>闭散列法（又称为开放地址法）</strong> 。</p>
+<p> 哈希表是用数组实现的一片连续的地址空间，两种冲突解决技术的区别在于发生冲突的元素是存储在这片数组的空间之外还是空间之内（一个数组空间或多个数组空间）：</p>
+<ul>
+<li>闭散列法（开放地址法）</li>
+</ul>
+<p>闭散列法是把所有的元素存储在哈希表数组中。当发生冲突时，在冲突位置的附近寻找可存放记录的空单元。寻找“下一个”空位的过程称为探测。上述方法可用如下公式表示：</p>
+<p><code>i=( h(key) + di ) % m      i=1，2，…，k (k≤m-1)</code></p>
+<p>其中h(key)为哈希函数；m为哈希表长；di为增量的序列。根据di取值的不同，可以分成几种探测方法，下面介绍的是Hashtable所使用到的双重散列法。</p>
+<h3 id="双重散列法（DoubleHashing）-再哈希"><a href="#双重散列法（DoubleHashing）-再哈希" class="headerlink" title="双重散列法（DoubleHashing）(再哈希?)"></a>双重散列法（DoubleHashing）(再哈希?)</h3><p>双重散列法是经典的数据表结构（T）。设 n 为存储在 T 中元素的数目，m为T的容量，则T的加载因子为</p>
+<p><code>α= n / m， α：1 &gt; α &gt;0</code>。</p>
+<p>它是以关键字的另一个散列函数值作为增量。设两个哈希函数为：h_1 和 h_2，则得到的探测序列为：</p>
+<p><code>h(i,k) = ( h_1(k) + i * h_2(k) ) % m</code>，m为哈希表的容量，<code>i： 1 &lt; i &lt; m - 1</code>。</p>
+<p>定义h_2的方法较多，但无采用什么方法都必须使h_2(k)的值和m互素（又称互质，表示两数的最大公约数为1，或者说是两数没有共同的因子，1除外）才能使发生冲突的同义词地址均匀地分布在整个哈希表中，否则可能造成同义词地址的循环计算。若m为素数，则h_2取1至m-1之间的任何数均与m互素。</p>
+<h2 id="Hashtable的实现"><a href="#Hashtable的实现" class="headerlink" title="Hashtable的实现"></a>Hashtable的实现</h2><p>Hashtable实现了IDictionary，在命名空间System.Collections中，表示根据键的哈希代码进行组织的键/值对的集合。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 基本成员</span>
+<span class="token keyword">internal</span> <span class="token keyword">const</span> Int32 HashPrime <span class="token operator">=</span> <span class="token number">101</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 固定的素数</span>
+<span class="token keyword">private</span> <span class="token keyword">const</span> Int32 InitialSize <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//哈希表的默认容量</span>
+
+<span class="token keyword">private</span> <span class="token keyword">struct</span> bucket
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> Object key<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//键</span>
+    <span class="token keyword">public</span> Object val<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//值</span>
+    <span class="token comment" spellcheck="true">// 是一个Int32类型，它的最高位是符号位，为“0”时，表示这是一个正整数；</span>
+    <span class="token comment" spellcheck="true">// 为“1”时表示负整数。hash_coll使用最高位表示当前位置是否发生冲突，</span>
+    <span class="token comment" spellcheck="true">// 正数表示未发生冲突；负数表示当前位置存在冲突。</span>
+    <span class="token comment" spellcheck="true">// 之所以专门使用一个位用于存放哈希码并标注是否发生冲突，主要是为了提高哈希表的运行效率。</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> hash_col<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//哈希码</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> bucket<span class="token punctuation">[</span><span class="token punctuation">]</span> buckets<span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 数据桶, 用于存储哈希表中的元素</span>
+<span class="token keyword">private</span> <span class="token keyword">int</span> count<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//元素总数</span>
+<span class="token keyword">private</span> <span class="token keyword">int</span> occupancy<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//冲突次数</span>
+
+<span class="token keyword">private</span>  <span class="token keyword">int</span> loadsize<span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 装载容量值，相当于一个阈值，达到了这个数值，将对哈希表进行扩容；</span>
+<span class="token keyword">private</span>  <span class="token keyword">float</span> loadFactor<span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 哈希表中的元素占有数据桶空间的一个比率，这个比例直接决定了哈希表在什么时候进行扩容；</span>
+
+<span class="token keyword">private</span> <span class="token keyword">volatile</span> <span class="token keyword">int</span> version<span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token keyword">volatile</span> <span class="token keyword">bool</span> isWriterInProgress<span class="token punctuation">;</span>   
+
+<span class="token keyword">private</span> ICollection keys<span class="token punctuation">;</span>
+<span class="token keyword">private</span> ICollection values<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在Hashtable中的两个哈希函数分别为：</p>
+<ol>
+<li><code>h_1(k) = k.GetHashCode()</code>：第一个哈希函数直接用默认的GetHashCode()方法；</li>
+<li><code>h_2(k) = (1 + ((h_1(k) * HashPrime) % (hashsize - 1)))</code>：HashPrime为私有成员101的素数，hashsize为哈希表长度。之所以会进行取模运算是为了保证结果值的范围在[0, hashsize - 1]</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">uint</span> <span class="token function">InitHash</span><span class="token punctuation">(</span>Object key<span class="token punctuation">,</span> <span class="token keyword">int</span> hashsize<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token keyword">uint</span> seed<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token keyword">uint</span> incr<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//取正数值,第一和哈希函数h_1(k)</span>
+    <span class="token keyword">uint</span> hashcode <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">uint</span><span class="token punctuation">)</span> <span class="token function">GetHash</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">0x7FFFFFFF</span><span class="token punctuation">;</span>
+    seed <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">uint</span><span class="token punctuation">)</span> hashcode<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//第二个哈希函数h_2(k)的增量</span>
+    incr <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">uint</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>seed <span class="token operator">*</span> HashPrime<span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">uint</span><span class="token punctuation">)</span>hashsize <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> hashcode<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Hashtable-Add操作"><a href="#Hashtable-Add操作" class="headerlink" title="Hashtable Add操作"></a>Hashtable Add操作</h2><p><code>Add(Object, Object)</code>：将带有指定键和值的元素添加到 Hashtable 中。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">Insert</span> <span class="token punctuation">(</span>Object key<span class="token punctuation">,</span> Object nvalue<span class="token punctuation">,</span> <span class="token keyword">bool</span> <span class="token keyword">add</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">if</span> <span class="token punctuation">(</span>key <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentNullException</span><span class="token punctuation">(</span><span class="token string">"key"</span><span class="token punctuation">,</span> Environment<span class="token punctuation">.</span><span class="token function">GetResourceString</span><span class="token punctuation">(</span><span class="token string">"ArgumentNull_Key"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   Contract<span class="token punctuation">.</span><span class="token function">EndContractBlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">if</span> <span class="token punctuation">(</span>count <span class="token operator">>=</span> loadsize<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">//当元素的总数大于等于装载量时，自动扩容</span>
+       <span class="token function">expand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>occupancy <span class="token operator">></span> loadsize <span class="token operator">&amp;&amp;</span> count <span class="token operator">></span> <span class="token number">100</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">//在元素总数大于100之后，判断冲突计数大于装载量时，将HashTable重新哈希</span>
+       <span class="token function">rehash</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token keyword">uint</span> seed<span class="token punctuation">;</span><span class="token comment" spellcheck="true">// seed = (uint) hashcode;</span>
+   <span class="token keyword">uint</span> incr<span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 第二个哈希函数h_2(k)的增量</span>
+
+   <span class="token keyword">uint</span> hashcode <span class="token operator">=</span> <span class="token function">InitHash</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> buckets<span class="token punctuation">.</span>Length<span class="token punctuation">,</span> <span class="token keyword">out</span> seed<span class="token punctuation">,</span> <span class="token keyword">out</span> incr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">int</span>  ntry <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//寻址次数，不得大于等于哈希表容量</span>
+   <span class="token keyword">int</span> emptySlotNumber <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//用于记录第一个寻址到的可用插槽</span>
+
+   <span class="token comment" spellcheck="true">// 算出对应的哈希桶</span>
+   <span class="token keyword">int</span> bucketNumber <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>seed <span class="token operator">%</span> <span class="token punctuation">(</span><span class="token keyword">uint</span><span class="token punctuation">)</span>buckets<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">do</span> <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">//有冲突的空插槽</span>
+       <span class="token keyword">if</span> <span class="token punctuation">(</span>emptySlotNumber <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>key <span class="token operator">==</span> buckets<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>hash_coll <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+           emptySlotNumber <span class="token operator">=</span> bucketNumber<span class="token punctuation">;</span>
+
+       <span class="token comment" spellcheck="true">//正常的空插槽</span>
+       <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>key <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token operator">||</span>
+           <span class="token punctuation">(</span>buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>key <span class="token operator">==</span> buckets <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>hash_coll <span class="token operator">&amp;</span> <span class="token keyword">unchecked</span><span class="token punctuation">(</span><span class="token number">0x80000000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+         <span class="token punctuation">{</span>
+             <span class="token comment" spellcheck="true">//将元素放入寻址到的第一个可用插槽</span>
+             <span class="token keyword">if</span> <span class="token punctuation">(</span>emptySlotNumber <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+                 bucketNumber <span class="token operator">=</span> emptySlotNumber<span class="token punctuation">;</span>
+
+             Thread<span class="token punctuation">.</span><span class="token function">BeginCriticalRegion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+             isWriterInProgress <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>                    
+             buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>val <span class="token operator">=</span> nvalue<span class="token punctuation">;</span>
+             buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>key  <span class="token operator">=</span> key<span class="token punctuation">;</span>
+             buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>hash_coll <span class="token operator">|</span><span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> hashcode<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 用符号位记录是否冲突</span>
+             count<span class="token operator">++</span><span class="token punctuation">;</span>
+             <span class="token function">UpdateVersion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+             isWriterInProgress <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>   
+
+             Thread<span class="token punctuation">.</span><span class="token function">EndCriticalRegion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+             <span class="token keyword">if</span><span class="token punctuation">(</span>ntry <span class="token operator">></span> HashHelpers<span class="token punctuation">.</span>HashCollisionThreshold <span class="token operator">&amp;&amp;</span> HashHelpers<span class="token punctuation">.</span><span class="token function">IsWellKnownEqualityComparer</span><span class="token punctuation">(</span>_keycomparer<span class="token punctuation">)</span><span class="token punctuation">)</span>
+             <span class="token punctuation">{</span>
+                 <span class="token keyword">if</span><span class="token punctuation">(</span>_keycomparer <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> <span class="token operator">!</span><span class="token punctuation">(</span>_keycomparer <span class="token keyword">is</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">.</span>Generic<span class="token punctuation">.</span>RandomizedObjectEqualityComparer<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                 <span class="token punctuation">{</span>
+                     _keycomparer <span class="token operator">=</span> HashHelpers<span class="token punctuation">.</span><span class="token function">GetRandomizedEqualityComparer</span><span class="token punctuation">(</span>_keycomparer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                     <span class="token function">rehash</span><span class="token punctuation">(</span>buckets<span class="token punctuation">.</span>Length<span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                 <span class="token punctuation">}</span>
+             <span class="token punctuation">}</span>
+
+             <span class="token keyword">return</span><span class="token punctuation">;</span>
+           <span class="token punctuation">}</span>
+
+       <span class="token comment" spellcheck="true">//替换更新（此处值变更，Update操作），若添加重复的键，则抛出异常</span>
+       <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span>buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>hash_coll <span class="token operator">&amp;</span> <span class="token number">0x7FFFFFFF</span><span class="token punctuation">)</span> <span class="token operator">==</span> hashcode<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span>
+           <span class="token function">KeyEquals</span> <span class="token punctuation">(</span>buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>key<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+           <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">add</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+               <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentException</span><span class="token punctuation">(</span>Environment<span class="token punctuation">.</span><span class="token function">GetResourceString</span><span class="token punctuation">(</span><span class="token string">"Argument_AddingDuplicate__"</span><span class="token punctuation">,</span> buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>key<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token punctuation">}</span>
+
+           Thread<span class="token punctuation">.</span><span class="token function">BeginCriticalRegion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+           isWriterInProgress <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>                    
+           buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>val <span class="token operator">=</span> nvalue<span class="token punctuation">;</span>
+           <span class="token function">UpdateVersion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                    
+           isWriterInProgress <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+
+           Thread<span class="token punctuation">.</span><span class="token function">EndCriticalRegion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   
+
+           <span class="token keyword">if</span><span class="token punctuation">(</span>ntry <span class="token operator">></span> HashHelpers<span class="token punctuation">.</span>HashCollisionThreshold <span class="token operator">&amp;&amp;</span> HashHelpers<span class="token punctuation">.</span><span class="token function">IsWellKnownEqualityComparer</span><span class="token punctuation">(</span>_keycomparer<span class="token punctuation">)</span><span class="token punctuation">)</span>
+           <span class="token punctuation">{</span>
+               <span class="token keyword">if</span><span class="token punctuation">(</span>_keycomparer <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> <span class="token operator">!</span><span class="token punctuation">(</span>_keycomparer <span class="token keyword">is</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">.</span>Generic<span class="token punctuation">.</span>RandomizedObjectEqualityComparer<span class="token punctuation">)</span><span class="token punctuation">)</span>
+               <span class="token punctuation">{</span>
+                   _keycomparer <span class="token operator">=</span> HashHelpers<span class="token punctuation">.</span><span class="token function">GetRandomizedEqualityComparer</span><span class="token punctuation">(</span>_keycomparer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                   <span class="token function">rehash</span><span class="token punctuation">(</span>buckets<span class="token punctuation">.</span>Length<span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+               <span class="token punctuation">}</span>
+           <span class="token punctuation">}</span>
+
+           <span class="token keyword">return</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+
+
+       <span class="token comment" spellcheck="true">//存在冲突 将哈希值设置为负数</span>
+       <span class="token keyword">if</span> <span class="token punctuation">(</span>emptySlotNumber <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+           <span class="token keyword">if</span><span class="token punctuation">(</span> buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>hash_coll <span class="token operator">>=</span> <span class="token number">0</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+               buckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>hash_coll <span class="token operator">|</span><span class="token operator">=</span> <span class="token keyword">unchecked</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token number">0x80000000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+               occupancy<span class="token operator">++</span><span class="token punctuation">;</span>
+           <span class="token punctuation">}</span>
+       <span class="token punctuation">}</span>
+
+       bucketNumber <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">long</span><span class="token punctuation">)</span>bucketNumber <span class="token operator">+</span> incr<span class="token punctuation">)</span><span class="token operator">%</span> <span class="token punctuation">(</span><span class="token keyword">uint</span><span class="token punctuation">)</span>buckets<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>            
+   <span class="token comment" spellcheck="true">//寻址次数肯定是不能超过最大索引下标的，此处循环用于冲突的二次寻址   </span>
+   <span class="token punctuation">}</span> <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">++</span>ntry <span class="token operator">&lt;</span> buckets<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token comment" spellcheck="true">//插槽已满，将元素插入第一个寻址到的可用插槽</span>
+   <span class="token keyword">if</span> <span class="token punctuation">(</span>emptySlotNumber <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+       Thread<span class="token punctuation">.</span><span class="token function">BeginCriticalRegion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+
+       isWriterInProgress <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>                    
+       buckets<span class="token punctuation">[</span>emptySlotNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>val <span class="token operator">=</span> nvalue<span class="token punctuation">;</span>
+       buckets<span class="token punctuation">[</span>emptySlotNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>key  <span class="token operator">=</span> key<span class="token punctuation">;</span>
+       buckets<span class="token punctuation">[</span>emptySlotNumber<span class="token punctuation">]</span><span class="token punctuation">.</span>hash_coll <span class="token operator">|</span><span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> hashcode<span class="token punctuation">;</span>
+       count<span class="token operator">++</span><span class="token punctuation">;</span>
+       <span class="token function">UpdateVersion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                
+       isWriterInProgress <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>     
+
+       Thread<span class="token punctuation">.</span><span class="token function">EndCriticalRegion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+       <span class="token keyword">if</span><span class="token punctuation">(</span>buckets<span class="token punctuation">.</span>Length <span class="token operator">></span> HashHelpers<span class="token punctuation">.</span>HashCollisionThreshold <span class="token operator">&amp;&amp;</span> HashHelpers<span class="token punctuation">.</span><span class="token function">IsWellKnownEqualityComparer</span><span class="token punctuation">(</span>_keycomparer<span class="token punctuation">)</span><span class="token punctuation">)</span>
+       <span class="token punctuation">{</span>
+           <span class="token keyword">if</span><span class="token punctuation">(</span>_keycomparer <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> <span class="token operator">!</span><span class="token punctuation">(</span>_keycomparer <span class="token keyword">is</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">.</span>Generic<span class="token punctuation">.</span>RandomizedObjectEqualityComparer<span class="token punctuation">)</span><span class="token punctuation">)</span>
+           <span class="token punctuation">{</span>
+               _keycomparer <span class="token operator">=</span> HashHelpers<span class="token punctuation">.</span><span class="token function">GetRandomizedEqualityComparer</span><span class="token punctuation">(</span>_keycomparer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+               <span class="token function">rehash</span><span class="token punctuation">(</span>buckets<span class="token punctuation">.</span>Length<span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token punctuation">}</span>
+       <span class="token punctuation">}</span>
+
+
+       <span class="token keyword">return</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   Contract<span class="token punctuation">.</span><span class="token function">Assert</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token string">"hash table insert failed!  Load factor too high, or our double hashing function is incorrect."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidOperationException</span><span class="token punctuation">(</span>Environment<span class="token punctuation">.</span><span class="token function">GetResourceString</span><span class="token punctuation">(</span><span class="token string">"InvalidOperation_HashInsertFailed"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="HashTable-获取值-设置值"><a href="#HashTable-获取值-设置值" class="headerlink" title="HashTable 获取值/设置值"></a>HashTable 获取值/设置值</h2><p>索引器：Hashtable中通过索引器来进行获取值 / 设置值。</p>
+<p>哈希表的读的操作有三个步骤 ︰</p>
+<ol>
+<li>计算哈希值和找到的插槽号。</li>
+<li>比较哈希码，如果相等，请转至步骤 3。否则读失败，结束。</li>
+<li>比较关键字，如果相等，返回包含在存储桶中的值。否则读失败，结束。</li>
+</ol>
+<p>在索引器的源代码中 有两个do while循环，最外面的循环用于遍历冲突链，嵌套的循环用于防止数据读脏。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">virtual</span> Object <span class="token keyword">this</span><span class="token punctuation">[</span>Object key<span class="token punctuation">]</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">get</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>key <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentNullException</span><span class="token punctuation">(</span><span class="token string">"key"</span><span class="token punctuation">,</span> Environment<span class="token punctuation">.</span><span class="token function">GetResourceString</span><span class="token punctuation">(</span><span class="token string">"ArgumentNull_Key"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        Contract<span class="token punctuation">.</span><span class="token function">EndContractBlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">uint</span> seed<span class="token punctuation">;</span>
+        <span class="token keyword">uint</span> incr<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//生成一个数据桶的结构副本，防止其他线程同一时间对同一个结构进行调整。</span>
+        bucket<span class="token punctuation">[</span><span class="token punctuation">]</span> lbuckets <span class="token operator">=</span> buckets<span class="token punctuation">;</span>
+        <span class="token keyword">uint</span> hashcode <span class="token operator">=</span> <span class="token function">InitHash</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> lbuckets<span class="token punctuation">.</span>Length<span class="token punctuation">,</span> <span class="token keyword">out</span> seed<span class="token punctuation">,</span> <span class="token keyword">out</span> incr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span>  ntry <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+        bucket b<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> bucketNumber <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>seed <span class="token operator">%</span> <span class="token punctuation">(</span><span class="token keyword">uint</span><span class="token punctuation">)</span>lbuckets<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>                
+        <span class="token keyword">do</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> currentversion<span class="token punctuation">;</span>
+
+            <span class="token keyword">int</span> spinCount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token keyword">do</span> <span class="token punctuation">{</span>
+                currentversion <span class="token operator">=</span> version<span class="token punctuation">;</span>
+                b <span class="token operator">=</span> lbuckets<span class="token punctuation">[</span>bucketNumber<span class="token punctuation">]</span><span class="token punctuation">;</span>                        
+
+                <span class="token comment" spellcheck="true">//这里使用线程休眠是为了防止资源争夺而导致CPU过度消耗</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token punctuation">(</span><span class="token operator">++</span>spinCount<span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">8</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>   
+                    Thread<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                <span class="token comment" spellcheck="true">//若有其他线程在做调整，等待完成再获取最新的值</span>
+            <span class="token punctuation">}</span> <span class="token keyword">while</span> <span class="token punctuation">(</span> isWriterInProgress <span class="token operator">||</span> <span class="token punctuation">(</span>currentversion <span class="token operator">!=</span> version<span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>b<span class="token punctuation">.</span>key <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span>b<span class="token punctuation">.</span>hash_coll <span class="token operator">&amp;</span> <span class="token number">0x7FFFFFFF</span><span class="token punctuation">)</span> <span class="token operator">==</span> hashcode<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span>
+                <span class="token function">KeyEquals</span> <span class="token punctuation">(</span>b<span class="token punctuation">.</span>key<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token keyword">return</span> b<span class="token punctuation">.</span>val<span class="token punctuation">;</span>
+            bucketNumber <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">long</span><span class="token punctuation">)</span>bucketNumber <span class="token operator">+</span> incr<span class="token punctuation">)</span><span class="token operator">%</span> <span class="token punctuation">(</span><span class="token keyword">uint</span><span class="token punctuation">)</span>lbuckets<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>                                  
+        <span class="token punctuation">}</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>b<span class="token punctuation">.</span>hash_coll <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">++</span>ntry <span class="token operator">&lt;</span> lbuckets<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">set</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//更新现在的键值</span>
+        <span class="token function">Insert</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//比较函数</span>
+<span class="token keyword">protected</span> <span class="token keyword">virtual</span> <span class="token keyword">bool</span> <span class="token function">KeyEquals</span><span class="token punctuation">(</span>Object item<span class="token punctuation">,</span> Object key<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Contract<span class="token punctuation">.</span><span class="token function">Assert</span><span class="token punctuation">(</span>key <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token string">"key can't be null here!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span> Object<span class="token punctuation">.</span><span class="token function">ReferenceEquals</span><span class="token punctuation">(</span>buckets<span class="token punctuation">,</span> item<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>Object<span class="token punctuation">.</span><span class="token function">ReferenceEquals</span><span class="token punctuation">(</span>item<span class="token punctuation">,</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>_keycomparer <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> _keycomparer<span class="token punctuation">.</span><span class="token function">Equals</span><span class="token punctuation">(</span>item<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> item <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token keyword">false</span> <span class="token punctuation">:</span> item<span class="token punctuation">.</span><span class="token function">Equals</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="HashTable-移除元素"><a href="#HashTable-移除元素" class="headerlink" title="HashTable 移除元素"></a>HashTable 移除元素</h2><p>Remove(Object)：从 Hashtable 中移除带有指定键的元素。</p>
+<p>Hashtable删除元素 分两种情况处理：</p>
+<ol>
+<li>正常插槽，将key赋空引用，hash_col赋值0。</li>
+<li>冲突插槽，将key指向buckets数据桶，将hash_col赋值-2147483648 (同时赋值key和hash_col是为了与哈希码为0的冲突插槽区分开）。</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">Remove</span><span class="token punctuation">(</span>Object key<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+   <span class="token keyword">if</span> <span class="token punctuation">(</span>key <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentNullException</span><span class="token punctuation">(</span><span class="token string">"key"</span><span class="token punctuation">,</span> Environment<span class="token punctuation">.</span><span class="token function">GetResourceString</span><span class="token punctuation">(</span><span class="token string">"ArgumentNull_Key"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   Contract<span class="token punctuation">.</span><span class="token function">EndContractBlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   Contract<span class="token punctuation">.</span><span class="token function">Assert</span><span class="token punctuation">(</span><span class="token operator">!</span>isWriterInProgress<span class="token punctuation">,</span> <span class="token string">"Race condition detected in usages of Hashtable - multiple threads appear to be writing to a Hashtable instance simultaneously!  Don't do that - use Hashtable.Synchronized."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token keyword">uint</span> seed<span class="token punctuation">;</span>
+   <span class="token keyword">uint</span> incr<span class="token punctuation">;</span>
+
+   <span class="token keyword">uint</span> hashcode <span class="token operator">=</span> <span class="token function">InitHash</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> buckets<span class="token punctuation">.</span>Length<span class="token punctuation">,</span> <span class="token keyword">out</span> seed<span class="token punctuation">,</span> <span class="token keyword">out</span> incr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">int</span> ntry <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+   bucket b<span class="token punctuation">;</span>
+   <span class="token keyword">int</span> bn <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>seed <span class="token operator">%</span> <span class="token punctuation">(</span><span class="token keyword">uint</span><span class="token punctuation">)</span>buckets<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true">//第一次循环若找不到值，那么表示有冲突链 或 键值不存在</span>
+   <span class="token keyword">do</span> <span class="token punctuation">{</span>
+       b <span class="token operator">=</span> buckets<span class="token punctuation">[</span>bn<span class="token punctuation">]</span><span class="token punctuation">;</span>
+       <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span>b<span class="token punctuation">.</span>hash_coll <span class="token operator">&amp;</span> <span class="token number">0x7FFFFFFF</span><span class="token punctuation">)</span> <span class="token operator">==</span> hashcode<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">KeyEquals</span> <span class="token punctuation">(</span>b<span class="token punctuation">.</span>key<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+           Thread<span class="token punctuation">.</span><span class="token function">BeginCriticalRegion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    
+
+           isWriterInProgress <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+
+           <span class="token comment" spellcheck="true">//正常插槽哈希码为0 / 冲突插槽哈希码为负数</span>
+           buckets<span class="token punctuation">[</span>bn<span class="token punctuation">]</span><span class="token punctuation">.</span>hash_coll <span class="token operator">&amp;</span><span class="token operator">=</span> <span class="token keyword">unchecked</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token number">0x80000000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token keyword">if</span> <span class="token punctuation">(</span>buckets<span class="token punctuation">[</span>bn<span class="token punctuation">]</span><span class="token punctuation">.</span>hash_coll <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+           <span class="token punctuation">{</span>
+               <span class="token comment" spellcheck="true">//冲突插槽的key指向buckets</span>
+               buckets<span class="token punctuation">[</span>bn<span class="token punctuation">]</span><span class="token punctuation">.</span>key <span class="token operator">=</span> buckets<span class="token punctuation">;</span>
+           <span class="token punctuation">}</span>
+           <span class="token keyword">else</span>
+           <span class="token punctuation">{</span>
+               <span class="token comment" spellcheck="true">//正常插槽的key赋空引用</span>
+               buckets<span class="token punctuation">[</span>bn<span class="token punctuation">]</span><span class="token punctuation">.</span>key <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+           <span class="token punctuation">}</span>
+           buckets<span class="token punctuation">[</span>bn<span class="token punctuation">]</span><span class="token punctuation">.</span>val <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+           count<span class="token operator">--</span><span class="token punctuation">;</span>
+           <span class="token function">UpdateVersion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           isWriterInProgress <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+
+           Thread<span class="token punctuation">.</span><span class="token function">EndCriticalRegion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+
+           <span class="token keyword">return</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span>
+       bn <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">long</span><span class="token punctuation">)</span>bn <span class="token operator">+</span> incr<span class="token punctuation">)</span><span class="token operator">%</span> <span class="token punctuation">(</span><span class="token keyword">uint</span><span class="token punctuation">)</span>buckets<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token comment" spellcheck="true">//循环冲突链                               </span>
+   <span class="token punctuation">}</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>b<span class="token punctuation">.</span>hash_coll <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">++</span>ntry <span class="token operator">&lt;</span> buckets<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.jpg">
+        <p> 感谢支持 </p>
+    </div>
+</div>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/zxt385189207">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://www.baidu.com">baidu</a></span>
+        <span>/</span>
+        
+        <span><a href="https://www.google.com">google</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC80NTEwMS8yMTYxOA==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
