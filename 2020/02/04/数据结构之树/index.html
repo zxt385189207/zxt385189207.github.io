@@ -90,7 +90,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#二叉搜索树"><span class="toc-text">二叉搜索树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#高度平衡的二叉搜索树"><span class="toc-text">高度平衡的二叉搜索树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么需要用到高度平衡的二叉搜索树"><span class="toc-text">为什么需要用到高度平衡的二叉搜索树?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何实现一个高度平衡的二叉搜索树"><span class="toc-text">如何实现一个高度平衡的二叉搜索树?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高度平衡的二叉搜索树的实际应用"><span class="toc-text">高度平衡的二叉搜索树的实际应用</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#二叉搜索树"><span class="toc-text">二叉搜索树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#高度平衡的二叉搜索树"><span class="toc-text">高度平衡的二叉搜索树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么需要用到高度平衡的二叉搜索树"><span class="toc-text">为什么需要用到高度平衡的二叉搜索树?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何实现一个高度平衡的二叉搜索树"><span class="toc-text">如何实现一个高度平衡的二叉搜索树?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高度平衡的二叉搜索树的实际应用"><span class="toc-text">高度平衡的二叉搜索树的实际应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#红黑树"><span class="toc-text">红黑树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AVL树-自动平衡二叉搜索树"><span class="toc-text">AVL树(自动平衡二叉搜索树)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#伸展树"><span class="toc-text">伸展树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#树堆"><span class="toc-text">树堆</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#N叉树"><span class="toc-text">N叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#N叉树的经典递归解法"><span class="toc-text">N叉树的经典递归解法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#前缀树-字典树"><span class="toc-text">前缀树(字典树)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#如何表示一个前缀树"><span class="toc-text">如何表示一个前缀树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前缀树的插入"><span class="toc-text">前缀树的插入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例题"><span class="toc-text">例题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前缀树结构模板"><span class="toc-text">前缀树结构模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么不直接用哈希表"><span class="toc-text">为什么不直接用哈希表?</span></a></li></ol></li></ol>
 </div>
 
     
@@ -195,6 +195,235 @@
 <p>Set(集合)是另一种数据结构，它可以存储大量key(键)而不需要任何特定的顺序或任何重复的元素。 它应该支持的基本操作是将新元素插入到Set中，并检查元素是否存在于其中。</p>
 </blockquote>
 <p>通常，有两种最广泛使用的集合：哈希集合(Hash Set)和树集合(Tree Set)。哈希集和树集之间的本质区别在于树集中的键是有序的。</p>
+<h3 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h3><h3 id="AVL树-自动平衡二叉搜索树"><a href="#AVL树-自动平衡二叉搜索树" class="headerlink" title="AVL树(自动平衡二叉搜索树)"></a>AVL树(自动平衡二叉搜索树)</h3><h3 id="伸展树"><a href="#伸展树" class="headerlink" title="伸展树"></a>伸展树</h3><h3 id="树堆"><a href="#树堆" class="headerlink" title="树堆"></a>树堆</h3><h1 id="N叉树"><a href="#N叉树" class="headerlink" title="N叉树"></a>N叉树</h1><p>N叉树的遍历: 对于每个子节点: 通过递归地调用遍历函数来遍历以该子节点为根的子树</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// N叉树的节点定义</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Node</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span>         val<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> IList<span class="token operator">&lt;</span>Node<span class="token operator">></span> children<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">Node</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">Node</span><span class="token punctuation">(</span><span class="token keyword">int</span> _val<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        val <span class="token operator">=</span> _val<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">Node</span><span class="token punctuation">(</span><span class="token keyword">int</span> _val<span class="token punctuation">,</span> IList<span class="token operator">&lt;</span>Node<span class="token operator">></span> _children<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        val      <span class="token operator">=</span> _val<span class="token punctuation">;</span>
+        children <span class="token operator">=</span> _children<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>遍历主要是用foreach遍历children, 注意有时候需要反序.</p>
+<h2 id="N叉树的经典递归解法"><a href="#N叉树的经典递归解法" class="headerlink" title="N叉树的经典递归解法"></a>N叉树的经典递归解法</h2><ol>
+<li>“自顶向下”的解决方案</li>
+</ol>
+<p>“自顶向下”意味着在每个递归层次上，我们首先访问节点以获得一些值，然后在调用递归函数时，将这些值传给其子节点。</p>
+<p>一个典型的 “自顶向下” 函数 <code>top_down(root, params)</code> 的工作原理如下：</p>
+<pre class="line-numbers language-c"><code class="language-c"><span class="token number">1</span><span class="token punctuation">.</span> 对于 null 节点返回一个特定值
+<span class="token number">2</span><span class="token punctuation">.</span> 如果有需要，对当前答案 answer 进行更新                         <span class="token comment" spellcheck="true">// answer &lt;-- params</span>
+<span class="token number">3</span><span class="token punctuation">.</span> <span class="token keyword">for</span> each child node root<span class="token punctuation">.</span>children<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">:</span>
+<span class="token number">4</span><span class="token punctuation">.</span>      ans<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">top_down</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>children<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">,</span> new_params<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true">// new_params &lt;-- root.val, params</span>
+<span class="token number">5</span><span class="token punctuation">.</span> 如果有需要，返回答案 answer                                 <span class="token comment" spellcheck="true">// answer &lt;-- all ans[k]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>“自底向上”的解决方案</li>
+</ol>
+<p>“自底向上” 意味着在每个递归层次上，我们首先为每个子节点递归地调用函数，然后根据返回值和根节点本身的值给出相应结果。</p>
+<p>一个典型的 “自底向上” 函数 <code>bottom_up(root)</code> 的工作原理如下：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token number">1</span><span class="token punctuation">.</span>对于 <span class="token keyword">null</span> 节点返回一个特定值
+<span class="token number">2</span><span class="token punctuation">.</span><span class="token keyword">for</span> each child node root<span class="token punctuation">.</span>children<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">:</span>
+<span class="token number">3</span><span class="token punctuation">.</span>    ans<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">bottom_up</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>children<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 为每个子节点递归地调用函数</span>
+<span class="token number">4</span><span class="token punctuation">.</span> 返回答案 answer                          <span class="token comment" spellcheck="true">// answer &lt;- root.val, all ans[k]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="前缀树-字典树"><a href="#前缀树-字典树" class="headerlink" title="前缀树(字典树)"></a>前缀树(字典树)</h1><p>应用于: 自动补全, 拼写检查,IP路由(最长前缀匹配), T9 (九宫格) 打字预测,单词游戏等.</p>
+<p>前缀树，又称字典树，是N叉树的特殊形式。</p>
+<p>通常来说，一个前缀树是用来存储字符串的。前缀树的<strong>每一个节点代表一个字符串</strong>（前缀）。每一个节点会有多个子节点，通往不同子节点的路径上有着不同的字符。子节点代表的字符串是由节点本身的原始字符串，以及通往该子节点路径上所有的字符组成的。</p>
+<p><img src="/2020/02/04/数据结构之树/QQ截图20200205131008.png" alt=""></p>
+<p>在上图示例中，我们在节点中标记的值是该节点对应表示的字符串。例如，我们从根节点开始，选择第二条路径 ‘b’，然后选择它的第一个子节点 ‘a’，接下来继续选择子节点 ‘d’，我们最终会到达叶节点 “bad”。节点的值是由从根节点开始，与其经过的路径中的字符按顺序形成的。</p>
+<p><strong>值得注意的是，根节点表示空字符串。</strong></p>
+<p>前缀树的一个重要的特性是，节点所有的后代都与该节点相关的字符串有着共同的前缀。这就是前缀树名称的由来。</p>
+<p>例如，以节点 “b” 为根的子树中的节点表示的字符串，都具有共同的前缀 “b”。反之亦然，具有公共前缀 “b” 的字符串，全部位于以 “b” 为根的子树中，并且具有不同前缀的字符串来自不同的分支。</p>
+<p>前缀树有着广泛的应用，例如自动补全，拼写检查等等。我们将在后面的章节中介绍实际应用场景。</p>
+<h2 id="如何表示一个前缀树"><a href="#如何表示一个前缀树" class="headerlink" title="如何表示一个前缀树"></a>如何表示一个前缀树</h2><ol>
+<li>第一种方法是用数组存储子节点。</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> final <span class="token keyword">int</span> N <span class="token operator">=</span> <span class="token number">26</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> TrieNode<span class="token punctuation">[</span><span class="token punctuation">]</span> children <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TrieNode</span><span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+root<span class="token punctuation">.</span>children<span class="token punctuation">[</span>c <span class="token operator">-</span> <span class="token string">'a'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>但并非所有的子节点都需要这样的操作，所以这可能会导致空间的浪费。</p>
+</blockquote>
+<p><img src="/2020/02/04/数据结构之树/QQ截图20200205141506.png" alt=""></p>
+<ol>
+<li>使用 Hashmap 来存储子节点。</li>
+</ol>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">public</span> HashMap<span class="token operator">&lt;</span><span class="token keyword">char</span><span class="token punctuation">,</span> TrieNode<span class="token operator">></span> children <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token keyword">char</span><span class="token punctuation">,</span> TrieNode<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<p>节省了空间。这个方法也更加灵活，因为我们不受到固定长度和固定范围的限制。</p>
+</blockquote>
+<h2 id="前缀树的插入"><a href="#前缀树的插入" class="headerlink" title="前缀树的插入"></a>前缀树的插入</h2><p>向 Trie 树中插入键<br>我们通过搜索 Trie 树来插入一个键。我们从根开始搜索它对应于第一个键字符的<strong>链接</strong>。有两种情况：</p>
+<ul>
+<li><strong>链接</strong> 存在。 沿着链接移动到树的下一个子层。算法继续搜索下一个键字符。</li>
+<li><strong>链接</strong> 不存在。创建一个新的节点，并将它与父节点的链接相连，该链接与当前的键字符相匹配。</li>
+</ul>
+<p><img src="/2020/02/04/数据结构之树/QQ截图20200205140436.png" alt=""></p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><ul>
+<li>677.键值映射</li>
+<li>648.单词替换 (附带用哈希表算法的比较)</li>
+</ul>
+<p><img src="/2020/02/04/数据结构之树/QQ截图20200205203936.png" alt=""></p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">s<span class="token punctuation">.</span><span class="token function">Insert</span><span class="token punctuation">(</span><span class="token string">"abc"</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+s<span class="token punctuation">.</span><span class="token function">Insert</span><span class="token punctuation">(</span><span class="token string">"ap"</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+s<span class="token punctuation">.</span><span class="token function">Sum</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="前缀树结构模板"><a href="#前缀树结构模板" class="headerlink" title="前缀树结构模板"></a>前缀树结构模板</h2><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// 时间复杂度:</span>
+<span class="token comment" spellcheck="true">// 如果单词的最长长度为N，则Trie的高度为N + 1。</span>
+<span class="token comment" spellcheck="true">// 因此，所有insert、search和startsWith方法的时间复杂度为O(N)。</span>
+<span class="token comment" spellcheck="true">//</span>
+<span class="token comment" spellcheck="true">// 空间复杂度:</span>
+<span class="token comment" spellcheck="true">// 如果我们总共要插入M个单词，且单词的长度最多为N，那么在最坏的情况下，最多将有M*N个节点(任何两个单词都没有公共前缀)。</span>
+<span class="token comment" spellcheck="true">// 我们假设最大有K个不同的字符(在这个问题中K等于26，但是在不同的情况下可能不同)。因此，每个节点将维护一个最大为K的映射。</span>
+<span class="token comment" spellcheck="true">// 因此，空间复杂度为O(M*N*K)。</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TrieNode</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">TrieNode</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> dic <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dictionary</span><span class="token operator">&lt;</span><span class="token keyword">char</span><span class="token punctuation">,</span> TrieNode<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 维护节点中的字典, 字符和对应的节点(连线)</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token keyword">private</span> Dictionary<span class="token operator">&lt;</span><span class="token keyword">char</span><span class="token punctuation">,</span> TrieNode<span class="token operator">></span> dic<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 是否是单词末尾</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token keyword">private</span> <span class="token keyword">bool</span> isEnd<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 节点中的字典是否存在ch这个字符对应连接的下一个节点</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token keyword">public</span> <span class="token keyword">bool</span> <span class="token function">ContainsKey</span><span class="token punctuation">(</span><span class="token keyword">char</span> ch<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> dic<span class="token punctuation">.</span><span class="token function">ContainsKey</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 获取字符对应连接的下一个节点</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token keyword">public</span> TrieNode <span class="token function">Get</span><span class="token punctuation">(</span><span class="token keyword">char</span> ch<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> dic<span class="token punctuation">[</span>ch<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 放入字符和对应连接的下一个节点</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Put</span><span class="token punctuation">(</span><span class="token keyword">char</span> ch<span class="token punctuation">,</span> TrieNode node<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> dic<span class="token punctuation">[</span>ch<span class="token punctuation">]</span> <span class="token operator">=</span> node<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 设置单词结束</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SetEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> isEnd <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 返回是否是一个完整单词</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token keyword">public</span> <span class="token keyword">bool</span> <span class="token function">IsEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> isEnd<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 减少空间浪费, 使用字典,而不是固定长度的数组</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Trie</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> TrieNode root<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/** Initialize your data structure here. */</span>
+    <span class="token keyword">public</span> <span class="token function">Trie</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        root <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TrieNode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 往前缀树插入单词</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Insert</span><span class="token punctuation">(</span><span class="token keyword">string</span> word<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        TrieNode node <span class="token operator">=</span> root<span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> word<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">char</span> currentChar <span class="token operator">=</span> word<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 填充根节点对应字符的子节点</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>node<span class="token punctuation">.</span><span class="token function">ContainsKey</span><span class="token punctuation">(</span>currentChar<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                node<span class="token punctuation">.</span><span class="token function">Put</span><span class="token punctuation">(</span>currentChar<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">TrieNode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment" spellcheck="true">// 进入该字符的子节点, 迭代下一个字符</span>
+            <span class="token comment" spellcheck="true">// 沿着链接移动到树的下一个子层。算法继续搜索下一个键字符。</span>
+            node <span class="token operator">=</span> node<span class="token punctuation">.</span><span class="token function">Get</span><span class="token punctuation">(</span>currentChar<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 遍历完此单词设置标志位flag</span>
+        node<span class="token punctuation">.</span><span class="token function">SetEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 搜索前缀,返回最后一个字符连接的下一个节点</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token keyword">private</span> TrieNode <span class="token function">SearchPrefix</span><span class="token punctuation">(</span>String word<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        TrieNode node <span class="token operator">=</span> root<span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> word<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">char</span> currentChar <span class="token operator">=</span> word<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span><span class="token function">ContainsKey</span><span class="token punctuation">(</span>currentChar<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                node <span class="token operator">=</span> node<span class="token punctuation">.</span><span class="token function">Get</span><span class="token punctuation">(</span>currentChar<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">else</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> node<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 是否包含单词(标有End结尾)</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token keyword">public</span> <span class="token keyword">bool</span> <span class="token function">Search</span><span class="token punctuation">(</span><span class="token keyword">string</span> word<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> node <span class="token operator">=</span> <span class="token function">SearchPrefix</span><span class="token punctuation">(</span>word<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 需要判断是否设置了单词结束的标志位</span>
+        <span class="token keyword">return</span> node <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> node<span class="token punctuation">.</span><span class="token function">IsEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/// &lt;summary></span>
+    <span class="token comment" spellcheck="true">/// 如果trie中有任何以给定前缀开头的单词，则返回true</span>
+    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+    <span class="token keyword">public</span> <span class="token keyword">bool</span> <span class="token function">StartsWith</span><span class="token punctuation">(</span><span class="token keyword">string</span> prefix<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        TrieNode node <span class="token operator">=</span> <span class="token function">SearchPrefix</span><span class="token punctuation">(</span>prefix<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 不需要检查IsEnd, 只是搜索前缀,</span>
+        <span class="token keyword">return</span> node <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>您也可以通过<code>数组</code>来实现它，它将获得稍好一点的时间性能，但稍差一点的空间性能。</strong></p>
+<h2 id="为什么不直接用哈希表"><a href="#为什么不直接用哈希表" class="headerlink" title="为什么不直接用哈希表?"></a>为什么不直接用哈希表?</h2><p>您可能想知道为什么不使用哈希表来存储字符串。让我们对这两个数据结构做一个简短的比较。我们假设有N个键，一个键的最大长度是M。</p>
+<ul>
+<li>时间复杂度</li>
+</ul>
+<p>在哈希表中搜索的时间复杂度一般为<code>O(1)</code>，但在最坏的情况下，如果冲突太多，我们使用<code>高度平衡BST(比如SortedDiconary)</code>来解决冲突，则时间复杂度为<code>O(logN)</code>。</p>
+<p>在前缀树中<code>搜索</code>的时间复杂度为<code>O(M)</code>。</p>
+<p>哈希表在大多数情况下都是赢家。</p>
+<ul>
+<li>空间复杂度</li>
+</ul>
+<p><strong>哈希表</strong> 的空间复杂度为<code>O(M * N)</code>，如果希望哈希表具有与Trie相同的功能，可能需要存储多个key副本。例如，您可能希望存储一个关键字“apple”的“a”、“ap”、“app”、“appl”和“apple”，以便通过前缀进行搜索。在这种情况下，空间复杂性可能会更大。</p>
+<p><strong>前缀树</strong> 的空间复杂度为<code>O(M * N)</code>。但实际上比估计的要小得多，因为在实际情况中会有很多单词有类似的前缀。</p>
+<p>大多数情况下，前缀树是赢家。</p>
 
         
             <div class="donate-container">
